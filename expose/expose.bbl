@@ -1,0 +1,39 @@
+\begin{thebibliography}{Lew73}
+
+\bibitem[Byr16]{byrne_counterfactual_thought_2016}
+Ruth~M.J. Byrne.
+\newblock Counterfactual thought.
+\newblock {\em Annual Review of Psychology}, 67(1):135--157, 2016.
+\newblock PMID: 26393873.
+\newblock \href
+  {http://arxiv.org/abs/https://doi.org/10.1146/annurev-psych-122414-033249}
+  {\path{arXiv:https://doi.org/10.1146/annurev-psych-122414-033249}}, \href
+  {https://doi.org/10.1146/annurev-psych-122414-033249}
+  {\path{doi:10.1146/annurev-psych-122414-033249}}.
+
+\bibitem[Lew73]{lewis_counterfactuals_1973}
+David~K. Lewis.
+\newblock {\em Counterfactuals}.
+\newblock Basil Blackwell, Oxford, 1973.
+
+\bibitem[Ove12]{overtoom_counterfactual_history_2012}
+Nikolaus Overtoom.
+\newblock A {Roman} tradition of {Alexander} the {Great} counterfactual
+  history.
+\newblock {\em Acta Antiqua}, 52(3):203 -- 212, 2012.
+\newblock URL:
+  \url{https://akjournals.com/view/journals/068/52/3/article-p203.xml}, \href
+  {https://doi.org/10.1556/aant.52.2012.3.2}
+  {\path{doi:10.1556/aant.52.2012.3.2}}.
+
+\bibitem[ST70]{stalnaker_semantic_1970}
+Robert~C. Stalnaker and Richmond~H. Thomason.
+\newblock {\em A {Semantic} {Analysis} of {Conditional} {Logic}}.
+\newblock 1970.
+
+\bibitem[Sta68]{stalnaker_theory_1968}
+Robert~C. Stalnaker.
+\newblock {\em A {Theory} of {Conditionals}}.
+\newblock Basil Blackwell, 1968.
+
+\end{thebibliography}
