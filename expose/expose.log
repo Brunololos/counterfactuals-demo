@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  9 JUN 2022 14:20
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  19 JUN 2022 17:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -771,60 +771,102 @@ File: pgfmodulematrix.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 brarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 )))
-LaTeX Font Info:    Trying to load font information for T1+pxr on input line 22
+(c:/texlive/2022/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.meta.cod
+e.tex
+File: pgflibraryarrows.meta.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\pgfarrowinset=\dimen261
+\pgfarrowlength=\dimen262
+\pgfarrowwidth=\dimen263
+\pgfarrowlinewidth=\dimen264
+)
+(c:/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzli
+brarypositioning.code.tex
+File: tikzlibrarypositioning.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(c:/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzli
+brarycalc.code.tex
+File: tikzlibrarycalc.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+)
+(c:/texlive/2022/texmf-dist/tex/latex/tkz-graph/tkz-graph.sty
+2021/01/20 v 2.00 tkz-graph.sty
+Package: tkz-graph 2021/01/20 2.00 base for graphs
+(c:/texlive/2022/texmf-dist/tex/latex/base/ifthen.sty
+Package: ifthen 2020/11/24 v1.1c Standard LaTeX ifthen package (DPC)
+)
+(c:/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzli
+braryarrows.code.tex
+File: tikzlibraryarrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+
+(c:/texlive/2022/texmf-dist/tex/generic/pgf/libraries/pgflibraryarrows.code.tex
+File: pgflibraryarrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
+\arrowsize=\dimen265
+))
+\c@tkz@gr@a=\count307
+\c@tkz@gr@b=\count308
+\c@tkz@gr@c=\count309
+\c@tkz@gr@e=\count310
+\c@tkz@gr@d=\count311
+\c@tkz@gr@p=\count312
+\c@tkz@gr@i=\count313
+\c@tkz@gr@n=\count314
+\c@tkz@gr@ta=\count315
+\c@tkz@gr@tb=\count316
+)
+LaTeX Font Info:    Trying to load font information for T1+pxr on input line 25
 .
  (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxr.fd
 File: t1pxr.fd 2000/12/14 v1.0
-) (c:/texlive/2022/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+)
+(c:/texlive/2022/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count307
+\l__color_backend_stack_int=\count317
 \l__pdf_internal_box=\box63
 )
 (./expose.aux)
 \openout1 = `expose.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 22.
+LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 25.
 LaTeX Font Info:    Trying to load font information for OML+pxmi on input line 
-22.
+25.
  (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omlpxmi.fd
 File: omlpxmi.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 25.
 LaTeX Font Info:    Trying to load font information for OMS+pxsy on input line 
-22.
+25.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omspxsy.fd
 File: omspxsy.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 25.
 LaTeX Font Info:    Trying to load font information for OMX+pxex on input line 
-22.
+25.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omxpxex.fd
 File: omxpxex.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 25.
 LaTeX Font Info:    Trying to load font information for U+pxexa on input line 2
-2.
+5.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxexa.fd
 File: upxexa.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 22.
-LaTeX Font Info:    ... okay on input line 22.
-Package hyperref Info: Link coloring OFF on input line 22.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 25.
+Package hyperref Info: Link coloring OFF on input line 25.
 
 (c:/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -835,11 +877,11 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 (c:/texlive/2022/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count308
+\c@section@level=\count318
 )
-LaTeX Info: Redefining \ref on input line 22.
-LaTeX Info: Redefining \pageref on input line 22.
-LaTeX Info: Redefining \nameref on input line 22.
+LaTeX Info: Redefining \ref on input line 25.
+LaTeX Info: Redefining \pageref on input line 25.
+LaTeX Info: Redefining \nameref on input line 25.
 
 (./expose.out) (./expose.out)
 \@outlinefile=\write4
@@ -848,16 +890,16 @@ LaTeX Info: Redefining \nameref on input line 22.
 
 (c:/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count309
-\scratchdimen=\dimen261
+\scratchcounter=\count319
+\scratchdimen=\dimen266
 \scratchbox=\box64
-\nofMPsegments=\count310
-\nofMParguments=\count311
+\nofMPsegments=\count320
+\nofMParguments=\count321
 \everyMPshowfont=\toks44
-\MPscratchCnt=\count312
-\MPscratchDim=\dimen262
-\MPnumerator=\count313
-\makeMPintoPDFobject=\count314
+\MPscratchCnt=\count322
+\MPscratchDim=\dimen267
+\MPnumerator=\count323
+\makeMPintoPDFobject=\count324
 \everyMPtoPDFconversion=\toks45
 ) (c:/texlive/2022/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -869,58 +911,74 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 LaTeX Font Info:    Trying to load font information for T1+pxss on input line 4
-4.
+7.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxss.fd
 File: t1pxss.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 44.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 47.
 LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 4
-4.
+7.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/ot1pxr.fd
 File: ot1pxr.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxmia on input line 4
-4.
+7.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxmia.fd
 File: upxmia.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsya on input line 4
-4.
+7.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsya.fd
 File: upxsya.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 4
-4.
+7.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyb.fd
 File: utxsyb.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 4
-4.
+7.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyc.fd
 File: upxsyc.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for T1+pxtt on input line 4
-4.
+7.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxtt.fd
 File: t1pxtt.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <10> not available
-(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 44.
+(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 47.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 45.
-<./images//closest_worlds.jpg, id=11, 451.6875pt x 451.6875pt>
-File: ./images//closest_worlds.jpg Graphic file (type jpg)
-<use ./images//closest_worlds.jpg>
-Package pdftex.def Info: ./images//closest_worlds.jpg  used on input line 59.
-(pdftex.def)             Requested size: 225.84319pt x 225.84319pt.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 48.
+<./images//Eath.jpg, id=11, 225.84375pt x 225.84375pt>
+File: ./images//Eath.jpg Graphic file (type jpg)
+<use ./images//Eath.jpg>
+Package pdftex.def Info: ./images//Eath.jpg  used on input line 63.
+(pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
+File: ./images//Eath.jpg Graphic file (type jpg)
+<use ./images//Eath.jpg>
+Package pdftex.def Info: ./images//Eath.jpg  used on input line 64.
+(pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
+File: ./images//Eath.jpg Graphic file (type jpg)
+<use ./images//Eath.jpg>
+Package pdftex.def Info: ./images//Eath.jpg  used on input line 65.
+(pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
+File: ./images//Eath.jpg Graphic file (type jpg)
+<use ./images//Eath.jpg>
+Package pdftex.def Info: ./images//Eath.jpg  used on input line 66.
+(pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
+File: ./images//Eath.jpg Graphic file (type jpg)
+<use ./images//Eath.jpg>
+Package pdftex.def Info: ./images//Eath.jpg  used on input line 67.
+(pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
@@ -928,36 +986,25 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [1
 
 
-{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 <./images//c
-losest_worlds.jpg>] (./expose.bbl
+{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 <./images//E
+ath.jpg>] (./expose.bbl
 Underfull \hbox (badness 4429) in paragraph at lines 4--13
 \T1/pxtt/m/n/10 doi . org / 10 . 1146 / annurev-[]psych-[]122414-[]033249$[]\T1
 /pxr/m/n/10 , []$\T1/pxtt/m/n/10 doi : 10 . 1146 /
  []
 
-
-Underfull \hbox (badness 2426) in paragraph at lines 20--28
-[]\T1/pxr/m/n/10 Nikolaus Over-toom.  A Ro-man tra-di-tion of Alexan-der the
- []
-
-
-Underfull \hbox (badness 1953) in paragraph at lines 20--28
-\T1/pxr/m/n/10 Great coun-ter-fac-tual his-tory.  \T1/pxr/m/it/10 Acta An-ti-qu
-a\T1/pxr/m/n/10 , 52(3):203 -- 212,
- []
-
-[3]) [4] (./expose.aux)
+) [3] (./expose.aux)
 Package rerunfilecheck Info: File `expose.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 22518 strings out of 478300
- 409769 string characters out of 5849124
- 671260 words of memory out of 5000000
- 40234 multiletter control sequences out of 15000+600000
+ 24027 strings out of 478300
+ 444568 string characters out of 5849124
+ 712116 words of memory out of 5000000
+ 41721 multiletter control sequences out of 15000+600000
  526831 words of font info for 148 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 100i,13n,104p,636b,673s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,13n,104p,636b,915s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
 f-dist/fonts/type1/public/pxfonts/pxsy.pfb><c:/texlive/2022/texmf-dist/fonts/ty
 pe1/public/pxfonts/pxsyc.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxf
@@ -970,10 +1017,10 @@ a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texli
 ve/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-d
 ist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1
 /urw/palatino/uplri8a.pfb>
-Output written on expose.pdf (4 pages, 125060 bytes).
+Output written on expose.pdf (3 pages, 121918 bytes).
 PDF statistics:
- 144 PDF objects out of 1000 (max. 8388607)
- 109 compressed objects within 2 object streams
+ 138 PDF objects out of 1000 (max. 8388607)
+ 104 compressed objects within 2 object streams
  32 named destinations out of 1000 (max. 500000)
  18 words of extra memory for PDF output out of 10000 (max. 10000000)
 

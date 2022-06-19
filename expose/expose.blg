@@ -10,45 +10,45 @@ Reallocated singl_function (elt_size=4) to 100 items from 50.
 Database file #1: expose.bib
 Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
 Warning--empty publisher in stalnaker_semantic_1970
-You've used 5 entries,
+You've used 4 entries,
             3307 wiz_defined-function locations,
-            717 strings with 6233 characters,
-and the built_in function-call counts, 2304 in all, are:
-= -- 230
-> -- 58
-< -- 4
-+ -- 17
-- -- 14
-* -- 132
-:= -- 348
-add.period$ -- 18
-call.type$ -- 5
-change.case$ -- 23
-chr.to.int$ -- 5
-cite$ -- 6
-duplicate$ -- 79
-empty$ -- 226
-format.name$ -- 23
-if$ -- 581
+            706 strings with 5964 characters,
+and the built_in function-call counts, 1756 in all, are:
+= -- 169
+> -- 48
+< -- 3
++ -- 14
+- -- 12
+* -- 93
+:= -- 275
+add.period$ -- 14
+call.type$ -- 4
+change.case$ -- 18
+chr.to.int$ -- 4
+cite$ -- 5
+duplicate$ -- 62
+empty$ -- 171
+format.name$ -- 19
+if$ -- 440
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 8
-newline$ -- 31
-num.names$ -- 15
-pop$ -- 55
+missing$ -- 7
+newline$ -- 25
+num.names$ -- 12
+pop$ -- 47
 preamble$ -- 1
-purify$ -- 31
+purify$ -- 25
 quote$ -- 0
-skip$ -- 166
+skip$ -- 129
 stack$ -- 0
-substring$ -- 86
-swap$ -- 11
-text.length$ -- 4
-text.prefix$ -- 4
+substring$ -- 51
+swap$ -- 8
+text.length$ -- 3
+text.prefix$ -- 3
 top$ -- 0
-type$ -- 28
+type$ -- 20
 warning$ -- 1
-while$ -- 13
-width$ -- 8
-write$ -- 72
+while$ -- 10
+width$ -- 6
+write$ -- 56
 (There was 1 warning)
