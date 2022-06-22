@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  19 JUN 2022 17:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  22 JUN 2022 14:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -958,26 +958,30 @@ LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <10> not available
 (Font)              Font shape `T1/pxr/bx/n' tried instead on input line 47.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
 (Font)              Font shape `T1/pxss/bx/n' tried instead on input line 48.
-<./images//Eath.jpg, id=11, 225.84375pt x 225.84375pt>
-File: ./images//Eath.jpg Graphic file (type jpg)
-<use ./images//Eath.jpg>
-Package pdftex.def Info: ./images//Eath.jpg  used on input line 63.
+<./images//5FactsEath.png, id=14, 225.84375pt x 225.84375pt>
+File: ./images//5FactsEath.png Graphic file (type png)
+<use ./images//5FactsEath.png>
+Package pdftex.def Info: ./images//5FactsEath.png  used on input line 63.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-File: ./images//Eath.jpg Graphic file (type jpg)
-<use ./images//Eath.jpg>
-Package pdftex.def Info: ./images//Eath.jpg  used on input line 64.
+<./images//3FactsEath.png, id=16, 225.84375pt x 225.84375pt>
+File: ./images//3FactsEath.png Graphic file (type png)
+<use ./images//3FactsEath.png>
+Package pdftex.def Info: ./images//3FactsEath.png  used on input line 64.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-File: ./images//Eath.jpg Graphic file (type jpg)
-<use ./images//Eath.jpg>
-Package pdftex.def Info: ./images//Eath.jpg  used on input line 65.
+<./images//1FactEath.png, id=17, 225.84375pt x 225.84375pt>
+File: ./images//1FactEath.png Graphic file (type png)
+<use ./images//1FactEath.png>
+Package pdftex.def Info: ./images//1FactEath.png  used on input line 65.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-File: ./images//Eath.jpg Graphic file (type jpg)
-<use ./images//Eath.jpg>
-Package pdftex.def Info: ./images//Eath.jpg  used on input line 66.
+<./images//4FactsEath.png, id=18, 225.84375pt x 225.84375pt>
+File: ./images//4FactsEath.png Graphic file (type png)
+<use ./images//4FactsEath.png>
+Package pdftex.def Info: ./images//4FactsEath.png  used on input line 66.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-File: ./images//Eath.jpg Graphic file (type jpg)
-<use ./images//Eath.jpg>
-Package pdftex.def Info: ./images//Eath.jpg  used on input line 67.
+<./images//3Facts2Eath.png, id=19, 225.84375pt x 225.84375pt>
+File: ./images//3Facts2Eath.png Graphic file (type png)
+<use ./images//3Facts2Eath.png>
+Package pdftex.def Info: ./images//3Facts2Eath.png  used on input line 67.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
 
 
@@ -986,22 +990,23 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 [1
 
 
-{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 <./images//E
-ath.jpg>] (./expose.bbl
+{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 <./images//5
+FactsEath.png> <./images//3FactsEath.png> <./images//1FactEath.png> <./images//
+4FactsEath.png> <./images//3Facts2Eath.png>] (./expose.bbl
 Underfull \hbox (badness 4429) in paragraph at lines 4--13
 \T1/pxtt/m/n/10 doi . org / 10 . 1146 / annurev-[]psych-[]122414-[]033249$[]\T1
 /pxr/m/n/10 , []$\T1/pxtt/m/n/10 doi : 10 . 1146 /
  []
 
-) [3] (./expose.aux)
+[3]) [4] (./expose.aux)
 Package rerunfilecheck Info: File `expose.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 24027 strings out of 478300
- 444568 string characters out of 5849124
- 712116 words of memory out of 5000000
- 41721 multiletter control sequences out of 15000+600000
+ 24082 strings out of 478300
+ 445938 string characters out of 5849124
+ 714116 words of memory out of 5000000
+ 41771 multiletter control sequences out of 15000+600000
  526831 words of font info for 148 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  100i,13n,104p,636b,915s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1017,10 +1022,10 @@ a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texli
 ve/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-d
 ist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1
 /urw/palatino/uplri8a.pfb>
-Output written on expose.pdf (3 pages, 121918 bytes).
+Output written on expose.pdf (4 pages, 154291 bytes).
 PDF statistics:
- 138 PDF objects out of 1000 (max. 8388607)
- 104 compressed objects within 2 object streams
- 32 named destinations out of 1000 (max. 500000)
- 18 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 155 PDF objects out of 1000 (max. 8388607)
+ 111 compressed objects within 2 object streams
+ 33 named destinations out of 1000 (max. 500000)
+ 38 words of extra memory for PDF output out of 10000 (max. 10000000)
 

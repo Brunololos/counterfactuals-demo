@@ -31,7 +31,7 @@
 	}
 }
 
-\subtitle{Proposal for a Bachelor Thesis (v0.2, 19 Juni 2022)}
+\subtitle{Proposal for a Bachelor Thesis (v0.3, 22 Juni 2022)}
 
 \author{%
 	Andreas Paul Bruno Lönne\\
@@ -48,7 +48,7 @@
 \section*{Problem: An approachable showcase of counterfactuals}
 {\it Counterfactuals} are in essence conditional statements carrying information about the relationship of a false {\it antedecent} and a {\it consequent}. Their truth value answers the question: ``If it were the case that A, would it then be the case that B?''. {\it Counterfactual~thought}---that is the thought of alternate outcomes---\cite{byrne_counterfactual_thought_2016} is common for humans to engage in and is consequently subject to a great volume of philosophical and mathematical discourse. 
 
-Considering the amount of information available and the various propositions on how to mathematically model counterfactuals, gaining an understanding of the nuances of counterfactual truth conditions tends to be a difficult endeavour for any layman. I propose to remedy this issue by implementing a computer game based on a semantic game of counterfactuals.
+Considering the amount of information available and the various propositions on how to mathematically model counterfactuals \cite{stalnaker_theory_1968, stalnaker_semantic_1970,  lewis_counterfactuals_1973}, gaining an understanding of the nuances of counterfactual truth conditions tends to be a difficult endeavour for any layman. I propose to remedy this issue by implementing a computer game based on a semantic game of counterfactuals.
 
 \section*{Approach: A computer game on counterfactuals}
 As part of my research I will try to find a didactically suitable semantic game for the evaluation of counterfactuals. More precisely I am looking to find a way to express {\it Lewis's formulation of counterfactual truth conditions} \cite{lewis_counterfactuals_1973} by way of a semantic game about proving counterfactual sentences.
@@ -60,11 +60,11 @@ For the purposes of visual clarity, usability and simplicity the application wil
 \begin{figure}[h]
 	\centering
 	\begin{tikzpicture}[main/.style = {draw, circle}]	
-	\node[inner sep=0pt] (1)  at (0,0) {\includegraphics[width=.0725\textwidth]{Eath.jpg}};
-	\node[inner sep=0pt] (2)  at (2,1) {\includegraphics[width=.0725\textwidth]{Eath.jpg}};
-	\node[inner sep=0pt] (3)  at (-2,1) {\includegraphics[width=.0725\textwidth]{Eath.jpg}};
-	\node[inner sep=0pt] (4)  at (-1,-2) {\includegraphics[width=.0725\textwidth]{Eath.jpg}};
-	\node[inner sep=0pt] (5)  at (2,-2) {\includegraphics[width=.0725\textwidth]{Eath.jpg}};
+	\node[inner sep=0pt] (1)  at (0,0) {\includegraphics[width=.0725\textwidth]{5FactsEath.png}};
+	\node[inner sep=0pt] (2)  at (2,1) {\includegraphics[width=.0725\textwidth]{3FactsEath.png}};
+	\node[inner sep=0pt] (3)  at (-2,1) {\includegraphics[width=.0725\textwidth]{1FactEath.png}};
+	\node[inner sep=0pt] (4)  at (-1,-2) {\includegraphics[width=.0725\textwidth]{4FactsEath.png}};
+	\node[inner sep=0pt] (5)  at (2,-2) {\includegraphics[width=.0725\textwidth]{3Facts2Eath.png}};
 	
 	\path [->] let \p1=($(2)-(1)$),\n1={atan2(\y1,\x1)},\n2={180+\n1} in
      ($ (1.\n1)!6pt!90:(2.\n2) $) edge node[midway,fill=white] {$1$} ($ (2.\n2)!6pt!-90:(1.\n1) $);
@@ -95,11 +95,18 @@ For the purposes of visual clarity, usability and simplicity the application wil
      ($ (5.\n1)!6pt!90:(4.\n2) $) edge node[midway,fill=white] {$4$} ($ (4.\n2)!6pt!-90:(5.\n1) $);
     \path [->] let \p1=($(5)-(4)$),\n1={atan2(\y1,\x1)},\n2={180+\n1} in
      ($ (4.\n1)!6pt!90:(5.\n2) $) edge node[midway,fill=white] {$2$} ($ (5.\n2)!6pt!-90:(4.\n1) $);
+     
+    \draw[->] (1) to [out=110,in=70,looseness=4] node[above] {$0$} (1);
+    \draw[->] (2) to [out=20,in=-20,looseness=4] node[right] {$0$} (2);
+	\draw[->] (3) to [out=200,in=160,looseness=4] node[left] {$0$} (3);
+	\draw[->] (4) to [out=200,in=160,looseness=4] node[left] {$0$} (4);
 	
 	\end{tikzpicture}
 	\caption{similarity graph of exemplar worlds}
 	\label{fig:closest_worlds}
 \end{figure}
+
+The directed edges of the graph express dissimilarity from the standpoint of one world to another. And the colored dots represent a set of facts, that each world has associated with it.
 
 Additionally i will determine an appropriate visual representation of counterfactual sentences from amongst various possibilities such as natural language, logical expressions and logical expression trees. While natural language is the most intuitive representation, it lacks the unambiguity of logical constructs and may create long unreadable sentences. Logical expressions, however, tend to be difficult to read and comprehend for laymen as well. Here are some examples of the same counterfactual statement expressed in different ways in (\ref{language}), (\ref{formula}) and figure \ref{fig:exptree}.
 
@@ -127,6 +134,7 @@ Additionally i will determine an appropriate visual representation of counterfac
 	\draw[->] (2) -- (4);
 	\draw[->] (2) -- (5);
 	\draw[->] (4) -- (6);
+	
 	\end{tikzpicture}
 	\caption{counterfactual sentence as a logical expression tree}
 	\label{fig:exptree}
@@ -167,7 +175,7 @@ In accordance with \href{https://www.eecs.tu-berlin.de/fileadmin/f4/fkIVdokument
 	\begin{enumerate}
 		\item Design decisions (visual representation of cfs, finite graph / exemplar worlds)
 		\item Discussion of the framework
-		\item Concrete implementation of the semantic game engine
+		\item Implementation of the semantic game engine
 		\item Evaluation of the implementation
 	\end{enumerate}
 	\item Conclusion
