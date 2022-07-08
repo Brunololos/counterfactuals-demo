@@ -15,6 +15,8 @@
 \usetikzlibrary{arrows.meta,positioning,calc}
 \usepackage{tkz-graph}
 \usepackage{graphicx}
+\usepackage{float}
+\usepackage{needspace}
 
 \graphicspath{ {./images/} }
 
@@ -31,7 +33,7 @@
 	}
 }
 
-\subtitle{Proposal for a Bachelor Thesis (v0.3, 22 Juni 2022)}
+\subtitle{Proposal for a Bachelor Thesis (v0.4, 8 Juli 2022)}
 
 \author{%
 	Andreas Paul Bruno Lönne\\
@@ -51,13 +53,25 @@
 Considering the amount of information available and the various propositions on how to mathematically model counterfactuals \cite{stalnaker_theory_1968, stalnaker_semantic_1970,  lewis_counterfactuals_1973}, gaining an understanding of the nuances of counterfactual truth conditions tends to be a difficult endeavour for any layman. I propose to remedy this issue by implementing a computer game based on a semantic game of counterfactuals.
 
 \section*{Approach: A computer game on counterfactuals}
-As part of my research I will try to find a didactically suitable semantic game for the evaluation of counterfactuals. More precisely I am looking to find a way to express {\it Lewis's formulation of counterfactual truth conditions} \cite{lewis_counterfactuals_1973} by way of a semantic game about proving counterfactual sentences.
+The aforementioned semantic game of counterfactuals expresses the evaluation of {\it Lewis's~counterfactual~truth~conditions} \cite{lewis_counterfactuals_1973} in terms of a two-player game wherein a defender tries to prove a counterfactual sentence and an attacker attempts to disprove it.
 
-I hope to create a software solution, that is intuitive and easy to use. The user is meant to be able to learn about counterfactuals, with little prior knowledge or time investment. Hence a minimalistic and functional user interface has to be developed.
+The game state is described by a tuple holding a counterfactual sentence $\varphi$ and a world $w$ at which $\varphi$ ought to be shown. Additionally the subscript of a tuple denotes whose players turn it is. Tuples with designators "vac" and "cf" are exceptions to that syntax, indicating supposed vacuous truth or truth at all worlds at least as similar to $w$ as $w'$. Here are some examples:
+
+\begin{center}
+$(\varphi ,w)_{d/a},\hspace{5px}(vac,\varphi ,w)_a,\hspace{5px}(cf,\varphi ,\psi ,w,w',r)_a$
+\end{center}
+
+The constituents of a counterfactual sentence~$\varphi$ are negations~$\neg$, disjunctions~$\vee$, the counterfactual~would~operator~$\boxright$, the bottom symbol~$\bot$ and atomic statements. To be able to resolve atomic statements each world $w$  has a set of true atomic statements $F(w)$ associated with it. Moreover a {ternary~relation~$\leadsto$} expresses similarity between worlds from the standpoint of one world.
+
+Given those remarks, the concrete rules of the game are as stated in figure~\ref{fig:rules}.
+
+\section*{Approach: Visual representation}
+
+I intend to create a software solution that is intuitive and easy to use. The user is meant to be able to learn about counterfactuals, with little prior knowledge or time investment. Hence a minimalistic and functional user interface has to be developed.
 
 For the purposes of visual clarity, usability and simplicity the application will provide finite selections of exemplar worlds as stand-ins for potentially infinite sets of accessible worlds and visualize them as nodes of a graph as shown in figure \ref{fig:closest_worlds}.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[main/.style = {draw, circle}]	
 	\node[inner sep=0pt] (1)  at (0,0) {\includegraphics[width=.0725\textwidth]{5FactsEath.png}};
@@ -106,16 +120,16 @@ For the purposes of visual clarity, usability and simplicity the application wil
 	\label{fig:closest_worlds}
 \end{figure}
 
-The directed edges of the graph express dissimilarity from the standpoint of one world to another. And the colored dots represent a set of facts, that each world has associated with it.
+The directed edges of the graph express dissimilarity from the standpoint of one world to another. And the colored dots represent atomic statements from the set $F(w)$, that each world has associated with it.
 
-Additionally i will determine an appropriate visual representation of counterfactual sentences from amongst various possibilities such as natural language, logical expressions and logical expression trees. While natural language is the most intuitive representation, it lacks the unambiguity of logical constructs and may create long unreadable sentences. Logical expressions, however, tend to be difficult to read and comprehend for laymen as well. Here are some examples of the same counterfactual statement expressed in different ways in (\ref{language}), (\ref{formula}) and figure \ref{fig:exptree}.
+Additionally I will determine a visual representation of counterfactual sentences from amongst various possibilities such as natural language, logical expressions and logical expression trees. While natural language is the most intuitive representation, it lacks the unambiguity of logical constructs and may create long unreadable sentences. Logical expressions, however, tend to be difficult to read and comprehend for laymen. Here are some examples of the same counterfactual statement expressed in different ways in (\ref{language}), (\ref{formula}) and figure~\ref{fig:exptree}.
 
 \begin{align}
     \text{\parbox{11cm}{``If Alexander~the~Great had not died at the age of 32 and attacked europe, the Romans would have defeated him''}}
      \label{language}
 \end{align}
 \begin{equation}
-	(\neg\varphi_1\wedge\varphi_2)\boxright\psi
+	\neg(\varphi_1\vee\neg\varphi_2)\boxright\psi
 	\label{formula}
 \end{equation}
 
@@ -123,27 +137,102 @@ Additionally i will determine an appropriate visual representation of counterfac
 	\centering
 	\begin{tikzpicture}[main/.style = {draw, circle}]
 	\node[main] (1) {$\boxright$};
-	\node[main] (2) [below left of=1] {$\wedge$};
+	\node[main] (2) [below left of=1] {$\neg$};
 	\node[main] (3) [below right of=1] {$\psi$};
-	\node[main] (4) [below left of=2] {$\neg$};
-	\node[main] (5) [below right of=2] {$\varphi_2$};
-	\node[main] (6) [below left of=4] {$\varphi_1$};
+	\node[main] (4) [below left of=2] {$\vee$};
+	\node[main] (5) [below left of=4] {$\varphi_1$};
+	\node[main] (6) [below right of=4] {$\neg$};
+	\node[main] (7) [below right of=6] {$\varphi_2$};
 	
 	\draw[->] (1) -- (2);
 	\draw[->] (1) -- (3);
 	\draw[->] (2) -- (4);
-	\draw[->] (2) -- (5);
+	\draw[->] (4) -- (5);
 	\draw[->] (4) -- (6);
+	\draw[->] (6) -- (7);
+
 	
 	\end{tikzpicture}
 	\caption{counterfactual sentence as a logical expression tree}
 	\label{fig:exptree}
 \end{figure}
 
-It would also be desirable to find a way to convey the notions of {\it realism~about~possible~worlds} and {\it comparative~similarity}~between~worlds, which are essential to Lewis's model.
+\section*{Method: Deployment as a lightweight web application}
 
 In order to deliver an easily accessible software solution I intend to make use of the Phaser~3 Framework for Typescript to develop a web-application. Phaser~3 is well suited for this task because it is a lightweight framework, that fits the scope of the project and allows for distribution of the software with a small barrier to entry.
 
+\section*{Rules of the semantic game}
+
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(\bot ,w)_{d/a}\hspace{10pt}\text{Attacker wins}
+	\end{equation}
+	\begin{equation}
+		(\neg\bot ,w)_{d/a}\hspace{10pt}\text{Defender wins}
+	\end{equation}
+	\begin{equation}
+		(\varphi ,w)_{d/a}\xrightarrow{\varphi\in F(w)}(\neg\bot ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\varphi ,w)_{d/a}\xrightarrow{\varphi\not\in F(w)}(\bot ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg\varphi ,w)_{d/a}\xrightarrow{\varphi\in F(w)}(\bot ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg\varphi ,w)_{d/a}\xrightarrow{\varphi\not\in F(w)}(\neg\bot ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg\neg\varphi ,w)_{d/a}\rightarrow (\varphi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\varphi\vee\psi ,w)_d\rightarrow (\varphi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\varphi\vee\psi ,w)_d\rightarrow (\psi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg (\varphi\vee\psi ),w)_a\rightarrow (\neg\varphi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg (\varphi\vee\psi ),w)_a\rightarrow (\neg\psi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\varphi\boxright\psi ,w)_d\rightarrow (vac,\varphi ,w)_a
+	\end{equation}
+	\begin{equation}
+		(vac,\varphi ,w)_a\xrightarrow{[w\overset{r}{\leadsto}w']}(\neg\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\varphi\boxright\psi ,w)_d\xrightarrow{[w\overset{r}{\leadsto}w']}(cf,\varphi ,\psi ,w,w',r)_a
+	\end{equation}
+	\begin{equation}
+		(cf,\varphi ,\psi ,w,w',r)_a\rightarrow (\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(cf,\varphi ,\psi ,w,w',r)_a\xrightarrow{[w\overset{r^*}{\leadsto}w^*,r^*\leq r]}(\neg\varphi\vee\psi ,w^*)_d
+	\end{equation}
+	\begin{equation}
+		(\neg (\varphi\boxright\psi ),w)_a\rightarrow (vac,\varphi ,w)_d
+	\end{equation}
+	\begin{equation}
+		(vac,\varphi ,w)_d\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg (\varphi\boxright\psi ),w)_a\xrightarrow{[w\overset{r}{\leadsto}w']}(cf,\varphi ,\psi ,w,w',r)_d
+	\end{equation}
+	\begin{equation}
+		(cf,\varphi ,\psi ,w,w',r)_d\rightarrow(\neg\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(cf,\varphi ,\psi ,w,w',r)_d\xrightarrow{[w\overset{r^*}{\leadsto}w^*, r^*\leq r]}(\neg(\neg\varphi\vee\psi ),w^*)_a
+	\end{equation}
+	\caption{rules of the semantic game of counterfactuals}
+	\label{fig:rules}
+\end{figure}
+
+\Needspace{5\baselineskip}
 \section*{Schedule}
 
 In accordance with \href{https://www.eecs.tu-berlin.de/fileadmin/f4/fkIVdokumente/StuPOs/Informatik/Lesefassung_BSc_Informatik.pdf}{StuPO~Bachelor~Informatik 2015}, the elaboration of the thesis is scheduled over a period of 20 weeks:

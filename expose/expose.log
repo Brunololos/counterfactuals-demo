@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  22 JUN 2022 14:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  8 JUL 2022 16:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -811,62 +811,73 @@ File: pgflibraryarrows.code.tex 2021/05/15 v3.1.9a (3.1.9a)
 \c@tkz@gr@n=\count314
 \c@tkz@gr@ta=\count315
 \c@tkz@gr@tb=\count316
+) (c:/texlive/2022/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count317
+\float@exts=\toks44
+\float@box=\box63
+\@float@everytoks=\toks45
+\@floatcapt=\box64
 )
-LaTeX Font Info:    Trying to load font information for T1+pxr on input line 25
+(c:/texlive/2022/texmf-dist/tex/latex/needspace/needspace.sty
+Package: needspace 2010/09/12 v1.3d reserve vertical space
+)
+LaTeX Font Info:    Trying to load font information for T1+pxr on input line 27
 .
- (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxr.fd
+
+(c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxr.fd
 File: t1pxr.fd 2000/12/14 v1.0
 )
 (c:/texlive/2022/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count317
-\l__pdf_internal_box=\box63
+\l__color_backend_stack_int=\count318
+\l__pdf_internal_box=\box65
 )
 (./expose.aux)
 \openout1 = `expose.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 25.
+LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 27.
 LaTeX Font Info:    Trying to load font information for OML+pxmi on input line 
-25.
+27.
  (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omlpxmi.fd
 File: omlpxmi.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 27.
 LaTeX Font Info:    Trying to load font information for OMS+pxsy on input line 
-25.
+27.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omspxsy.fd
 File: omspxsy.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 27.
 LaTeX Font Info:    Trying to load font information for OMX+pxex on input line 
-25.
+27.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omxpxex.fd
 File: omxpxex.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 25.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 27.
 LaTeX Font Info:    Trying to load font information for U+pxexa on input line 2
-5.
+7.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxexa.fd
 File: upxexa.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 25.
-LaTeX Font Info:    ... okay on input line 25.
-Package hyperref Info: Link coloring OFF on input line 25.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 27.
+Package hyperref Info: Link coloring OFF on input line 27.
 
 (c:/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -877,11 +888,11 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 (c:/texlive/2022/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count318
+\c@section@level=\count319
 )
-LaTeX Info: Redefining \ref on input line 25.
-LaTeX Info: Redefining \pageref on input line 25.
-LaTeX Info: Redefining \nameref on input line 25.
+LaTeX Info: Redefining \ref on input line 27.
+LaTeX Info: Redefining \pageref on input line 27.
+LaTeX Info: Redefining \nameref on input line 27.
 
 (./expose.out) (./expose.out)
 \@outlinefile=\write4
@@ -890,17 +901,17 @@ LaTeX Info: Redefining \nameref on input line 25.
 
 (c:/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count319
+\scratchcounter=\count320
 \scratchdimen=\dimen266
-\scratchbox=\box64
-\nofMPsegments=\count320
-\nofMParguments=\count321
-\everyMPshowfont=\toks44
-\MPscratchCnt=\count322
+\scratchbox=\box66
+\nofMPsegments=\count321
+\nofMParguments=\count322
+\everyMPshowfont=\toks46
+\MPscratchCnt=\count323
 \MPscratchDim=\dimen267
-\MPnumerator=\count323
-\makeMPintoPDFobject=\count324
-\everyMPtoPDFconversion=\toks45
+\MPnumerator=\count324
+\makeMPintoPDFobject=\count325
+\everyMPtoPDFconversion=\toks47
 ) (c:/texlive/2022/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -911,105 +922,123 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 LaTeX Font Info:    Trying to load font information for T1+pxss on input line 4
-7.
+9.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxss.fd
 File: t1pxss.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 47.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 49.
 LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 4
-7.
+9.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/ot1pxr.fd
 File: ot1pxr.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxmia on input line 4
-7.
+9.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxmia.fd
 File: upxmia.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsya on input line 4
-7.
+9.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsya.fd
 File: upxsya.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 4
-7.
+9.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyb.fd
 File: utxsyb.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 4
-7.
+9.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyc.fd
 File: upxsyc.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for T1+pxtt on input line 4
-7.
+9.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxtt.fd
 File: t1pxtt.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <10> not available
-(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 47.
+(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 49.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 48.
-<./images//5FactsEath.png, id=14, 225.84375pt x 225.84375pt>
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 50.
+ [1
+
+
+{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+<./images//5FactsEath.png, id=37, 225.84375pt x 225.84375pt>
 File: ./images//5FactsEath.png Graphic file (type png)
 <use ./images//5FactsEath.png>
-Package pdftex.def Info: ./images//5FactsEath.png  used on input line 63.
+Package pdftex.def Info: ./images//5FactsEath.png  used on input line 77.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-<./images//3FactsEath.png, id=16, 225.84375pt x 225.84375pt>
+<./images//3FactsEath.png, id=39, 225.84375pt x 225.84375pt>
 File: ./images//3FactsEath.png Graphic file (type png)
 <use ./images//3FactsEath.png>
-Package pdftex.def Info: ./images//3FactsEath.png  used on input line 64.
+Package pdftex.def Info: ./images//3FactsEath.png  used on input line 78.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-<./images//1FactEath.png, id=17, 225.84375pt x 225.84375pt>
+<./images//1FactEath.png, id=40, 225.84375pt x 225.84375pt>
 File: ./images//1FactEath.png Graphic file (type png)
 <use ./images//1FactEath.png>
-Package pdftex.def Info: ./images//1FactEath.png  used on input line 65.
+Package pdftex.def Info: ./images//1FactEath.png  used on input line 79.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-<./images//4FactsEath.png, id=18, 225.84375pt x 225.84375pt>
+<./images//4FactsEath.png, id=41, 225.84375pt x 225.84375pt>
 File: ./images//4FactsEath.png Graphic file (type png)
 <use ./images//4FactsEath.png>
-Package pdftex.def Info: ./images//4FactsEath.png  used on input line 66.
+Package pdftex.def Info: ./images//4FactsEath.png  used on input line 80.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-<./images//3Facts2Eath.png, id=19, 225.84375pt x 225.84375pt>
+<./images//3Facts2Eath.png, id=42, 225.84375pt x 225.84375pt>
 File: ./images//3Facts2Eath.png Graphic file (type png)
 <use ./images//3Facts2Eath.png>
-Package pdftex.def Info: ./images//3Facts2Eath.png  used on input line 67.
+Package pdftex.def Info: ./images//3Facts2Eath.png  used on input line 81.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[1
-
-
-{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 <./images//5
-FactsEath.png> <./images//3FactsEath.png> <./images//1FactEath.png> <./images//
-4FactsEath.png> <./images//3Facts2Eath.png>] (./expose.bbl
+[2
+pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.163 
+       <./images//5FactsEath.png> <./images//3FactsEath.png> <./images//1FactEa
+th.png> <./images//4FactsEath.png> <./images//3Facts2Eath.png>] [3
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.234 
+      ] [4
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.235 \Needspace{5\baselineskip}
+                                ] (./expose.bbl
 Underfull \hbox (badness 4429) in paragraph at lines 4--13
 \T1/pxtt/m/n/10 doi . org / 10 . 1146 / annurev-[]psych-[]122414-[]033249$[]\T1
 /pxr/m/n/10 , []$\T1/pxtt/m/n/10 doi : 10 . 1146 /
  []
 
-[3]) [4] (./expose.aux)
+[5]) [6] (./expose.aux)
 Package rerunfilecheck Info: File `expose.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 24082 strings out of 478300
- 445938 string characters out of 5849124
- 714116 words of memory out of 5000000
- 41771 multiletter control sequences out of 15000+600000
- 526831 words of font info for 148 fonts, out of 8000000 for 9000
+ 24219 strings out of 478300
+ 448289 string characters out of 5849124
+ 716707 words of memory out of 5000000
+ 41869 multiletter control sequences out of 15000+600000
+ 528605 words of font info for 152 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 100i,13n,104p,636b,915s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,13n,104p,615b,915s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
 f-dist/fonts/type1/public/pxfonts/pxsy.pfb><c:/texlive/2022/texmf-dist/fonts/ty
 pe1/public/pxfonts/pxsyc.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxf
@@ -1022,10 +1051,10 @@ a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texli
 ve/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-d
 ist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1
 /urw/palatino/uplri8a.pfb>
-Output written on expose.pdf (4 pages, 154291 bytes).
+Output written on expose.pdf (6 pages, 159649 bytes).
 PDF statistics:
- 155 PDF objects out of 1000 (max. 8388607)
- 111 compressed objects within 2 object streams
- 33 named destinations out of 1000 (max. 500000)
+ 195 PDF objects out of 1000 (max. 8388607)
+ 149 compressed objects within 2 object streams
+ 60 named destinations out of 1000 (max. 500000)
  38 words of extra memory for PDF output out of 10000 (max. 10000000)
 
