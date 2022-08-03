@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  8 JUL 2022 16:02
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  3 AUG 2022 17:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -973,27 +973,27 @@ LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
 
 
 {c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-<./images//5FactsEath.png, id=37, 225.84375pt x 225.84375pt>
+<./images//5FactsEath.png, id=65, 225.84375pt x 225.84375pt>
 File: ./images//5FactsEath.png Graphic file (type png)
 <use ./images//5FactsEath.png>
 Package pdftex.def Info: ./images//5FactsEath.png  used on input line 77.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-<./images//3FactsEath.png, id=39, 225.84375pt x 225.84375pt>
+<./images//3FactsEath.png, id=67, 225.84375pt x 225.84375pt>
 File: ./images//3FactsEath.png Graphic file (type png)
 <use ./images//3FactsEath.png>
 Package pdftex.def Info: ./images//3FactsEath.png  used on input line 78.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-<./images//1FactEath.png, id=40, 225.84375pt x 225.84375pt>
+<./images//1FactEath.png, id=68, 225.84375pt x 225.84375pt>
 File: ./images//1FactEath.png Graphic file (type png)
 <use ./images//1FactEath.png>
 Package pdftex.def Info: ./images//1FactEath.png  used on input line 79.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-<./images//4FactsEath.png, id=41, 225.84375pt x 225.84375pt>
+<./images//4FactsEath.png, id=69, 225.84375pt x 225.84375pt>
 File: ./images//4FactsEath.png Graphic file (type png)
 <use ./images//4FactsEath.png>
 Package pdftex.def Info: ./images//4FactsEath.png  used on input line 80.
 (pdftex.def)             Requested size: 25.0106pt x 25.00829pt.
-<./images//3Facts2Eath.png, id=42, 225.84375pt x 225.84375pt>
+<./images//3Facts2Eath.png, id=70, 225.84375pt x 225.84375pt>
 File: ./images//3Facts2Eath.png Graphic file (type png)
 <use ./images//3Facts2Eath.png>
 Package pdftex.def Info: ./images//3Facts2Eath.png  used on input line 81.
@@ -1014,47 +1014,49 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.234 
-      ] [4
+l.193 $
+       w \vDash \varphi \boxright \psi$, if a world $w'$ and an $r$ exist, s...
+] [4] [5
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.235 \Needspace{5\baselineskip}
+l.270 \Needspace{5\baselineskip}
                                 ] (./expose.bbl
 Underfull \hbox (badness 4429) in paragraph at lines 4--13
 \T1/pxtt/m/n/10 doi . org / 10 . 1146 / annurev-[]psych-[]122414-[]033249$[]\T1
 /pxr/m/n/10 , []$\T1/pxtt/m/n/10 doi : 10 . 1146 /
  []
 
-[5]) [6] (./expose.aux)
+[6]) [7] (./expose.aux)
 Package rerunfilecheck Info: File `expose.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+(rerunfilecheck)             Checksum: D00E12839466E5B0B1E1CFD3F2F062F5;990.
  ) 
 Here is how much of TeX's memory you used:
- 24219 strings out of 478300
- 448289 string characters out of 5849124
- 716707 words of memory out of 5000000
- 41869 multiletter control sequences out of 15000+600000
+ 24239 strings out of 478300
+ 448542 string characters out of 5849124
+ 716712 words of memory out of 5000000
+ 41879 multiletter control sequences out of 15000+600000
  528605 words of font info for 152 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  100i,13n,104p,615b,915s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
 f-dist/fonts/type1/public/pxfonts/pxsy.pfb><c:/texlive/2022/texmf-dist/fonts/ty
-pe1/public/pxfonts/pxsyc.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxf
-onts/rpxb.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxmi.pfb>
-<c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxr.pfb><c:/texlive/202
-2/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb><c:/texlive/2022/texmf-dist/f
-onts/type1/public/txfonts/t1xtt.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw
-/helvetic/uhvb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8
-a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texli
-ve/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-d
-ist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1
-/urw/palatino/uplri8a.pfb>
-Output written on expose.pdf (6 pages, 159649 bytes).
+pe1/public/pxfonts/pxsya.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxf
+onts/pxsyb.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/pxsyc.pfb
+><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxb.pfb><c:/texlive/20
+22/texmf-dist/fonts/type1/public/pxfonts/rpxmi.pfb><c:/texlive/2022/texmf-dist/
+fonts/type1/public/pxfonts/rpxr.pfb><c:/texlive/2022/texmf-dist/fonts/type1/pub
+lic/txfonts/t1xtt.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/txfonts/t1
+xtt.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/tex
+live/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf
+-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/typ
+e1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino
+/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on expose.pdf (7 pages, 171365 bytes).
 PDF statistics:
- 195 PDF objects out of 1000 (max. 8388607)
- 149 compressed objects within 2 object streams
- 60 named destinations out of 1000 (max. 500000)
- 38 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 244 PDF objects out of 1000 (max. 8388607)
+ 193 compressed objects within 2 object streams
+ 70 named destinations out of 1000 (max. 500000)
+ 94 words of extra memory for PDF output out of 10000 (max. 10000000)
 

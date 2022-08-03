@@ -33,7 +33,7 @@
 	}
 }
 
-\subtitle{Proposal for a Bachelor Thesis (v0.4, 8 Juli 2022)}
+\subtitle{Proposal for a Bachelor Thesis (v0.5, 3 August 2022)}
 
 \author{%
 	Andreas Paul Bruno Lönne\\
@@ -161,30 +161,65 @@ Additionally I will determine a visual representation of counterfactual sentence
 
 In order to deliver an easily accessible software solution I intend to make use of the Phaser~3 Framework for Typescript to develop a web-application. Phaser~3 is well suited for this task because it is a lightweight framework, that fits the scope of the project and allows for distribution of the software with a small barrier to entry.
 
+\section*{Definitions}
+\subsection{Counterfactual formulas}
+$Atoms = \{x,y,...\}$
+
+$\Phi = \{\varphi, \psi,... \}$
+
+$\varphi, \psi ::= \bot \mid x \mid \neg \varphi \mid \varphi \vee \psi \mid \varphi \boxright \psi$
+
+\subsection{Worlds}
+$W = \{w,v,...\}$
+
+\subsection{Facts}
+$F \colon W \rightarrow 2^{Atoms}$
+
+\subsection{Similarity relation}
+$\leadsto \colon W\times \mathbb{R} \times W$
+
+\subsection{Accessible worlds}
+$W_w = \{w'\mid w \overset{r}{\leadsto} w'\}$
+
+\subsection{Truth conditions of counterfactual logic}
+$w \vDash \bot$ is always false.
+
+$w \vDash x$ iff $x \in V(w)$.
+
+$w \vDash \varphi \vee \psi$ iff $(w \vDash \varphi$ or $w \vDash \psi)$
+
+$w \vDash \varphi \boxright \psi$, if no world $w'$ and $r$ exist, such that $w' \vDash \varphi$ and $w\overset{r}{\leadsto} w'$.
+
+$w \vDash \varphi \boxright \psi$, if a world $w'$ and an $r$ exist, such that $w'\vDash \varphi$ and $w\overset{r}{\leadsto} w'$ and for each world $w*$, for which a $r*\leq r$ exists, such that $w\overset{r*}{\leadsto} w*$, $w*\vDash\psi\vee\neg\varphi$ holds true.
+\subsection{Similarity graph}
+\begin{equation}
+	G = (V,E,F)\text{, such that }V \subseteq W\text{ and }E \subseteq \leadsto
+\end{equation}
+
 \section*{Rules of the semantic game}
 
 \begin{figure}[H]
 	\centering
 	\begin{equation}
-		(\bot ,w)_{d/a}\hspace{10pt}\text{Attacker wins}
+		(\bot ,w)_{a}\hspace{10pt}\text{Attacker wins}
 	\end{equation}
 	\begin{equation}
-		(\neg\bot ,w)_{d/a}\hspace{10pt}\text{Defender wins}
+		(\neg\bot ,w)_{a}\hspace{10pt}\text{Defender wins}
 	\end{equation}
 	\begin{equation}
-		(\varphi ,w)_{d/a}\xrightarrow{\varphi\in F(w)}(\neg\bot ,w)_{d/a}
+		(\varphi ,w)_{a}\xrightarrow{\varphi\in F(w)}(\neg\bot ,w)_{d/a}
 	\end{equation}
 	\begin{equation}
-		(\varphi ,w)_{d/a}\xrightarrow{\varphi\not\in F(w)}(\bot ,w)_{d/a}
+		(x,w)_{a}\xrightarrow{x\not\in F(w)}(\bot ,w)_{d/a}
 	\end{equation}
 	\begin{equation}
-		(\neg\varphi ,w)_{d/a}\xrightarrow{\varphi\in F(w)}(\bot ,w)_{d/a}
+		(\neg\varphi ,w)_{a}\xrightarrow{\varphi\in F(w)}(\bot ,w)_{d/a}
 	\end{equation}
 	\begin{equation}
-		(\neg\varphi ,w)_{d/a}\xrightarrow{\varphi\not\in F(w)}(\neg\bot ,w)_{d/a}
+		(\neg x,w)_{a}\xrightarrow{x\not\in F(w)}(\neg\bot ,w)_{d/a}
 	\end{equation}
 	\begin{equation}
-		(\neg\neg\varphi ,w)_{d/a}\rightarrow (\varphi ,w)_{d/a}
+		(\neg\neg\varphi ,w)_{a}\rightarrow (\varphi ,w)_{d/a}
 	\end{equation}
 	\begin{equation}
 		(\varphi\vee\psi ,w)_d\rightarrow (\varphi ,w)_{d/a}
