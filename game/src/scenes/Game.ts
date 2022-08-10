@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
-import { Graph, Vert } from '../util/Graph';
-import { Formula, Cf_Would, Disjunction, Negation, Atom } from '../util/Cf_Logic';
+import { Graph, World } from '../util/Graph';
+import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from '../util/Cf_Logic';
 
 export default class Demo extends Phaser.Scene {
   constructor() {
@@ -28,6 +28,12 @@ export default class Demo extends Phaser.Scene {
     F = new Negation(new Atom("I am silly!"));
     F = new Disjunction(new Atom("I am savvy"), new Negation(new Atom("I am silly!")));
 
+    var V: Formula;
+    V = new Atom("I am silly!");
+    V = new Negation(new Atom("I am very much silly!"));
+    V = new Disjunction(new Negation(new Atom("I am silly!")), new Atom("I am savvy"));
+    console.log("Structural equality of F & V: "+F.compare(V));
+
     let atoms = [
       "Milch ist ein Gift",
       "Erdöl ist ein Gift",
@@ -40,7 +46,7 @@ export default class Demo extends Phaser.Scene {
 
     var G = new Graph();
     for(let i=0; i<5; i++) {
-      G.add_vertex();
+      G.add_world();
     }
     G.add_edge(0, 4, 2);
     G.add_edge(1, 2, 4);
@@ -55,7 +61,8 @@ export default class Demo extends Phaser.Scene {
 
     G.print();
 
-    console.log(G.get_verts()[0].is_adj(1));
+    console.log(G.get_worlds()[0].is_adj(1));
+
   }
 
 }

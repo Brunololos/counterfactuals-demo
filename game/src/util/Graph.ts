@@ -4,59 +4,64 @@ import {cloneDeep} from 'lodash';
  * A basic graph representation class for directed weighted graphs
  */
  export class Graph {
-    private verts: Vert[];
+    private worlds: World[];
 
     constructor() {
-        this.verts = [];
+        this.worlds = [];
     }
 
     /**
-     * Add a new vertex to the graph
+     * Add a new world to the graph
      */
-    add_vertex() {
-        this.verts = this.verts.concat([new Vert(this.verts.length, [])]);
+    add_world() {
+        this.worlds = this.worlds.concat([new World(this.worlds.length, [])]);
     }
 
     /**
-     * Create a new directed weighted edge between two vertices
-     * @param origin The index of the vertex the edge is outgoing from
-     * @param dest The index of the vertex the edge is pointing towards
+     * Create a new directed weighted edge between two worlds
+     * @param origin The index of the world the edge is outgoing from
+     * @param dest The index of the world the edge is pointing towards
      * @param weight A numerical edge weight
      */
     add_edge(origin: integer, dest: integer, weight: number) {
-        this.verts[origin].add_edge(this.verts[dest], weight);
+        this.worlds[origin].add_edge(this.worlds[dest], weight);
     }
 
     /**
-     * Remove all vertices and edges from the graph
+     * Remove all worlds and edges from the graph
      */
     clear() {
-        this.verts = [];
+        this.worlds = [];
+    }
+
+    get_world(index: integer): World {
+        // TODO: guard index out of bounds
+        return cloneDeep(this.worlds[index]);
     }
 
     /**
-     * Retrieve a copy of the graphs vertices
-     * @returns An array of vertices
+     * Retrieve a copy of the graphs worlds
+     * @returns An array of worlds
      */
-    get_verts(): Vert[] {
-        return cloneDeep(this.verts);
+    get_worlds(): World[] {
+        return cloneDeep(this.worlds);
     }
 
     /**
-     * Retrieve a copy of a certain vertices edges
-     * @param vert The index of the vertex whose edges to retrieve
-     * @returns A list of adjacency tuples consisting of a vertex and edge weight
+     * Retrieve a copy of a certain worlds edges
+     * @param world The index of the world whose edges to retrieve
+     * @returns A list of adjacency tuples consisting of a world and edge weight
      */
-    get_edges(vert: integer): [Vert, number][] {
-        return cloneDeep(this.verts[vert].get_edges());
+    get_edges(world: integer): [World, number][] {
+        return cloneDeep(this.worlds[world].get_edges());
     }
 
     /**
-     * Retrieve vertex count
-     * @returns The graphs number of vertices V(G)
+     * Retrieve world count
+     * @returns The graphs number of worlds V(G)
      */
     get_V(): integer {
-        return this.verts.length;
+        return this.worlds.length;
     }
 
     /**
@@ -64,7 +69,7 @@ import {cloneDeep} from 'lodash';
      * @returns The graphs number of edges E(G)
      */
     get_E(): integer {
-        return this.verts.reduce(
+        return this.worlds.reduce(
             (edge_sum, node) => edge_sum + node.get_edge_count(), 0);
     }
 
@@ -74,11 +79,11 @@ import {cloneDeep} from 'lodash';
     print() {
         console.log(this.get_V() + " vertices");
         console.log(this.get_E() + " edges");
-        for(let i=0; i<this.verts.length; i++) {
+        for(let i=0; i<this.worlds.length; i++) {
             let edgestring = "Vertex "+i+": ";
-            const edge_count = this.verts[i].get_edge_count();
+            const edge_count = this.worlds[i].get_edge_count();
             for(let j=0; j<edge_count; j++) {
-                let edges = this.verts[i].get_edges();
+                let edges = this.worlds[i].get_edges();
                 edgestring = edgestring.concat("["+i+", "+edges[j][0].get_index()+"] ");
             }
             console.log(edgestring+"\n");
@@ -88,11 +93,11 @@ import {cloneDeep} from 'lodash';
 }
 
 /**
- * A vertex class governing adjacency and other values pertaining to a single vertex
+ * A world class governing adjacency and other values pertaining to a single world
  */
-export class Vert {
+export class World {
     readonly index: integer;
-    private adj: [Vert, number][];
+    private adj: [World, number][];
     private atoms: String[];
 
     constructor(index: integer, atoms: String[]) {
@@ -102,16 +107,16 @@ export class Vert {
     }
 
     /**
-     * Create a weighted directed edge from this vertex to the passed one
-     * @param vert A vertex
+     * Create a weighted directed edge from this world to the passed one
+     * @param world A world
      * @param weight A numerical edge weight
      */
-    add_edge(vert: Vert, weight: number) {
-        this.adj = this.adj.concat([[vert, weight]]);
+    add_edge(world: World, weight: number) {
+        this.adj = this.adj.concat([[world, weight]]);
     }
 
     /**
-     * Retrieve the vertex index
+     * Retrieve the world index
      * @returns An index
      */
     get_index() {
@@ -119,35 +124,44 @@ export class Vert {
     }
 
     /**
-     * Retrieve a copy of the vertex adjacency list
-     * @returns A list of adjacency tuples consisting of a vertex and edge weight
-     */
-    get_edges(): [Vert, number][] {
-        return cloneDeep(this.adj);
-    }
-
-    /**
-     * Retrieve all atomic statements associated with this vertex
-     * @returns A list of atomic statements
-     */
+    * Retrieve all atomic statements associated with this world
+    * @returns A list of atomic statements
+    */
     get_atoms(): String[] {
         return this.atoms;
     }
 
     /**
-     * Retrieve the vertex edge count
-     * @returns The number of edges outgoing from this vertex
+     * Retrieve a copy of the world adjacency list
+     * @returns A list of adjacency tuples consisting of a world and edge weight
+     */
+    get_edges(): [World, number][] {
+        return cloneDeep(this.adj);
+    }
+
+    /**
+     * Retrieve the world edge count
+     * @returns The number of edges outgoing from this world
      */
     get_edge_count(): number {
         return this.adj.length;
     }
 
     /**
-     * Check if this vertex has an outgoing edge to the passed indices vertex
-     * @param vert A vertex index
-     * @returns The truth value of adjacency to the passed indices vertex
+     * Check if this world has an outgoing edge to the passed indices world
+     * @param world A world index
+     * @returns The truth value of adjacency to the passed indices world
      */
-    is_adj(vert: integer): boolean {
-        return this.adj.map(x => x[0].get_index()).includes(vert);
+    is_adj(world: integer): boolean {
+        return this.adj.map(x => x[0].get_index()).includes(world);
+    }
+
+    /**
+     * Check if the passed Atom is known to be true at this world
+     * @param atom An atomic statement
+     * @returns The truth value of the atom being known to be true at this world
+     */
+    is_atom_known_true(atom: String): boolean {
+        return this.atoms.some((value: String) => (atom == value));
     }
 }

@@ -36,6 +36,7 @@ export abstract class Formula {
                     break;
                 default:
                     break;
+                // TODO: parse bottom symbol
             }
         }
 
@@ -51,7 +52,7 @@ export abstract class Formula {
                     Formula.parse(to_parse.slice(0, w-1), atoms),
                     Formula.parse(to_parse.slice(w+1, to_parse.length), atoms));
             case c == '~':
-                return new Negation(Formula.parse(to_parse.slice(w+1, to_parse.length), atoms));   
+                return new Negation(Formula.parse(to_parse.slice(w+1, to_parse.length), atoms));
             case c == '(':
                 let i = w;
                 while(i < to_parse.length && to_parse[i] != ')') { i++; }
@@ -61,8 +62,15 @@ export abstract class Formula {
             default:
                 break;
         }
-        return {}; // TODO: Throw exception if this part of the control flow is ever reached
+        throw new Error("Failed to parse formula string: " + to_parse);
     }
+
+    /**
+     * Check this formulas structural equality with the passed one
+     * @param comparand Formula
+     * @returns A truth value of structural equality
+     */
+    abstract compare(comparand: Formula): boolean;
 }
 
 /**
@@ -81,6 +89,11 @@ export class Cf_Would extends Formula {
         super();
         this.antecedent = antecedent;
         this.consequent = consequent;
+    }
+
+    compare(comparand: Formula): boolean {
+        return (comparand instanceof Cf_Would && this.antecedent.compare(comparand.antecedent) && this.consequent.compare(comparand.consequent))
+        || comparand instanceof Any;
     }
 }
 
@@ -101,6 +114,13 @@ export class Disjunction extends Formula {
         this.subject1 = subject1;
         this.subject2 = subject2;
     }
+
+    compare(comparand: Formula): boolean {
+        return (comparand instanceof Disjunction &&
+            (this.subject1.compare(comparand.subject1) && this.subject2.compare(comparand.subject2)
+            || this.subject1.compare(comparand.subject2) && this.subject2.compare(comparand.subject1)))
+        || comparand instanceof Any;
+    }
 }
 
 /**
@@ -117,6 +137,11 @@ export class Negation extends Formula {
         super();
         this.subject = subject;
     }
+
+    compare(comparand: Formula): boolean {
+        return (comparand instanceof Negation && this.subject.compare(comparand.subject))
+        || comparand instanceof Any;
+    }
 }
 
 /**
@@ -132,5 +157,44 @@ export class Atom extends Formula {
     constructor(value: String) {
         super();
         this.value = value;
+    }
+
+    compare(comparand: Formula): boolean {
+        return (comparand instanceof Atom && this.value == comparand.value)
+        || comparand instanceof Any;
+    }
+}
+
+/**
+ * A class representation of the bottom symbol
+ */
+ export class Bottom extends Formula {
+    
+    /**
+     * Create a bottom symbol
+     */
+    constructor() {
+        super();
+    }
+
+    compare(comparand: Formula): boolean {
+        return comparand instanceof Bottom || comparand instanceof Any;
+    }
+}
+
+/**
+ * A class representation of a placeholder for formula constituents
+ */
+export class Any extends Formula {
+
+    /**
+     * Create a formula constituent placeholder
+     */
+    constructor() {
+        super();
+    }
+
+    compare(comparand: Formula): boolean {
+        return true;
     }
 }
