@@ -148,6 +148,17 @@ export class World {
     }
 
     /**
+     * Retrieve an edge
+     * @param world A world index of an adjacent world
+     * @returns An edge to the passed world
+     */
+     get_edge(world: integer): [World, number] {
+        let edge = this.adj.find(x => (x[0].get_index() == world));
+        if(edge == undefined) { throw new Error("No edge to passed world"); }
+        return edge;
+    }
+
+    /**
      * Check if this world has an outgoing edge to the passed indices world
      * @param world A world index
      * @returns The truth value of adjacency to the passed indices world

@@ -9,7 +9,8 @@ export abstract class Formula {
      * @param atoms A list of atomic statements contained in the formula
      * @returns The root object of a tree of formula objects
      */
-    static parse(to_parse: String, atoms: String[]): Formula {
+    static parse(to_parse: String, atoms: String[] = []): Formula {
+    //Symbols: "|_|->, v, ~, (...), A-Z, _|_, ?"
     //Syntax: "~(A v B) |_|-> (C v ~(D))"
 
         // search for weakest binder
@@ -34,9 +35,14 @@ export abstract class Formula {
                 case c >= 'A' && c <= 'Z':
                     w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z')) ? i : w;
                     break;
+                case c == '_':
+                    w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_') ? i : w;
+                    break;
+                case c == '?':
+                    w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_' && v != '?') ? i : w;
+                    break;
                 default:
                     break;
-                // TODO: parse bottom symbol
             }
         }
 
@@ -59,6 +65,10 @@ export abstract class Formula {
                 return Formula.parse(to_parse.slice(w+1, i), atoms);
             case c >= 'A' && c <= 'Z':
                 return new Atom(atoms[c.charCodeAt(0) - 65]);
+            case c == '_':
+                return new Bottom();
+            case c == '?':
+                return new Any();
             default:
                 break;
         }
