@@ -1,5 +1,6 @@
+import {cloneDeep} from 'lodash';
 import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from "./Cf_Logic";
-import { Player, State_Mode } from "./Game_Utils"
+import { Player, State_Mode, Player_Abbreviations, State_Mode_Abbreviations } from "./Game_Utils"
 import { Game_State } from "./Game_State"
 
 export class Rules_Controller {
@@ -11,30 +12,25 @@ export class Rules_Controller {
     }
 
     private initialize_rules() {
-        this.rules.push(new Rule(Rules.Attacker_Victory, State_Mode.Resolve, Player.Attacker, Formula.parse("_|_")));
-        this.rules.push(new Rule(Rules.Defender_Victory, State_Mode.Resolve, Player.Attacker, Formula.parse("~_|_")));
-        this.rules.push(new Rule(Rules.Known_Fact, State_Mode.Resolve, Player.Attacker, Formula.parse("?"), (state: Game_State) => state));
+        let identity = (state: Game_State) => state;
+        this.rules.push(Rule.create("Attacker_Victory", "Res", "a", "_|_"));
+        this.rules.push(Rule.create("Defender_Victory", "Res", "a", "~_|_"));
+        //this.rules.push(new Rule(Rules.Known_Fact, State_Mode.Resolve, Player.Attacker, Formula.parse("?"), (state: Game_State) => state));
     }
 
-    find_transition(state: Game_State): Rules {
+    find_transition(state: Game_State): Rule[] {
         let formula = state.get_formula();
         let world = state.get_current_world();
-        
-        /*switch(true) {
-            case formula instanceof Bottom:
-                return Rules.Attacker_Victory;
-            case formula instanceof Atom:
-                return world.is_atom_known_true((formula as Atom).value) ? Rules.Known_Fact : Rules.Unknown_Fact; 
-            case formula instanceof Negation:
-                break;
-            case formula instanceof Disjunction:
-                break;
-            case formula instanceof Cf_Would:
-                break;
-            default:
-                return Rules.No_Transition;
+
+        let applicable: Rule[] = [];
+
+        for(let i=0; i<this.rules.length; i++) {
+            let R = this.rules[i];
+            if(R.is_applicable(state)) {
+                applicable.push(cloneDeep(R));
+            }
         }
-        return Rules.No_Transition; // TODO: Remove when all cases covered*/
+        return applicable;
     }
 }
 
@@ -59,6 +55,28 @@ export class Rule {
         this.apply = apply ?? ((state: Game_State) => state);
     }
 
+    /**
+     * Create an instance of the Rule class by passing abbreviated values
+     * @param name A string representation of a value of the Rules enum type
+     * @param mode A string abbreviation of a value of the State_Mode enum type ("Res", "Cf", "Vac")
+     * @param player A string abbreviation of a value of the Player enum type ("a", "d", "a/d")
+     * @param formula A string representation of the atructure of any formula this rule is applicable to
+     * @param apply A function describing the transformation in the game state through the application of this rule
+     * @param special A function evaluating extraneous preconditions for this rules application
+     * @returns A freshly created Rule instance
+     */
+    static create(name: string, mode: string, player: string, formula: string, apply?: (state: Game_State) => Game_State, special?: (state: Game_State) => boolean): Rule {
+        let rule_name: Rules = (<any>Rules)[name];
+        let state_mode: State_Mode | undefined = State_Mode_Abbreviations.get(mode);
+        let active_player: Player | undefined = Player_Abbreviations.get(player);
+
+        if(rule_name == undefined || state_mode == undefined || active_player == undefined) {
+            throw new Error("Passed incorrect rule name or precondition abbreviation");
+        }
+
+        return new Rule(rule_name, state_mode, active_player, Formula.parse(formula), apply, special);
+    }
+
     get_name(): Rules {
         return this.name;
     }
@@ -74,7 +92,7 @@ export class Rule {
     }
 }
 
-enum Rules {
+export enum Rules {
 
     /*
     ###BOTTOM###

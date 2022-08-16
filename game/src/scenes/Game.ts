@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Graph, World } from '../util/Graph';
 import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from '../util/Cf_Logic';
+import { Rules } from '../util/Game_Rules';
 
 export default class Demo extends Phaser.Scene {
   constructor() {
@@ -62,7 +63,6 @@ export default class Demo extends Phaser.Scene {
     G.print();
 
     console.log(G.get_worlds()[0].is_adj(1));
-
   }
 
 }
