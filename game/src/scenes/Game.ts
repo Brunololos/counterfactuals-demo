@@ -1,7 +1,9 @@
-import Phaser from 'phaser';
+import Phaser, { Game } from 'phaser';
 import { Graph, World } from '../util/Graph';
 import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from '../util/Cf_Logic';
-import { Rules } from '../util/Game_Rules';
+import { Rule, Rules, Rules_Controller } from '../util/Game_Rules';
+import { Game_State } from '../util/Game_State';
+import { Game_Controller } from '../util/Game_Controller';
 
 export default class Demo extends Phaser.Scene {
   constructor() {
@@ -47,7 +49,7 @@ export default class Demo extends Phaser.Scene {
 
     var G = new Graph();
     for(let i=0; i<5; i++) {
-      G.add_world();
+      G.add_world(["Milch ist ein Gift"]);
     }
     G.add_edge(0, 4, 2);
     G.add_edge(1, 2, 4);
@@ -63,6 +65,12 @@ export default class Demo extends Phaser.Scene {
     G.print();
 
     console.log(G.get_worlds()[0].is_adj(1));
+
+    var state = Game_State.create("Res", G, "~~(~(A v B) v C)", atoms, 0, "a/d");
+    var GC = new Game_Controller(state);
+    for(let i=0; i<5; i++) {
+      GC.simulate();
+    }
   }
 
 }

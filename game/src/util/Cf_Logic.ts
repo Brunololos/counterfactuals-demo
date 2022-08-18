@@ -9,7 +9,7 @@ export abstract class Formula {
      * @param atoms A list of atomic statements contained in the formula
      * @returns The root object of a tree of formula objects
      */
-    static parse(to_parse: String, atoms: String[] = []): Formula {
+    static parse(to_parse: string, atoms: string[] = []): Formula {
     //Symbols: "|_|->, v, ~, (...), A-Z, _|_, ?"
     //Syntax: "~(A v B) |_|-> (C v ~(D))"
 
@@ -19,7 +19,7 @@ export abstract class Formula {
             let c = to_parse[i];
             let v = to_parse[w];
             switch(true) {
-                case c == '|':
+                case to_parse.length >= i+5 && to_parse.slice(i, i+5) == "|_|->":
                     w = (v != '|') ? i : w;
                     break;
                 case c == 'v':
@@ -30,12 +30,18 @@ export abstract class Formula {
                     break;
                 case c == '(':
                     w = (v != '|' && v != 'v' && v != '~' && v != '~') ? i : w;
-                    while(i < to_parse.length && to_parse[i] != ')') { i++; }
+
+                    let unclosed_brackets = 1;
+                    while(i < to_parse.length && unclosed_brackets > 0) {
+                        i++;
+                        if(to_parse[i] == '(') { unclosed_brackets++; }
+                        if(to_parse[i] == ')') { unclosed_brackets--; }
+                    }
                     break;
                 case c >= 'A' && c <= 'Z':
                     w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z')) ? i : w;
                     break;
-                case c == '_':
+                case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "_|_":
                     w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_') ? i : w;
                     break;
                 case c == '?':
@@ -45,23 +51,29 @@ export abstract class Formula {
                     break;
             }
         }
-
         // recursively parse the string
         let c = to_parse[w];
         switch(true) {
             case c == '|':
                 return new Cf_Would(
-                    Formula.parse(to_parse.slice(0, w-1), atoms), 
+                    Formula.parse(to_parse.slice(0, w), atoms), 
                     Formula.parse(to_parse.slice(w+5, to_parse.length), atoms));
             case c == 'v':
                 return new Disjunction(
-                    Formula.parse(to_parse.slice(0, w-1), atoms),
+                    Formula.parse(to_parse.slice(0, w), atoms),
                     Formula.parse(to_parse.slice(w+1, to_parse.length), atoms));
             case c == '~':
                 return new Negation(Formula.parse(to_parse.slice(w+1, to_parse.length), atoms));
             case c == '(':
                 let i = w;
-                while(i < to_parse.length && to_parse[i] != ')') { i++; }
+
+                let unclosed_brackets = 1;
+                while(i < to_parse.length && unclosed_brackets > 0) {
+                    i++;
+                    if(to_parse[i] == '(') { unclosed_brackets++; }
+                    if(to_parse[i] == ')') { unclosed_brackets--; }
+                }
+
                 return Formula.parse(to_parse.slice(w+1, i), atoms);
             case c >= 'A' && c <= 'Z':
                 return new Atom(atoms[c.charCodeAt(0) - 65]);
@@ -81,6 +93,12 @@ export abstract class Formula {
      * @returns A truth value of structural equality
      */
     abstract compare(comparand: Formula): boolean;
+
+    /**
+     * Retrieve the subformula reached by the passed path
+     * @param path A string path to the subformula to retrieve (l-travel to left child, r-travel to right child, example: "llrlrllrr")
+     */
+    abstract get_child(path: string): Formula;
 }
 
 /**
@@ -104,6 +122,18 @@ export class Cf_Would extends Formula {
     compare(comparand: Formula): boolean {
         return (comparand instanceof Cf_Would && this.antecedent.compare(comparand.antecedent) && this.consequent.compare(comparand.consequent))
         || comparand instanceof Any;
+    }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.antecedent.get_child(path.slice(1, path.length));
+            case 'r':
+                return this.consequent.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("path string may only contain the letters 'l' and 'r'");
+        }
     }
 }
 
@@ -131,6 +161,18 @@ export class Disjunction extends Formula {
             || this.subject1.compare(comparand.subject2) && this.subject2.compare(comparand.subject1)))
         || comparand instanceof Any;
     }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.subject1.get_child(path.slice(1, path.length));
+            case 'r':
+                return this.subject2.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("path string may only contain the letters 'l' and 'r'");
+        }
+    }
 }
 
 /**
@@ -152,26 +194,42 @@ export class Negation extends Formula {
         return (comparand instanceof Negation && this.subject.compare(comparand.subject))
         || comparand instanceof Any;
     }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.subject.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("Negation only has left child");
+        }
+    }
 }
 
 /**
  * A class representation of atomic statements
  */
 export class Atom extends Formula {
-    readonly value: String;
+    readonly value: string;
 
     /**
      * Create an atomic statement
      * @param value a linguistic description of the atomic statement
      */
-    constructor(value: String) {
+    constructor(value: string) {
         super();
         this.value = value;
     }
 
     compare(comparand: Formula): boolean {
         return (comparand instanceof Atom && this.value == comparand.value)
+        || (comparand instanceof Atom && (this.value == undefined || comparand.value == undefined)) /* undefined indicating that an atom is meant to be generic and the notion of equality to be a notion of type */
         || comparand instanceof Any;
+    }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        throw new Error("Cannot traverse any further");
     }
 }
 
@@ -190,6 +248,11 @@ export class Atom extends Formula {
     compare(comparand: Formula): boolean {
         return comparand instanceof Bottom || comparand instanceof Any;
     }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        throw new Error("Cannot traverse any further");
+    }
 }
 
 /**
@@ -206,5 +269,10 @@ export class Any extends Formula {
 
     compare(comparand: Formula): boolean {
         return true;
+    }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        throw new Error("Cannot traverse any further");
     }
 }

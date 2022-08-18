@@ -1,6 +1,6 @@
 import {cloneDeep} from 'lodash';
 import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from "./Cf_Logic";
-import { Player, State_Mode, Player_Abbreviations, State_Mode_Abbreviations } from "./Game_Utils"
+import { Player, State_Mode, Game_Turn_Type, Player_Abbreviations, State_Mode_Abbreviations } from "./Game_Utils"
 import { Game_State } from "./Game_State"
 
 export class Rules_Controller {
@@ -12,16 +12,53 @@ export class Rules_Controller {
     }
 
     private initialize_rules() {
-        let identity = (state: Game_State) => state;
+        let is_fact_known = (state: Game_State) => state.get_current_world().is_atom_known_true((state.get_formula() as Atom).value);
+        let is_fact_unknown = (state: Game_State) => !state.get_current_world().is_atom_known_true((state.get_formula() as Atom).value);
+        let is_negated_fact_known = (state: Game_State) => state.get_current_world().is_atom_known_true((state.get_formula().get_child("l") as Atom).value);
+        let is_negated_fact_unknown = (state: Game_State) => !state.get_current_world().is_atom_known_true((state.get_formula().get_child("l") as Atom).value);
+        let is_another_world_reachable = (state: Game_State) => (state.get_current_world().get_edge_count() > 0);
+
         this.rules.push(Rule.create("Attacker_Victory", "Res", "a", "_|_"));
         this.rules.push(Rule.create("Defender_Victory", "Res", "a", "~_|_"));
-        //this.rules.push(new Rule(Rules.Known_Fact, State_Mode.Resolve, Player.Attacker, Formula.parse("?"), (state: Game_State) => state));
+
+        let apply_known_fact = (state: Game_State) => state.configure("Res", Formula.parse("~_|_"), "a/d");
+        this.rules.push(Rule.create("Known_Fact", "Res", "a", "A", apply_known_fact, is_fact_known));
+
+        let apply_unknown_fact = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "a/d");
+        this.rules.push(Rule.create("Unknown_Fact", "Res", "a", "A", apply_unknown_fact, is_fact_unknown));
+
+        let apply_negated_known_fact = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "a/d");
+        this.rules.push(Rule.create("Negated_Known_Fact", "Res", "a", "~A", apply_negated_known_fact, is_negated_fact_known));
+
+        let apply_negated_unknown_fact = (state: Game_State) => state.configure("Res", Formula.parse("~_|_"), "a/d");
+        this.rules.push(Rule.create("Negated_Unknown_Fact", "Res", "a", "~A", apply_negated_unknown_fact, is_negated_fact_unknown));
+        
+        let apply_double_negation = (state: Game_State) => state.configure("Res", state.get_formula().get_child("ll"), "a/d");
+        this.rules.push(Rule.create("Double_Negation", "Res", "a", "~~?", apply_double_negation));
+
+        let apply_left_or = (state: Game_State) => state.configure("Res", state.get_formula().get_child("l"), "a/d");
+        this.rules.push(Rule.create("Left_OR", "Res", "d", "?v?", apply_left_or));
+
+        let apply_right_or = (state: Game_State) => state.configure("Res", state.get_formula().get_child("r"), "a/d");
+        this.rules.push(Rule.create("Right_OR", "Res", "d", "?v?", apply_right_or));
+
+        let apply_negated_left_or = (state: Game_State) => state.configure("Res", new Negation(state.get_formula().get_child("ll")), "a/d");
+        this.rules.push(Rule.create("Negated_Left_OR", "Res", "a", "~(?v?)", apply_negated_left_or));
+
+        let apply_negated_right_or = (state: Game_State) => state.configure("Res", new Negation(state.get_formula().get_child("lr")), "a/d");
+        this.rules.push(Rule.create("Negated_Right_OR", "Res", "a", "~(?v?)", apply_negated_right_or));
+        
+        // TODO: Add Rules
+        //let apply_counterfactual = (state: Game_State) => state.configure("Cf", state.get_formula(), "a", undefined, undefined /* Get User choice of delim_world */);
+        //this.rules.push(Rule.create("Counterfactual", "Res", "d", "? |_|-> ?", apply_counterfactual, is_another_world_reachable));
     }
 
-    find_transition(state: Game_State): Rule[] {
-        let formula = state.get_formula();
-        let world = state.get_current_world();
-
+    /**
+     * Retrieve all applicable rules
+     * @param state Current Game_State
+     * @returns A list of all applicable rules
+     */
+    applicable(state: Game_State): Rule[] {
         let applicable: Rule[] = [];
 
         for(let i=0; i<this.rules.length; i++) {
@@ -32,6 +69,16 @@ export class Rules_Controller {
         }
         return applicable;
     }
+
+    /**
+     * Retrieve the defenders possible moves in the passed Game_State
+     * @param state Current Game_State
+     * @returns A list of rules applicable by the defender
+     */
+    defender_moves(state: Game_State): Rule[] {
+        return this.applicable(state).filter((rule: Rule) => rule.get_player() == Player.Defender || rule.get_player() == Player.Either);
+    }
+
 }
 
 export class Rule {
@@ -81,6 +128,10 @@ export class Rule {
         return this.name;
     }
 
+    get_player(): Player {
+        return this.active_player;
+    }
+
     is_applicable(state: Game_State): boolean {
 
         if(state.get_mode() != this.state_mode) { return false; }
@@ -99,13 +150,14 @@ export enum Rules {
     Attacker_Victory, (4)
 
     ###ATOM###
+    Known_Fact, (6)
     Unknown_Fact, (7)
 
     ###NEGATION###
     Defender_Victory, (5)
     Negated_Known_Fact, (8)
     Negated_Unknown_Fact, (9)
-    Double_Neation, (10)
+    Double_Negation, (10)
     Negated_Left_OR, (13)
     Negated_Right_OR, (14)
     Negated_Counterfactual, (20)
@@ -120,14 +172,14 @@ export enum Rules {
     Proving_Sphere_Selection, (17)
 
     ####FORMULA###
-    Known_Fact, (6)
+    Formerly: Known_Fact, (6)
     */
 
     Attacker_Victory,
     Defender_Victory,
     Known_Fact,
-    Negated_Known_Fact,
     Unknown_Fact,
+    Negated_Known_Fact,
     Negated_Unknown_Fact,
 
     Double_Negation,

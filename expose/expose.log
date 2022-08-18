@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  3 AUG 2022 17:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  18 AUG 2022 16:48
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1021,20 +1021,24 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.270 \Needspace{5\baselineskip}
-                                ] (./expose.bbl
+l.276 \item [1 week]
+                     Implementation of a semantic game engine. (Output: Soft...
+] (./expose.bbl
 Underfull \hbox (badness 4429) in paragraph at lines 4--13
 \T1/pxtt/m/n/10 doi . org / 10 . 1146 / annurev-[]psych-[]122414-[]033249$[]\T1
 /pxr/m/n/10 , []$\T1/pxtt/m/n/10 doi : 10 . 1146 /
  []
 
-[6]) [7] (./expose.aux)
+) [6] (./expose.aux)
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
 Package rerunfilecheck Info: File `expose.out' has not changed.
 (rerunfilecheck)             Checksum: D00E12839466E5B0B1E1CFD3F2F062F5;990.
  ) 
 Here is how much of TeX's memory you used:
- 24239 strings out of 478300
- 448542 string characters out of 5849124
+ 24238 strings out of 478300
+ 448536 string characters out of 5849124
  716712 words of memory out of 5000000
  41879 multiletter control sequences out of 15000+600000
  528605 words of font info for 152 fonts, out of 8000000 for 9000
@@ -1053,10 +1057,10 @@ live/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf
 -dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/typ
 e1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino
 /uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on expose.pdf (7 pages, 171365 bytes).
+Output written on expose.pdf (6 pages, 170890 bytes).
 PDF statistics:
- 244 PDF objects out of 1000 (max. 8388607)
- 193 compressed objects within 2 object streams
- 70 named destinations out of 1000 (max. 500000)
+ 238 PDF objects out of 1000 (max. 8388607)
+ 188 compressed objects within 2 object streams
+ 69 named destinations out of 1000 (max. 500000)
  94 words of extra memory for PDF output out of 10000 (max. 10000000)
 

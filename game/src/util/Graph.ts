@@ -12,9 +12,10 @@ import {cloneDeep} from 'lodash';
 
     /**
      * Add a new world to the graph
+     * @param atoms A list of atomic statements known to be true at this world
      */
-    add_world() {
-        this.worlds = this.worlds.concat([new World(this.worlds.length, [])]);
+    add_world(atoms?: string[]) {
+        this.worlds = this.worlds.concat([new World(this.worlds.length, atoms ?? [])]);
     }
 
     /**
@@ -98,9 +99,9 @@ import {cloneDeep} from 'lodash';
 export class World {
     readonly index: integer;
     private adj: [World, number][];
-    private atoms: String[];
+    private atoms: string[];
 
-    constructor(index: integer, atoms: String[]) {
+    constructor(index: integer, atoms: string[]) {
         this.index = index;
         this.adj = [];
         this.atoms = atoms;
@@ -127,7 +128,7 @@ export class World {
     * Retrieve all atomic statements associated with this world
     * @returns A list of atomic statements
     */
-    get_atoms(): String[] {
+    get_atoms(): string[] {
         return this.atoms;
     }
 
@@ -172,7 +173,7 @@ export class World {
      * @param atom An atomic statement
      * @returns The truth value of the atom being known to be true at this world
      */
-    is_atom_known_true(atom: String): boolean {
-        return this.atoms.some((value: String) => (atom == value));
+    is_atom_known_true(atom: string): boolean {
+        return this.atoms.some((value: string) => (atom == value));
     }
 }
