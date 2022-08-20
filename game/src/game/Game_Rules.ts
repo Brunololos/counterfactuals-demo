@@ -1,6 +1,6 @@
 import {cloneDeep} from 'lodash';
-import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from "./Cf_Logic";
-import { Player, State_Mode, Game_Turn_Type, Player_Abbreviations, State_Mode_Abbreviations } from "./Game_Utils"
+import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from "../util/Cf_Logic";
+import { Player, State_Mode, Game_Turn_Type, Player_Abbreviations, State_Mode_Abbreviations } from "../util/Game_Utils"
 import { Game_State } from "./Game_State"
 
 export class Rules_Controller {
@@ -77,6 +77,15 @@ export class Rules_Controller {
      */
     defender_moves(state: Game_State): Rule[] {
         return this.applicable(state).filter((rule: Rule) => rule.get_player() == Player.Defender || rule.get_player() == Player.Either);
+    }
+
+    /**
+     * Retrieve the attackers possible moves in the passed Game_State
+     * @param state Current Game_State
+     * @returns A list of rules applicable by the attacker
+     */
+     attacker_moves(state: Game_State): Rule[] {
+        return this.applicable(state).filter((rule: Rule) => rule.get_player() == Player.Attacker || rule.get_player() == Player.Either);
     }
 
 }

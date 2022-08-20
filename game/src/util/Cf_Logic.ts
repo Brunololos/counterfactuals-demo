@@ -88,6 +88,12 @@ export abstract class Formula {
     }
 
     /**
+     * Retrieve a string representation of this object
+     * @returns A string representation of this object
+     */
+     abstract to_string(visited_atoms?: string[]): string;
+
+    /**
      * Check this formulas structural equality with the passed one
      * @param comparand Formula
      * @returns A truth value of structural equality
@@ -117,6 +123,14 @@ export class Cf_Would extends Formula {
         super();
         this.antecedent = antecedent;
         this.consequent = consequent;
+    }
+
+    to_string(visited_atoms?: string[]): string {
+        visited_atoms = visited_atoms ?? [];
+        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction);
+        let left = this.antecedent.to_string(visited_atoms);
+        let right = this.consequent.to_string(visited_atoms);
+        return (is_bin(this.antecedent) ? "(" + left + ")" : left) + " |_|-> " + (is_bin(this.consequent) ? "(" + right + ")" : right);
     }
 
     compare(comparand: Formula): boolean {
@@ -155,6 +169,14 @@ export class Disjunction extends Formula {
         this.subject2 = subject2;
     }
 
+    to_string(visited_atoms?: string[]): string {
+        visited_atoms = visited_atoms ?? [];
+        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction);
+        let left = this.subject1.to_string(visited_atoms);
+        let right = this.subject2.to_string(visited_atoms);
+        return (is_bin(this.subject1) ? "(" + left + ")" : left) + " v " + (is_bin(this.subject2) ? "(" + right + ")" : right);
+    }
+
     compare(comparand: Formula): boolean {
         return (comparand instanceof Disjunction &&
             (this.subject1.compare(comparand.subject1) && this.subject2.compare(comparand.subject2)
@@ -190,6 +212,12 @@ export class Negation extends Formula {
         this.subject = subject;
     }
 
+    to_string(visited_atoms?: string[]): string {
+        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction);
+        let sub = this.subject.to_string(visited_atoms);
+        return "~" + (is_bin(this.subject) ? "(" + sub + ")": sub);
+    }
+
     compare(comparand: Formula): boolean {
         return (comparand instanceof Negation && this.subject.compare(comparand.subject))
         || comparand instanceof Any;
@@ -221,6 +249,18 @@ export class Atom extends Formula {
         this.value = value;
     }
 
+    to_string(visited_atoms?: string[]): string {
+        if(visited_atoms == undefined) { return "A"; }
+
+        let index = visited_atoms?.findIndex((value) => value == this.value);
+        if(index == -1) { 
+            visited_atoms?.push(this.value);
+            return String.fromCharCode(visited_atoms.length - 1 + 65); // TODO: check index + 65 < 97 else throw error
+        } else {
+            return String.fromCharCode(index + 65);
+        }
+    }
+
     compare(comparand: Formula): boolean {
         return (comparand instanceof Atom && this.value == comparand.value)
         || (comparand instanceof Atom && (this.value == undefined || comparand.value == undefined)) /* undefined indicating that an atom is meant to be generic and the notion of equality to be a notion of type */
@@ -245,6 +285,10 @@ export class Atom extends Formula {
         super();
     }
 
+    to_string(): string {
+        return "_|_";
+    }
+
     compare(comparand: Formula): boolean {
         return comparand instanceof Bottom || comparand instanceof Any;
     }
@@ -265,6 +309,10 @@ export class Any extends Formula {
      */
     constructor() {
         super();
+    }
+
+    to_string(): string {
+        return "?";
     }
 
     compare(comparand: Formula): boolean {

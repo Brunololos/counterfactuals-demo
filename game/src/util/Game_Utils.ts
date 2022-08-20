@@ -11,9 +11,11 @@ export enum State_Mode {
 }
 
 export enum Game_Turn_Type {
-    Resolution,        /* There is only 1 applicable game rule in this turn */
-    Attacker_Choice,   /* The attacker has multiple applicable game rules to choose from (and there is no applicable defenders rule) */
-    Defender_Choice    /* The defender has multiple applicable game rules to choose from */
+    Defenders_Resolution,        /* The defender has only 1 applicable game rule in this turn */
+    Attackers_Resolution,        /* The attacker has only 1 applicable game rule in this turn */
+    Defenders_Choice,    /* The defender has multiple applicable game rules to choose from */
+    Attackers_Choice,    /* The attacker has multiple applicable game rules to choose from (and there is no applicable defenders rule) */
+    No_Moves             /* No moves are available whatsoever */
 }
 
 export let Player_Abbreviations = new Map<string, Player>([

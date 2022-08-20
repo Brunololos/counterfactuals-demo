@@ -1,6 +1,6 @@
-import { Graph, World } from "./Graph"
-import { Formula } from "./Cf_Logic";
-import { Player, State_Mode, Player_Abbreviations, State_Mode_Abbreviations } from "./Game_Utils"
+import { Graph, World } from "../util/Graph"
+import { Formula } from "../util/Cf_Logic";
+import { Player, State_Mode, Player_Abbreviations, State_Mode_Abbreviations } from "../util/Game_Utils"
 import {cloneDeep} from 'lodash';
 
 export class Game_State {
