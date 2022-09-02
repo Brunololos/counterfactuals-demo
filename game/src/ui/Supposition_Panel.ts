@@ -1,3 +1,5 @@
+import GameScene from "../scenes/Game";
+
 export class Supposition_Panel extends Phaser.GameObjects.Container {
     private contents: Phaser.GameObjects.GameObject[] = [];
 
@@ -5,6 +7,9 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         super(scene, x, y);
         this.contents = this.contents.concat(content || this.contents);
         // TODO: add visual representation of the panel
+        let w = (scene as GameScene).get_width();
+        let rect = new Phaser.GameObjects.Rectangle(scene, 0, 0, w, 200, 0xF1A661);
+        this.add(rect);
     }
 
     /**

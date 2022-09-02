@@ -6,23 +6,31 @@ import { Game_State } from '../game/Game_State';
 import { Game_Controller } from '../game/Game_Controller';
 import { Game_Turn_Type } from '../util/Game_Utils';
 import { Graphics_Controller } from '../ui/Graphics_Controller';
+import { Choice } from '../ui/Choice';
+import { Game_Graphics_Mode, Graph_Graphics_Mode } from '../util/UI_Utils';
 
-export default class Demo extends Phaser.Scene {
+export default class GameScene extends Phaser.Scene {
+  private canvas!: HTMLCanvasElement;
+
   private game_controller!: Game_Controller;
   private graphics_controller!: Graphics_Controller;
+  private starting_state!: Game_State;
   private game_over = false;
 
   constructor() {
     super('GameScene');
-    
   }
 
   preload() {
+    this.load.image("arrowhead", "assets/Arrowhead.png"); // TODO: find nicer way of getting assetpaths from used classes
+    this.load.image("arrowbody", "assets/Arrowbody.png");
+    this.load.image("arrowtail", "assets/Arrowtail.png");
     this.load.image('logo', 'assets/phaser3-logo.png');
+    this.canvas = this.sys.game.canvas;
   }
 
   create() {
-    const logo = this.add.image(400, 70, 'logo');
+    /*const logo = this.add.image(this.canvas.width/2, 70, 'logo');
 
     this.tweens.add({
       targets: logo,
@@ -31,7 +39,7 @@ export default class Demo extends Phaser.Scene {
       ease: 'Sine.inOut',
       yoyo: true,
       repeat: -1
-    });
+    });*/
 
     var F: Formula;
     /*F = new Atom("I am silly!");
@@ -58,61 +66,133 @@ export default class Demo extends Phaser.Scene {
       "Milch kann zu Bioplastik verarbeitet werden"
     ];
 
+    atoms = [
+      "Fakt1",
+      "Fakt2",
+      "Fakt3",
+      "Fakt4",
+      "Fakt5",
+      "Fakt6"
+    ];
+
     F = Formula.parse("A |_|-> (B v C)", atoms);
     /*console.log(F);
-    console.log(F.to_string());*/
+    console.log(F.to_string());
+    console.log(F.generate_atom_list());*/
 
     var G = new Graph();
-    for(let i=0; i<5; i++) {
-      G.add_world(["Milch ist ein Gift"]);
-    }
+
+    G.add_world(atoms.slice(0, 3));
+    G.add_world(atoms.slice(0, 1));
+    G.add_world(atoms.slice(0, 4));
+    G.add_world(atoms.slice(0, 2));
+    G.add_world(atoms.slice(0, 5));
+
+    G.add_edge(0, 0, 2);
+    G.add_edge(0, 1, 2);
+    G.add_edge(0, 4, 2);
+    G.add_edge(3, 4, 2);
     G.add_edge(0, 4, 2);
     G.add_edge(1, 2, 4);
-    G.add_edge(0, 3, -2);
-    G.add_edge(3, 3, 2);
-    G.add_edge(0, 1, 0);
-    G.add_edge(0, 3, 2);
-    G.add_edge(1, 4, 7);
-    G.add_edge(1, 3, 3);
-    G.add_edge(2, 1, 1);
-    G.add_edge(3, 1, -5);
 
     //G.print();
 
     //console.log(G.get_worlds()[0].is_adj(1));
+    let show_att = "~~~(A v B)";
+    let show_def = "A v (B v ~C)";
+    let show_cf = "A |_|-> B";
+    let show_att_cf = "~(A |_|-> B)";
+    let show_atoms = "(A v B) |_|-> ~(C v ~D) v E";
 
-    var state = Game_State.create("Res", G, /*"~~(~(A v B) v C)"*/"~~~~(~(~A v B v C v ~D))", atoms, 0, "a/d");
+    /*
+    "(A v ~B) |_|-> (C v _|_)"
+    "~~(~(A v B) v C)"
+    "~~~~(~(((~A v B) v C) v ~D))"
+    */
+
+    var state = Game_State.create("Res", G, show_atoms, atoms, 0, "a/d");
+    this.starting_state = state;
     this.game_controller = new Game_Controller(state);
-    this.graphics_controller = new Graphics_Controller(this);
+    this.graphics_controller = new Graphics_Controller(this, this.canvas, state);
   }
 
   update(time: number, delta: number): void {
-    if(!this.game_over) {
-      let turn = this.game_controller.determine_next_moves(); // TODO: find better workarouns than !
+    /* This MUST! be the first line */
+    let now = Date.now();
+    this.graphics_controller.update(now);
+
+    if(!this.game_over && this.graphics_controller.is_ready()) {
+      let atoms = this.starting_state.get_formula().generate_atom_list();
+      let state = this.game_controller.get_state();
+      let turn = this.game_controller.determine_next_moves();
       let type = turn[0];
       let moves = turn[1];
-      console.log(Game_Turn_Type[type]+" => "+Rules[moves[0].get_name()]);
-      switch(type) {
-        case Game_Turn_Type.Defenders_Choice:
-            break;
-        case Game_Turn_Type.Defenders_Resolution:
-            break;
-        case Game_Turn_Type.Attackers_Resolution:
-            //this.graphics_controller!.animate_move(moves[0]);
-            this.game_controller.execute_move(moves[0]);
-            if(moves[0].get_name() == Rules.Attacker_Victory) {
-              console.log("The attacker won the game!");
-              this.game_over = true;
-            } else if(moves[0].get_name() == Rules.Defender_Victory) {
-              console.log("The defender won the game!");
-              this.game_over = true;
-            }
-            break;
-        case Game_Turn_Type.No_Moves:
-            this.game_over = true;
-            break;
+      let graphics_mode = this.graphics_controller.get_mode();
+      console.log(Game_Turn_Type[type] + " => "+((moves[0] == undefined) ? "" : (moves.map((value) => Rules[value.get_name()])).reduce((previous, current) => previous + " or "+current)));
+
+      let wait = false;
+      let move!: Rule;
+      let formula!: Formula;
+      let world!: integer;
+
+      switch(true) {
+        case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Formula:
+          this.graphics_controller.set_choice(state, moves[0], moves[1], atoms);
+          return;
+        case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Formula_Choice:
+          move = this.graphics_controller.get_choice();
+          formula = move.apply(state).get_formula();
+          break;
+        case graphics_mode == Game_Graphics_Mode.World_Choice:
+          move = this.graphics_controller.get_choice();
+          world = this.graphics_controller.get_world_choice();
+          formula = move.apply(state).get_formula();
+          break;
+        case type == Game_Turn_Type.Defenders_Resolution && graphics_mode == Game_Graphics_Mode.Formula:
+          move = moves[0];
+          break;
+        case type == Game_Turn_Type.Attackers_Resolution && graphics_mode == Game_Graphics_Mode.Formula:
+          move = moves[0];
+          break;
+        case type == Game_Turn_Type.No_Moves:
+          console.log("Cannot play any move! Game ended.");
+          this.game_over = true;
+          return;
+      }
+
+      // fetch world choice parameter if needed
+      let req_delim = this.game_controller.does_require_delim(move);
+      let world_choice_made = graphics_mode == Game_Graphics_Mode.World_Choice;
+      let player_choice = type != Game_Turn_Type.Attackers_Resolution && type != Game_Turn_Type.Attackers_Choice;
+      if(req_delim && !world_choice_made && player_choice) {
+        this.graphics_controller.set_world_choice();
+        return;
+      } else if(req_delim && !world_choice_made && !player_choice) {
+        world = turn[2]!;
+        // TODO: incite AI Choice animation
+      }
+
+      this.game_over = this.did_game_end(move);
+
+      if(!wait && !this.game_over) {
+        this.game_controller.execute_move(move, world);
+        if(type != Game_Turn_Type.Defenders_Choice) {
+          this.graphics_controller.animate_move(state, move, atoms);
+        } else {
+          this.graphics_controller.set_formula(this.game_controller.get_state(), formula, atoms);
+        }
       }
     }
   }
+
+  did_game_end(move: Rule): boolean {
+    let name = move.get_name();
+    (name == Rules.Attacker_Victory || name == Rules.Defender_Victory) ? console.log(Rules[name] + "! Game ended.") : undefined; //Seiteneffekte Wooo TODO: remove comment
+    return name == Rules.Attacker_Victory || name == Rules.Defender_Victory;
+  }
+
+  // TODO: possibly define a BaseScene class with useful functionality all other scenes may inherit
+  get_width(): number { return this.canvas.width; }
+  get_height(): number { return this.canvas.height; }
 
 }

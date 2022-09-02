@@ -12,7 +12,7 @@ export class Game_State {
 
     // Counterfactual mode properites
     private delim_world: integer = 0;       // sphere delimiting phi-world
-    private r: number = 0;                  // distance between current_world and delim_world
+    private r: number = Infinity;           // distance between current_world and delim_world
 
     constructor(mode: State_Mode, graph: Graph, supposition: Formula, current_world: integer, active_player: Player, delim_world?: integer) {
         this.mode = mode;
@@ -45,12 +45,12 @@ export class Game_State {
     }
 
     configure(mode: string, supposition: Formula, player: string, current_world?: integer, delim_world?: integer): Game_State {
-        this.mode = State_Mode_Abbreviations.get(mode) ?? this.mode;
-        this.supposition = supposition;
-        this.active_player = Player_Abbreviations.get(player) ?? this.active_player;
-        this.current_world = current_world || this.current_world;
-        this.delim_world = delim_world || this.delim_world;
-        return this;
+        let new_mode = State_Mode_Abbreviations.get(mode) ?? this.mode;
+        let new_supposition = cloneDeep(supposition);
+        let new_active_player = Player_Abbreviations.get(player) ?? this.active_player;
+        let new_current_world = current_world || this.current_world;
+        let new_delim_world = delim_world || this.delim_world;
+        return new Game_State(new_mode, this.get_graph(), new_supposition, new_current_world, new_active_player, new_delim_world);
     }
 
     get_mode(): State_Mode {
@@ -63,6 +63,10 @@ export class Game_State {
 
     get_current_world(): World {
         return this.similarity_graph.get_world(this.current_world);
+    }
+
+    get_graph(): Graph {
+        return cloneDeep(this.similarity_graph);
     }
 
     get_active_player(): Player {

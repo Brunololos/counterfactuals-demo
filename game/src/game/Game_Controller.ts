@@ -1,7 +1,8 @@
 import { Rules_Controller, Rules, Rule } from "./Game_Rules";
 import { Game_State } from "./Game_State";
-import { Game_Turn_Type } from "../util/Game_Utils";
+import { Game_Turn_Type, State_Mode } from "../util/Game_Utils";
 import { cloneDeep } from "lodash";
+import { Attacker_AI } from "./Attacker_AI";
 
 export class Game_Controller {
     private rules_controller: Rules_Controller;
@@ -10,44 +11,50 @@ export class Game_Controller {
     constructor(state: Game_State) {
         this.rules_controller = new Rules_Controller();
         this.state = state;
-        console.log(this.state.get_formula());
+        console.log(this.state.get_formula().to_string());
     }
 
-    determine_next_moves(): [Game_Turn_Type, Rule[]] {
+    determine_next_moves(): [Game_Turn_Type, Rule[], integer?] {
         let def_moves = this.rules_controller.defender_moves(this.state);
         let att_moves = this.rules_controller.attacker_moves(this.state);
+        let att_move;
 
         switch(true) {
             case def_moves.length > 1:
-                // Defenders Choice --> Graphics_Controller
                 return [Game_Turn_Type.Defenders_Choice, def_moves]
-            case def_moves.length == 1:
-                // Singular Defenders Move --> Graphics_Controller
-                return [Game_Turn_Type.Defenders_Resolution, def_moves]
-            case def_moves.length == 0 && att_moves.length > 1:
-                // Attackers Choice --> Graphics Controller
-                // TODO: call AI and decide which rule to apply (For now we simply take the first available rule)
-                return [Game_Turn_Type.Attackers_Resolution, att_moves.slice(0,1)]
-            case def_moves.length == 0 && att_moves.length == 1:
-                // Singular Attackers Move --> Graphics Controller
-                return [Game_Turn_Type.Attackers_Resolution, att_moves]
 
-                // TODO: Check when executing move
-                // Check if move is deterministic or if AI necessary
+            case def_moves.length == 1:
+                return [Game_Turn_Type.Defenders_Resolution, def_moves]
+
+            case def_moves.length == 0 && att_moves.length > 1:
+                att_move = Attacker_AI.choose_move(cloneDeep(this.state), att_moves);
+                return [Game_Turn_Type.Attackers_Resolution, [att_move[0]], att_move[1]];
+
+            case def_moves.length == 0 && att_moves.length == 1:
+                att_move = Attacker_AI.choose_move(cloneDeep(this.state), att_moves);
+                return [Game_Turn_Type.Attackers_Resolution, [att_move[0]], att_move[1]];
+
+            case def_moves.length == 0 && att_moves.length == 0:
+                return [Game_Turn_Type.No_Moves, []];
         }
-        return [Game_Turn_Type.No_Moves, []]
+        return [Game_Turn_Type.No_Moves, []];
     }
 
-    execute_move(move: Rule) {
-        let applicable = this.rules_controller.applicable(this.state);
+    execute_move(move: Rule, world?: integer) {
+        this.state = move.apply(this.state, world);
+        let mode = this.state.get_mode();
+        switch(mode) {
+            case State_Mode.Resolve:
+                console.log("---> " + this.state.get_formula().to_string()+" at world "+this.state.get_current_world().index);
+                break;
+            case State_Mode.Counterfactual:
+                console.log("---> Prove counterfactual " + this.state.get_formula().to_string() + "\nwithin sphere centered on world "+this.state.get_current_world().index+" delimited by world " + this.state.get_delim_world().index);
+                break;
+        }
+    }
 
-        console.log("[" + this.rules_controller.applicable(this.state).map((value: Rule) => Rules[value.get_name()]).reduce((previous: string, current: string) => previous + ", " + current) + "]");
-        
-        if(applicable.length == 0) { console.log("No applicable Rule"); return; }
-
-        this.state = applicable[0].apply(this.state);
-
-        console.log(this.state.get_formula());
+    does_require_delim(rule: Rule): boolean {
+        return rule.get_world_input_requirement();
     }
 
     get_state(): Game_State {

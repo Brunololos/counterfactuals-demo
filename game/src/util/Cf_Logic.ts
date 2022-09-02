@@ -88,10 +88,18 @@ export abstract class Formula {
     }
 
     /**
+     * Retrieve an array of all atomic statements contained in this formula
+     * @param atoms A string array of additional atomic statements
+     * @returns An array of string representations of atoms
+     */
+    abstract generate_atom_list(atoms?: string[]): string[];
+
+    /**
      * Retrieve a string representation of this object
+     * @param atoms An ordered string array of atomic statements
      * @returns A string representation of this object
      */
-     abstract to_string(visited_atoms?: string[]): string;
+     abstract to_string(atoms?: string[]): string;
 
     /**
      * Check this formulas structural equality with the passed one
@@ -125,11 +133,17 @@ export class Cf_Would extends Formula {
         this.consequent = consequent;
     }
 
-    to_string(visited_atoms?: string[]): string {
-        visited_atoms = visited_atoms ?? [];
+    generate_atom_list(atoms?: string[]): string[] {
+        let new_atoms = this.antecedent.generate_atom_list(atoms);
+        new_atoms = this.consequent.generate_atom_list(new_atoms);
+        return new_atoms;
+    }
+
+    to_string(atoms?: string[]): string {
+        atoms = atoms ?? [];
         let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction);
-        let left = this.antecedent.to_string(visited_atoms);
-        let right = this.consequent.to_string(visited_atoms);
+        let left = this.antecedent.to_string(atoms);
+        let right = this.consequent.to_string(atoms);
         return (is_bin(this.antecedent) ? "(" + left + ")" : left) + " |_|-> " + (is_bin(this.consequent) ? "(" + right + ")" : right);
     }
 
@@ -169,11 +183,17 @@ export class Disjunction extends Formula {
         this.subject2 = subject2;
     }
 
-    to_string(visited_atoms?: string[]): string {
-        visited_atoms = visited_atoms ?? [];
+    generate_atom_list(atoms?: string[]): string[] {
+        let new_atoms = this.subject1.generate_atom_list(atoms);
+        new_atoms = this.subject2.generate_atom_list(new_atoms);
+        return new_atoms;
+    }
+
+    to_string(atoms?: string[]): string {
+        atoms = atoms ?? [];
         let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction);
-        let left = this.subject1.to_string(visited_atoms);
-        let right = this.subject2.to_string(visited_atoms);
+        let left = this.subject1.to_string(atoms);
+        let right = this.subject2.to_string(atoms);
         return (is_bin(this.subject1) ? "(" + left + ")" : left) + " v " + (is_bin(this.subject2) ? "(" + right + ")" : right);
     }
 
@@ -212,9 +232,13 @@ export class Negation extends Formula {
         this.subject = subject;
     }
 
-    to_string(visited_atoms?: string[]): string {
+    generate_atom_list(atoms?: string[]): string[] {
+        return this.subject.generate_atom_list(atoms);
+    }
+
+    to_string(atoms?: string[]): string {
         let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction);
-        let sub = this.subject.to_string(visited_atoms);
+        let sub = this.subject.to_string(atoms);
         return "~" + (is_bin(this.subject) ? "(" + sub + ")": sub);
     }
 
@@ -249,13 +273,21 @@ export class Atom extends Formula {
         this.value = value;
     }
 
-    to_string(visited_atoms?: string[]): string {
-        if(visited_atoms == undefined) { return "A"; }
+    generate_atom_list(atoms?: string[]): string[] {
+        let new_atoms = atoms ?? [];
+        if(!new_atoms.includes(this.value)) {
+            new_atoms = new_atoms.concat([this.value]);
+        }
+        return new_atoms;
+    }
 
-        let index = visited_atoms?.findIndex((value) => value == this.value);
+    to_string(atoms?: string[]): string {
+        if(atoms == undefined) { return "A"; }
+
+        let index = atoms?.findIndex((value) => value == this.value);
         if(index == -1) { 
-            visited_atoms?.push(this.value);
-            return String.fromCharCode(visited_atoms.length - 1 + 65); // TODO: check index + 65 < 97 else throw error
+            atoms?.push(this.value);
+            return String.fromCharCode(atoms.length - 1 + 65); // TODO: check index + 65 < 97 else throw error
         } else {
             return String.fromCharCode(index + 65);
         }
@@ -285,6 +317,10 @@ export class Atom extends Formula {
         super();
     }
 
+    generate_atom_list(atoms?: string[]): string[] {
+        return atoms ?? [];
+    }
+
     to_string(): string {
         return "_|_";
     }
@@ -309,6 +345,10 @@ export class Any extends Formula {
      */
     constructor() {
         super();
+    }
+
+    generate_atom_list(atoms?: string[]): string[] {
+        return atoms ?? [];
     }
 
     to_string(): string {
