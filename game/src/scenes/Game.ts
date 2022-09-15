@@ -6,11 +6,10 @@ import { Game_State } from '../game/Game_State';
 import { Game_Controller } from '../game/Game_Controller';
 import { Game_Turn_Type } from '../util/Game_Utils';
 import { Graphics_Controller } from '../ui/Graphics_Controller';
-import { Choice } from '../ui/Choice';
-import { Game_Graphics_Mode, Graph_Graphics_Mode } from '../util/UI_Utils';
+import { duplicate_texture, Game_Graphics_Mode, Graph_Graphics_Mode, hueshift_texture } from '../util/UI_Utils';
+import Base_Scene from '../util/Base_Scene';
 
-export default class GameScene extends Phaser.Scene {
-  private canvas!: HTMLCanvasElement;
+export default class Game_Scene extends Base_Scene {
 
   private game_controller!: Game_Controller;
   private graphics_controller!: Graphics_Controller;
@@ -18,46 +17,17 @@ export default class GameScene extends Phaser.Scene {
   private game_over = false;
 
   constructor() {
-    super('GameScene');
+    super('Game_Scene');
   }
 
   preload() {
-    this.load.image("arrowhead", "assets/Arrowhead.png"); // TODO: find nicer way of getting assetpaths from used classes
-    this.load.image("arrowbody", "assets/Arrowbody.png");
-    this.load.image("arrowtail", "assets/Arrowtail.png");
-    this.load.image('logo', 'assets/phaser3-logo.png');
-    this.canvas = this.sys.game.canvas;
+    this.setup();
+    
+    Graphics_Controller.load_sprites(this);
   }
 
   create() {
-    /*const logo = this.add.image(this.canvas.width/2, 70, 'logo');
-
-    this.tweens.add({
-      targets: logo,
-      y: 350,
-      duration: 1500,
-      ease: 'Sine.inOut',
-      yoyo: true,
-      repeat: -1
-    });*/
-
-    var F: Formula;
-    /*F = new Atom("I am silly!");
-    F = new Negation(new Atom("I am silly!"));
-    F = new Disjunction(new Atom("I am savvy"), new Negation(new Atom("I am silly!")));
-
-    var V: Formula;
-    V = new Atom("I am silly!");
-    V = new Negation(new Atom("I am very much silly!"));
-    V = new Disjunction(new Negation(new Atom("I am silly!")), new Atom("I am savvy"));
-
-    // funkily the to_string instances name the Atoms differently, which may lead to some confusion:
-    // however naming is consistent, if you put F and V in one Formula
-    console.log("F: "+F.to_string());
-    console.log("V: "+V.to_string());
-    console.log("VvF: "+new Disjunction(V, F).to_string());
-  
-    console.log("Structural equality of F & V: "+F.compare(V));*/
+    Graphics_Controller.configure_sprites(this);
 
     let atoms = [
       "Milch ist ein Gift",
@@ -75,11 +45,6 @@ export default class GameScene extends Phaser.Scene {
       "Fakt6"
     ];
 
-    F = Formula.parse("A |_|-> (B v C)", atoms);
-    /*console.log(F);
-    console.log(F.to_string());
-    console.log(F.generate_atom_list());*/
-
     var G = new Graph();
 
     G.add_world(atoms.slice(0, 3));
@@ -95,9 +60,6 @@ export default class GameScene extends Phaser.Scene {
     G.add_edge(0, 4, 2);
     G.add_edge(1, 2, 4);
 
-    //G.print();
-
-    //console.log(G.get_worlds()[0].is_adj(1));
     let show_att = "~~~(A v B)";
     let show_def = "A v (B v ~C)";
     let show_cf = "A |_|-> B";
@@ -105,15 +67,18 @@ export default class GameScene extends Phaser.Scene {
     let show_atoms = "(A v B) |_|-> ~(C v ~D) v E";
 
     /*
+    "~((A v B) v (A v B))"
     "(A v ~B) |_|-> (C v _|_)"
     "~~(~(A v B) v C)"
     "~~~~(~(((~A v B) v C) v ~D))"
+    "A |_|-> ((_|_ v (C v D)) v ~_|_)"
+    "~(((A v B) v (A v B)) v ((A v B) v (A v B)))"
+    "~((~(A v B)) v ~((A v B) v ~(A v B)))"
     */
-
-    var state = Game_State.create("Res", G, show_atoms, atoms, 0, "a/d");
+    var state = Game_State.create("Res", G, "A v ((_|_ v (C v D)) v ~_|_)", atoms, 0, "a/d");
     this.starting_state = state;
     this.game_controller = new Game_Controller(state);
-    this.graphics_controller = new Graphics_Controller(this, this.canvas, state);
+    this.graphics_controller = new Graphics_Controller(this, this.get_canvas(), state);
   }
 
   update(time: number, delta: number): void {
@@ -169,10 +134,7 @@ export default class GameScene extends Phaser.Scene {
         return;
       } else if(req_delim && !world_choice_made && !player_choice) {
         world = turn[2]!;
-        // TODO: incite AI Choice animation
       }
-
-      this.game_over = this.did_game_end(move);
 
       if(!wait && !this.game_over) {
         this.game_controller.execute_move(move, world);
@@ -182,17 +144,19 @@ export default class GameScene extends Phaser.Scene {
           this.graphics_controller.set_formula(this.game_controller.get_state(), formula, atoms);
         }
       }
+
+      this.game_over = this.did_game_end(move);
     }
+  }
+
+  on_resize(): void {
+    this.graphics_controller.resize_graphics();
   }
 
   did_game_end(move: Rule): boolean {
     let name = move.get_name();
-    (name == Rules.Attacker_Victory || name == Rules.Defender_Victory) ? console.log(Rules[name] + "! Game ended.") : undefined; //Seiteneffekte Wooo TODO: remove comment
+    (name == Rules.Attacker_Victory || name == Rules.Defender_Victory) ? console.log(Rules[name] + "! Game ended.") : undefined;
     return name == Rules.Attacker_Victory || name == Rules.Defender_Victory;
   }
-
-  // TODO: possibly define a BaseScene class with useful functionality all other scenes may inherit
-  get_width(): number { return this.canvas.width; }
-  get_height(): number { return this.canvas.height; }
 
 }

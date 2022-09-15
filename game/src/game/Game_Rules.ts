@@ -188,36 +188,6 @@ export class Rule {
 
 export enum Rules {
 
-    /*
-    ###BOTTOM###
-    Attacker_Victory, (4)
-
-    ###ATOM###
-    Known_Fact, (6)
-    Unknown_Fact, (7)
-
-    ###NEGATION###
-    Defender_Victory, (5)
-    Negated_Known_Fact, (8)
-    Negated_Unknown_Fact, (9)
-    Double_Negation, (10)
-    Negated_Left_OR, (13)
-    Negated_Right_OR, (14)
-    Negated_Counterfactual, (20)
-    Disproving_Sphere_Selection, (22)
-
-    ###DISJUNCTION###
-    Left_OR, (11)
-    Right_OR, (12)
-
-    ###CF_WOULD###
-    Counterfactual, (15)
-    Proving_Sphere_Selection, (17)
-
-    ####FORMULA###
-    Formerly: Known_Fact, (6)
-    */
-
     Attacker_Victory,
     Defender_Victory,
     Known_Fact,

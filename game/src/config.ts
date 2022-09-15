@@ -3,11 +3,13 @@ import Phaser from 'phaser';
 export default {
   type: Phaser.AUTO,
   parent: 'game',
-  backgroundColor: '#33A5E7',
+  pixelArt: false,
+  backgroundColor: '#97D2EC',
   scale: {
-    width: 800,
-    height: 600,
-    mode: Phaser.Scale.FIT,
+    width: window.innerWidth,
+    height: window.innerHeight,
+    mode: Phaser.Scale.NONE,
     autoCenter: Phaser.Scale.CENTER_BOTH
-  }
+  },
+  scene: 'Game_Scene'
 };

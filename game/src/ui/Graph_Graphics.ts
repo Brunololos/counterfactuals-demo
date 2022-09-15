@@ -1,4 +1,5 @@
 import { Game_State } from "../game/Game_State";
+import Base_Scene from "../util/Base_Scene";
 import { Graph } from "../util/Graph";
 import { Graph_Graphics_Mode, text_style } from "../util/UI_Utils";
 
@@ -69,6 +70,13 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         this.worlds[world].set_active(active);
     }
 
+    resize() {
+        let w = (this.scene as Base_Scene).get_width();
+        let h = (this.scene as Base_Scene).get_height();
+        this.setX(w/2);
+        this.setY((h - 200)/2);
+    }
+
     world_clicked(world: integer) {
         switch(this.mode) {
             case Graph_Graphics_Mode.Display:
@@ -117,6 +125,12 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
 
     is_choice_made(): boolean {
         return this.choice_made;
+    }
+
+    static load_sprites(scene: Phaser.Scene) {
+        scene.load.image("arrowhead", "assets/Arrowhead.png");
+        scene.load.image("arrowbody", "assets/Arrowbody.png");
+        scene.load.image("arrowtail", "assets/Arrowtail.png");
     }
 }
 
