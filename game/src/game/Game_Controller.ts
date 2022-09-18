@@ -11,7 +11,7 @@ export class Game_Controller {
     constructor(state: Game_State) {
         this.rules_controller = new Rules_Controller();
         this.state = state;
-        console.log(this.state.get_formula().to_string());
+        console.log("Setup Game with Formula: "+this.state.get_formula().to_string());
     }
 
     determine_next_moves(): [Game_Turn_Type, Rule[], integer?] {

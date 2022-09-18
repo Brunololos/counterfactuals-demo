@@ -58,6 +58,19 @@ import {cloneDeep} from 'lodash';
     }
 
     /**
+     * Retrieve a flat list of all edges
+     * @returns A list of adjacency tuples consisting of an origin world index, destination world index and edge weight
+     */
+     get_edge_list(): [number, number, number][] {
+        let edges: [number, number, number][] = [];
+        for(let i=0; i<this.worlds.length; i++) {
+            let world = this.worlds[i];
+            edges = edges.concat(world.get_edge_list());
+        }
+        return edges;
+    }
+
+    /**
      * Retrieve world count
      * @returns The graphs number of worlds V(G)
      */
@@ -138,6 +151,20 @@ export class World {
      */
     get_edges(): [World, number][] {
         return cloneDeep(this.adj);
+    }
+
+    /**
+     * Retrieve an index representation of the world adjacency list
+     * @returns A list of adjacency tuples consisting of an origin world index, destination world index and edge weight
+     */
+    get_edge_list(): [number, number, number][] {
+        let edges: [number, number, number][] = [];
+        let edge: [number, number, number];
+        for(let i=0; i<this.adj.length; i++) {
+            edge = [this.index, this.adj[i][0].index, this.adj[i][1]];
+            edges = edges.concat([edge]);
+        }
+        return edges;
     }
 
     /**

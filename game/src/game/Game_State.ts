@@ -9,17 +9,19 @@ export class Game_State {
     private supposition: Formula;
     private current_world: integer;
     private active_player: Player;
+    private atoms: string[];
 
     // Counterfactual mode properites
     private delim_world: integer = 0;       // sphere delimiting phi-world
     private r: number = Infinity;           // distance between current_world and delim_world
 
-    constructor(mode: State_Mode, graph: Graph, supposition: Formula, current_world: integer, active_player: Player, delim_world?: integer) {
+    constructor(mode: State_Mode, graph: Graph, supposition: Formula, current_world: integer, active_player: Player, atoms: string[], delim_world?: integer) {
         this.mode = mode;
         this.similarity_graph = graph;
         this.active_player = active_player;
         this.supposition = supposition;
         this.current_world = current_world;
+        this.atoms = atoms;
 
         let v = graph.get_world(current_world);
         if(mode == State_Mode.Counterfactual) {
@@ -41,7 +43,7 @@ export class Game_State {
             throw new Error("Passed incorrect State_Mode, Formula or Player string abbreviation");
         }
 
-        return new Game_State(state_mode, graph, formula_supposition, current_world, active_player, delim_world);
+        return new Game_State(state_mode, graph, formula_supposition, current_world, active_player, atoms, delim_world);
     }
 
     configure(mode: string, supposition: Formula, player: string, current_world?: integer, delim_world?: integer): Game_State {
@@ -50,7 +52,7 @@ export class Game_State {
         let new_active_player = Player_Abbreviations.get(player) ?? this.active_player;
         let new_current_world = current_world || this.current_world;
         let new_delim_world = delim_world || this.delim_world;
-        return new Game_State(new_mode, this.get_graph(), new_supposition, new_current_world, new_active_player, new_delim_world);
+        return new Game_State(new_mode, this.get_graph(), new_supposition, new_current_world, new_active_player, this.atoms, new_delim_world);
     }
 
     get_mode(): State_Mode {
@@ -71,6 +73,10 @@ export class Game_State {
 
     get_active_player(): Player {
         return this.active_player;
+    }
+
+    get_atoms(): string[] {
+        return cloneDeep(this.atoms);
     }
 
     get_delim_world(): World {

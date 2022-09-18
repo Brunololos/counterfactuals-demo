@@ -1,7 +1,7 @@
 import { Rules } from "../game/Game_Rules";
 import Base_Scene from "../util/Base_Scene";
 import { Atom, Bottom, Cf_Would, Disjunction, Formula, Negation } from "../util/Cf_Logic";
-import { duplicate_texture, Game_Graphics_Mode, hueshift_texture } from "../util/UI_Utils";
+import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode, hueshift_texture } from "../util/UI_Utils";
 import { Formula_Animations } from "./animations/Formula_Animations";
 
 export const ICON_WIDTH = 60;
@@ -11,13 +11,17 @@ const NUM_RECOLORS = 6;
 
 export class Formula_Graphics extends Phaser.GameObjects.Container {
     private formula: Formula_Graphics_Element;
+    private atoms: string[];
+    private embedding_depth: integer = 0;
 
     private next_formula?: Formula;
 
-    constructor(scene: Base_Scene, x: number, y: number, formula: Formula) {
+    constructor(scene: Base_Scene, x: number, y: number, formula: Formula, atoms: string[], embedding_depth: integer = 0) {
         super(scene, x, y);
 
-        this.formula = Formula_Graphics_Element.parse(scene, formula, 0, 0);
+        this.atoms = atoms;
+        this.embedding_depth = embedding_depth;
+        this.formula = Formula_Graphics_Element.parse(scene, formula, 0, 0, this.atoms);
         this.formula.add_to_container(this);
     }
 
@@ -25,11 +29,12 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("false", "assets/False.png");
         scene.load.image("true", "assets/True.png");
         scene.load.image("atom", "assets/Atom.png");
+        scene.load.image("glow", "assets/Glow.png");
         scene.load.image("negation", "assets/Negation.png");
         scene.load.image("disjunction", "assets/Disjunction.png");
         scene.load.image("cf_would", "assets/Cf_Would.png");
 
-        scene.load.image("bracket_open", "assets/Bracket_Opener.png");
+        /*scene.load.image("bracket_open", "assets/Bracket_Opener.png");
         scene.load.image("bracket_connect", "assets/Bracket_Connector.png");
         scene.load.image("bracket_close", "assets/Bracket_Closer.png");
         scene.load.image("bracket_compact", "assets/Bracket_Compact.png");
@@ -40,7 +45,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("bracket_compact_fill", "assets/Bracket_Compact_Filled.png");
 
         scene.load.image("bracket_opened", "assets/Bracket_Open.png");
-        scene.load.image("bracket_closed", "assets/Bracket_Closed.png");
+        scene.load.image("bracket_closed", "assets/Bracket_Closed.png");*/
 
         scene.load.image("fill_open", "assets/Fill_Open.png");
         scene.load.image("fill_connect", "assets/Fill_Connect.png");
@@ -48,6 +53,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     }
 
     static configure_sprites(scene: Phaser.Scene) {
+        let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xC55300, 0xA2B5BB, 0xFF8FB1, 0xE94560, 0x84513D];
         for(let i=0; i<NUM_RECOLORS; i++) {
             duplicate_texture(scene, "fill_open", "fill_open_"+(i).toString());
             duplicate_texture(scene, "fill_connect", "fill_connect_"+(i).toString());
@@ -55,41 +61,76 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
             hueshift_texture(scene, "fill_open_"+(i).toString(), i*(360/NUM_RECOLORS));
             hueshift_texture(scene, "fill_connect_"+(i).toString(), i*(360/NUM_RECOLORS));
             hueshift_texture(scene, "fill_closed_"+(i).toString(), i*(360/NUM_RECOLORS));
+
+            duplicate_texture(scene, "atom", "atom_"+(i).toString());
+            dye_texture(scene, "atom_"+(i).toString(), atom_colors[i]);
         }
     }
 
     animate_transition(transition: [Game_Graphics_Mode, Game_Graphics_Mode]): number {
         let timeline = this.scene.tweens.createTimeline();
-        let anim_time = Formula_Animations.fill_transition_animation_timeline(timeline, transition, this.formula);
+        let anim_time = Formula_Animations.fill_transition_animation_timeline(timeline, transition, this);
         timeline.play();
         return anim_time;
     }
 
     animate(formula: Formula, rule: Rules): number {
         this.next_formula = formula;
+        if(rule == Rules.Defender_Victory || rule == Rules.Attacker_Victory) { this.next_formula = undefined; }
+        if([Rules.Negated_Left_OR, Rules.Negated_Right_OR, Rules.Attacker_Vacuous_Truth_Claim].includes(rule)) { this.embedding_depth++; }
         return this.start_animation(rule);
     }
 
     end_animation() {
         if(this.next_formula != undefined) {
             this.removeAll(true);
-            this.formula = Formula_Graphics_Element.parse((this.scene as Base_Scene), this.next_formula, 0, 0);
+            this.formula = Formula_Graphics_Element.parse((this.scene as Base_Scene), this.next_formula, 0, 0, this.atoms, this.embedding_depth);
             this.formula.add_to_container(this);
         }
+    }
+
+    /**
+     * Add another formula until the main formula is re-set
+     * @returns temporarily added Formula_Graphics_Element
+     */
+    add_temporary_formula(formula: string): Formula_Graphics_Element {
+        let temporary = Formula_Graphics_Element.parse((this.scene as Base_Scene), Formula.parse(formula), 0, 0, this.atoms, this.embedding_depth);
+        temporary.add_to_container(this);
+        return temporary;
+    }
+
+    set_atoms(atoms: string[]) {
+        this.atoms = atoms;
     }
 
     set_formula(formula: Formula) {
         this.removeAll(true);
         this.next_formula = undefined;
-        this.formula = Formula_Graphics_Element.parse((this.scene as Base_Scene), formula, 0, 0);
+        this.formula = Formula_Graphics_Element.parse((this.scene as Base_Scene), formula, 0, 0, this.atoms, this.embedding_depth);
         this.formula.add_to_container(this);
+    }
+
+    set_embedding_depth(depth: integer) {
+        this.embedding_depth = depth;
     }
 
     start_animation(rule: Rules): number {
         let timeline = this.scene.tweens.createTimeline();
-        let anim_time = Formula_Animations.fill_animation_timeline(timeline, rule, this.formula);
+        let anim_time = Formula_Animations.fill_animation_timeline(timeline, rule, this);
         timeline.play();
         return anim_time;
+    }
+
+    /**
+     * Get the Formula_Graphics_Element tree root element
+     * @returns Formula_Graphics_Element
+     */
+    get_formula(): Formula_Graphics_Element {
+        return this.formula;
+    }
+
+    get_embedding_depth(): integer {
+        return this.embedding_depth;
     }
 
     get_width(): number {
@@ -110,26 +151,25 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
      * @param to_parse A Formula to be represented by graphics
      * @returns The root object of a tree of formula graphics element objects
      */
-    static parse(scene: Base_Scene, to_parse: Formula, x: number, y: number, embedded=0): Formula_Graphics_Element {
+    static parse(scene: Base_Scene, to_parse: Formula, x: number, y: number, atoms: string[]=[], embedded: number=0): Formula_Graphics_Element {
         switch(true) {
             case to_parse instanceof Cf_Would:
-                let antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, embedded+1);
-                let consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, embedded+1);
+                let antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
+                let consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
                 antecedent.offset(- ICON_WIDTH/2 - consequent.get_width()/2);
                 consequent.offset(+ ICON_WIDTH/2 + antecedent.get_width()/2);
                 return new Cf_Would_Graphics(scene, x + (antecedent.get_width() - consequent.get_width())/2, y, antecedent, consequent, embedded);
             case to_parse instanceof Disjunction:
-                let subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, embedded+1);
-                let subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, embedded+1);
+                let subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
+                let subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
                 subject1.offset(- ICON_WIDTH/2 - subject2.get_width()/2);
                 subject2.offset(+ ICON_WIDTH/2 + subject1.get_width()/2);
                 return new Disjunction_Graphics(scene, x + (subject1.get_width() - subject2.get_width())/2, y, subject1, subject2, embedded);
             case to_parse instanceof Negation:
-                if(to_parse.get_child("l") instanceof Bottom) { return new Top_Graphics(scene, x, y); }
-                let subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, embedded);
+                let subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
                 return new Negation_Graphics(scene, x - subject.get_width()/2, y, subject);
             case to_parse instanceof Atom:
-                return new Atom_Graphics(scene, x, y, (to_parse as Atom).value);
+                return new Atom_Graphics(scene, x, y, (to_parse as Atom).value,  atoms);
             case to_parse instanceof Bottom:
                 return new Bottom_Graphics(scene, x, y);
             default:
@@ -140,6 +180,8 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     abstract offset(x: number): void;
 
     abstract scale_recursive(s: number): void;
+
+    abstract set_depth(d: number): void;
 
     abstract get_width(): number;
 
@@ -175,31 +217,11 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         let w1 = this.antecedent.get_width();
         let w2 = this.consequent.get_width();
 
-        /*if(w1 == ICON_WIDTH) {
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - ICON_WIDTH, this.y, "bracket_compact_fill").setAlpha(0.5));
-        } else if(w1 > ICON_WIDTH) {
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1, this.y, "bracket_open_fill").setAlpha(0.5));
-            for(let i = 0; i*ICON_WIDTH < (w1 - ICON_WIDTH*2); i++) {
-                this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + ICON_WIDTH + i*ICON_WIDTH, this.y, "bracket_connect_fill").setAlpha(0.5));
-            }
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - ICON_WIDTH, this.y, "bracket_close_fill").setAlpha(0.5));
-        }
-        if(w2 == ICON_WIDTH) {
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + ICON_WIDTH, this.y, "bracket_compact_fill").setAlpha(0.5));
-        } else if(w2 > ICON_WIDTH) {
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + ICON_WIDTH, this.y, "bracket_open_fill").setAlpha(0.5));
-            for(let i = 0; i*ICON_WIDTH < (w2 - ICON_WIDTH*2); i++) {
-                this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + ICON_WIDTH*2 + i*ICON_WIDTH, this.y, "bracket_connect_fill").setAlpha(0.5));
-            }
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2, this.y, "bracket_close_fill").setAlpha(0.5));
-        }*/
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1, this.y, "fill_open"+suff));
-            for(let i = 0; i*ICON_WIDTH < (w1 + w2 - ICON_WIDTH); i++) {
-                this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + ICON_WIDTH + i*ICON_WIDTH, this.y, "fill_connect"+suff));
-            }
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2, this.y, "fill_closed"+suff));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 - BRACKET_WIDTH, this.y, "fill_open"+suff));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 + BRACKET_WIDTH, this.y, "fill_closed"+suff));
         }
     }
 
@@ -231,6 +253,12 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         }
         this.antecedent.scale_recursive(s);
         this.consequent.scale_recursive(s);
+    }
+
+    set_depth(d: number): void {
+        this.setDepth(d);
+        this.antecedent.set_depth(d);
+        this.consequent.set_depth(d);
     }
 
     get_width(): number {
@@ -314,6 +342,12 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         this.subject2.scale_recursive(s);
     }
 
+    set_depth(d: number): void {
+        this.setDepth(d);
+        this.subject1.set_depth(d);
+        this.subject2.set_depth(d);
+    }
+
     get_width(): number {
         return ICON_WIDTH + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH;
     }
@@ -371,6 +405,11 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         this.subject.scale_recursive(s);
     }
 
+    set_depth(d: number): void {
+        this.setDepth(d);
+        this.subject.set_depth(d);
+    }
+
     get_width(): number {
         return ICON_WIDTH + this.subject.get_width();
     }
@@ -399,8 +438,9 @@ export class Atom_Graphics extends Formula_Graphics_Element {
      * Visualize an atomic statement
      * @param value a linguistic description of the atomic statement
      */
-    constructor(scene: Base_Scene, x: number, y: number, value: string) {
-        super(scene, x, y, "atom");
+    constructor(scene: Base_Scene, x: number, y: number, value: string, atoms: string[]) {
+        let index = atoms.findIndex((curr) => curr == value);
+        super(scene, x, y, (index != -1) ? "atom_" + index : "atom");
         this.value = value;
     }
 
@@ -415,6 +455,10 @@ export class Atom_Graphics extends Formula_Graphics_Element {
 
     scale_recursive(s: number): void {
         this.setScale(this.scaleX * s, this.scaleY * s);
+    }
+
+    set_depth(d: number): void {
+        this.setDepth(d);
     }
 
     get_width(): number {
@@ -459,6 +503,10 @@ export class Atom_Graphics extends Formula_Graphics_Element {
         this.setScale(this.scaleX * s, this.scaleY * s);
     }
 
+    set_depth(d: number): void {
+        this.setDepth(d);
+    }
+
     get_width(): number {
         return ICON_WIDTH;
     }
@@ -499,6 +547,10 @@ export class Atom_Graphics extends Formula_Graphics_Element {
 
     scale_recursive(s: number): void {
         this.setScale(this.scaleX * s, this.scaleY * s);
+    }
+
+    set_depth(d: number): void {
+        this.setDepth(d);
     }
 
     get_width(): number {

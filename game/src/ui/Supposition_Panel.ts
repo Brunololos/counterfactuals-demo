@@ -9,9 +9,9 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         this.contents = this.contents.concat(content || this.contents);
         let w = (scene as Game_Scene).get_width();
         let h = (this.scene as Base_Scene).get_height();
-        let rect = new Phaser.GameObjects.Rectangle(scene, 0, 0, w, 200, 0x5F6F94);
+        let rect = new Phaser.GameObjects.Rectangle(scene, 0, 0, w, 200, 0x7893AD);
         this.add(rect);
-        scene.children.add(new Phaser.GameObjects.Ellipse(scene, x, y, 5, 5, 0xCC3636).setDepth(1));
+        //this.add(new Phaser.GameObjects.Ellipse(scene, 0, 0, 5, 5, 0xCC3636).setDepth(1));
     }
 
     /**
@@ -32,7 +32,8 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
     resize() {
         let w = (this.scene as Base_Scene).get_width();
         let h = (this.scene as Base_Scene).get_height();
-        (this.getAt(0) as Phaser.GameObjects.Rectangle).setSize(w, 200);
+        (this.getAt(0) as Phaser.GameObjects.Rectangle).setDisplaySize(w, 200);
+        this.setX(w/2);
         this.setY(h-100);
     }
 }

@@ -6,7 +6,7 @@ import { Game_State } from '../game/Game_State';
 import { Game_Controller } from '../game/Game_Controller';
 import { Game_Turn_Type } from '../util/Game_Utils';
 import { Graphics_Controller } from '../ui/Graphics_Controller';
-import { duplicate_texture, Game_Graphics_Mode, Graph_Graphics_Mode, hueshift_texture } from '../util/UI_Utils';
+import { Game_Graphics_Mode } from '../util/UI_Utils';
 import Base_Scene from '../util/Base_Scene';
 
 export default class Game_Scene extends Base_Scene {
@@ -37,28 +37,35 @@ export default class Game_Scene extends Base_Scene {
     ];
 
     atoms = [
-      "Fakt1",
-      "Fakt2",
-      "Fakt3",
-      "Fakt4",
-      "Fakt5",
-      "Fakt6"
+      "Alexander the Great died at the age of 32",
+      "Alexander the Great attacked europe",
+      "The romans defeated Alexander the Great",
+      "The romans built aqueducts",
+      "The greek gods became revered throughout europe",
+      "The toga became a fashion staple"
     ];
 
     var G = new Graph();
 
-    G.add_world(atoms.slice(0, 3));
-    G.add_world(atoms.slice(0, 1));
-    G.add_world(atoms.slice(0, 4));
-    G.add_world(atoms.slice(0, 2));
-    G.add_world(atoms.slice(0, 5));
+    G.add_world([atoms[0], atoms[3], atoms[5]]);
+    G.add_world([atoms[0], atoms[2]]);
+    G.add_world([atoms[4]]);
+    G.add_world([atoms[1], atoms[2], atoms[3]]);
+    G.add_world([atoms[1], atoms[4]]);
 
-    G.add_edge(0, 0, 2);
-    G.add_edge(0, 1, 2);
-    G.add_edge(0, 4, 2);
-    G.add_edge(3, 4, 2);
-    G.add_edge(0, 4, 2);
-    G.add_edge(1, 2, 4);
+    G.add_world(atoms.slice(0, 5));
+    G.add_world([]);
+
+    G.add_edge(0, 1, 4);
+    G.add_edge(0, 2, 6);
+    G.add_edge(0, 3, 7);
+    G.add_edge(0, 4, 8);
+
+    G.add_edge(0, 6, 6);
+    G.add_edge(1, 2, 3);
+    G.add_edge(2, 5, 1);
+    G.add_edge(3, 5, 4);
+    G.add_edge(4, 6, 5);
 
     let show_att = "~~~(A v B)";
     let show_def = "A v (B v ~C)";
@@ -71,14 +78,16 @@ export default class Game_Scene extends Base_Scene {
     "(A v ~B) |_|-> (C v _|_)"
     "~~(~(A v B) v C)"
     "~~~~(~(((~A v B) v C) v ~D))"
+    "A v ((_|_ v (C v D)) v ~_|_)"
     "A |_|-> ((_|_ v (C v D)) v ~_|_)"
     "~(((A v B) v (A v B)) v ((A v B) v (A v B)))"
     "~((~(A v B)) v ~((A v B) v ~(A v B)))"
+    "~((A v ~_|_) |_|-> (C v D))"
     */
-    var state = Game_State.create("Res", G, "A v ((_|_ v (C v D)) v ~_|_)", atoms, 0, "a/d");
+    var state = Game_State.create("Res", G, "~(~(~A v B) |_|-> C)", atoms, 0, "a/d");
     this.starting_state = state;
     this.game_controller = new Game_Controller(state);
-    this.graphics_controller = new Graphics_Controller(this, this.get_canvas(), state);
+    this.graphics_controller = new Graphics_Controller(this, state);
   }
 
   update(time: number, delta: number): void {
@@ -93,6 +102,8 @@ export default class Game_Scene extends Base_Scene {
       let type = turn[0];
       let moves = turn[1];
       let graphics_mode = this.graphics_controller.get_mode();
+
+      console.log("-----------------------------New Round!------------------------------------")
       console.log(Game_Turn_Type[type] + " => "+((moves[0] == undefined) ? "" : (moves.map((value) => Rules[value.get_name()])).reduce((previous, current) => previous + " or "+current)));
 
       let wait = false;
@@ -102,16 +113,25 @@ export default class Game_Scene extends Base_Scene {
 
       switch(true) {
         case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Formula:
-          this.graphics_controller.set_choice(state, moves[0], moves[1], atoms);
+          this.graphics_controller.set_choice(state, moves[0], moves[1]);
           return;
         case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Formula_Choice:
+        case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Counterfactual_Choice:
+        case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Negated_Counterfactual_Choice:
           move = this.graphics_controller.get_choice();
-          formula = move.apply(state).get_formula();
+          if(!move.get_world_input_requirement()) {
+            formula = move.apply(state).get_formula();
+          }
           break;
-        case graphics_mode == Game_Graphics_Mode.World_Choice:
+        case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.World_Choice:
           move = this.graphics_controller.get_choice();
           world = this.graphics_controller.get_world_choice();
-          formula = move.apply(state).get_formula();
+          formula = move.apply(state, world).get_formula();
+          break;
+        case type == Game_Turn_Type.Defenders_Resolution && graphics_mode == Game_Graphics_Mode.World_Choice:
+          move = moves[0];
+          world = this.graphics_controller.get_world_choice();
+          formula = move.apply(state, world).get_formula();
           break;
         case type == Game_Turn_Type.Defenders_Resolution && graphics_mode == Game_Graphics_Mode.Formula:
           move = moves[0];
@@ -127,7 +147,7 @@ export default class Game_Scene extends Base_Scene {
 
       // fetch world choice parameter if needed
       let req_delim = this.game_controller.does_require_delim(move);
-      let world_choice_made = graphics_mode == Game_Graphics_Mode.World_Choice;
+      let world_choice_made = (graphics_mode == Game_Graphics_Mode.World_Choice);
       let player_choice = type != Game_Turn_Type.Attackers_Resolution && type != Game_Turn_Type.Attackers_Choice;
       if(req_delim && !world_choice_made && player_choice) {
         this.graphics_controller.set_world_choice();
@@ -139,9 +159,9 @@ export default class Game_Scene extends Base_Scene {
       if(!wait && !this.game_over) {
         this.game_controller.execute_move(move, world);
         if(type != Game_Turn_Type.Defenders_Choice) {
-          this.graphics_controller.animate_move(state, move, atoms);
+          this.graphics_controller.animate_move(state, move, world);
         } else {
-          this.graphics_controller.set_formula(this.game_controller.get_state(), formula, atoms);
+          this.graphics_controller.set_formula(this.game_controller.get_state(), formula);
         }
       }
 
