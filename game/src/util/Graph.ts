@@ -35,6 +35,24 @@ import {cloneDeep} from 'lodash';
         this.worlds = [];
     }
 
+    /**
+     * Determine whether this graph is identical to the passed one
+     */
+    equals(graph: Graph): boolean {
+        if(this.get_V() != graph.get_V()) { return false; }
+        if(this.get_E() != graph.get_E()) { return false; }
+        for(let i=0; i<this.get_V(); i++) {
+            let world_edges = graph.worlds[i].get_edges();
+            let edges = this.worlds[i].get_edges();
+            if(world_edges.length != edges.length) { return false; }
+            for(let j=0; j<world_edges.length; j++) {
+                if(world_edges[j][0].index != edges[j][0].index) { return false; }
+                if(world_edges[j][1] != edges[j][1]) { return false; }
+            }
+        }
+        return true;
+    }
+
     get_world(index: integer): World {
         // TODO: guard index out of bounds
         return cloneDeep(this.worlds[index]);

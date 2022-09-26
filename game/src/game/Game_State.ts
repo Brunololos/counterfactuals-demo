@@ -1,5 +1,5 @@
 import { Graph, World } from "../util/Graph"
-import { Formula } from "../util/Cf_Logic";
+import { Formula } from "./Cf_Logic";
 import { Player, State_Mode, Player_Abbreviations, State_Mode_Abbreviations } from "../util/Game_Utils"
 import {cloneDeep} from 'lodash';
 
@@ -55,6 +55,17 @@ export class Game_State {
         return new Game_State(new_mode, this.get_graph(), new_supposition, new_current_world, new_active_player, this.atoms, new_delim_world);
     }
 
+    equals(state: Game_State): boolean {
+        if(this.mode != state.get_mode()) { return false; }
+        if(!this.similarity_graph.equals(state.get_graph())) { return false; }
+        if(!this.supposition.compare(state.get_formula())) { return false; }
+        if(this.current_world != state.get_current_world().index) { return false; }
+        if(this.active_player != state.get_active_player()) { return false; }
+        if(JSON.stringify(this.atoms) != JSON.stringify(state.get_atoms())) { return false; }  // TODO: Array comparison could be done more efficiently
+        if(this.mode == State_Mode.Counterfactual && this.delim_world != state.get_delim_world().index) { return false; }
+        return true;
+    }
+
     get_mode(): State_Mode {
         return this.mode;
     }
@@ -89,4 +100,7 @@ export class Game_State {
         return this.r;
     }
 
+    to_string(): string {   // Doesnt incorporate Graph information
+        return "("+State_Mode[this.mode]+", "+this.supposition.to_string()+", "+this.current_world+", "+Player[this.active_player]+", "+this.delim_world+")";
+    }
 }

@@ -27,11 +27,11 @@ export class Game_Controller {
                 return [Game_Turn_Type.Defenders_Resolution, def_moves]
 
             case def_moves.length == 0 && att_moves.length > 1:
-                att_move = Attacker_AI.choose_move(cloneDeep(this.state), att_moves);
+                att_move = Attacker_AI.choose_blunderscore_move(cloneDeep(this.state), att_moves, this.rules_controller);
                 return [Game_Turn_Type.Attackers_Resolution, [att_move[0]], att_move[1]];
 
             case def_moves.length == 0 && att_moves.length == 1:
-                att_move = Attacker_AI.choose_move(cloneDeep(this.state), att_moves);
+                att_move = Attacker_AI.choose_blunderscore_move(cloneDeep(this.state), att_moves, this.rules_controller);
                 return [Game_Turn_Type.Attackers_Resolution, [att_move[0]], att_move[1]];
 
             case def_moves.length == 0 && att_moves.length == 0:

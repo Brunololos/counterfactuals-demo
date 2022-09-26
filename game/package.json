@@ -30,6 +30,8 @@
   },
   "dependencies": {
     "loadsh": "^0.0.4",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "perlin-noise": "^0.0.1",
+    "phaser3-rex-plugins": "^1.1.73"
   }
 }

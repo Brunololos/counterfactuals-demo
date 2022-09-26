@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from "../util/Cf_Logic";
+import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from "./Cf_Logic";
 import { Player, State_Mode, Game_Turn_Type, Player_Abbreviations, State_Mode_Abbreviations } from "../util/Game_Utils"
 import { Game_State } from "./Game_State"
 
@@ -17,6 +17,7 @@ export class Rules_Controller {
         let is_negated_fact_known = (state: Game_State) => state.get_current_world().is_atom_known_true((state.get_formula().get_child("l") as Atom).value);
         let is_negated_fact_unknown = (state: Game_State) => !state.get_current_world().is_atom_known_true((state.get_formula().get_child("l") as Atom).value);
         let is_another_world_reachable = (state: Game_State) => (state.get_current_world().get_edge_count() > 0);
+        let is_another_world_reachable_within_delim = (state: Game_State) => (state.get_current_world().get_edge_count() > 0 && state.get_current_world().get_edge_list().some((value) => value[1] <= state.get_radius()));
 
         this.rules.push(Rule.create("Attacker_Victory", "Res", "a", "_|_"));
         this.rules.push(Rule.create("Defender_Victory", "Res", "a", "~_|_"));
@@ -56,13 +57,13 @@ export class Rules_Controller {
         this.rules.push(Rule.create("Attacker_Phi_Evaluation", "Cf", "a", "? |_|-> ?", apply_attacker_phi_eval));
 
         let apply_attacker_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Disjunction(new Negation(state.get_formula().get_child("l")), state.get_formula().get_child("r")), "d", delim_world);
-        this.rules.push(Rule.create("Attacker_World_Choice", "Cf", "a", "? |_|-> ?", apply_attacker_world_choice, undefined, true));
+        this.rules.push(Rule.create("Attacker_World_Choice", "Cf", "a", "? |_|-> ?", apply_attacker_world_choice, is_another_world_reachable_within_delim, true));
 
         let apply_vacuous_truth_claim = (state: Game_State) => state.configure("Vac", state.get_formula().get_child("l"), "a");
         this.rules.push(Rule.create("Defender_Vacuous_Truth_Claim", "Res", "d", "? |_|-> ?", apply_vacuous_truth_claim));
 
         let apply_attacker_vac_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Negation(state.get_formula()), "a/d", delim_world);
-        this.rules.push(Rule.create("Attacker_Vacuous_World_Choice", "Vac", "a", "?", apply_attacker_vac_world_choice, undefined, true));
+        this.rules.push(Rule.create("Attacker_Vacuous_World_Choice", "Vac", "a", "?", apply_attacker_vac_world_choice, is_another_world_reachable, true));
 
         let apply_attacker_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "d", undefined, delim_world);
         this.rules.push(Rule.create("Attacker_Sphere_Selection", "Res", "a", "~(? |_|-> ?)", apply_attacker_sphere_selection, is_another_world_reachable, true));
@@ -71,13 +72,13 @@ export class Rules_Controller {
         this.rules.push(Rule.create("Defender_Phi_Evaluation", "Cf", "d", "~(? |_|-> ?)", apply_defender_phi_eval));
 
         let apply_defender_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Negation(new Disjunction(new Negation(state.get_formula().get_child("ll")), state.get_formula().get_child("lr"))), "a", delim_world);
-        this.rules.push(Rule.create("Defender_World_Choice", "Cf", "d", "~(? |_|-> ?)", apply_defender_world_choice, undefined, true));
+        this.rules.push(Rule.create("Defender_World_Choice", "Cf", "d", "~(? |_|-> ?)", apply_defender_world_choice, is_another_world_reachable_within_delim, true));
 
         let apply_attacker_vacuous_truth_claim = (state: Game_State) => state.configure("Vac", state.get_formula().get_child("ll"), "d");
         this.rules.push(Rule.create("Attacker_Vacuous_Truth_Claim", "Res", "a", "~(? |_|-> ?)", apply_attacker_vacuous_truth_claim));
 
         let apply_defender_vac_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", state.get_formula(), "a/d", delim_world);
-        this.rules.push(Rule.create("Defender_Vacuous_World_Choice", "Vac", "d", "?", apply_defender_vac_world_choice, undefined, true));
+        this.rules.push(Rule.create("Defender_Vacuous_World_Choice", "Vac", "d", "?", apply_defender_vac_world_choice, is_another_world_reachable, true));
     }
 
     /**
@@ -115,6 +116,52 @@ export class Rules_Controller {
         return this.applicable(state).filter((rule: Rule) => rule.get_player() == Player.Attacker || rule.get_player() == Player.Either);
     }
 
+    /**
+     * Calculate all possible next game states
+     * @param state State to determine successorstates to
+     * @param moves An explicit selection of moves to be applicable
+     * @returns A list of successor game states
+     */
+    next_game_states(state: Game_State, moves?: Rule[]): Game_State[] {
+        moves = moves ?? this.defender_moves(state);
+        moves = (moves == undefined || moves.length == 0) ? this.attacker_moves(state) : moves;
+
+        let successorstates: Game_State[] = [];
+        let move;
+        let next;
+        for(let i=0; i<moves.length; i++) {
+            move = moves[i];
+            if(move.get_world_input_requirement()) {
+                let g = state.get_graph();
+                let worlds = g.get_V();
+                for(let j=0; j<worlds; j++) {
+                    let possible = false;
+                    switch(true) {
+                        case move.get_name() == Rules.Defender_Sphere_Selection:
+                        case move.get_name() == Rules.Attacker_Sphere_Selection:
+                        case move.get_name() == Rules.Defender_Vacuous_World_Choice:
+                        case move.get_name() == Rules.Attacker_Vacuous_World_Choice:
+                            possible = state.get_current_world().is_adj(j);
+                            break;
+                        case move.get_name() == Rules.Defender_World_Choice:
+                        case move.get_name() == Rules.Attacker_World_Choice:
+                            possible = state.get_current_world().is_adj(j) && state.get_current_world().get_edge(j)[1] <= state.get_radius();
+                            break;
+                        default:
+                            break
+                    }
+                    if(possible) {
+                        next = move.apply(cloneDeep(state), j);
+                        successorstates.push(next);
+                    }
+                }
+            } else {
+                next = move.apply(cloneDeep(state));
+                successorstates.push(next);
+            }
+        }
+        return successorstates;
+    }
 }
 
 export class Rule {
@@ -173,6 +220,10 @@ export class Rule {
 
     get_world_input_requirement(): boolean {
         return this.requires_world_input;
+    }
+
+    get_special_condition(): (state: Game_State) => boolean {
+        return this.special;
     }
 
     is_applicable(state: Game_State): boolean {

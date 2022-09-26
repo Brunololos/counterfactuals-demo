@@ -1,3 +1,5 @@
+import Perlin from 'phaser3-rex-plugins/plugins/perlin.js';
+
 export let text_style = { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' };
 
 export enum Game_Graphics_Mode {
@@ -260,6 +262,54 @@ export function lum(color: number): number {
     min = (b < min) ? b : min;
 
     return (max + min)/2;
+}
+
+export function create_cosmic_nebula_texture(scene: Phaser.Scene, width: number, height: number, texture_key: string) {
+  let canvas_texture = scene.game.textures.createCanvas(texture_key, width, height);
+  let canvas = canvas_texture.getSourceImage();
+  let context = (canvas as HTMLCanvasElement).getContext('2d');
+  let image_data = context!.getImageData(0, 0, canvas.width, canvas.height);
+  let pixel_array = image_data.data;
+
+  let noise = new Perlin(Math.random());
+
+  for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width; j++) {
+      let x = j * 4;
+      let y = i * width * 4;
+      let index = x + y;
+
+      let data = pixel_array;
+
+      let r = 0;
+      let g = 0;
+      let b = 0;
+      /* for(let k=0; k<8; k++) {
+        r += (noise.perlin3(j/width, i/height, k/8)+1)*16;
+        g += (noise.perlin3((j+25)/width, i/height, k/8)+1)*16;
+        b += (noise.perlin3((j-25)/width, i/height, k/8)+1)*16;
+      } */
+      let x_dist = Math.abs(width/2 - j);
+      let y_dist = Math.abs(height/2 - i);
+      let center_dist = Math.sqrt((x_dist*x_dist)/4 + (y_dist*y_dist)/4);
+      center_dist = Math.sqrt((x_dist*x_dist)/4 + (y_dist*y_dist)/4)         / Math.sqrt(((width/2)*(width/2))/4 + ((height/2)*(height/2))/4);
+      center_dist = ((x_dist*x_dist + y_dist*y_dist)/4)        / (((width/2)*(width/2) + (height/2)*(height/2))/4);
+      center_dist = 1 - ((x_dist*x_dist + y_dist*y_dist)/4) / (((width/3)*(width/3) + (height/3)*(height/3))/4);
+      r = 64 + (noise.perlin2(j/width, i/height)+1)*63 + 64*center_dist;
+      g = 64 + (noise.perlin2((j+25)/width, i/height)+1)*64 + 64*center_dist;
+      b = 64 + (noise.perlin2((j-25)/width, i/height)+1)*64 + 64*center_dist;
+      /* r = (noise.perlin2(j/width, i/height)+1)*128;
+      g = (noise.perlin2((j+25)/width, i/height)+1)*128;
+      b = (noise.perlin2((j-25)/width, i/height)+1)*128; */
+
+      data[index] = r;
+      data[index + 1] = g;
+      data[index + 2] = b;
+      data[index + 3] = 255;
+    }
+  }
+  context!.putImageData(image_data, 0, 0);
+  (canvas_texture as Phaser.Textures.CanvasTexture).refresh();
 }
 
 export let Rule_Descriptions  = [

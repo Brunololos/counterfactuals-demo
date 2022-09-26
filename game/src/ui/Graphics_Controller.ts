@@ -3,7 +3,7 @@ import { Rule, Rules, Rules_Controller } from "../game/Game_Rules";
 import { Game_Turn_Type, State_Mode } from "../util/Game_Utils";
 import { Supposition_Panel } from "./Supposition_Panel";
 import { Utils } from "../util/Utils";
-import { Bottom, Cf_Would, Disjunction, Formula } from "../util/Cf_Logic";
+import { Bottom, Cf_Would, Disjunction, Formula } from "../game/Cf_Logic";
 import { Game_State } from "../game/Game_State";
 import { Choice } from "./Choice";
 import { Game_Graphics_Mode, Graph_Graphics_Mode, Rule_Descriptions, text_style } from "../util/UI_Utils";
@@ -43,6 +43,10 @@ export class Graphics_Controller {
         this.sup_panel = new Supposition_Panel(scene, w/2, h - 100);
         this.graph_graphics = new Graph_Graphics(scene, w/2, (h - 200)/2, state, state.get_current_world().index, [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150], [300, -150], [237, 203]], state.get_graph().get_edge_list());
 
+        //scene.add.sprite(w/2, h/2, "space").setDisplaySize(w, h).setAlpha(0.5);
+        //scene.add.sprite(w/2, h - w/2, "space").setScale(w/3840, w/3840).setAlpha(0.5);
+        //scene.add.sprite(w/2, h - w/2, "space").setScale(w/1600, w/1600).setAlpha(1);
+        scene.add.sprite(w/2, h/2, "space").setDisplaySize(w, h).setDepth(-1);
         this.formula = new Formula_Graphics(scene, w/2, h - 100, state.get_formula(), state.get_atoms());
         this.choice = new Choice(scene, state);
 
@@ -148,11 +152,11 @@ export class Graphics_Controller {
                 break;
             case Game_Graphics_Mode.Counterfactual_Choice:
                 this.caption.text = "Claim vacuous truth (left) or choose a sphere of accessibility (right)";
-                this.choice.set_cf(state, option2, option1, this.formula.get_embedding_depth()); // TODO: Switching option1/2 so, that the vacuous truth claim is left and sphere selection right
+                this.choice.set_cf(state, option2, option1, this.formula.get_embedding_depth(), state.get_current_world().get_edges()[0][0].index); // TODO: Switching option1/2 so, that the vacuous truth claim is left and sphere selection right
                 break;
             case Game_Graphics_Mode.Negated_Counterfactual_Choice:
                 this.caption.text = "Evaluate the sphere delimiting world (left) or choose a reachable world to disprove the counterfactual (right)";
-                this.choice.set_cf(state, option1, option2, this.formula.get_embedding_depth());
+                this.choice.set_cf(state, option1, option2, this.formula.get_embedding_depth(), state.get_current_world().get_edges()[0][0].index);
                 break;
         }
         this.ready = false;
@@ -292,6 +296,7 @@ export class Graphics_Controller {
     static load_sprites(scene: Phaser.Scene) {
         Graph_Graphics.load_sprites(scene);
         Formula_Graphics.load_sprites(scene);
+        Supposition_Panel.load_sprites(scene);
     }
 
     static configure_sprites(scene: Phaser.Scene) {

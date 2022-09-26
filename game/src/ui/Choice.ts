@@ -2,7 +2,7 @@ import { Rule, Rules } from "../game/Game_Rules";
 import { Game_State } from "../game/Game_State";
 import GameScene from "../scenes/Game";
 import Base_Scene from "../util/Base_Scene";
-import { Formula } from "../util/Cf_Logic";
+import { Formula } from "../game/Cf_Logic";
 import { Game_Graphics_Mode, text_style } from "../util/UI_Utils";
 import { Choice_Animations } from "./animations/Choice_Animations";
 import { Formula_Graphics, Formula_Graphics_Element } from "./Formula_Graphics";
@@ -187,6 +187,7 @@ export class Choice {
     }
 
     resize() {
+        // TODO: resets choice-option position in World_Choice Mode
         let w = (this.scene as Base_Scene).get_width();
         let h = (this.scene as Base_Scene).get_height();
         let w1 = this.option1.get_width();

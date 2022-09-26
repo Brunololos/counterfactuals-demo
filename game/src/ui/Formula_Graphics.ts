@@ -1,6 +1,6 @@
 import { Rules } from "../game/Game_Rules";
 import Base_Scene from "../util/Base_Scene";
-import { Atom, Bottom, Cf_Would, Disjunction, Formula, Negation } from "../util/Cf_Logic";
+import { Atom, Bottom, Cf_Would, Disjunction, Formula, Negation } from "../game/Cf_Logic";
 import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode, hueshift_texture } from "../util/UI_Utils";
 import { Formula_Animations } from "./animations/Formula_Animations";
 
@@ -33,19 +33,6 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("negation", "assets/Negation.png");
         scene.load.image("disjunction", "assets/Disjunction.png");
         scene.load.image("cf_would", "assets/Cf_Would.png");
-
-        /*scene.load.image("bracket_open", "assets/Bracket_Opener.png");
-        scene.load.image("bracket_connect", "assets/Bracket_Connector.png");
-        scene.load.image("bracket_close", "assets/Bracket_Closer.png");
-        scene.load.image("bracket_compact", "assets/Bracket_Compact.png");
-
-        scene.load.image("bracket_open_fill", "assets/Bracket_Opener_Filled.png");
-        scene.load.image("bracket_connect_fill", "assets/Bracket_Connector_Filled.png");
-        scene.load.image("bracket_close_fill", "assets/Bracket_Closer_Filled.png");
-        scene.load.image("bracket_compact_fill", "assets/Bracket_Compact_Filled.png");
-
-        scene.load.image("bracket_opened", "assets/Bracket_Open.png");
-        scene.load.image("bracket_closed", "assets/Bracket_Closed.png");*/
 
         scene.load.image("fill_open", "assets/Fill_Open.png");
         scene.load.image("fill_connect", "assets/Fill_Connect.png");
@@ -219,10 +206,11 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
 
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 - BRACKET_WIDTH, this.y, "fill_open"+suff));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 + BRACKET_WIDTH, this.y, "fill_closed"+suff));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 - BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));//.setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 + BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
         }
+        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
 
     get_child(path: string): Formula_Graphics_Element {
@@ -306,10 +294,11 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
 
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 - BRACKET_WIDTH, this.y, "fill_open"+suff));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 + BRACKET_WIDTH, this.y, "fill_closed"+suff));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 - BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH)); //.setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 + BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
         }
+        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
 
     get_child(path: string): Formula_Graphics_Element {
@@ -383,6 +372,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     constructor(scene: Base_Scene, x: number, y: number, subject: Formula_Graphics_Element) {
         super(scene, x, y, "negation");
         this.subject = subject;
+        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
 
     get_child(path: string): Formula_Graphics_Element {
@@ -442,6 +432,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
         let index = atoms.findIndex((curr) => curr == value);
         super(scene, x, y, (index != -1) ? "atom_" + index : "atom");
         this.value = value;
+        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
 
     get_child(path: string): Formula_Graphics_Element {
@@ -488,6 +479,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
      */
     constructor(scene: Base_Scene, x: number, y: number) {
         super(scene, x, y, "false");
+        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
 
     get_child(path: string): Formula_Graphics_Element {
@@ -534,6 +526,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
      */
     constructor(scene: Base_Scene, x: number, y: number) {
         super(scene, x, y, "true");
+        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
 
     get_child(path: string): Formula_Graphics_Element {

@@ -1,13 +1,14 @@
 import Phaser, { Game } from 'phaser';
 import { Graph, World } from '../util/Graph';
-import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from '../util/Cf_Logic';
+import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from '../game/Cf_Logic';
 import { Rule, Rules, Rules_Controller } from '../game/Game_Rules';
 import { Game_State } from '../game/Game_State';
 import { Game_Controller } from '../game/Game_Controller';
 import { Game_Turn_Type } from '../util/Game_Utils';
 import { Graphics_Controller } from '../ui/Graphics_Controller';
-import { Game_Graphics_Mode } from '../util/UI_Utils';
+import { create_cosmic_nebula_texture, duplicate_texture, dye_texture, Game_Graphics_Mode } from '../util/UI_Utils';
 import Base_Scene from '../util/Base_Scene';
+import { Star } from '../pure_graphics/Star';
 
 export default class Game_Scene extends Base_Scene {
 
@@ -22,12 +23,23 @@ export default class Game_Scene extends Base_Scene {
 
   preload() {
     this.setup();
-    
+    create_cosmic_nebula_texture(this, 1600, 1600, "space");
+    dye_texture(this, "space", 0x4C6793);
     Graphics_Controller.load_sprites(this);
+    Star.load_sprites(this);
   }
 
   create() {
     Graphics_Controller.configure_sprites(this);
+    Star.configure_sprites(this);
+
+    let w = this.get_width();
+    let h = this.get_height();
+    let stars = new Phaser.GameObjects.Container(this, this.get_width()/2, this.get_height()/2);
+    for(let i=0; i<750; i++) { // TODO: Determine amount of stars to spawn by target star density on canvas
+      new Star(this, Math.random()*w - (w/2), Math.random()*h - (h/2)).add_to_container(stars);
+    }
+    this.children.add(stars);
 
     let atoms = [
       "Milch ist ein Gift",
@@ -56,10 +68,18 @@ export default class Game_Scene extends Base_Scene {
     G.add_world(atoms.slice(0, 5));
     G.add_world([]);
 
-    G.add_edge(0, 1, 4);
-    G.add_edge(0, 2, 6);
-    G.add_edge(0, 3, 7);
-    G.add_edge(0, 4, 8);
+    G.add_edge(0, 0, 0);
+    G.add_edge(1, 1, 0);
+    G.add_edge(2, 2, 0);
+    G.add_edge(3, 3, 0);
+    G.add_edge(4, 4, 0);
+    G.add_edge(5, 5, 0);
+    G.add_edge(6, 6, 0);
+
+    G.add_edge(0, 1, 2);
+    G.add_edge(0, 2, 4);
+    G.add_edge(0, 3, 5);
+    G.add_edge(0, 4, 6);
 
     G.add_edge(0, 6, 6);
     G.add_edge(1, 2, 3);
@@ -83,8 +103,9 @@ export default class Game_Scene extends Base_Scene {
     "~(((A v B) v (A v B)) v ((A v B) v (A v B)))"
     "~((~(A v B)) v ~((A v B) v ~(A v B)))"
     "~((A v ~_|_) |_|-> (C v D))"
+    "~(~(_|_ v ~_|_) v ~(~_|_ v (_|_ v _|_)))"
     */
-    var state = Game_State.create("Res", G, "~(~(~A v B) |_|-> C)", atoms, 0, "a/d");
+    var state = Game_State.create("Res", G, "~(A v ~B) |_|-> C", atoms, 0, "a/d");
     this.starting_state = state;
     this.game_controller = new Game_Controller(state);
     this.graphics_controller = new Graphics_Controller(this, state);

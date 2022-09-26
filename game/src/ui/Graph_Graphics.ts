@@ -50,6 +50,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
             let o = edges[i][0];
             let d = edges[i][1];
             let w = edges[i][2];
+            if(o == d) { continue; }
             let e = new Edge(scene, new Phaser.Math.Vector2(wps[o][0], wps[o][1]), new Phaser.Math.Vector2(wps[d][0], wps[d][1]), w);
             e.add_to_container(this);
         }
@@ -148,9 +149,12 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
     }
 
     static load_sprites(scene: Phaser.Scene) {
-        scene.load.image("arrowhead", "assets/Arrowhead.png");
-        scene.load.image("arrowbody", "assets/Arrowbody.png");
-        scene.load.image("arrowtail", "assets/Arrowtail.png");
+        for(let i=1; i<7; i++) {
+        scene.load.image("arrowhead_"+i.toString(), "assets/arrows/Arrowhead_"+i.toString()+".png");
+        scene.load.image("arrowbody_"+i.toString(), "assets/arrows/Arrowbody_"+i.toString()+".png");
+        scene.load.image("arrowtail_"+i.toString(), "assets/arrows/Arrowtail_"+i.toString()+".png");
+        }
+        scene.load.image("arrowwave", "assets/Arrowwave.png");
         scene.load.image("rocket", "assets/Rocket_Icon_Wide_Glow.png");
         scene.load.image("world_shadow", "assets/Earth_Small.png");
     }
@@ -206,25 +210,25 @@ export class Edge {
         let arrowbody_len = arrow_len - 50 /* ARROWHEAD + ARROWTAIL WIDTH */;
         let arrowhead_offset = delta.setLength(arrow_len/2  - /* HALF OF ARROWHEAD WIDTH */12.5);
 
-        this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead");
-        this.arrowbody = new Phaser.GameObjects.Sprite(scene, midpoint.x, midpoint.y, "arrowbody");
-        this.arrowtail = new Phaser.GameObjects.Sprite(scene, midpoint.x - arrowhead_offset.x, midpoint.y - arrowhead_offset.y, "arrowtail");
+        this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead_"+weight.toString());
+        this.arrowbody = new Phaser.GameObjects.Sprite(scene, midpoint.x, midpoint.y, "arrowbody_"+weight.toString());
+        this.arrowtail = new Phaser.GameObjects.Sprite(scene, midpoint.x - arrowhead_offset.x, midpoint.y - arrowhead_offset.y, "arrowtail_"+weight.toString());
 
         this.arrowhead.setRotation(delta.angle());
         this.arrowbody.setScale(arrowbody_len/this.arrowbody.width, 1);
         this.arrowbody.setRotation(delta.angle());
         this.arrowtail.setRotation(delta.angle());
 
-        // TODO: Find better way to conway weight
+        // TODO: Find better way to convey weight
         // TODO: Also give a more exact edge-weight quantity, when hovering over the arrow
-        let vis = 0.5 + 0.5*(1/weight);
+        let vis = 0.55;//0.5 + 0.5*(1/weight);
         this.arrowhead.setAlpha(vis);
         this.arrowbody.setAlpha(vis);
         this.arrowtail.setAlpha(vis);
 
-        this.arrowhead.setScale(1, vis);
+        /* this.arrowhead.setScale(1, vis);
         this.arrowbody.setScale(arrowbody_len/this.arrowbody.width, vis);
-        this.arrowtail.setScale(1, vis);
+        this.arrowtail.setScale(1, vis); */
 
         let label_width = 10;
         let label_height = 11;
@@ -269,12 +273,11 @@ export class Edge {
                 break;
         }
         let d = (a/(Math.PI/4)) * (Math.PI/2);
-        let label_offset_amount = anc/Math.cos(a); // NOTE: The sin( ___ + ...) was a feels right addition
-        console.log(label_offset_amount);
+        let label_offset_amount = anc/Math.cos(a);
 
         label_offset.setLength(label_offset_amount);
         let label_pos = midpoint.clone().add(label_offset);
-        let s = scene as Base_Scene;
+        //let s = scene as Base_Scene;
         //scene.add.ellipse(midpoint.x + s.get_width()/2, midpoint.y + (s.get_height() - 200)/2, 5, 5, 0xff0000);
         //scene.add.ellipse(label_pos.x + s.get_width()/2, label_pos.y + (s.get_height() - 200)/2, 5, 5, 0xff0000);
         this.label = new Phaser.GameObjects.Text(scene, label_pos.x, label_pos.y - 2.5, weight.toString(), text_style);
@@ -288,6 +291,7 @@ export class Edge {
         container.add(this.label);
     }
 }
+
 export class Striped_Edge {
     private arrowhead: Phaser.GameObjects.Sprite;
     private arrowbody: Phaser.GameObjects.Sprite[] = [];
@@ -329,5 +333,59 @@ export class Striped_Edge {
             container.add(this.arrowbody[i]);
         }
         container.add(this.arrowtail);
+    }
+}
+
+export class Stripe_Edge {
+    private arrowhead: Phaser.GameObjects.Sprite;
+    private arrowbody: Phaser.GameObjects.Sprite[] = [];
+
+    // Origin and destination coords
+    constructor(scene: Phaser.Scene, origin: Phaser.Math.Vector2, destination: Phaser.Math.Vector2, weight: integer) {
+        let delta = new Phaser.Math.Vector2(destination.x - origin.x, destination.y - origin.y);
+        let midpoint = origin.clone().lerp(destination, 0.5);
+        let arrow_len = delta.length() - WORLD_WIDTH;
+
+        let arrowbody_len = arrow_len - 50 /* ARROWHEAD + ARROWTAIL WIDTH */;
+        let arrowbody_midsection_len = arrowbody_len - EDGE_STRIPE_WIDTH*length*2 - EDGE_STRIPE_WIDTH; /* ARROWBODY - MIDSECTION*/;
+        let arrowhead_offset = delta.setLength(arrow_len/2  - /* HALF OF ARROWHEAD WIDTH */12.5);
+
+        let stripe_width = 5 + (weight+1)*1.5;
+        let stripe_offset = delta.clone().setLength(stripe_width*2);
+        let arrowbody_midsection_offset = delta.clone().setLength(arrowbody_len/2 + stripe_width/2);
+
+        this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead");
+
+        //this.arrowbody.push(new Phaser.GameObjects.Sprite(scene, midpoint.x, midpoint.y, "arrowbody").setDisplaySize(arrow_len, 300).setRotation(delta.angle()).setAlpha(0.2));
+        let wave_origin = origin.clone().add(delta.clone().setLength(WORLD_WIDTH/2));
+        let wave_destination = destination.clone().subtract(delta.clone().setLength(WORLD_WIDTH/2));
+        for(let i=0; i<(arrow_len + 50)/50/* weight */; i++) {
+            let wave = new Phaser.GameObjects.Sprite(scene, wave_origin.x, wave_origin.y, "arrowwave").setDisplaySize(10, 15/*25, 25*/).setRotation(delta.angle()).setAlpha(0.5);
+            this.arrowbody.push(wave);
+            scene.add.tween({
+                targets: wave,
+                x: wave_destination.x,
+                y: wave_destination.y,
+                duration: 15000,
+                ease: 'Linear',
+                yoyo: false,
+                repeat: -1,
+                delay: i*2000*(arrow_len/50)
+            });
+        }
+        let stripepoint = origin.clone().add(delta.clone().setLength(WORLD_WIDTH/2 - stripe_width));
+        for(let i=0; i < ((arrowbody_len + 25)/(stripe_width*2)); i++) {
+            stripepoint = stripepoint.add(stripe_offset.clone());
+            this.arrowbody.push(new Phaser.GameObjects.Sprite(scene, stripepoint.x, stripepoint.y, "arrowbody").setDisplaySize(stripe_width*2, 50).setRotation(delta.angle()));
+        }
+
+        this.arrowhead.setRotation(delta.angle());
+    }
+
+    add_to_container(container: Phaser.GameObjects.Container) {
+        container.add(this.arrowhead);
+        for(let i=0; i<this.arrowbody.length; i++) {
+            container.addAt(this.arrowbody[i], 0);
+        }
     }
 }
