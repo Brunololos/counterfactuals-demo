@@ -1,7 +1,9 @@
 import Phaser, { Game } from 'phaser';
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 export default abstract class Base_Scene extends Phaser.Scene {
   private canvas!: HTMLCanvasElement;
+    rexUI: RexUIPlugin;
 
   constructor(identifier: string) {
     super(identifier);

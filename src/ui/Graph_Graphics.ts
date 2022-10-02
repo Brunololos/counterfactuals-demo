@@ -1,4 +1,6 @@
+import { Vector } from "matter";
 import { Game_State } from "../game/Game_State";
+import { Star } from "../graphics/Star";
 import Base_Scene from "../util/Base_Scene";
 import { Graph } from "../util/Graph";
 import { duplicate_texture, dye_texture, fill_texture, Graph_Graphics_Mode, text_style } from "../util/UI_Utils";
@@ -149,11 +151,18 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
     }
 
     static load_sprites(scene: Phaser.Scene) {
-        for(let i=1; i<7; i++) {
-        scene.load.image("arrowhead_"+i.toString(), "assets/arrows/Arrowhead_"+i.toString()+".png");
-        scene.load.image("arrowbody_"+i.toString(), "assets/arrows/Arrowbody_"+i.toString()+".png");
-        scene.load.image("arrowtail_"+i.toString(), "assets/arrows/Arrowtail_"+i.toString()+".png");
-        }
+        /* for(let i=1; i<12; i++) {
+            scene.load.image("arrowhead_"+i.toString(), "assets/arrows/Arrowhead_"+i.toString()+".png");
+            scene.load.image("arrowbody_"+i.toString(), "assets/arrows/Arrowbody_"+i.toString()+".png");
+            scene.load.image("arrowtail_"+i.toString(), "assets/arrows/Arrowtail_"+i.toString()+".png");
+        } */
+        scene.load.image("arrowhead_10", "assets/arrows/Arrowhead_10.png");
+        scene.load.image("arrowbody_10", "assets/arrows/Arrowbody_10.png");
+        scene.load.image("arrowtail_10", "assets/arrows/Arrowtail_10.png");
+        scene.load.image("marker", "assets/arrows/Ruler_Marker_3.png");
+        scene.load.image("bat1c", "assets/Battery_1C.png");
+        scene.load.image("bat2c", "assets/Battery_2C.png");
+        scene.load.image("bat3c", "assets/Battery_3C.png");
         scene.load.image("arrowwave", "assets/Arrowwave.png");
         scene.load.image("rocket", "assets/Rocket_Icon_Wide_Glow.png");
         scene.load.image("world_shadow", "assets/Earth_Small.png");
@@ -198,6 +207,8 @@ export class Edge {
     private arrowhead: Phaser.GameObjects.Sprite;
     private arrowbody: Phaser.GameObjects.Sprite;
     private arrowtail: Phaser.GameObjects.Sprite;
+    private stars: Star[] = [];
+    private markers: Phaser.GameObjects.Sprite[] = [];
 
     private label: Phaser.GameObjects.Text;
 
@@ -210,9 +221,12 @@ export class Edge {
         let arrowbody_len = arrow_len - 50 /* ARROWHEAD + ARROWTAIL WIDTH */;
         let arrowhead_offset = delta.setLength(arrow_len/2  - /* HALF OF ARROWHEAD WIDTH */12.5);
 
-        this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead_"+weight.toString());
+        this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead_10");
+        this.arrowbody = new Phaser.GameObjects.Sprite(scene, midpoint.x, midpoint.y, "arrowbody_10");
+        this.arrowtail = new Phaser.GameObjects.Sprite(scene, midpoint.x - arrowhead_offset.x, midpoint.y - arrowhead_offset.y, "arrowtail_10");
+        /* this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead_"+weight.toString());
         this.arrowbody = new Phaser.GameObjects.Sprite(scene, midpoint.x, midpoint.y, "arrowbody_"+weight.toString());
-        this.arrowtail = new Phaser.GameObjects.Sprite(scene, midpoint.x - arrowhead_offset.x, midpoint.y - arrowhead_offset.y, "arrowtail_"+weight.toString());
+        this.arrowtail = new Phaser.GameObjects.Sprite(scene, midpoint.x - arrowhead_offset.x, midpoint.y - arrowhead_offset.y, "arrowtail_"+weight.toString());*/
 
         this.arrowhead.setRotation(delta.angle());
         this.arrowbody.setScale(arrowbody_len/this.arrowbody.width, 1);
@@ -282,13 +296,46 @@ export class Edge {
         //scene.add.ellipse(label_pos.x + s.get_width()/2, label_pos.y + (s.get_height() - 200)/2, 5, 5, 0xff0000);
         this.label = new Phaser.GameObjects.Text(scene, label_pos.x, label_pos.y - 2.5, weight.toString(), text_style);
         this.label.setOrigin(0.5, 0.5);
+
+        // Setup stars
+        let pos = midpoint.clone().subtract(delta.clone().setLength(arrow_len/2 - 12.5));
+        let inc = delta.clone().setLength(arrowbody_len/weight);
+        /* for(let i=0; i<weight; i++) {
+            pos.add(inc);
+            //let star = new Star(scene, pos.x, pos.y, 2.5);
+            //this.stars.push(star);
+            //this.markers.push(new Phaser.GameObjects.Sprite(scene, pos.x, pos.y, "marker").setRotation(delta.angle()));
+        } */
+        let bats = Math.ceil(weight/3);
+        pos = midpoint.clone().add(label_offset).subtract(delta.clone().setLength(((bats - 1)/2)*20));
+        inc = new Phaser.Math.Vector2(1, 0).setLength(20);//delta.clone().setLength(arrowbody_len/bats);
+        for(let i=0; i<bats; i++) {
+            switch(true) {
+                case weight - i*3 >= 3:
+                    this.markers.push(new Phaser.GameObjects.Sprite(scene, pos.x, pos.y, "bat3c")/* .setScale(0.75, 0.75) */);
+                    break;
+                case weight - i*3 == 2:
+                    this.markers.push(new Phaser.GameObjects.Sprite(scene, pos.x, pos.y, "bat2c")/* .setScale(0.75, 0.75) */);
+                    break;
+                case weight - i*3 == 1:
+                    this.markers.push(new Phaser.GameObjects.Sprite(scene, pos.x, pos.y, "bat1c")/* .setScale(0.75, 0.75) */);
+                    break;
+            }
+            pos.add(inc);
+        }
     }
 
     add_to_container(container: Phaser.GameObjects.Container) {
         container.add(this.arrowhead);
         container.add(this.arrowbody);
         container.add(this.arrowtail);
-        container.add(this.label);
+        for(let i=0; i<this.stars.length; i++) {
+            this.stars[i].add_to_container(container);
+        }
+        for(let i=0; i<this.markers.length; i++) {
+           container.add(this.markers[i]);
+        }
+        //container.add(this.label);
     }
 }
 

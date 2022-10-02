@@ -34,7 +34,7 @@ export class Choice {
     constructor(scene: Phaser.Scene, state?: Game_State, option1?: Rule, option2?: Rule, embedding_depth: integer = 0) {
         this.scene = scene;
         this.x = (scene as GameScene).get_width()/2;
-        this.y = (scene as GameScene).get_height() - 100;
+        this.y = (scene as GameScene).get_height() - 105;
 
         let x = this.x;
         let y = this.y;

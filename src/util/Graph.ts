@@ -6,8 +6,16 @@ import {cloneDeep} from 'lodash';
  export class Graph {
     private worlds: World[];
 
-    constructor() {
+    constructor(worlds?: string[][], edges?: [number, number, number][]) {
         this.worlds = [];
+
+        for(let i=0; worlds != undefined && i < worlds.length; i++) {
+            this.add_world(cloneDeep(worlds[i]));
+        }
+        
+        for(let i=0; edges != undefined && i < edges.length; i++) {
+            this.add_edge(edges[i][0], edges[i][1], edges[i][2]);
+        }
     }
 
     /**
