@@ -317,11 +317,14 @@ export class Graphics_Controller {
         Star.load_sprites(scene);
         create_cosmic_nebula_texture(scene, 1600, 1600, "space");
         dye_texture(scene, "space", 0x4C6793);
+
+        scene.load.image("back", "assets/Slant_Button.png");
     }
 
     static configure_sprites(scene: Phaser.Scene) {
         Formula_Graphics.configure_sprites(scene);
         Graph_Graphics.configure_sprites(scene);
         Star.configure_sprites(scene);
+        scene.add.existing(new Phaser.GameObjects.Sprite(scene, 500, 500, "back"));
     }
 }
