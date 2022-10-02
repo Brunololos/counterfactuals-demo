@@ -33,15 +33,8 @@ jobs:
         with:
           node-version: 16
       
-      - name: Install dependencies
-        uses: borales/actions-yarn@v3.0.0
-        with:
-          cmd: install
-          
-      - name: Build project
-        uses: borales/actions-yarn@v3.0.0
-        with:
-          cmd: build
+      - name: Build Project
+        run: yarn run build
         
       - name: Upload production-ready build files
         uses: actions/upload-artifact@v2
