@@ -4,18 +4,20 @@ import { duplicate_texture, dye_texture } from '../util/UI_Utils';
 const GLOW = ["red_glow", "blue_glow", "yellow_glow"];
 
 export class Star {
-    private scene;
-    private x;
-    private y;
+    private scene: Phaser.Scene;
+    private x: number;
+    private y: number;
+    private size: number;
     private core: Phaser.GameObjects.Sprite;
     private glow: Phaser.GameObjects.Sprite;
     private noise;
     private inc = 0;
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
+    constructor(scene: Phaser.Scene, x: number, y: number, size: number = 1) {
         this.scene = scene;
         this.x = x;
         this.y = y;
+        this.size = size;
         this.core = new Phaser.GameObjects.Sprite(scene, x, y, "star").setDisplaySize(7.5, 7.5).setAlpha(0.5);
         this.glow = new Phaser.GameObjects.Sprite(scene, x, y, GLOW[Math.floor(Math.random()*GLOW.length)]).setDisplaySize(8.5, 8.5).setAlpha(0.25);
         this.noise = new Perlin(Math.random());
@@ -38,7 +40,7 @@ export class Star {
 
         let offset = Math.random()*500;
         for(let i=0; i<states; i++) {
-            let scale = 0.2 + 0.15*Math.random();
+            let scale = (0.2 + 0.15*Math.random())*this.size;
             let duration = 400 + Math.random()*100;
             timeline.add({
                 targets: [this.core, this.glow],
@@ -53,7 +55,7 @@ export class Star {
         }
         timeline.add({
             targets: [this.core, this.glow],
-            scale: 0.25,
+            scale: 0.25*this.size,
             duration: 400 + Math.random()*100,
             ease: 'Back.easeInOut',
             yoyo: false,

@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 export default {
   type: Phaser.AUTO,
@@ -11,5 +12,13 @@ export default {
     mode: Phaser.Scale.NONE,
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
-  scene: 'Game_Scene'
+  scene: 'Game_Scene',
+  plugins: {
+    scene: [{
+        key: 'rexUI',
+        plugin: RexUIPlugin,
+        mapping: 'rexUI'
+      },
+    ]
+  }
 };

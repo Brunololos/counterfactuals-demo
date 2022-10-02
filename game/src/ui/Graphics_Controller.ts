@@ -2,22 +2,23 @@ import { Game_Controller } from "../game/Game_Controller";
 import { Rule, Rules, Rules_Controller } from "../game/Game_Rules";
 import { Game_Turn_Type, State_Mode } from "../util/Game_Utils";
 import { Supposition_Panel } from "./Supposition_Panel";
-import { Utils } from "../util/Utils";
 import { Bottom, Cf_Would, Disjunction, Formula } from "../game/Cf_Logic";
 import { Game_State } from "../game/Game_State";
 import { Choice } from "./Choice";
-import { Game_Graphics_Mode, Graph_Graphics_Mode, Rule_Descriptions, text_style } from "../util/UI_Utils";
+import { create_cosmic_nebula_texture, dye_texture, Game_Graphics_Mode, Graph_Graphics_Mode, Rule_Descriptions, text_style } from "../util/UI_Utils";
 import { Graph_Graphics } from "./Graph_Graphics";
 import Base_Scene from "../util/Base_Scene";
 import { Formula_Graphics } from "./Formula_Graphics";
+import { Star } from "../graphics/Star";
 
 /**
  * A class governing the visual representation of the abstract game of counterfactuals
  */
 export class Graphics_Controller {
     private scene: Base_Scene;
-    private canvas: HTMLCanvasElement;
-    private sup_panel: Supposition_Panel;
+    private background: Phaser.GameObjects.Sprite;
+    private stars: Phaser.GameObjects.Container;
+    private sup_panel;
     private graph_graphics: Graph_Graphics;
     private formula: Formula_Graphics;
     private choice: Choice;
@@ -36,29 +37,32 @@ export class Graphics_Controller {
     private idle_since: number = Date.now();
     private idle_time: number = 2000;
 
-    constructor(scene: Base_Scene, state: Game_State) {
+    constructor(scene: Base_Scene, state: Game_State, world_positions: [number, number][]) {
         this.scene = scene;
         let w = scene.get_width();
         let h = scene.get_height();
-        this.sup_panel = new Supposition_Panel(scene, w/2, h - 100);
-        this.graph_graphics = new Graph_Graphics(scene, w/2, (h - 200)/2, state, state.get_current_world().index, [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150], [300, -150], [237, 203]], state.get_graph().get_edge_list());
+        this.background = new Phaser.GameObjects.Sprite(scene, w/2, h/2, "space").setDisplaySize(w, h).setDepth(-1);
+        this.stars = this.create_stars(scene, w, h);
+        this.sup_panel = new Supposition_Panel(scene, w/2, h - 110);
+        this.graph_graphics = new Graph_Graphics(scene, w/2, (h - 200)/2, state, state.get_current_world().index, world_positions, state.get_graph().get_edge_list());
 
-        //scene.add.sprite(w/2, h/2, "space").setDisplaySize(w, h).setAlpha(0.5);
-        //scene.add.sprite(w/2, h - w/2, "space").setScale(w/3840, w/3840).setAlpha(0.5);
-        //scene.add.sprite(w/2, h - w/2, "space").setScale(w/1600, w/1600).setAlpha(1);
-        scene.add.sprite(w/2, h/2, "space").setDisplaySize(w, h).setDepth(-1);
-        this.formula = new Formula_Graphics(scene, w/2, h - 100, state.get_formula(), state.get_atoms());
+        this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms());
         this.choice = new Choice(scene, state);
+
+        //this.sup_panel = Supposition_Panel.create(scene, w/2, h - 110, [this.formula]);
 
         this.caption = new Phaser.GameObjects.Text(scene, w/2, h - 175, "", text_style);
         this.caption.setOrigin(0.5, 0.5);
         this.caption.setVisible(false);
 
+        scene.add.existing(this.background);
+        scene.add.existing(this.stars);
+
         scene.children.add(this.sup_panel);
         scene.children.add(this.graph_graphics);
         scene.children.add(this.formula);
         this.choice.add_to_scene();
-        this.scene.children.add(this.caption);
+        scene.children.add(this.caption);
 
         this.set_mode(Game_Graphics_Mode.Formula);
         this.choice.set_visible(false);
@@ -110,16 +114,7 @@ export class Graphics_Controller {
                 }
                 break;
         }
-    }
-
-    resize_graphics() {
-        this.sup_panel.resize();
-        this.choice.resize();
-        this.graph_graphics.resize();
-        this.caption.setX(this.scene.get_width()/2);
-        this.caption.setY(this.scene.get_height() - 165);
-        this.formula.setX(this.scene.get_width()/2);
-        this.formula.setY(this.scene.get_height() - 100);
+        this.sup_panel.update();
     }
 
     set_world_choice() {
@@ -271,6 +266,18 @@ export class Graphics_Controller {
         }
     }
 
+    resize_graphics() {
+        this.background.setDisplaySize(this.scene.get_width(), this.scene.get_height());
+        this.background.setPosition(this.scene.get_width()/2, this.scene.get_height()/2);
+        this.sup_panel.resize();
+        this.choice.resize();
+        this.graph_graphics.resize();
+        this.caption.setX(this.scene.get_width()/2);
+        this.caption.setY(this.scene.get_height() - 165);
+        this.formula.setX(this.scene.get_width()/2);
+        this.formula.setY(this.scene.get_height() - 100);
+    }
+
     get_mode(): Game_Graphics_Mode {
         return this.mode;
     }
@@ -293,14 +300,28 @@ export class Graphics_Controller {
         this.idle_time = time;
     }
 
+    private create_stars(scene: Phaser.Scene, width: number, height: number): Phaser.GameObjects.Container {
+        let stars = new Phaser.GameObjects.Container(scene, width/2, height/2);
+        let num_stars = width*height / (2100); // Amount of stars to spawn are determined by target star density on canvas
+        for(let i=0; i<num_stars; i++) {
+            new Star(scene, Math.random()*width - (width/2), Math.random()*height - (height/2)).add_to_container(stars);
+        }
+        return stars;
+    }
+
     static load_sprites(scene: Phaser.Scene) {
         Graph_Graphics.load_sprites(scene);
         Formula_Graphics.load_sprites(scene);
         Supposition_Panel.load_sprites(scene);
+
+        Star.load_sprites(scene);
+        create_cosmic_nebula_texture(scene, 1600, 1600, "space");
+        dye_texture(scene, "space", 0x4C6793);
     }
 
     static configure_sprites(scene: Phaser.Scene) {
         Formula_Graphics.configure_sprites(scene);
         Graph_Graphics.configure_sprites(scene);
+        Star.configure_sprites(scene);
     }
 }

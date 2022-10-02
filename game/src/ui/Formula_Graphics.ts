@@ -3,11 +3,12 @@ import Base_Scene from "../util/Base_Scene";
 import { Atom, Bottom, Cf_Would, Disjunction, Formula, Negation } from "../game/Cf_Logic";
 import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode, hueshift_texture } from "../util/UI_Utils";
 import { Formula_Animations } from "./animations/Formula_Animations";
+import { cloneDeep } from "lodash";
 
 export const ICON_WIDTH = 60;
 export const BRACKET_WIDTH = 10;
 
-const NUM_RECOLORS = 6;
+const NUM_RECOLORS = 8;
 
 export class Formula_Graphics extends Phaser.GameObjects.Container {
     private formula: Formula_Graphics_Element;
@@ -19,7 +20,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     constructor(scene: Base_Scene, x: number, y: number, formula: Formula, atoms: string[], embedding_depth: integer = 0) {
         super(scene, x, y);
 
-        this.atoms = atoms;
+        this.atoms = cloneDeep(atoms);
         this.embedding_depth = embedding_depth;
         this.formula = Formula_Graphics_Element.parse(scene, formula, 0, 0, this.atoms);
         this.formula.add_to_container(this);
@@ -40,7 +41,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     }
 
     static configure_sprites(scene: Phaser.Scene) {
-        let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xC55300, 0xA2B5BB, 0xFF8FB1, 0xE94560, 0x84513D];
+        let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xC55300, 0xA2B5BB, 0xFF8FB1, 0x47B5FF, 0x562B08, 0x84513D];
         for(let i=0; i<NUM_RECOLORS; i++) {
             duplicate_texture(scene, "fill_open", "fill_open_"+(i).toString());
             duplicate_texture(scene, "fill_connect", "fill_connect_"+(i).toString());
