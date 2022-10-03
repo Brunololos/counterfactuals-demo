@@ -65,10 +65,12 @@ export class Star {
     }
 
     static load_sprites(scene: Phaser.Scene) {
+        if(scene.textures.getTextureKeys().includes("star")) { return; }
         scene.load.image("star", "assets/Star.png");
     }
 
     static configure_sprites(scene: Phaser.Scene) {
+        if(scene.textures.getTextureKeys().includes("red_glow")) { return; }
         duplicate_texture(scene, "star", "red_glow");
         dye_texture(scene, "red_glow", 0xFF7777);
         duplicate_texture(scene, "star", "blue_glow");

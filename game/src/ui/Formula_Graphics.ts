@@ -27,6 +27,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     }
 
     static load_sprites(scene: Phaser.Scene) {
+        if(scene.textures.getTextureKeys().includes("false")) { return; }
         scene.load.image("false", "assets/False.png");
         scene.load.image("true", "assets/True.png");
         scene.load.image("atom", "assets/Atom.png");
@@ -38,9 +39,11 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("fill_open", "assets/Fill_Open.png");
         scene.load.image("fill_connect", "assets/Fill_Connect.png");
         scene.load.image("fill_closed", "assets/Fill_Closed.png");
+
     }
 
     static configure_sprites(scene: Phaser.Scene) {
+        if(scene.textures.getTextureKeys().includes("fill_open_0")) { return; }
         let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xC55300, 0xA2B5BB, 0xFF8FB1, 0x47B5FF, 0x562B08, 0x84513D];
         for(let i=0; i<NUM_RECOLORS; i++) {
             duplicate_texture(scene, "fill_open", "fill_open_"+(i).toString());

@@ -151,6 +151,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
     }
 
     static load_sprites(scene: Phaser.Scene) {
+        if(scene.textures.getTextureKeys().includes("world_shadow")) { return; }
         /* for(let i=1; i<12; i++) {
             scene.load.image("arrowhead_"+i.toString(), "assets/arrows/Arrowhead_"+i.toString()+".png");
             scene.load.image("arrowbody_"+i.toString(), "assets/arrows/Arrowbody_"+i.toString()+".png");
@@ -169,6 +170,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
     }
 
     static configure_sprites(scene: Phaser.Scene) {
+        if(scene.textures.getTextureKeys().includes("world")) { return; }
         duplicate_texture(scene, "world_shadow", "world");
         fill_texture(scene, "world", 0x0C1324);
     }

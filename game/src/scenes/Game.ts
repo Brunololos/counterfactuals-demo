@@ -1,19 +1,18 @@
 import Phaser, { Game } from 'phaser';
-import { Graph, World } from '../util/Graph';
 import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any } from '../game/Cf_Logic';
 import { Rule, Rules, Rules_Controller } from '../game/Game_Rules';
 import { Game_State } from '../game/Game_State';
 import { Game_Controller } from '../game/Game_Controller';
 import { Game_Turn_Type } from '../util/Game_Utils';
 import { Graphics_Controller } from '../ui/Graphics_Controller';
-import { create_cosmic_nebula_texture, duplicate_texture, dye_texture, Game_Graphics_Mode } from '../util/UI_Utils';
+import { Game_Graphics_Mode } from '../util/UI_Utils';
 import Base_Scene from '../util/Base_Scene';
-import { Star } from '../graphics/Star';
 import { Level, Level_State } from '../game/levels/Level';
 import { levels } from '../game/levels/Levels';
 
 export default class Game_Scene extends Base_Scene {
 
+  private level: number;
   private game_controller!: Game_Controller;
   private graphics_controller!: Graphics_Controller;
   private starting_state!: Game_State;
@@ -23,6 +22,10 @@ export default class Game_Scene extends Base_Scene {
     super('Game_Scene');
   }
 
+  init(data) {
+    this.level = data.level;
+  }
+
   preload() {
     this.setup();
     Graphics_Controller.load_sprites(this);
@@ -30,7 +33,7 @@ export default class Game_Scene extends Base_Scene {
 
   create() {
     Graphics_Controller.configure_sprites(this);
-    this.load_level(levels[4]);
+    this.load_level(levels[this.level]);
   }
 
   update(time: number, delta: number): void {
@@ -128,6 +131,10 @@ export default class Game_Scene extends Base_Scene {
     let name = move.get_name();
     (name == Rules.Attacker_Victory || name == Rules.Defender_Victory) ? console.log(Rules[name] + "! Game ended.") : undefined;
     return name == Rules.Attacker_Victory || name == Rules.Defender_Victory;
+  }
+
+  get_level(): number {
+    return this.level;
   }
 
 }

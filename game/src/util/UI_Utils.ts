@@ -273,6 +273,8 @@ export function create_cosmic_nebula_texture(scene: Phaser.Scene, width: number,
 
   let noise = new Perlin(Math.random());
 
+  let div = (((width*width  + height*height)/9)/4);
+
   for (let i = 0; i < height; i++) {
     for (let j = 0; j < width; j++) {
       let x = j * 4;
@@ -291,10 +293,13 @@ export function create_cosmic_nebula_texture(scene: Phaser.Scene, width: number,
       } */
       let x_dist = Math.abs(width/2 - j);
       let y_dist = Math.abs(height/2 - i);
-      let center_dist = Math.sqrt((x_dist*x_dist)/4 + (y_dist*y_dist)/4);
+      let center_dist;
+      /* center_dist = Math.sqrt((x_dist*x_dist)/4 + (y_dist*y_dist)/4);
       center_dist = Math.sqrt((x_dist*x_dist)/4 + (y_dist*y_dist)/4)         / Math.sqrt(((width/2)*(width/2))/4 + ((height/2)*(height/2))/4);
       center_dist = ((x_dist*x_dist + y_dist*y_dist)/4)        / (((width/2)*(width/2) + (height/2)*(height/2))/4);
       center_dist = 1 - ((x_dist*x_dist + y_dist*y_dist)/4) / (((width/3)*(width/3) + (height/3)*(height/3))/4);
+      center_dist = 1 - ((x_dist*x_dist + y_dist*y_dist)/4) / (((width*width  + height*height)/9)/4); */
+      center_dist = 1 - ((x_dist*x_dist + y_dist*y_dist)/4) / div;
       r = 64 + (noise.perlin2(j/width, i/height)+1)*63 + 64*center_dist;
       g = 64 + (noise.perlin2((j+25)/width, i/height)+1)*64 + 64*center_dist;
       b = 64 + (noise.perlin2((j-25)/width, i/height)+1)*64 + 64*center_dist;

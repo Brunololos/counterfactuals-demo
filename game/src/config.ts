@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
+import Game_Scene from './scenes/Game';
+import Level_Select_Scene from './scenes/Level_Select';
 
 export default {
   type: Phaser.AUTO,
@@ -12,7 +14,7 @@ export default {
     mode: Phaser.Scale.NONE,
     autoCenter: Phaser.Scale.CENTER_BOTH
   },
-  scene: 'Game_Scene',
+  scene: [Level_Select_Scene, Game_Scene],
   plugins: {
     scene: [{
         key: 'rexUI',

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  29 SEP 2022 20:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  3 OCT 2022 00:57
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -970,55 +970,71 @@ LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <10> not available
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
 (Font)              Font shape `T1/pxss/bx/n' tried instead on input line 50.
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--67
+Underfull \hbox (badness 10000) in paragraph at lines 51--68
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--67
+Underfull \hbox (badness 10000) in paragraph at lines 51--68
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--67
+Underfull \hbox (badness 10000) in paragraph at lines 51--68
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--67
+Underfull \hbox (badness 10000) in paragraph at lines 51--68
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--67
+Underfull \hbox (badness 10000) in paragraph at lines 51--68
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--67
+Underfull \hbox (badness 10000) in paragraph at lines 51--68
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--67
+Underfull \hbox (badness 10000) in paragraph at lines 51--68
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 51--68
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 51--68
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 70--72
 
  []
 
 [1
 
 
-{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./design.aux)
+{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
+(./design.aux)
 Package rerunfilecheck Info: File `design.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 23845 strings out of 478300
- 441064 string characters out of 5849124
- 705189 words of memory out of 5000000
+ 23848 strings out of 478300
+ 441090 string characters out of 5849124
+ 705188 words of memory out of 5000000
  41575 multiletter control sequences out of 15000+600000
  520311 words of font info for 137 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 100i,6n,104p,432b,342s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,6n,104p,432b,343s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
 f-dist/fonts/type1/public/pxfonts/pxsy.pfb><c:/texlive/2022/texmf-dist/fonts/ty
 pe1/public/pxfonts/rpxb.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfo
@@ -1028,10 +1044,10 @@ c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2022
 ts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/pa
 latino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a.p
 fb>
-Output written on design.pdf (1 page, 69679 bytes).
+Output written on design.pdf (2 pages, 72364 bytes).
 PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
- 42 compressed objects within 1 object stream
- 3 named destinations out of 1000 (max. 500000)
+ 70 PDF objects out of 1000 (max. 8388607)
+ 47 compressed objects within 1 object stream
+ 6 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

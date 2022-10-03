@@ -22,29 +22,11 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         //this.add(rect2);
         let panel = new Phaser.GameObjects.Sprite(scene, 0, 5, "sup_panel");
         this.add(panel);
-        /* let panelk = new Phaser.GameObjects.Sprite(scene, 0, 0, "sup_panel");//.setDisplaySize(w*0.75-20, 180);
-        this.add(panelk);
-        let panellk = new Phaser.GameObjects.Sprite(scene, 0, -200, "sup_panel_light");//.setDisplaySize(w*0.75-20, 180);
-        this.add(panellk);
-        let panelll = new Phaser.GameObjects.Sprite(scene, 0, -400, "sup_panel_trans");//.setDisplaySize(w*0.75-20, 180);
-        this.add(panelll);
-        let panellll = new Phaser.GameObjects.Sprite(scene, 0, -600, "sup_panel_white");//.setDisplaySize(w*0.75-20, 180);
-        this.add(panellll);*/
-        /* let panelk = new Phaser.GameObjects.Sprite(scene, 0, 0, "sup_panel1");//.setDisplaySize(w*0.75-20, 180);
-        this.add(panelk);
-        let panellk = new Phaser.GameObjects.Sprite(scene, 0, -190, "sup_panel2");//.setDisplaySize(w*0.75-20, 180);
-        this.add(panellk);
-        let panelll = new Phaser.GameObjects.Sprite(scene, 0, -380, "sup_panel3");//.setDisplaySize(w*0.75-20, 180);
-        this.add(panelll);
-        let panellll = new Phaser.GameObjects.Sprite(scene, 0, -570, "sup_panel4");//.setDisplaySize(w*0.75-20, 180);
-        this.add(panellll);
-        let panelllll = new Phaser.GameObjects.Sprite(scene, 0, -760, "sup_panel5");//.setDisplaySize(w*0.75-20, 180);
-        this.add(panelllll); */
-        /* let panel = new Phaser.GameObjects.Sprite(scene, -500, -400, "styles").setDisplaySize(500, 500); 
-        this.add(panel);
-        let panell = new Phaser.GameObjects.Sprite(scene, 500, -400, "styles_moddd").setDisplaySize(500, 500);
-        this.add(panell); */
-        //this.add(new Phaser.GameObjects.Ellipse(scene, 0, 0, 5, 5, 0xCC3636).setDepth(1));
+
+        let mask = scene.add.image(x, y + 5, "sup_panel_mask").setVisible(false).createBitmapMask();
+        for(let i=0; content != undefined && i<content.length; i++) {
+            (content[i] as Phaser.GameObjects.Container || Phaser.GameObjects.Sprite || Phaser.GameObjects.Rectangle).setMask(mask);
+        }
     }
 
     /**
@@ -70,6 +52,7 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         this.setY(h-100);
     }
 
+    // TODO: Deprecated
     static create(scene: Base_Scene, x: number, y: number, content?: Phaser.GameObjects.GameObject[]): Phaser.GameObjects.GameObject {
         let w = (scene as Game_Scene).get_width();
         let h = (scene as Base_Scene).get_height();
@@ -109,11 +92,6 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
                     thumb: slider_knob,
                 },
           
-                //scroller: true,
-                /* scroller: {
-                    pointerOutRelease: false
-                }, */
-          
                 mouseWheelScroller: {
                     focus: false,
                     speed: 0.1
@@ -139,24 +117,9 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
     }
 
     static load_sprites(scene: Phaser.Scene) {
-        //scene.load.image("sup_panel", "assets/SajShafiqueRoof_Alpha.png");
         scene.load.image("sup_panel", "assets/Banner.png");
-        scene.load.image("sup_panel_light", "assets/Banner_Holo_Light.png");
-        scene.load.image("sup_panel_trans", "assets/Banner_Holo_Trans.png");
-        scene.load.image("sup_panel_white", "assets/Banner_Holo_White.png");
-        scene.load.image("sup_panel1", "assets/Banner1.png");
-        scene.load.image("sup_panel2", "assets/Banner2.png");
-        scene.load.image("sup_panel3", "assets/Banner3.png");
-        scene.load.image("sup_panel4", "assets/Banner4.png");
-        scene.load.image("sup_panel5", "assets/Banner5.png");
         scene.load.image("sup_panel_knob", "assets/Banner_Knob.png");
         scene.load.image("sup_panel_mask", "assets/Banner_Clip_Mask.png");
-        scene.load.image("styles", "assets/UI_Styles.png");
-        scene.load.image("styles_mod", "assets/UI_Styles_Mod.png");
-        scene.load.image("styles_modd", "assets/UI_Styles_Modd.png");
-        scene.load.image("styles_moddd", "assets/UI_Styles_Moddd.png");
-        scene.load.image("styles_op", "assets/UI_Styles_Opacity.png");
-        scene.load.image("styles_fill", "assets/UI_Styles_Fill.png");
     }
 
     static createPanel = function (scene, content) {
