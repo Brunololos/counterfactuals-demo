@@ -1,5 +1,6 @@
 import { Game_Graphics_Mode } from "../../util/UI_Utils";
-import { Choice, OPTION_BOX_OUT } from "../Choice";
+import { Choice, OPTION_BOX_OUT, OR_WIDTH } from "../Choice";
+import { DISJ_WIDTH, ICON_WIDTH } from "../Formula_Graphics";
 
 export class Choice_Animations {
     static fill_transition_animation_timeline(timeline: Phaser.Tweens.Timeline, transition: [Game_Graphics_Mode, Game_Graphics_Mode], c: Choice): number {
@@ -116,6 +117,42 @@ export class Choice_Animations {
     }
 
     static fill_popup_animation_timeline(timeline: Phaser.Tweens.Timeline, c: Choice): number {
+        timeline.add({ /* MOVE LEFT OPTION */
+            targets: [c.get_option_graphic(0)],
+            x: "-="+((OR_WIDTH - DISJ_WIDTH)/2).toString(),
+            duration: 1500,
+            ease: 'Quart.Out',
+            yoyo: false,
+            repeat: 0,
+            offset: 0
+        });
+        timeline.add({ /* MOVE RIGHT OPTION */
+            targets: [c.get_option_graphic(1)],
+            x: "+="+((OR_WIDTH - DISJ_WIDTH)/2).toString(),
+            duration: 1500,
+            ease: 'Quart.Out',
+            yoyo: false,
+            repeat: 0,
+            offset: 0
+        });
+        /* timeline.add({ MOVE LEFT OPTION_BOX
+            targets: c.get_option_boxes()[0],
+            x: c.get_x() - OR_WIDTH/2 - c.get_option_graphic(0).get_width()/2,
+            duration: 1500,
+            ease: 'Quart.Out',
+            yoyo: false,
+            repeat: 0,
+            offset: 0
+        });
+        timeline.add({ MOVE RIGHT OPTION_BOX
+            targets: c.get_option_boxes()[1],
+            x: c.get_x() + OR_WIDTH/2 + c.get_option_graphic(1).get_width()/2,
+            duration: 1500,
+            ease: 'Quart.Out',
+            yoyo: false,
+            repeat: 0,
+            offset: 0
+        }); */
         timeline.add({ /* FADE IN OPTION_BOXES */
             targets: c.get_option_boxes(),
             alpha: OPTION_BOX_OUT,
@@ -134,7 +171,7 @@ export class Choice_Animations {
             repeat: 0,
             offset: 0
         });
-        timeline.add({ /* SCALE IN RIGHT OPTION_BOX */
+        /* timeline.add({ SCALE IN RIGHT OPTION_BOX
             targets: c.get_option_boxes()[0],
             displayWidth: c.get_option_graphic(0).get_width(),
             duration: 1500,
@@ -143,7 +180,7 @@ export class Choice_Animations {
             repeat: 0,
             offset: 0
         });
-        timeline.add({ /* SCALE IN LEFT OPTION_BOX */
+        timeline.add({ SCALE IN LEFT OPTION_BOX
             targets: c.get_option_boxes()[1],
             displayWidth: c.get_option_graphic(1).get_width(),
             duration: 1500,
@@ -151,7 +188,7 @@ export class Choice_Animations {
             yoyo: false,
             repeat: 0,
             offset: 0
-        });
+        }); */
         timeline.add({ /* SCALE IN OR */
             targets: c.get_or(),
             scale: 1,
@@ -183,7 +220,7 @@ export class Choice_Animations {
             repeat: 0,
             offset: 0
         });
-        timeline.add({ /* SCALE IN RIGHT OPTION_BOX */
+        /* timeline.add({ SCALE IN RIGHT OPTION_BOX
             targets: c.get_option_boxes()[0],
             displayWidth: c.get_option_graphic(0).get_width(),
             duration: 1500,
@@ -192,7 +229,7 @@ export class Choice_Animations {
             repeat: 0,
             offset: 0
         });
-        timeline.add({ /* SCALE IN LEFT OPTION_BOX */
+        timeline.add({ SCALE IN LEFT OPTION_BOX
             targets: c.get_option_boxes()[1],
             displayWidth: c.get_option_graphic(1).get_width(),
             duration: 1500,
@@ -200,7 +237,7 @@ export class Choice_Animations {
             yoyo: false,
             repeat: 0,
             offset: 0
-        });
+        }); */
         timeline.add({ /* SCALE IN OR */
             targets: c.get_or(),
             scale: 1,

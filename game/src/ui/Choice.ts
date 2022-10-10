@@ -5,11 +5,11 @@ import Base_Scene from "../util/Base_Scene";
 import { Formula } from "../game/Cf_Logic";
 import { Game_Graphics_Mode, text_style } from "../util/UI_Utils";
 import { Choice_Animations } from "./animations/Choice_Animations";
-import { Formula_Graphics, Formula_Graphics_Element } from "./Formula_Graphics";
+import { DISJ_WIDTH, Formula_Graphics } from "./Formula_Graphics";
 
 export const OR_WIDTH = 60;
-export const OPTION_BOX_HOVER = 130/255;
-export const OPTION_BOX_OUT = 30/255;
+export const OPTION_BOX_HOVER = 60/255;//130/255;
+export const OPTION_BOX_OUT = 15/255;//30/255;
 
 export class Choice {
     private scene: Phaser.Scene;
@@ -21,8 +21,10 @@ export class Choice {
     private rule1!: Rule;
     private rule2!: Rule;
 
-    private option1_box: Phaser.GameObjects.Rectangle;
-    private option2_box: Phaser.GameObjects.Rectangle;
+    private option1_box/* : Phaser.GameObjects.Rectangle */; // TODO: Define as Graphics (instead of sprite)
+    private option2_box/* : Phaser.GameObjects.Rectangle */;
+    private option1_sprite: Phaser.GameObjects.Sprite;
+    private option2_sprite: Phaser.GameObjects.Sprite;
 
     private x: number;
     private y: number;
@@ -55,11 +57,17 @@ export class Choice {
         this.or = new Phaser.GameObjects.Text(scene, x, y, "OR", text_style);
         this.option1 = new Formula_Graphics(scene as Base_Scene, x, y, formula1, atoms, embedding_depth).setDepth(1);
         this.option2 = new Formula_Graphics(scene as Base_Scene, x, y, formula2, atoms, embedding_depth).setDepth(1);
-        this.option1.setX(this.option1.x - 25 - this.option1.get_width()/2);
-        this.option2.setX(this.option2.x + 25 + this.option2.get_width()/2);
+        this.option1.setX(this.option1.x - DISJ_WIDTH/2 - this.option1.get_width()/2);
+        this.option2.setX(this.option2.x + DISJ_WIDTH/2 + this.option2.get_width()/2);
 
-        this.option1_box = new Phaser.GameObjects.Rectangle(scene, x - 25 - this.option1.get_width()/2, y, 250, 100, 0xffffff);
-        this.option2_box = new Phaser.GameObjects.Rectangle(scene, x + 25 + this.option2.get_width()/2, y, 250, 100, 0xffffff);
+        /* this.option1_box = new Phaser.GameObjects.Rectangle(scene, x - 25 - this.option1.get_width()/2, y, 250, 100, 0xffffff);
+        this.option2_box = new Phaser.GameObjects.Rectangle(scene, x + 25 + this.option2.get_width()/2, y, 250, 100, 0xffffff); */
+        /* this.option1_box = new Phaser.GameObjects.Ellipse(scene, x - 25 - this.option1.get_width()/2, y, 250, 100, 0xffffff);
+        this.option2_box = new Phaser.GameObjects.Ellipse(scene, x + 25 + this.option2.get_width()/2, y, 250, 100, 0xffffff); */
+        /* this.option1_box = new RoundRectangle(scene, x - 25 - this.option1.get_width()/2, y, 250, 60, 20, 0xffffff, 1);
+        this.option2_box = new RoundRectangle(scene, x + 25 + this.option2.get_width()/2, y, 250, 75, 20, 0xffffff, 1); */
+        this.option1_box = new Phaser.GameObjects.Sprite(scene, x - 225, y, "option_box_left");
+        this.option2_box = new Phaser.GameObjects.Sprite(scene, x + 225, y, "option_box_right");
         this.option1_box.setAlpha(OPTION_BOX_OUT);
         this.option2_box.setAlpha(OPTION_BOX_OUT);
 
@@ -82,6 +90,11 @@ export class Choice {
         });
         this.option2_box.on('pointerover', () => { this.option2_box.setAlpha(OPTION_BOX_HOVER); });
         this.option2_box.on('pointerout', () => { this.option2_box.setAlpha(OPTION_BOX_OUT); });
+
+        this.option1_sprite = new Phaser.GameObjects.Sprite(this.scene, this.option1_box.x, this.option1_box.y, "option");
+        this.option2_sprite = new Phaser.GameObjects.Sprite(this.scene, this.option2_box.x, this.option2_box.y, "option");
+        this.option1_sprite.setVisible(false);
+        this.option2_sprite.setVisible(false); //TODO: properly add option_sprites
     }
 
     add_to_scene() {
@@ -93,6 +106,9 @@ export class Choice {
 
         this.scene.children.add(this.option1_box);
         this.scene.children.add(this.option2_box);
+
+        this.scene.children.add(this.option1_sprite);
+        this.scene.children.add(this.option2_sprite);
     }
 
     set(state: Game_State, option1: Rule, option2: Rule, embedding_depth: integer = 0) {
@@ -114,13 +130,15 @@ export class Choice {
 
         let w1 = this.option1.get_width();
         let w2 = this.option2.get_width();
-        this.option1.setX(this.x - OR_WIDTH/2 - w1/2);
-        this.option2.setX(this.x + OR_WIDTH/2 + w2/2);
+        this.option1.setX(this.x - DISJ_WIDTH/2 - w1/2);
+        this.option2.setX(this.x + DISJ_WIDTH/2 + w2/2);
 
-        this.option1_box.setX(this.x - OR_WIDTH/2 - w1/2);
-        this.option2_box.setX(this.x + OR_WIDTH/2 + w2/2);
+        /* this.option1_box.setX(this.x - OR_WIDTH/2 - w1/2);
+        this.option2_box.setX(this.x + OR_WIDTH/2 + w2/2); */
+        /* this.option1_box.setX(this.x - OR_WIDTH/2);
+        this.option2_box.setX(this.x + OR_WIDTH/2);
         this.option1_box.displayWidth = 1;
-        this.option2_box.displayWidth = 1;
+        this.option2_box.displayWidth = 1; */ // TODO: Last
         this.or.setScale(0.1, 0.1);
 
         this.or.setAlpha(0);
@@ -135,6 +153,13 @@ export class Choice {
 
         this.option1_box.setInteractive();
         this.option2_box.setInteractive();
+
+        this.option1_sprite.setX(this.option1_box.x);
+        this.option2_sprite.setX(this.option2_box.x);
+        this.option1_sprite.setDisplaySize(this.option1.get_width()-35, 80);
+        this.option2_sprite.setDisplaySize(this.option2.get_width()-35, 80);
+        this.option1_sprite.setVisible(false);
+        this.option2_sprite.setVisible(false);
     }
 
     set_cf(state: Game_State, option1: Rule, option2: Rule, embedding_depth: integer = 0, delim_world?: integer) {
@@ -156,13 +181,13 @@ export class Choice {
 
         let w1 = this.option1.get_width();
         let w2 = this.option2.get_width();
-        this.option1.setX(this.x - OR_WIDTH/2 - w1/2);
+        this.option1.setX(this.x - OR_WIDTH/2 - w1/2); // TODO: start with CF_WIDTH and expand in popup animation
         this.option2.setX(this.x + OR_WIDTH/2 + w2/2);
 
-        this.option1_box.setX(this.x - OR_WIDTH/2 - w1/2);
+        /* this.option1_box.setX(this.x - OR_WIDTH/2 - w1/2);
         this.option2_box.setX(this.x + OR_WIDTH/2 + w2/2);
         this.option1_box.displayWidth = 1;
-        this.option2_box.displayWidth = 1;
+        this.option2_box.displayWidth = 1; */
         this.or.setScale(0.1, 0.1);
 
         this.or.setAlpha(0);
@@ -211,6 +236,8 @@ export class Choice {
         this.option2.setVisible(visible);
         this.option1_box.setVisible(visible);
         this.option2_box.setVisible(visible);
+        /* this.option1_sprite.setVisible(visible);
+        this.option2_sprite.setVisible(visible); */
         this.or.setVisible(visible);
     }
 
@@ -219,6 +246,8 @@ export class Choice {
         this.option2.destroy(true);
         this.option1_box.destroy(true);
         this.option2_box.destroy(true);
+        this.option1_sprite.destroy(true);
+        this.option2_sprite.destroy(true);
         this.or.destroy();
     }
 
@@ -263,5 +292,11 @@ export class Choice {
 
     is_cf_choice(): boolean {
         return this.cf_choice;
+    }
+
+    static load_sprites(scene: Phaser.Scene) {
+        scene.load.image("option", "assets/Double_Stripe.png");
+        scene.load.image("option_box_left", "assets/Option_Box_Left.png");
+        scene.load.image("option_box_right", "assets/Option_Box_Right.png");
     }
 }

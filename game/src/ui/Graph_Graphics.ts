@@ -152,6 +152,9 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
 
     static load_sprites(scene: Phaser.Scene) {
         if(scene.textures.getTextureKeys().includes("world_shadow")) { return; }
+        scene.load.image("arrowhead", "assets/Arrowhead.png");
+        scene.load.image("arrowbody", "assets/Arrowbody.png");
+        scene.load.image("arrowtail", "assets/Arrowtail.png");
         /* for(let i=1; i<12; i++) {
             scene.load.image("arrowhead_"+i.toString(), "assets/arrows/Arrowhead_"+i.toString()+".png");
             scene.load.image("arrowbody_"+i.toString(), "assets/arrows/Arrowbody_"+i.toString()+".png");
@@ -360,15 +363,15 @@ export class Striped_Edge {
         let stripe_offset = delta.clone().setLength(stripe_width*2);
         let arrowbody_midsection_offset = delta.clone().setLength(arrowbody_len/2 + stripe_width/2);
 
-        this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead");
+        this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead_4");
 
         let stripepoint = midpoint.clone().add(arrowbody_midsection_offset.clone());
         for(let i=0; i<length; i++) {
             stripepoint = stripepoint.subtract(stripe_offset.clone());
-            this.arrowbody.push(new Phaser.GameObjects.Sprite(scene, stripepoint.x, stripepoint.y, "arrowbody").setDisplaySize(stripe_width, 50).setRotation(delta.angle()));
+            this.arrowbody.push(new Phaser.GameObjects.Sprite(scene, stripepoint.x, stripepoint.y, "arrowbody_4").setDisplaySize(stripe_width, 50).setRotation(delta.angle()));
         }
         //this.arrowbody = new Phaser.GameObjects.Sprite(scene, midpoint.x, midpoint.y, "arrowbody");
-        this.arrowtail = new Phaser.GameObjects.Sprite(scene, midpoint.x - arrowhead_offset.x, midpoint.y - arrowhead_offset.y, "arrowtail");
+        this.arrowtail = new Phaser.GameObjects.Sprite(scene, midpoint.x - arrowhead_offset.x, midpoint.y - arrowhead_offset.y, "arrowtail_4");
 
         this.arrowhead.setRotation(delta.angle());
         //this.arrowbody.setScale(arrowbody_len/this.arrowbody.width, 1);

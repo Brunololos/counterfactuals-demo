@@ -5,6 +5,7 @@ import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode, huesh
 import { Formula_Animations } from "./animations/Formula_Animations";
 import { cloneDeep } from "lodash";
 
+export const DISJ_WIDTH = 30;
 export const ICON_WIDTH = 60;
 export const BRACKET_WIDTH = 10;
 
@@ -33,12 +34,16 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("atom", "assets/Atom.png");
         scene.load.image("glow", "assets/Glow.png");
         scene.load.image("negation", "assets/Negation.png");
-        scene.load.image("disjunction", "assets/Disjunction.png");
+        //scene.load.image("disjunction", "assets/Disjunction.png");
+        scene.load.image("disjunction", "assets/OR.png");
         scene.load.image("cf_would", "assets/Cf_Would.png");
 
-        scene.load.image("fill_open", "assets/Fill_Open.png");
+        /* scene.load.image("fill_open", "assets/Fill_Open.png");
         scene.load.image("fill_connect", "assets/Fill_Connect.png");
-        scene.load.image("fill_closed", "assets/Fill_Closed.png");
+        scene.load.image("fill_closed", "assets/Fill_Closed.png"); */
+        scene.load.image("fill_open", "assets/BO.png");
+        scene.load.image("fill_connect", "assets/Empty_Icon.png");
+        scene.load.image("fill_closed", "assets/BC.png");
 
     }
 
@@ -153,8 +158,8 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
             case to_parse instanceof Disjunction:
                 let subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
                 let subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
-                subject1.offset(- ICON_WIDTH/2 - subject2.get_width()/2);
-                subject2.offset(+ ICON_WIDTH/2 + subject1.get_width()/2);
+                subject1.offset(- DISJ_WIDTH/2 - subject2.get_width()/2);
+                subject2.offset(+ DISJ_WIDTH/2 + subject1.get_width()/2);
                 return new Disjunction_Graphics(scene, x + (subject1.get_width() - subject2.get_width())/2, y, subject1, subject2, embedded);
             case to_parse instanceof Negation:
                 let subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
@@ -298,11 +303,12 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
 
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 - BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH)); //.setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 + BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            suff = ""; // TODO: quick fix to stop using bracket recolors
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x - w1 - BRACKET_WIDTH */
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x + w2 + BRACKET_WIDTH */
         }
-        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
+        this.setDisplaySize(DISJ_WIDTH, ICON_WIDTH);
     }
 
     get_child(path: string): Formula_Graphics_Element {
@@ -342,7 +348,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     get_width(): number {
-        return ICON_WIDTH + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH;
+        return DISJ_WIDTH + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH;
     }
 
     get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {

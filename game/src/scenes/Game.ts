@@ -41,7 +41,7 @@ export default class Game_Scene extends Base_Scene {
     let now = Date.now();
     this.graphics_controller.update(now);
 
-    if(!this.game_over && this.graphics_controller.is_ready()) {
+    if(!this.game_over && this.graphics_controller.is_ready()/*  && false */) { // TODO: remove false
       let state = this.game_controller.get_state();
       let turn = this.game_controller.determine_next_moves();
       let type = turn[0];

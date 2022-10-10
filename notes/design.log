@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  3 OCT 2022 00:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  10 OCT 2022 21:51
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1009,28 +1009,42 @@ Underfull \hbox (badness 10000) in paragraph at lines 51--68
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 51--68
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 70--72
-
- []
-
 [1
 
 
-{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-(./design.aux)
+{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+Underfull \hbox (badness 10000) in paragraph at lines 70--73
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 70--73
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 78--82
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 78--82
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 78--82
+
+ []
+
+[2] (./design.aux)
 Package rerunfilecheck Info: File `design.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 23848 strings out of 478300
- 441090 string characters out of 5849124
- 705188 words of memory out of 5000000
+ 23849 strings out of 478300
+ 441100 string characters out of 5849124
+ 705189 words of memory out of 5000000
  41575 multiletter control sequences out of 15000+600000
  520311 words of font info for 137 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1044,10 +1058,10 @@ c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2022
 ts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/pa
 latino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a.p
 fb>
-Output written on design.pdf (2 pages, 72364 bytes).
+Output written on design.pdf (2 pages, 73947 bytes).
 PDF statistics:
- 70 PDF objects out of 1000 (max. 8388607)
- 47 compressed objects within 1 object stream
- 6 named destinations out of 1000 (max. 500000)
+ 73 PDF objects out of 1000 (max. 8388607)
+ 50 compressed objects within 1 object stream
+ 7 named destinations out of 1000 (max. 500000)
  13 words of extra memory for PDF output out of 10000 (max. 10000000)
 

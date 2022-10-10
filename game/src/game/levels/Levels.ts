@@ -71,7 +71,20 @@ edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [6, 6
 
 export let level5 = Level.create("Res", "~(A v ~B) |_|-> C", atoms, "a/d", 0, -1, worlds, world_positions, edges);
 
-export let levels = [level1, level2, level3, level4, level5];
+atoms = [
+    "Blah",
+    "Bleh",
+    "Bluh",
+    "Blih",
+    "Bloh",
+];
+worlds = [[atoms[0], atoms[3], atoms[5]]];
+world_positions = [[0, 0]];
+edges = [[0, 0, 0]];
+
+export let level6 = Level.create("Res", "(A v B) v C v (D v E)", atoms, "a/d", 0, -1, worlds, world_positions, edges);
+
+export let levels = [level1, level2, level3, level4, level5, level6];
 
 /// EXTRA
 atoms = [

@@ -11,6 +11,7 @@ import Base_Scene from "../util/Base_Scene";
 import { Formula_Graphics } from "./Formula_Graphics";
 import { Star } from "../graphics/Star";
 import Game_Scene from "../scenes/Game";
+import { Text_Animation } from "./animations/Text_Animations";
 
 /**
  * A class governing the visual representation of the abstract game of counterfactuals
@@ -24,7 +25,6 @@ export class Graphics_Controller {
     private graph_graphics: Graph_Graphics;
     private formula: Formula_Graphics;
     private choice: Choice;
-    private caption: Phaser.GameObjects.Text;
 
     private mode: Game_Graphics_Mode = Game_Graphics_Mode.Formula;
     private next_mode: Game_Graphics_Mode = Game_Graphics_Mode.Formula;
@@ -53,13 +53,7 @@ export class Graphics_Controller {
 
         this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms());
         this.choice = new Choice(scene, state);
-        this.sup_panel = new Supposition_Panel(scene, w/2, h - 110, [this.formula, this.choice.get_option_graphic(0), this.choice.get_option_graphic(1)].concat(this.choice.get_option_boxes()));
-
-        //this.sup_panel = Supposition_Panel.create(scene, w/2, h - 110, [this.formula]);
-
-        this.caption = new Phaser.GameObjects.Text(scene, w/2, h - 170, "", text_style);
-        this.caption.setOrigin(0.5, 0.5);
-        this.caption.setVisible(false);
+        this.sup_panel = new Supposition_Panel(scene, w/2, h - 110, [this.formula, this.choice.get_option_graphic(0), this.choice.get_option_graphic(1), this.choice.get_option_boxes()[0], this.choice.get_option_boxes()[1]]);
 
         scene.add.existing(this.background);
         scene.add.existing(this.stars);
@@ -70,7 +64,6 @@ export class Graphics_Controller {
         scene.children.add(this.graph_graphics);
         scene.children.add(this.formula);
         this.choice.add_to_scene();
-        scene.children.add(this.caption);
 
         this.set_mode(Game_Graphics_Mode.Formula);
         this.choice.set_visible(false);
@@ -89,7 +82,7 @@ export class Graphics_Controller {
             case Game_Graphics_Mode.Counterfactual_Choice:
             case Game_Graphics_Mode.Negated_Counterfactual_Choice:
                 if(this.choice.is_choice_made()) {
-                    this.caption.text = Rule_Descriptions[this.choice.get_choice().get_name()];
+                    this.sup_panel.set_caption(Rule_Descriptions[this.choice.get_choice().get_name()]);
                     this.ready = true;
                 }
                 break;
@@ -131,7 +124,7 @@ export class Graphics_Controller {
             this.transition_mode(Game_Graphics_Mode.World_Choice);
             if(this.mode == Game_Graphics_Mode.Transition) { return };
         }
-        this.caption.text = "Choose a reachable world:";
+        this.sup_panel.set_caption("Choose a reachable world:", Text_Animation.PULSE);
         this.ready = false;
     }
 
@@ -150,15 +143,15 @@ export class Graphics_Controller {
         }
         switch(mode) {
             case Game_Graphics_Mode.Formula_Choice:
-                this.caption.text = "Choose a formula:";
+                this.sup_panel.set_caption("Choose a formula:", Text_Animation.PULSE);
                 this.choice.set(state, option1, option2, this.formula.get_embedding_depth());
                 break;
             case Game_Graphics_Mode.Counterfactual_Choice:
-                this.caption.text = "Claim vacuous truth or choose a sphere of accessibility";
+                this.sup_panel.set_caption("Claim vacuous truth or choose a sphere of accessibility", Text_Animation.PULSE);
                 this.choice.set_cf(state, option2, option1, this.formula.get_embedding_depth(), state.get_current_world().get_edges()[0][0].index); // TODO: Switching option1/2 so, that the vacuous truth claim is left and sphere selection right
                 break;
             case Game_Graphics_Mode.Negated_Counterfactual_Choice:
-                this.caption.text = "Evaluate the sphere delimiting world or choose a reachable world to disprove the counterfactual";
+                this.sup_panel.set_caption("Evaluate the sphere delimiting world or choose a reachable world to disprove the counterfactual", Text_Animation.PULSE);
                 this.choice.set_cf(state, option1, option2, this.formula.get_embedding_depth(), state.get_current_world().get_edges()[0][0].index);
                 break;
         }
@@ -191,7 +184,7 @@ export class Graphics_Controller {
             this.next_animate = true;
             if(this.mode == Game_Graphics_Mode.Transition) { return };
         }
-        this.caption.text = Rule_Descriptions[move.get_name()];
+        this.sup_panel.set_caption(Rule_Descriptions[move.get_name()], (move.get_name() == Rules.Defender_Victory) ? Text_Animation.PULSE : Text_Animation.NONE);
         let applied = move.apply(state, delim_world);
         console.log("> animating move " + Rules[move.get_name()] + " => " + applied.get_formula().to_string());
         this.idle(this.formula.animate(applied.get_formula(), move.get_name()));
@@ -254,7 +247,6 @@ export class Graphics_Controller {
             case Game_Graphics_Mode.Formula:
                 this.formula.setVisible(true);
                 this.choice.set_visible(false);
-                this.caption.setVisible(true);
                 this.graph_graphics.set_mode(Graph_Graphics_Mode.Display);
                 break;
             case Game_Graphics_Mode.Formula_Choice:
@@ -262,13 +254,11 @@ export class Graphics_Controller {
             case Game_Graphics_Mode.Negated_Counterfactual_Choice:
                 this.formula.setVisible(false);
                 this.choice.set_visible(true);
-                this.caption.setVisible(true);
                 this.graph_graphics.set_mode(Graph_Graphics_Mode.Display);
                 break;
             case Game_Graphics_Mode.World_Choice:
                 //this.formula.setVisible(false);
                 //this.choice.set_visible(true);
-                this.caption.setVisible(true);
                 this.graph_graphics.set_mode(Graph_Graphics_Mode.World_Choice);
                 break;
         }
@@ -280,8 +270,6 @@ export class Graphics_Controller {
         this.sup_panel.resize();
         this.choice.resize();
         this.graph_graphics.resize();
-        this.caption.setX(this.scene.get_width()/2);
-        this.caption.setY(this.scene.get_height() - 165);
         this.formula.setX(this.scene.get_width()/2);
         this.formula.setY(this.scene.get_height() - 100);
     }
@@ -359,6 +347,7 @@ export class Graphics_Controller {
     static load_sprites(scene: Phaser.Scene) {
         Graph_Graphics.load_sprites(scene);
         Formula_Graphics.load_sprites(scene);
+        Choice.load_sprites(scene);
         Supposition_Panel.load_sprites(scene);
 
         Star.load_sprites(scene);

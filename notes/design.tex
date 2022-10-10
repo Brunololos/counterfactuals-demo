@@ -49,13 +49,12 @@
 
 \section*{Problem: Representation of directed weighted graph-edges}
 display numbers -> adds a lot of clutter
-create a hierarchy of different arrows, representing a handful of differently weighted
 \\\\
-edges -> cannot find good looking design using only one arrow property, when multiple properties are modulated the hierarchy becomes unclear
+create a hierarchy of different arrows, representing a handful of differently weighted edges -> cannot find good looking design using only one arrow property, when multiple properties are modulated the hierarchy becomes unclear
 \\\\
 scale thickness of arrows -> hard to gauge whose arrows value is higher in comparison, also ugly
 \\\\
-position small fuel/energy icon aside arrows -> adds a lot of clutter
+position small fuel/energy icon aside arrows -> adds some clutter, hard to position neatly
 \\\\
 only display numbers, when hovering over arrows -> users need to think forward to solve the levels and having to hover over arrows all the time is tedious
 \\\\
@@ -65,11 +64,20 @@ Place big stars or planets along arrows, with their number equaling the edge wei
 \\\\
 Add crossections to the arrow, like on a ruler -> doesnt look good, spacing of crosssections becomes inconsistent (feels weird)
 \\\\
+Add flowing animation from source to destination (speed, number of flyers) -> edgeweights should be discernible from a still image, speed is hard to gauge
 
 \section*{Problem: UI-Design Learnings}
 Everything a user needs needs to know has to be readily visible  \\\\
-UI-Sprite Borders have to be slim to look nice
+UI-Sprite Borders have to be slim to look nice \\\\
+UI should be clear even in a still image
 
 \section*{Problem: Learnings from Alpha-Testing}
 Multiple Choice Fragebogen?
+
+\section*{Problem: The Joys of Phaser}
+Containers cannot be nested -> as such a lot of the ui-hierarchy had to be flattened and be built less modular (couldnt leverage relative positioning and property-inheritance as much) \\\\
+Bitmapmasks produced weird darkened areas in areas with alpha of the masked sprite -> needed to convert all bitmapmasks to geometrymasks \\\\
+rexUI a plugin developed for UI was time-consuming to use (searching docs all the time) and didnt offer enough flexibility to design original UI elements (Clipping mask of ScrollablePanel was forcably set to a rectangle ???) \\\\
+tweens were a delight to use (are very powerful)
+
 \end{document}

@@ -1,4 +1,5 @@
 import Perlin from 'phaser3-rex-plugins/plugins/perlin.js';
+import Base_Scene from './Base_Scene';
 
 export let text_style = { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' };
 
@@ -317,7 +318,40 @@ export function create_cosmic_nebula_texture(scene: Phaser.Scene, width: number,
   (canvas_texture as Phaser.Textures.CanvasTexture).refresh();
 }
 
-export let Rule_Descriptions  = [
+export function create_point_geometry_mask(scene: Base_Scene, x: number, y: number, texture_key: string): Phaser.Display.Masks.GeometryMask {
+  let texture = scene.game.textures.get(texture_key);
+  let texture_source = texture.getSourceImage(texture_key);
+  let width = texture_source.width;
+  let height = texture_source.height;
+
+  let graphics = new Phaser.GameObjects.Graphics(scene).translateCanvas(x - width/2, y - height/2);
+  for (let i = 0; i < height; i++) {
+    for (let j = 0; j < width; j++) {
+      if(scene.game.textures.getPixelAlpha(j, i, texture_key) != 0) {
+        graphics.fillPoint(j, i);
+      }
+    }
+  }
+  return graphics.createGeometryMask();
+}
+
+export function create_shape_geometry_mask(scene: Base_Scene, x: number, y: number, width: number, height: number, path: [number, number][][]): Phaser.Display.Masks.GeometryMask {
+
+  let graphics = new Phaser.GameObjects.Graphics(scene).translateCanvas(x - width/2, y - height/2);
+  for(let s=0; s<path.length; s++) {
+    graphics.beginPath();
+    graphics.moveTo(path[s][0][0], path[s][0][1]);
+    for(let i=1; i<path[s].length; i++) {
+      graphics.lineTo(path[s][i][0], path[s][i][1]);
+    }
+    graphics.lineTo(path[s][0][0], path[s][0][1]);
+    graphics.closePath();
+    graphics.fillPath();
+  }
+  return graphics.createGeometryMask();
+}
+
+export let Rule_Descriptions : string[] = [
   "You lose!",
   "You win!",
   "The atom is true at the current world",
@@ -344,3 +378,11 @@ export let Rule_Descriptions  = [
   "You chose a world to disprove the attackers vacuous truth claim",
 
   ""];
+
+/**
+ * Clipping shapes
+ */
+export let banner_mask_path : [number, number][][] = 
+  [[[29, 97], [57, 50], [80, 50], [95, 35], [196, 35], [225, 20], [674, 20], [703, 35], [804, 35], [819, 50], [842, 50], [870, 97],
+  [870, 101], [843, 147], [820, 147], [803, 164], [96, 164], [79, 147], [57, 147], [29, 101]],
+  [[140, 170], [759, 170], [749, 180], [150, 180]]];

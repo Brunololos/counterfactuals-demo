@@ -4,7 +4,7 @@ import Game_Scene from './scenes/Game';
 import Level_Select_Scene from './scenes/Level_Select';
 
 export default {
-  type: Phaser.AUTO,
+  type: Phaser.WEBGL,
   parent: 'game',
   pixelArt: false,
   backgroundColor: "#55547A",//#c4dff9",//#EBE4BA",//#748DA6",//'#97D2EC',

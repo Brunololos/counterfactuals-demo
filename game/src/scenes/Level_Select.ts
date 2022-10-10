@@ -31,7 +31,7 @@ export default class Level_Select_Scene extends Base_Scene {
         { name: 'Conjunction 2' },
         { name: 'Counterfactual 1' },
         { name: 'Counterfactual 2' },
-        { name: 'Level6' },
+        { name: 'Test' },
     ];
 
     var gridTable = this.create_grid_table(this, w/2, h/2, 760, 400, levels);
@@ -100,7 +100,7 @@ export default class Level_Select_Scene extends Base_Scene {
             cellContainer!.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
             return cellContainer;
         },
-        items: this.create_items(5)
+        items: this.create_items(6)
     }).layout()
 
     grid_table
