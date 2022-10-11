@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  10 OCT 2022 21:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  11 OCT 2022 22:41
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1023,45 +1023,64 @@ Underfull \hbox (badness 10000) in paragraph at lines 70--73
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 78--82
+Underfull \hbox (badness 10000) in paragraph at lines 78--83
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 78--82
+Underfull \hbox (badness 10000) in paragraph at lines 78--83
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 78--82
+Underfull \hbox (badness 10000) in paragraph at lines 78--83
 
  []
 
-[2] (./design.aux)
+
+Underfull \hbox (badness 10000) in paragraph at lines 78--83
+
+ []
+
+[2] [3]
+Overfull \vbox (85.58958pt too high) has occurred while \output is active []
+
+
+[4
+pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.210 
+      ] (./design.aux)
 Package rerunfilecheck Info: File `design.out' has not changed.
-(rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
+(rerunfilecheck)             Checksum: D00E12839466E5B0B1E1CFD3F2F062F5;990.
  ) 
 Here is how much of TeX's memory you used:
- 23849 strings out of 478300
- 441100 string characters out of 5849124
- 705189 words of memory out of 5000000
- 41575 multiletter control sequences out of 15000+600000
- 520311 words of font info for 137 fonts, out of 8000000 for 9000
+ 23919 strings out of 478300
+ 441898 string characters out of 5849124
+ 711261 words of memory out of 5000000
+ 41595 multiletter control sequences out of 15000+600000
+ 527140 words of font info for 149 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 100i,6n,104p,432b,343s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,13n,104p,432b,345s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
 f-dist/fonts/type1/public/pxfonts/pxsy.pfb><c:/texlive/2022/texmf-dist/fonts/ty
-pe1/public/pxfonts/rpxb.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfo
-nts/rpxr.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb><
-c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2022
-/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fon
-ts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/pa
-latino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a.p
-fb>
-Output written on design.pdf (2 pages, 73947 bytes).
+pe1/public/pxfonts/pxsya.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxf
+onts/pxsyb.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/pxsyc.pfb
+><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxb.pfb><c:/texlive/20
+22/texmf-dist/fonts/type1/public/pxfonts/rpxmi.pfb><c:/texlive/2022/texmf-dist/
+fonts/type1/public/pxfonts/rpxr.pfb><c:/texlive/2022/texmf-dist/fonts/type1/pub
+lic/txfonts/t1xtt.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvb
+8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texl
+ive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-
+dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type
+1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/
+uplri8a.pfb>
+Output written on design.pdf (4 pages, 108164 bytes).
 PDF statistics:
- 73 PDF objects out of 1000 (max. 8388607)
- 50 compressed objects within 1 object stream
- 7 named destinations out of 1000 (max. 500000)
- 13 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 175 PDF objects out of 1000 (max. 8388607)
+ 139 compressed objects within 2 object streams
+ 47 named destinations out of 1000 (max. 500000)
+ 69 words of extra memory for PDF output out of 10000 (max. 10000000)
 

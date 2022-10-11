@@ -1,6 +1,6 @@
 import { Rules } from "../game/Game_Rules";
 import Base_Scene from "../util/Base_Scene";
-import { Atom, Bottom, Cf_Would, Disjunction, Formula, Negation } from "../game/Cf_Logic";
+import { Atom, Bottom, Cf_Would, Disjunction, Formula, Negation, Top } from "../game/Cf_Logic";
 import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode, hueshift_texture } from "../util/UI_Utils";
 import { Formula_Animations } from "./animations/Formula_Animations";
 import { cloneDeep } from "lodash";
@@ -168,6 +168,8 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
                 return new Atom_Graphics(scene, x, y, (to_parse as Atom).value,  atoms);
             case to_parse instanceof Bottom:
                 return new Bottom_Graphics(scene, x, y);
+            case to_parse instanceof Top:
+                return new Top_Graphics(scene, x, y);
             default:
                 throw new Error("Cannot parse invalid formula");
         }

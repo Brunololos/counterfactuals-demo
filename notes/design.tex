@@ -78,6 +78,134 @@ Multiple Choice Fragebogen?
 Containers cannot be nested -> as such a lot of the ui-hierarchy had to be flattened and be built less modular (couldnt leverage relative positioning and property-inheritance as much) \\\\
 Bitmapmasks produced weird darkened areas in areas with alpha of the masked sprite -> needed to convert all bitmapmasks to geometrymasks \\\\
 rexUI a plugin developed for UI was time-consuming to use (searching docs all the time) and didnt offer enough flexibility to design original UI elements (Clipping mask of ScrollablePanel was forcably set to a rectangle ???) \\\\
+Couldnt define level data in json format, since browser may not write files \\\\
 tweens were a delight to use (are very powerful)
+
+\section*{Definitions}
+\subsection{Counterfactual formulas}
+$Atoms = \{x,y,...\}$
+
+$\Phi = \{\varphi, \psi,... \}$
+
+$\varphi, \psi ::= \bot \mid x \mid \neg \varphi \mid \Box \varphi \mid \Diamond \varphi \mid \varphi \vee \psi \mid \varphi \wedge \psi \mid \varphi \boxright \psi$
+
+\subsection{Worlds}
+$W = \{w,v,...\}$
+
+\subsection{Facts}
+$F \colon W \rightarrow 2^{Atoms}$
+
+\subsection{Similarity relation}
+$\leadsto \colon W\times \mathbb{R} \times W$
+
+\subsection{Accessible worlds}
+$W_w = \{w'\mid w \overset{r}{\leadsto} w'\}$
+
+\subsection{Truth conditions of counterfactual logic}
+$w \vDash \bot$ is always false. \\
+$w \vDash \top$ is always true. \\
+$w \vDash x$ iff $x \in V(w)$. \\
+$w \vDash \neg \varphi$ iff $w \nvDash \varphi$. \\
+$w \vDash \varphi \vee \psi$ iff $(w \vDash \varphi$ or $w \vDash \psi)$ \\
+$w \vDash \varphi \wedge \psi$ iff $(w \vDash \varphi$ and $w \vDash \psi)$ \\
+$w \vDash \Box \varphi$ iff for every world $w'$, for which an $r$ with $w\overset{r}{\leadsto} w'$ exists, $w' \vDash \varphi$ holds true. \\
+$w \vDash \Diamond \varphi$ iff a world $w'$ and an $r$ exist, such that $w\overset{r}{\leadsto} w'$ and $w' \vDash \varphi$ hold true. \\
+$w \vDash \varphi \boxright \psi$, if no world $w'$ and $r$ exist, such that $w' \vDash \varphi$ and $w\overset{r}{\leadsto} w'$. \\
+$w \vDash \varphi \boxright \psi$, if a world $w'$ and an $r$ exist, such that $w'\vDash \varphi$ and $w\overset{r}{\leadsto} w'$ and for each world $w*$, for which a $r*\leq r$ exists, such that $w\overset{r*}{\leadsto} w*$, $w*\vDash\psi\vee\neg\varphi$ holds true.
+\subsection{Similarity graph}
+\begin{equation}
+	G = (V,E,F)\text{, such that }V \subseteq W\text{ and }E \subseteq \leadsto
+\end{equation}
+
+\section*{Rules of the semantic game}
+
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(\bot ,w)_{a}\hspace{10pt}\text{Attacker wins}
+	\end{equation}
+	\begin{equation}
+		(\top ,w)_{a}\hspace{10pt}\text{Defender wins}
+	\end{equation}
+	\begin{equation}
+		(\neg\bot ,w)_{a} \rightarrow (\top ,w)_{a}
+	\end{equation}
+	\begin{equation}
+		(\neg\top ,w)_{a} \rightarrow (\bot ,w)_{a}
+	\end{equation}
+	\begin{equation}
+		(x,w)_{a}\xrightarrow{x\in F(w)}(\top ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(x,w)_{a}\xrightarrow{x\not\in F(w)}(\bot ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg x,w)_{a}\xrightarrow{x\in F(w)}(\neg\top ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg x,w)_{a}\xrightarrow{x\not\in F(w)}(\neg\bot ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg\neg\varphi ,w)_{a}\rightarrow (\varphi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\varphi\vee\psi ,w)_d\rightarrow (\varphi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\varphi\vee\psi ,w)_d\rightarrow (\psi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg (\varphi\vee\psi ),w)_a\rightarrow (\neg\varphi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg (\varphi\vee\psi ),w)_a\rightarrow (\neg\psi ,w)_{d/a}
+	\end{equation}
+	
+	\begin{equation}
+		(\varphi\wedge\psi ,w)_a\rightarrow (\varphi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\varphi\wedge\psi ,w)_a\rightarrow (\psi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg (\varphi\wedge\psi ),w)_d\rightarrow (\neg\varphi ,w)_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg (\varphi\wedge\psi ),w)_d\rightarrow (\neg\psi ,w)_{d/a}
+	\end{equation}	
+	
+	\begin{equation}
+		(\varphi\boxright\psi ,w)_d\rightarrow (vac,\varphi ,w)_a
+	\end{equation}
+	\begin{equation}
+		(vac,\varphi ,w)_a\xrightarrow{[w\overset{r}{\leadsto}w']}(\neg\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\varphi\boxright\psi ,w)_d\xrightarrow{[w\overset{r}{\leadsto}w']}(cf,\varphi ,\psi ,w,w',r)_a
+	\end{equation}
+	\begin{equation}
+		(cf,\varphi ,\psi ,w,w',r)_a\rightarrow (\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(cf,\varphi ,\psi ,w,w',r)_a\xrightarrow{[w\overset{r^*}{\leadsto}w^*,r^*\leq r]}(\neg\varphi\vee\psi ,w^*)_d
+	\end{equation}
+	\begin{equation}
+		(\neg (\varphi\boxright\psi ),w)_a\rightarrow (vac,\varphi ,w)_d
+	\end{equation}
+	\begin{equation}
+		(vac,\varphi ,w)_d\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg (\varphi\boxright\psi ),w)_a\xrightarrow{[w\overset{r}{\leadsto}w']}(cf,\varphi ,\psi ,w,w',r)_d
+	\end{equation}
+	\begin{equation}
+		(cf,\varphi ,\psi ,w,w',r)_d\rightarrow(\neg\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(cf,\varphi ,\psi ,w,w',r)_d\xrightarrow{[w\overset{r^*}{\leadsto}w^*, r^*\leq r]}(\neg(\neg\varphi\vee\psi ),w^*)_a
+	\end{equation}
+	\caption{rules of the semantic game of counterfactuals}
+	\label{fig:rules}
+\end{figure}
 
 \end{document}

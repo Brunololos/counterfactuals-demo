@@ -354,10 +354,12 @@ export function create_shape_geometry_mask(scene: Base_Scene, x: number, y: numb
 export let Rule_Descriptions : string[] = [
   "You lose!",
   "You win!",
+  "Resolving negated Falsity...",
+  "Resolving negated Truth...",
   "The atom is true at the current world",
   "The atom is false at the current world",
-  "The negation of the atom is false at the current world",
-  "The negation of the atom is true at the current world",
+  "The atom is true at the current world",
+  "The atom is false at the current world",
 
   "Eliminating double negation...",
   "You chose the left formula",

@@ -20,15 +20,23 @@ export class Rules_Controller {
         let is_another_world_reachable_within_delim = (state: Game_State) => (state.get_current_world().get_edge_count() > 0 && state.get_current_world().get_edge_list().some((value) => value[1] <= state.get_radius()));
 
         this.rules.push(Rule.create("Attacker_Victory", "Res", "a", "_|_"));
-        this.rules.push(Rule.create("Defender_Victory", "Res", "a", "~_|_"));
+        this.rules.push(Rule.create("Defender_Victory", "Res", "a", "¯|¯"));
 
-        let apply_known_fact = (state: Game_State) => state.configure("Res", Formula.parse("~_|_"), "a/d");
+        ////
+        let apply_negated_bottom = (state: Game_State) => state.configure("Res", Formula.parse("¯|¯"), "a/d");
+        this.rules.push(Rule.create("Negated_Bottom", "Res", "a", "~_|_", apply_negated_bottom));
+
+        let apply_negated_top = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "a/d");
+        this.rules.push(Rule.create("Negated_Top", "Res", "a", "~¯|¯", apply_negated_top));
+
+        let apply_known_fact = (state: Game_State) => state.configure("Res", Formula.parse("¯|¯"), "a/d");
         this.rules.push(Rule.create("Known_Fact", "Res", "a", "A", apply_known_fact, is_fact_known));
 
         let apply_unknown_fact = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "a/d");
         this.rules.push(Rule.create("Unknown_Fact", "Res", "a", "A", apply_unknown_fact, is_fact_unknown));
+        ////
 
-        let apply_negated_known_fact = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "a/d");
+        let apply_negated_known_fact = (state: Game_State) => state.configure("Res", Formula.parse("~¯|¯"), "a/d");
         this.rules.push(Rule.create("Negated_Known_Fact", "Res", "a", "~A", apply_negated_known_fact, is_negated_fact_known));
 
         let apply_negated_unknown_fact = (state: Game_State) => state.configure("Res", Formula.parse("~_|_"), "a/d");
@@ -241,6 +249,8 @@ export enum Rules {
 
     Attacker_Victory,
     Defender_Victory,
+    Negated_Bottom,
+    Negated_Top,
     Known_Fact,
     Unknown_Fact,
     Negated_Known_Fact,

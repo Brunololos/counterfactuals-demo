@@ -82,7 +82,7 @@ worlds = [[atoms[0], atoms[3], atoms[5]]];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
 
-export let level6 = Level.create("Res", "(A v B) v C v (D v E)", atoms, "a/d", 0, -1, worlds, world_positions, edges);
+export let level6 = Level.create("Res", "~A v ~B"/* "(A v B) v C v (D v E)" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
 
 export let levels = [level1, level2, level3, level4, level5, level6];
 

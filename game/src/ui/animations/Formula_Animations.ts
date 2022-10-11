@@ -87,17 +87,100 @@ export class Formula_Animations {
                 });
                 return 1500; */
             case Rules.Defender_Victory:
-                top = formula.add_temporary_formula("_|_");
+                /* top = formula.add_temporary_formula("_|_");
                 top.setTexture("true");
                 top.setAlpha(1);
                 top.setX(0);
                 bottom = f.get_child("l");
                 f.setAlpha(0);
+                bottom.setAlpha(0); */
+                return 1500;
+            case Rules.Negated_Bottom:
+                top = formula.add_temporary_formula("¯|¯");
+                top.setAlpha(0);
+                top.setX(0);
+                bottom = f.get_child("l");
+                timeline.add({ /* FADE NEGATION & BOTTOM */
+                    targets: [f, bottom],
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE NEGATION */
+                    targets: f,
+                    x: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE BOTTOM */
+                    targets: bottom,
+                    x: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE IN TOP */
+                    targets: top,
+                    alpha: 1,
+                    duration: 1500,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                return 1500;
+            case Rules.Negated_Top:
+                bottom = formula.add_temporary_formula("_|_");
                 bottom.setAlpha(0);
+                bottom.setX(0);
+                top = f.get_child("l");
+                timeline.add({ /* FADE NEGATION & TOP */
+                    targets: [f, top],
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE NEGATION */
+                    targets: f,
+                    x: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE TOP */
+                    targets: top,
+                    x: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE IN BOTTOM */
+                    targets: bottom,
+                    alpha: 1,
+                    duration: 1500,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
                 return 1500;
             case Rules.Known_Fact:
-                top = formula.add_temporary_formula("_|_");
-                top.setTexture("true");
+                top = formula.add_temporary_formula("¯|¯");
                 top.setAlpha(0);
                 top.setX(0);
                 timeline.add({ /* FADE ATOM */
@@ -143,12 +226,12 @@ export class Formula_Animations {
                 });
                 return 1500;
             case Rules.Negated_Known_Fact:
-                bottom = formula.add_temporary_formula("_|_");
-                bottom.setAlpha(0);
-                bottom.setX(0);
+                top = formula.add_temporary_formula("¯|¯");
+                top.setAlpha(0);
+                top.setX( ICON_WIDTH/2 );
                 atom = f.get_child("l");
-                timeline.add({ /* FADE NEGATION & ATOM */
-                    targets: [f, atom],
+                timeline.add({ /* FADE ATOM */
+                    targets: atom,
                     alpha: 0,
                     duration: 1500,
                     ease: 'Quart.Out',
@@ -156,26 +239,8 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE NEGATION */
-                    targets: f,
-                    x: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE ATOM */
-                    targets: atom,
-                    x: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE IN BOTTOM */
-                    targets: bottom,
+                timeline.add({ /* FADE IN TOP */
+                    targets: top,
                     alpha: 1,
                     duration: 1500,
                     ease: 'Quart.In',
@@ -184,14 +249,32 @@ export class Formula_Animations {
                     offset: 0
                 });
                 return 1500;
-            /* case Rules.Negated_Unknown_Fact:
+            /* case Rules.Negated_Known_Fact:
                 bottom = formula.add_temporary_formula("_|_");
                 bottom.setAlpha(0);
-                bottom.setX( ICON_WIDTH/2 );
+                bottom.setX(0);
                 atom = f.get_child("l");
-                timeline.add({ FADE ATOM
-                    targets: atom,
+                timeline.add({ FADE NEGATION & ATOM
+                    targets: [f, atom],
                     alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ MOVE NEGATION
+                    targets: f,
+                    x: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ MOVE ATOM
+                    targets: atom,
+                    x: 0,
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -209,10 +292,6 @@ export class Formula_Animations {
                 });
                 return 1500; */
             case Rules.Negated_Unknown_Fact:
-                top = formula.add_temporary_formula("_|_");
-                top.setTexture("true");
-                top.setAlpha(0);
-                top.setX(0);
                 bottom = formula.add_temporary_formula("_|_");
                 bottom.setAlpha(0);
                 bottom.setX( ICON_WIDTH/2 );
@@ -235,7 +314,35 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* FADE NEGATION & BOTTOM */
+                return 1500;
+            /* case Rules.Negated_Unknown_Fact:
+                top = formula.add_temporary_formula("_|_");
+                top.setTexture("true");
+                top.setAlpha(0);
+                top.setX(0);
+                bottom = formula.add_temporary_formula("_|_");
+                bottom.setAlpha(0);
+                bottom.setX( ICON_WIDTH/2 );
+                atom = f.get_child("l");
+                timeline.add({ FADE ATOM
+                    targets: atom,
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ FADE IN BOTTOM
+                    targets: bottom,
+                    alpha: 1,
+                    duration: 1500,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ FADE NEGATION & BOTTOM
                     targets: [f, bottom],
                     alpha: 0,
                     duration: 1500,
@@ -244,7 +351,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 1500
                 });
-                timeline.add({ /* MOVE NEGATION */
+                timeline.add({ MOVE NEGATION
                     targets: f,
                     x: 0,
                     duration: 1500,
@@ -253,7 +360,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 1500
                 });
-                timeline.add({ /* MOVE BOTTOM */
+                timeline.add({ MOVE BOTTOM
                     targets: bottom,
                     x: 0,
                     duration: 1500,
@@ -262,7 +369,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 1500
                 });
-                timeline.add({ /* FADE IN TOP */
+                timeline.add({ FADE IN TOP
                     targets: top,
                     alpha: 1,
                     duration: 1500,
@@ -271,7 +378,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 1500
                 });
-                return 3000;
+                return 3000; */
             case Rules.Double_Negation:
                 neg = f.get_child("l");
                 timeline.add({ /* MOVE PARENT NEGATION */

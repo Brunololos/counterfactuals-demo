@@ -10,7 +10,7 @@ export abstract class Formula {
      * @returns The root object of a tree of formula objects
      */
     static parse(to_parse: string, atoms: string[] = []): Formula {
-    //Symbols: "|_|->, v, ~, (...), A-Z, _|_, ?"
+    //Symbols: "|_|->, v, ~, (...), A-Z, _|_, ¯|¯, ?"
     //Syntax: "~(A v B) |_|-> (C v ~(D))"
 
         // search for weakest binder
@@ -44,8 +44,11 @@ export abstract class Formula {
                 case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "_|_":
                     w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_') ? i : w;
                     break;
+                case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "¯|¯":
+                    w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_' && v != '¯') ? i : w;
+                    break;
                 case c == '?':
-                    w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_' && v != '?') ? i : w;
+                    w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_' && v != '¯' && v != '?') ? i : w;
                     break;
                 default:
                     break;
@@ -79,6 +82,8 @@ export abstract class Formula {
                 return new Atom(atoms[c.charCodeAt(0) - 65]);
             case c == '_':
                 return new Bottom();
+            case c == '¯':
+                return new Top();
             case c == '?':
                 return new Any();
             default:
@@ -327,6 +332,35 @@ export class Atom extends Formula {
 
     compare(comparand: Formula): boolean {
         return comparand instanceof Bottom || comparand instanceof Any;
+    }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        throw new Error("Cannot traverse any further");
+    }
+}
+/**
+ * A class representation of the top symbol
+ */
+ export class Top extends Formula {
+    
+    /**
+     * Create a top symbol
+     */
+    constructor() {
+        super();
+    }
+
+    generate_atom_list(atoms?: string[]): string[] {
+        return atoms ?? [];
+    }
+
+    to_string(): string {
+        return "¯|¯";
+    }
+
+    compare(comparand: Formula): boolean {
+        return comparand instanceof Top || comparand instanceof Any;
     }
 
     get_child(path: string): Formula {
