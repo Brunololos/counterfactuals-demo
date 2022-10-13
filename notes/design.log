@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  11 OCT 2022 22:41
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  12 OCT 2022 23:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1043,7 +1043,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 78--83
  []
 
 [2] [3]
-Overfull \vbox (85.58958pt too high) has occurred while \output is active []
+Overfull \vbox (33.58958pt too high) has occurred while \output is active []
 
 
 [4
@@ -1051,7 +1051,7 @@ pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.210 
+l.208 
       ] (./design.aux)
 Package rerunfilecheck Info: File `design.out' has not changed.
 (rerunfilecheck)             Checksum: D00E12839466E5B0B1E1CFD3F2F062F5;990.
@@ -1077,7 +1077,7 @@ ive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-
 dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type
 1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/
 uplri8a.pfb>
-Output written on design.pdf (4 pages, 108164 bytes).
+Output written on design.pdf (4 pages, 108138 bytes).
 PDF statistics:
  175 PDF objects out of 1000 (max. 8388607)
  139 compressed objects within 2 object streams

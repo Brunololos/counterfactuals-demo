@@ -2,10 +2,11 @@ import { Rule, Rules } from "../game/Game_Rules";
 import { Game_State } from "../game/Game_State";
 import GameScene from "../scenes/Game";
 import Base_Scene from "../util/Base_Scene";
-import { Formula } from "../game/Cf_Logic";
+import { Formula, Negation } from "../game/Cf_Logic";
 import { Game_Graphics_Mode, text_style } from "../util/UI_Utils";
 import { Choice_Animations } from "./animations/Choice_Animations";
-import { DISJ_WIDTH, Formula_Graphics } from "./Formula_Graphics";
+import { CONJ_WIDTH, DISJ_WIDTH, Formula_Graphics } from "./Formula_Graphics";
+import { stat } from "fs";
 
 export const OR_WIDTH = 60;
 export const OPTION_BOX_HOVER = 60/255;//130/255;
@@ -130,8 +131,9 @@ export class Choice {
 
         let w1 = this.option1.get_width();
         let w2 = this.option2.get_width();
-        this.option1.setX(this.x - DISJ_WIDTH/2 - w1/2);
-        this.option2.setX(this.x + DISJ_WIDTH/2 + w2/2);
+        let op_width = (state.get_formula() instanceof Negation) ? CONJ_WIDTH : DISJ_WIDTH;
+        this.option1.setX(this.x - op_width/2 - w1/2);
+        this.option2.setX(this.x + op_width/2 + w2/2);
 
         /* this.option1_box.setX(this.x - OR_WIDTH/2 - w1/2);
         this.option2_box.setX(this.x + OR_WIDTH/2 + w2/2); */

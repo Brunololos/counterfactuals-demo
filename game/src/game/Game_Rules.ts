@@ -22,7 +22,6 @@ export class Rules_Controller {
         this.rules.push(Rule.create("Attacker_Victory", "Res", "a", "_|_"));
         this.rules.push(Rule.create("Defender_Victory", "Res", "a", "¯|¯"));
 
-        ////
         let apply_negated_bottom = (state: Game_State) => state.configure("Res", Formula.parse("¯|¯"), "a/d");
         this.rules.push(Rule.create("Negated_Bottom", "Res", "a", "~_|_", apply_negated_bottom));
 
@@ -34,7 +33,6 @@ export class Rules_Controller {
 
         let apply_unknown_fact = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "a/d");
         this.rules.push(Rule.create("Unknown_Fact", "Res", "a", "A", apply_unknown_fact, is_fact_unknown));
-        ////
 
         let apply_negated_known_fact = (state: Game_State) => state.configure("Res", Formula.parse("~¯|¯"), "a/d");
         this.rules.push(Rule.create("Negated_Known_Fact", "Res", "a", "~A", apply_negated_known_fact, is_negated_fact_known));
@@ -56,7 +54,19 @@ export class Rules_Controller {
 
         let apply_negated_right_or = (state: Game_State) => state.configure("Res", new Negation(state.get_formula().get_child("lr")), "a/d");
         this.rules.push(Rule.create("Negated_Right_OR", "Res", "a", "~(?v?)", apply_negated_right_or));
-        
+
+        let apply_left_and = (state: Game_State) => state.configure("Res", state.get_formula().get_child("l"), "a/d");
+        this.rules.push(Rule.create("Left_AND", "Res", "a", "?^?", apply_left_and));
+
+        let apply_right_and = (state: Game_State) => state.configure("Res", state.get_formula().get_child("r"), "a/d");
+        this.rules.push(Rule.create("Right_AND", "Res", "a", "?^?", apply_right_and));
+
+        let apply_negated_left_and = (state: Game_State) => state.configure("Res", new Negation(state.get_formula().get_child("ll")), "a/d");
+        this.rules.push(Rule.create("Negated_Left_AND", "Res", "d", "~(?^?)", apply_negated_left_and));
+
+        let apply_negated_right_and = (state: Game_State) => state.configure("Res", new Negation(state.get_formula().get_child("lr")), "a/d");
+        this.rules.push(Rule.create("Negated_Right_AND", "Res", "d", "~(?^?)", apply_negated_right_and));
+
         // Counterfactual Would Rules
         let apply_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "a", undefined, delim_world);
         this.rules.push(Rule.create("Defender_Sphere_Selection", "Res", "d", "? |_|-> ?", apply_sphere_selection, is_another_world_reachable, true));
@@ -261,6 +271,10 @@ export enum Rules {
     Right_OR,
     Negated_Left_OR,
     Negated_Right_OR,
+    Left_AND,
+    Right_AND,
+    Negated_Left_AND,
+    Negated_Right_AND,
 
     Defender_Sphere_Selection,
     Attacker_Phi_Evaluation,

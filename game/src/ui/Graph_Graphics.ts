@@ -20,7 +20,7 @@ const DELIM_WORLD_HIGHLIGHT_COLOR = 0xAEACFA;//0xC6C5FA;
 export class Graph_Graphics extends Phaser.GameObjects.Container {
     private game_state: Game_State;
     private graph: Graph;
-    private worlds: World_Graphics[] = [];
+    private worlds: World_Controller[] = [];
     private current_world: integer;
     private delim_world: integer = -1;
     private mode: Graph_Graphics_Mode = Graph_Graphics_Mode.Display;
@@ -39,11 +39,9 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         let n = this.graph.get_V();
         if(world_positions.length != n) { throw new Error("Passed too many or too few positions!"); }
         for(let i=0; i<n; i++) {
-            let world = new World_Graphics(scene, world_positions[i][0], world_positions[i][1], i, this);
+            let world = new World_Controller(scene, world_positions[i][0], world_positions[i][1], i, this);
             this.worlds.push(world);
-            this.add(world);
-            //this.add(new Phaser.GameObjects.Text(scene, world_positions[i][0], world_positions[i][1], i.toString(), text_style).setOrigin(0.5, 0.5)); // DISPLAY WORLD INDEX
-            this.add(new Phaser.GameObjects.Sprite(scene, world_positions[i][0], world_positions[i][1], "world").setAlpha(0.8));
+            world.add_to_container(this);
         }
 
         // add edges
@@ -119,7 +117,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         if(this.current_world != -1) { this.worlds[this.current_world].set_color(IDLE_WORLD_COLOR, IDLE_WORLD_HIGHLIGHT_COLOR); }
         this.current_world = current_world;
         this.worlds[current_world].set_color(CURRENT_WORLD_COLOR, CURRENT_WORLD_HIGHLIGHT_COLOR);
-        this.rocket.setPosition(this.worlds[this.current_world].x, this.worlds[this.current_world].y);
+        this.rocket.setPosition(this.worlds[this.current_world].get_x(), this.worlds[this.current_world].get_y());
     }
 
     set_delim_world(delim_world: integer) {
@@ -152,59 +150,87 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
 
     static load_sprites(scene: Phaser.Scene) {
         if(scene.textures.getTextureKeys().includes("world_shadow")) { return; }
-        scene.load.image("arrowhead", "assets/Arrowhead.png");
+        /* scene.load.image("arrowhead", "assets/Arrowhead.png");
         scene.load.image("arrowbody", "assets/Arrowbody.png");
-        scene.load.image("arrowtail", "assets/Arrowtail.png");
+        scene.load.image("arrowtail", "assets/Arrowtail.png"); */
         /* for(let i=1; i<12; i++) {
             scene.load.image("arrowhead_"+i.toString(), "assets/arrows/Arrowhead_"+i.toString()+".png");
             scene.load.image("arrowbody_"+i.toString(), "assets/arrows/Arrowbody_"+i.toString()+".png");
             scene.load.image("arrowtail_"+i.toString(), "assets/arrows/Arrowtail_"+i.toString()+".png");
         } */
-        scene.load.image("arrowhead_10", "assets/arrows/Arrowhead_10.png");
-        scene.load.image("arrowbody_10", "assets/arrows/Arrowbody_10.png");
-        scene.load.image("arrowtail_10", "assets/arrows/Arrowtail_10.png");
+        scene.load.image("arrowhead", "assets/arrows/Arrowhead_10.png");
+        scene.load.image("arrowbody", "assets/arrows/Arrowbody_10.png");
+        scene.load.image("arrowtail", "assets/arrows/Arrowtail_11.png");
         scene.load.image("marker", "assets/arrows/Ruler_Marker_3.png");
         scene.load.image("bat1c", "assets/Battery_1C.png");
         scene.load.image("bat2c", "assets/Battery_2C.png");
         scene.load.image("bat3c", "assets/Battery_3C.png");
         scene.load.image("arrowwave", "assets/Arrowwave.png");
-        scene.load.image("rocket", "assets/Rocket_Icon_Wide_Glow.png");
-        scene.load.image("world_shadow", "assets/Earth_Small.png");
+        //scene.load.image("rocket", "assets/Rocket_Icon_Wide_Glow.png");
+        scene.load.image("rocket", "assets/Fly_By.png");
+        scene.load.image("world", "assets/Earth_Small.png");
     }
 
     static configure_sprites(scene: Phaser.Scene) {
-        if(scene.textures.getTextureKeys().includes("world")) { return; }
+        /* if(scene.textures.getTextureKeys().includes("world")) { return; }
         duplicate_texture(scene, "world_shadow", "world");
-        fill_texture(scene, "world", 0x0C1324);
+        fill_texture(scene, "world", 0x0C1324); */
     }
 }
 
-export class World_Graphics extends Phaser.GameObjects.Ellipse {
+export class World_Controller {
+    private x: number;
+    private y: number;
     private graph_graphics: Graph_Graphics;
+    private world: Phaser.GameObjects.Sprite;
+    private hover_ellipse: Phaser.GameObjects.Ellipse;
+    private index_text: Phaser.GameObjects.Text;
     //private atoms: Phaser.GameObjects.Text[];
     //private transitions: Edge[];
     private base_color: number = IDLE_WORLD_COLOR;
     private highlight_color: number = IDLE_WORLD_HIGHLIGHT_COLOR;
+    
+    private base_alpha: number = 0.01;
+    private highlight_alpha: number = 0.3;
+
     private index: integer;
 
     constructor(scene: Phaser.Scene, x_offset: number, y_offset: number, index: integer, graph_graphics: Graph_Graphics) {
-        super(scene, x_offset, y_offset, WORLD_WIDTH, WORLD_WIDTH, IDLE_WORLD_COLOR);
+        this.x = x_offset;
+        this.y = y_offset;
+        this.world = new Phaser.GameObjects.Sprite(scene, x_offset, y_offset, "world").setAlpha(0.85);
+        this.hover_ellipse = new Phaser.GameObjects.Ellipse(scene, x_offset, y_offset, WORLD_WIDTH, WORLD_WIDTH, IDLE_WORLD_COLOR).setAlpha(this.base_alpha);
+        this.index_text = new Phaser.GameObjects.Text(scene, x_offset, y_offset, index.toString(), text_style).setOrigin(0.5, 0.5).setAlpha(0); // DISPLAY WORLD INDEX
         this.setup_listeners();
         this.index = index;
         this.graph_graphics = graph_graphics;
     }
 
     set_color(base_color: number, highlight_color: number) {
-        this.fillColor = base_color;
+        this.hover_ellipse.fillColor = base_color;
         this.base_color = base_color;
         this.highlight_color = highlight_color;
     }
 
+    add_to_container(container: Phaser.GameObjects.Container) {
+        container.add(this.world);
+        container.add(this.hover_ellipse);
+        container.add(this.index_text);
+    }
+
+    get_x(): number {
+        return this.x;
+    }
+
+    get_y(): number {
+        return this.y;
+    }
+
     private setup_listeners() {
-        this.setInteractive();
-        this.on('pointerup', () => { this.graph_graphics.world_clicked(this.index); });
-        this.on('pointerover', () => { this.fillColor = this.highlight_color });
-        this.on('pointerout', () => { this.fillColor = this.base_color });
+        this.hover_ellipse.setInteractive();
+        this.hover_ellipse.on('pointerup', () => { this.graph_graphics.world_clicked(this.index); });
+        this.hover_ellipse.on('pointerover', () => { this.hover_ellipse.setAlpha(this.highlight_alpha);/* this.hover_ellipse.fillColor = this.highlight_color */ });
+        this.hover_ellipse.on('pointerout', () => { this.hover_ellipse.setAlpha(this.base_alpha); /* this.hover_ellipse.fillColor = this.base_color */ });
     }
 }
 
@@ -226,9 +252,9 @@ export class Edge {
         let arrowbody_len = arrow_len - 50 /* ARROWHEAD + ARROWTAIL WIDTH */;
         let arrowhead_offset = delta.setLength(arrow_len/2  - /* HALF OF ARROWHEAD WIDTH */12.5);
 
-        this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead_10");
-        this.arrowbody = new Phaser.GameObjects.Sprite(scene, midpoint.x, midpoint.y, "arrowbody_10");
-        this.arrowtail = new Phaser.GameObjects.Sprite(scene, midpoint.x - arrowhead_offset.x, midpoint.y - arrowhead_offset.y, "arrowtail_10");
+        this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead");
+        this.arrowbody = new Phaser.GameObjects.Sprite(scene, midpoint.x, midpoint.y, "arrowbody");
+        this.arrowtail = new Phaser.GameObjects.Sprite(scene, midpoint.x - arrowhead_offset.x, midpoint.y - arrowhead_offset.y, "arrowtail");
         /* this.arrowhead = new Phaser.GameObjects.Sprite(scene, midpoint.x + arrowhead_offset.x, midpoint.y + arrowhead_offset.y, "arrowhead_"+weight.toString());
         this.arrowbody = new Phaser.GameObjects.Sprite(scene, midpoint.x, midpoint.y, "arrowbody_"+weight.toString());
         this.arrowtail = new Phaser.GameObjects.Sprite(scene, midpoint.x - arrowhead_offset.x, midpoint.y - arrowhead_offset.y, "arrowtail_"+weight.toString());*/

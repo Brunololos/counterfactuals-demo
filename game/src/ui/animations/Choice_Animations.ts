@@ -25,6 +25,27 @@ export class Choice_Animations {
                     offset: 0
                 });
                 return 1500;
+            case transition[0] == Game_Graphics_Mode.Negated_Formula_Choice && transition[1] == Game_Graphics_Mode.Formula:
+                console.log("Wooo");
+                timeline.add({ /* FADE OPTION_BOXES, NOT CHOSEN FORMULA & OR */
+                    targets: [c.get_or(), c.get_not_chosen_graphics(), c.get_option_boxes()[0], c.get_option_boxes()[1]],
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE CHOSEN FORMULA */
+                    targets: c.get_chosen_graphic(),
+                    x: c.get_x(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                return 1500;
             /* DEFENDER_VACUOUS_TRUTH_CLAIM */
             case transition[0] == Game_Graphics_Mode.Counterfactual_Choice && transition[1] == Game_Graphics_Mode.Formula:
                 timeline.add({ /* FADE OPTION_BOXES, NOT CHOSEN OPTION & OR */

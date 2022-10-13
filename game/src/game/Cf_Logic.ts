@@ -10,7 +10,7 @@ export abstract class Formula {
      * @returns The root object of a tree of formula objects
      */
     static parse(to_parse: string, atoms: string[] = []): Formula {
-    //Symbols: "|_|->, v, ~, (...), A-Z, _|_, ¯|¯, ?"
+    //Symbols: "|_|->, v, ^, ~, (...), A-Z, _|_, ¯|¯, ?"
     //Syntax: "~(A v B) |_|-> (C v ~(D))"
 
         // search for weakest binder
@@ -25,11 +25,14 @@ export abstract class Formula {
                 case c == 'v':
                     w = (v != '|' && v != 'v') ? i : w;
                     break;
+                case c == '^':
+                    w = (v != '|' && v != 'v' && v != '^') ? i : w;
+                    break;
                 case c == '~':
-                    w = (v != '|' && v != 'v' && v != '~') ? i : w;
+                    w = (v != '|' && v != 'v' && v != '^' && v != '~') ? i : w;
                     break;
                 case c == '(':
-                    w = (v != '|' && v != 'v' && v != '~' && v != '~') ? i : w;
+                    w = (v != '|' && v != 'v' && v != '^' && v != '~' && v != '~') ? i : w;
 
                     let unclosed_brackets = 1;
                     while(i < to_parse.length && unclosed_brackets > 0) {
@@ -39,16 +42,16 @@ export abstract class Formula {
                     }
                     break;
                 case c >= 'A' && c <= 'Z':
-                    w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z')) ? i : w;
+                    w = (v != '|' && v != 'v' && v != '^' && v != '~' && v != '~' && (v < 'A' || v > 'Z')) ? i : w;
                     break;
                 case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "_|_":
-                    w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_') ? i : w;
+                    w = (v != '|' && v != 'v' && v != '^' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_') ? i : w;
                     break;
                 case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "¯|¯":
-                    w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_' && v != '¯') ? i : w;
+                    w = (v != '|' && v != 'v' && v != '^' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_' && v != '¯') ? i : w;
                     break;
                 case c == '?':
-                    w = (v != '|' && v != 'v' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_' && v != '¯' && v != '?') ? i : w;
+                    w = (v != '|' && v != 'v' && v != '^' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_' && v != '¯' && v != '?') ? i : w;
                     break;
                 default:
                     break;
@@ -63,6 +66,10 @@ export abstract class Formula {
                     Formula.parse(to_parse.slice(w+5, to_parse.length), atoms));
             case c == 'v':
                 return new Disjunction(
+                    Formula.parse(to_parse.slice(0, w), atoms),
+                    Formula.parse(to_parse.slice(w+1, to_parse.length), atoms));
+            case c == '^':
+                return new Conjunction(
                     Formula.parse(to_parse.slice(0, w), atoms),
                     Formula.parse(to_parse.slice(w+1, to_parse.length), atoms));
             case c == '~':
@@ -146,7 +153,7 @@ export class Cf_Would extends Formula {
 
     to_string(atoms?: string[]): string {
         atoms = atoms ?? [];
-        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction);
+        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
         let left = this.antecedent.to_string(atoms);
         let right = this.consequent.to_string(atoms);
         return (is_bin(this.antecedent) ? "(" + left + ")" : left) + " |_|-> " + (is_bin(this.consequent) ? "(" + right + ")" : right);
@@ -171,7 +178,7 @@ export class Cf_Would extends Formula {
 }
 
 /**
- * A class representation of the disjunction negation operator
+ * A class representation of the disjunction operator
  */
 export class Disjunction extends Formula {
     subject1: Formula;
@@ -196,7 +203,7 @@ export class Disjunction extends Formula {
 
     to_string(atoms?: string[]): string {
         atoms = atoms ?? [];
-        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction);
+        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
         let left = this.subject1.to_string(atoms);
         let right = this.subject2.to_string(atoms);
         return (is_bin(this.subject1) ? "(" + left + ")" : left) + " v " + (is_bin(this.subject2) ? "(" + right + ")" : right);
@@ -204,6 +211,58 @@ export class Disjunction extends Formula {
 
     compare(comparand: Formula): boolean {
         return (comparand instanceof Disjunction &&
+            (this.subject1.compare(comparand.subject1) && this.subject2.compare(comparand.subject2)
+            || this.subject1.compare(comparand.subject2) && this.subject2.compare(comparand.subject1)))
+        || comparand instanceof Any;
+    }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.subject1.get_child(path.slice(1, path.length));
+            case 'r':
+                return this.subject2.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("path string may only contain the letters 'l' and 'r'");
+        }
+    }
+}
+
+/**
+ * A class representation of the conjunction operator
+ */
+export class Conjunction extends Formula {
+    subject1: Formula;
+    subject2: Formula;
+
+    /**
+     * Create a conjunction between two formulas
+     * @param subject1 Formula to be conjunct
+     * @param subject2 Formula to be conjunct
+     */
+    constructor(subject1: Formula, subject2: Formula) {
+        super();
+        this.subject1 = subject1;
+        this.subject2 = subject2;
+    }
+
+    generate_atom_list(atoms?: string[]): string[] {
+        let new_atoms = this.subject1.generate_atom_list(atoms);
+        new_atoms = this.subject2.generate_atom_list(new_atoms);
+        return new_atoms;
+    }
+
+    to_string(atoms?: string[]): string {
+        atoms = atoms ?? [];
+        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
+        let left = this.subject1.to_string(atoms);
+        let right = this.subject2.to_string(atoms);
+        return (is_bin(this.subject1) ? "(" + left + ")" : left) + " ^ " + (is_bin(this.subject2) ? "(" + right + ")" : right);
+    }
+
+    compare(comparand: Formula): boolean {
+        return (comparand instanceof Conjunction &&
             (this.subject1.compare(comparand.subject1) && this.subject2.compare(comparand.subject2)
             || this.subject1.compare(comparand.subject2) && this.subject2.compare(comparand.subject1)))
         || comparand instanceof Any;
@@ -242,7 +301,7 @@ export class Negation extends Formula {
     }
 
     to_string(atoms?: string[]): string {
-        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction);
+        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
         let sub = this.subject.to_string(atoms);
         return "~" + (is_bin(this.subject) ? "(" + sub + ")": sub);
     }

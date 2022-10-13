@@ -1,11 +1,11 @@
 import { Rule, Rules } from "../../game/Game_Rules";
 import { Game_Graphics_Mode } from "../../util/UI_Utils";
-import { BRACKET_WIDTH, Formula_Graphics, Formula_Graphics_Element, ICON_WIDTH, Negation_Graphics } from "../Formula_Graphics";
+import { BRACKET_WIDTH, CONJ_WIDTH, DISJ_WIDTH, Formula_Graphics, Formula_Graphics_Element, ICON_WIDTH, Negation_Graphics } from "../Formula_Graphics";
 
 export class Formula_Animations {
     static fill_animation_timeline(timeline: Phaser.Tweens.Timeline, move: Rules, formula: Formula_Graphics): number {
         let f = formula.get_formula();
-        let top, bottom, atom, neg, disj, cf_would, left_child, right_child, left, right;
+        let top, bottom, atom, neg, conj, disj, cf_would, left_child, right_child, left, right;
         switch(move) {
             case Rules.Attacker_Victory:
                 return 1500;
@@ -531,6 +531,90 @@ export class Formula_Animations {
                     offset: 1500
                 });
                 return 3000;
+            case Rules.Left_AND:
+                left_child = f.get_child("l");
+                right_child = f.get_child("r");
+                timeline.add({ /* FADE CONJUNCTION & RIGHT CHILD TREE */
+                    targets: right_child.get_children([f, right_child]),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE CONJUNCTION & RIGHT_CHILD EMBEDDINGS */
+                    targets: f.get_embedding().concat(right_child.get_embedding(true)),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE LEFT CHILD */
+                    targets: left_child.get_children([left_child]),
+                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500
+                });
+                timeline.add({ /* MOVE LEFT CHILD EMBEDDINGS */
+                    targets: left_child.get_embedding(true),
+                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500
+                });
+                    return 3000;
+                case Rules.Right_AND:
+                    left_child = f.get_child("l");
+                    right_child = f.get_child("r");
+                    timeline.add({ /* FADE CONJUNCTION & LEFT CHILD TREE */
+                        targets: left_child.get_children([f, left_child]),
+                        alpha: 0,
+                        duration: 1500,
+                        ease: 'Quart.Out',
+                        yoyo: false,
+                        repeat: 0,
+                        offset: 0
+                    });
+                    timeline.add({ /* FADE CONJUNCTION & LEFT_CHILD EMBEDDINGS */
+                        targets: f.get_embedding().concat(left_child.get_embedding(true)),
+                        alpha: 0,
+                        duration: 1500,
+                        ease: 'Quart.Out',
+                        yoyo: false,
+                        repeat: 0,
+                        offset: 0
+                    });
+                    timeline.add({ /* MOVE RIGHT CHILD */
+                        targets: right_child.get_children([right_child]),
+                        x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH).toString(),
+                        duration: 1500,
+                        ease: 'Quart.Out',
+                        yoyo: false,
+                        repeat: 0,
+                        offset: 1500
+                    });
+                    timeline.add({ /* MOVE RIGHT CHILD EMBEDDINGS */
+                        targets: right_child.get_embedding(true),
+                        x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH).toString(),
+                        duration: 1500,
+                        ease: 'Quart.Out',
+                        yoyo: false,
+                        repeat: 0,
+                        offset: 1500
+                    });
+                    return 3000;
+                case Rules.Negated_Left_AND:
+                    return 1500;
+                case Rules.Negated_Left_AND:
+                    return 1500;
             case Rules.Attacker_Phi_Evaluation:
                 left = f.get_child("l");
                 right = f.get_child("r");
@@ -574,21 +658,23 @@ export class Formula_Animations {
             case Rules.Attacker_World_Choice:
                 left = f.get_child("l");
                 right = f.get_child("r");
-                neg = formula.add_temporary_formula("~(A v B)");
-                neg.setX( - (ICON_WIDTH + left.get_width() + right.get_width())/2 + BRACKET_WIDTH );
-                neg.setAlpha(0);
-                disj = neg.get_child("l");
-                disj.setX( (ICON_WIDTH + left.get_width() - right.get_width())/2 + BRACKET_WIDTH );
+                
+                disj = formula.add_temporary_formula("~A v B");
+                disj.setX( (ICON_WIDTH + left.get_width() - right.get_width())/2);
                 disj.setAlpha(0);
                 disj.get_embedding()[0].setAlpha(0);
                 disj.get_embedding()[1].setAlpha(0);
                 disj.get_embedding()[2].setAlpha(0);
-                disj.get_child("l").setAlpha(0);
+                disj.get_child("ll").setAlpha(0);
                 disj.get_child("r").setAlpha(0);
+                neg = disj.get_child("l");
+                neg.setX( - (DISJ_WIDTH + left.get_width() + right.get_width())/2);
+                neg.setAlpha(0);
+                
                 timeline.add({ /* FADE CF_WOULD */
                     targets: f,
                     alpha: 0,
-                    duration: 3000,
+                    duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
                     repeat: 0,
@@ -597,7 +683,7 @@ export class Formula_Animations {
                 timeline.add({ /* FADE CF_WOULD EMBEDDING */
                     targets: f.get_embedding(),
                     alpha: 0,
-                    duration: 3000,
+                    duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
                     repeat: 0,
@@ -612,9 +698,18 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
+                /* timeline.add({ //FADE IN DISJUNCTION EMBEDDING // TODO: fix Embedding popup in attacker world choice
+                    targets: disj.get_embedding(),
+                    alpha: 1,
+                    duration: 1500,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500
+                }); */
                 timeline.add({ /* MOVE ANTECEDENT */
                     targets: left.get_children([left]),
-                    x: '+=' + ( (right.get_width() + ICON_WIDTH)/2 + ( - right.get_width() )/2 + BRACKET_WIDTH ).toString(),
+                    x: '+=' + ( (f.get_width() - left.get_width())/2 - BRACKET_WIDTH + ( + ICON_WIDTH - right.get_width() - DISJ_WIDTH)/2).toString(),//( (right.get_width() + ICON_WIDTH)/2 + ( - right.get_width() )/2 + BRACKET_WIDTH ).toString(),
                     duration: 3000,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -623,7 +718,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE ANTECEDENT EMBEDDINGS */
                     targets: left.get_embedding(true),
-                    x: '+=' + ( (right.get_width() + ICON_WIDTH)/2 + ( - right.get_width() )/2 + BRACKET_WIDTH ).toString(),
+                    x: '+=' + ( (f.get_width() - left.get_width())/2 - BRACKET_WIDTH + ( + ICON_WIDTH - right.get_width() - DISJ_WIDTH)/2).toString(),//( (right.get_width() + ICON_WIDTH)/2 + ( - right.get_width() )/2 + BRACKET_WIDTH ).toString(),
                     duration: 3000,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -632,7 +727,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE CONSEQUENT */
                     targets: right.get_children([right]),
-                    x: '+=' + ( ( - left.get_width() - ICON_WIDTH)/2 + (ICON_WIDTH*2 + left.get_width())/2 + BRACKET_WIDTH ).toString(),
+                    x: '+=' + ( (-f.get_width() + right.get_width())/2 + BRACKET_WIDTH + ( + left.get_width() + ICON_WIDTH + DISJ_WIDTH)/2).toString(),//( ( - left.get_width() - ICON_WIDTH)/2 + (ICON_WIDTH*2 + left.get_width())/2 + BRACKET_WIDTH ).toString(),
                     duration: 3000,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -735,7 +830,7 @@ export class Formula_Animations {
 
     static fill_transition_animation_timeline(timeline: Phaser.Tweens.Timeline, transition: [Game_Graphics_Mode, Game_Graphics_Mode], formula: Formula_Graphics): number {
         let f = formula.get_formula();
-        let atom, neg, disj, cf_would, left_child, right_child, left, right;
+        let atom, neg, conj, disj, cf_would, left_child, right_child, left, right;
         switch(true) {
             case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Formula_Choice:
                 timeline.add({ /* FADE DISJUNCTION */
@@ -774,6 +869,91 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
+                return 1500;
+            case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Negated_Formula_Choice:
+                conj = f.get_child("l");
+                left_child = f.get_child("ll");
+                right_child = f.get_child("lr");
+                let left_neg = formula.add_temporary_formula("~_|_");
+                let right_neg = formula.add_temporary_formula("~_|_");
+                left_neg.setX(( - left_child.get_width() - CONJ_WIDTH - right_child.get_width())/2);
+                right_neg.setX((left_child.get_width() + CONJ_WIDTH - right_child.get_width())/2);
+                left_neg.setAlpha(0);
+                right_neg.setAlpha(0);
+                left_neg.get_child("l").setAlpha(0);
+                right_neg.get_child("l").setAlpha(0);
+                timeline.add({ /* FADE NEGATION & CONJUNCTION */
+                    targets: [f, conj],
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE CONJUNCTION EMBEDDING */
+                    targets: conj.get_embedding(),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE LEFT & LEFT NEGATION */
+                    targets: left_child.get_children([left_child, left_neg]),
+                    x: '+='+((f.get_width() - left_child.get_width() - ICON_WIDTH - BRACKET_WIDTH)/2 + (-left_child.get_width() - ICON_WIDTH - BRACKET_WIDTH)/2 - CONJ_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE LEFT EMBEDDINGS */
+                    targets: left_child.get_embedding(true),
+                    x: '+='+((f.get_width() - left_child.get_width() - ICON_WIDTH - BRACKET_WIDTH)/2 + (-left_child.get_width() - ICON_WIDTH - BRACKET_WIDTH)/2 - CONJ_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE RIGHT & RIGHT NEGATION */
+                    targets: right_child.get_children([right_child, right_neg]),
+                    x: '+='+((-f.get_width() + right_child.get_width() + ICON_WIDTH + BRACKET_WIDTH)/2 + (ICON_WIDTH + right_child.get_width() + BRACKET_WIDTH)/2 + CONJ_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE RIGHT EMBEDDINGS */
+                    targets: right_child.get_embedding(true),
+                    x: '+='+((-f.get_width() + right_child.get_width() + ICON_WIDTH + BRACKET_WIDTH)/2 + (ICON_WIDTH + right_child.get_width() + BRACKET_WIDTH)/2 + CONJ_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE IN LEFT NEGATION & RIGHT NEGATION */
+                    targets: [left_neg, right_neg],
+                    alpha: 1,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                /* timeline.add({ MOVE LEFT & RIGHT
+                    targets: conj.get_children(),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                }); */
                 return 1500;
             case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Counterfactual_Choice:
                 timeline.add({ /* MOVE FORMULA TO RIGHT OR POSITION */

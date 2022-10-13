@@ -6,6 +6,7 @@ export let text_style = { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, 
 export enum Game_Graphics_Mode {
     Formula,
     Formula_Choice,
+    Negated_Formula_Choice,
     Counterfactual_Choice,
     Negated_Counterfactual_Choice,
     World_Choice,
@@ -23,6 +24,7 @@ export function duplicate_texture(scene: Phaser.Scene, texture_key: string, new_
     let canvas_texture = scene.game.textures.createCanvas(new_texture_key, texture_source.width, texture_source.height);
     let canvas = canvas_texture.getSourceImage();
     let context = (canvas as HTMLCanvasElement).getContext('2d');
+    context!.getContextAttributes().willReadFrequently = true;
     context!.drawImage((texture_source as HTMLImageElement), 0, 0);
     (canvas_texture as Phaser.Textures.CanvasTexture).refresh();
 }
@@ -31,6 +33,7 @@ export function fill_texture(scene: Phaser.Scene, texture_key: string, color: nu
     let texture = scene.game.textures.get(texture_key);
     let canvas = texture.getSourceImage(texture_key);
     let context = (canvas as HTMLCanvasElement).getContext('2d');
+    context!.getContextAttributes().willReadFrequently = true;
     let image_data = context!.getImageData(0, 0, canvas.width, canvas.height);
     let pixel_array = image_data.data;
 
@@ -269,6 +272,7 @@ export function create_cosmic_nebula_texture(scene: Phaser.Scene, width: number,
   let canvas_texture = scene.game.textures.createCanvas(texture_key, width, height);
   let canvas = canvas_texture.getSourceImage();
   let context = (canvas as HTMLCanvasElement).getContext('2d');
+  context!.getContextAttributes().willReadFrequently = true;
   let image_data = context!.getImageData(0, 0, canvas.width, canvas.height);
   let pixel_array = image_data.data;
 
@@ -354,7 +358,7 @@ export function create_shape_geometry_mask(scene: Base_Scene, x: number, y: numb
 export let Rule_Descriptions : string[] = [
   "You lose!",
   "You win!",
-  "Resolving negated Falsity...",
+  "Resolving negated Untruth...",
   "Resolving negated Truth...",
   "The atom is true at the current world",
   "The atom is false at the current world",
@@ -366,15 +370,19 @@ export let Rule_Descriptions : string[] = [
   "You chose the right formula",
   "The attacker chose the left formula",
   "The attacker chose the right formula",
+  "The attacker chose the left formula",
+  "The attacker chose the right formula",
+  "You chose the left formula",
+  "You chose the right formula",
 
   "You chose to choose a sphere of accessibility",
-  "The attacker chose to evaluate the antecedent at the sphere-delimiting world",
+  "The attacker chose to evaluate the sphere-delimiting world", /* "The attacker chose to evaluate the antecedent at the sphere-delimiting world", */
   "The attacker chose a world to evaluate the counterfactual at",
   "You claimed that the counterfactual is vacuously true",
   "The attacker chose a world to disprove your vacuous truth claim",
 
   "The attacker chose a sphere of accessibility",
-  "You chose to evaluate the antecedent at the sphere-delimiting world",
+  "You chose to evaluate the sphere-delimiting world", /* "You chose to evaluate the antecedent at the sphere-delimiting world", */
   "You chose to evaluate the counterfactual at a world",
   "The attacker claimed that the counterfactual is vacuously true",
   "You chose a world to disprove the attackers vacuous truth claim",

@@ -1,11 +1,12 @@
 import { Rules } from "../game/Game_Rules";
 import Base_Scene from "../util/Base_Scene";
-import { Atom, Bottom, Cf_Would, Disjunction, Formula, Negation, Top } from "../game/Cf_Logic";
+import { Atom, Bottom, Cf_Would, Conjunction, Disjunction, Formula, Negation, Top } from "../game/Cf_Logic";
 import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode, hueshift_texture } from "../util/UI_Utils";
 import { Formula_Animations } from "./animations/Formula_Animations";
 import { cloneDeep } from "lodash";
 
 export const DISJ_WIDTH = 30;
+export const CONJ_WIDTH = 30;
 export const ICON_WIDTH = 60;
 export const BRACKET_WIDTH = 10;
 
@@ -34,6 +35,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("atom", "assets/Atom.png");
         scene.load.image("glow", "assets/Glow.png");
         scene.load.image("negation", "assets/Negation.png");
+        scene.load.image("conjunction", "assets/AND.png");
         //scene.load.image("disjunction", "assets/Disjunction.png");
         scene.load.image("disjunction", "assets/OR.png");
         scene.load.image("cf_would", "assets/Cf_Would.png");
@@ -148,21 +150,28 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
      * @returns The root object of a tree of formula graphics element objects
      */
     static parse(scene: Base_Scene, to_parse: Formula, x: number, y: number, atoms: string[]=[], embedded: number=0): Formula_Graphics_Element {
+        let antecedent; let consequent; let subject1; let subject2; let subject;
         switch(true) {
             case to_parse instanceof Cf_Would:
-                let antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
-                let consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
+                antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
+                consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
                 antecedent.offset(- ICON_WIDTH/2 - consequent.get_width()/2);
                 consequent.offset(+ ICON_WIDTH/2 + antecedent.get_width()/2);
                 return new Cf_Would_Graphics(scene, x + (antecedent.get_width() - consequent.get_width())/2, y, antecedent, consequent, embedded);
             case to_parse instanceof Disjunction:
-                let subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
-                let subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
+                subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
+                subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
                 subject1.offset(- DISJ_WIDTH/2 - subject2.get_width()/2);
                 subject2.offset(+ DISJ_WIDTH/2 + subject1.get_width()/2);
                 return new Disjunction_Graphics(scene, x + (subject1.get_width() - subject2.get_width())/2, y, subject1, subject2, embedded);
+            case to_parse instanceof Conjunction:
+                subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
+                subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
+                subject1.offset(- CONJ_WIDTH/2 - subject2.get_width()/2);
+                subject2.offset(+ CONJ_WIDTH/2 + subject1.get_width()/2);
+                return new Conjunction_Graphics(scene, x + (subject1.get_width() - subject2.get_width())/2, y, subject1, subject2, embedded);
             case to_parse instanceof Negation:
-                let subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
+                subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
                 return new Negation_Graphics(scene, x - subject.get_width()/2, y, subject);
             case to_parse instanceof Atom:
                 return new Atom_Graphics(scene, x, y, (to_parse as Atom).value,  atoms);
@@ -351,6 +360,94 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
 
     get_width(): number {
         return DISJ_WIDTH + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH;
+    }
+
+    get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {
+        return aux.concat([this.subject1, this.subject2]).concat(this.subject1.get_children()).concat(this.subject2.get_children());
+    }
+
+    get_embedding(recursive?: boolean): Phaser.GameObjects.Sprite[] {
+        return recursive ? this.brackets.concat(this.subject1.get_embedding(true)).concat(this.subject2.get_embedding(true)) : this.brackets;
+    }
+
+    add_to_container(container: Phaser.GameObjects.Container): void {
+        for(let i=0; i<this.brackets.length; i++) {
+            container.add(this.brackets[i]);
+        }
+        container.add(this);
+        this.subject1.add_to_container(container);
+        this.subject2.add_to_container(container);
+    }
+}
+/**
+ * A class representation of the conjunction operator
+ */
+ export class Conjunction_Graphics extends Formula_Graphics_Element {
+    subject1: Formula_Graphics_Element;
+    subject2: Formula_Graphics_Element;
+    brackets: Phaser.GameObjects.Sprite[] = [];
+
+    /**
+     * Create a conjunction between two formulas
+     * @param subject1 Formula to be conjunct
+     * @param subject2 Formula to be conjunct
+     */
+    constructor(scene: Base_Scene, x: number, y: number, subject1: Formula_Graphics_Element, subject2: Formula_Graphics_Element, embedded: integer) {
+        super(scene, x, y, "conjunction");
+        this.subject1 = subject1;
+        this.subject2 = subject2;
+
+        let w1 = this.subject1.get_width();
+        let w2 = this.subject2.get_width();
+
+        if(embedded >= 0) {
+            let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
+            suff = ""; // TODO: quick fix to stop using bracket recolors
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x - w1 - BRACKET_WIDTH */
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x + w2 + BRACKET_WIDTH */
+        }
+        this.setDisplaySize(DISJ_WIDTH, ICON_WIDTH);
+    }
+
+    get_child(path: string): Formula_Graphics_Element {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.subject1.get_child(path.slice(1, path.length));
+            case 'r':
+                return this.subject2.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("path string may only contain the letters 'l' and 'r'");
+        }
+    }
+
+    offset(x: number): void {
+        this.setX(this.x + x);
+        this.subject1.offset(x);
+        this.subject2.offset(x);
+        for(let i=0; i<this.brackets.length; i++) {
+            this.brackets[i].setX(this.brackets[i].x + x);
+        }
+    }
+
+    scale_recursive(s: number): void {
+        this.setScale(this.scaleX * s, this.scaleY * s);
+        for(let i=0; i<this.brackets.length; i++) {
+            this.brackets[i].setScale(this.brackets[i].texture.key == "bracket_compact" ? this.brackets[i].scaleX * s : this.brackets[i].scaleX, this.brackets[i].scaleY * s);
+        }
+        this.subject1.scale_recursive(s);
+        this.subject2.scale_recursive(s);
+    }
+
+    set_depth(d: number): void {
+        this.setDepth(d);
+        this.subject1.set_depth(d);
+        this.subject2.set_depth(d);
+    }
+
+    get_width(): number {
+        return CONJ_WIDTH + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH;
     }
 
     get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {

@@ -29,7 +29,7 @@ worlds = [get(atoms, [0, 1, 2, 4])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
 
-export let level2 = Level.create("Res", "~(~D v ~C) v A", atoms, "a/d", 0, -1, worlds, world_positions, edges);
+export let level2 = Level.create("Res", "(D ^ C) v A"/* "~(~D v ~C) v A" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
 
 atoms = [
     "Käse ist ein pflanzliches Produkt",
@@ -44,7 +44,7 @@ worlds = [get(atoms, [0, 1, 2, 3, 4, 5])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
 
-export let level3 = Level.create("Res", "~(~C v ~D) v ~(~G v ~F)", atoms, "a/d", 0, -1, worlds, world_positions, edges);
+export let level3 = Level.create("Res", "(C ^ D) v (G ^ F)"/* "~(~C v ~D) v ~(~G v ~F)" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
 
 atoms = [
     "Es gibt den Weihnachtsmann",
@@ -52,7 +52,7 @@ atoms = [
 ];
 worlds = [[], [atoms[1]], get(atoms, [0, 1]), [atoms[0]]];
 world_positions = [[0, 0], [-50, -150], [-100, 100], [200, 50]];
-edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 1], [0, 2, 2], [0, 3, 5]];
+edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 1], [0, 2, 2], [0, 3, 3]];
 
 export let level4 = Level.create("Res", "A |_|-> B", atoms, "a/d", 0, -1, worlds, world_positions, edges);
 
@@ -69,7 +69,7 @@ world_positions = [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150], [300, -150]
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [6, 6, 0], [0, 1, 2],
         [0, 2, 4], [0, 3, 5], [0, 4, 6], [0, 6, 6], [1, 2, 3], [2, 5, 1], [3, 5, 4], [4, 6, 5]];
 
-export let level5 = Level.create("Res", "~(A v ~B) |_|-> C", atoms, "a/d", 0, -1, worlds, world_positions, edges);
+export let level5 = Level.create("Res", "(~A ^ B) |_|-> C"/* "~(A v ~B) |_|-> C" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
 
 atoms = [
     "Blah",
@@ -82,7 +82,7 @@ worlds = [[atoms[0], atoms[3], atoms[5]]];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
 
-export let level6 = Level.create("Res", "~A v ~B"/* "(A v B) v C v (D v E)" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
+export let level6 = Level.create("Res", "~((~A v (B v ~C)) ^ ~A)"/* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
 
 export let levels = [level1, level2, level3, level4, level5, level6];
 
