@@ -5,7 +5,7 @@ import Base_Scene from "../util/Base_Scene";
 import { Formula, Negation } from "../game/Cf_Logic";
 import { Game_Graphics_Mode, text_style } from "../util/UI_Utils";
 import { Choice_Animations } from "./animations/Choice_Animations";
-import { CONJ_WIDTH, DISJ_WIDTH, Formula_Graphics } from "./Formula_Graphics";
+import { CONJ_WIDTH, DISJ_WIDTH, Formula_Graphics, Formula_Graphics_Element } from "./Formula_Graphics";
 import { stat } from "fs";
 
 export const OR_WIDTH = 60;
@@ -288,6 +288,10 @@ export class Choice {
         return (this.choice == 0) ? this.option2 : this.option1;
     }
 
+    get_atoms(atoms: string[]): Formula_Graphics_Element[] {
+        return this.option1.get_formula().get_atoms(atoms).concat(this.option2.get_formula().get_atoms(atoms));
+    }
+
     is_choice_made(): boolean {
         return this.choice_made;
     }
@@ -297,7 +301,6 @@ export class Choice {
     }
 
     static load_sprites(scene: Phaser.Scene) {
-        scene.load.image("option", "assets/Double_Stripe.png");
         scene.load.image("option_box_left", "assets/Option_Box_Left.png");
         scene.load.image("option_box_right", "assets/Option_Box_Right.png");
     }

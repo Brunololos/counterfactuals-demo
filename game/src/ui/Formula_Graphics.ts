@@ -192,6 +192,8 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
 
     abstract get_width(): number;
 
+    abstract get_atoms(atoms: string[]): Formula_Graphics_Element[];
+
     abstract get_children(aux?: Formula_Graphics_Element[]): Formula_Graphics_Element[];
     
     abstract get_embedding(recursive?: boolean): Phaser.GameObjects.Sprite[];
@@ -271,6 +273,10 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
 
     get_width(): number {
         return ICON_WIDTH + this.antecedent.get_width() + this.consequent.get_width() + 2*BRACKET_WIDTH;
+    }
+
+    get_atoms(atoms: string[]): Formula_Graphics_Element[] {
+        return this.antecedent.get_atoms(atoms).concat(this.consequent.get_atoms(atoms));
     }
 
     get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {
@@ -362,6 +368,10 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         return DISJ_WIDTH + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH;
     }
 
+    get_atoms(atoms: string[]): Formula_Graphics_Element[] {
+        return this.subject1.get_atoms(atoms).concat(this.subject2.get_atoms(atoms));
+    }
+
     get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {
         return aux.concat([this.subject1, this.subject2]).concat(this.subject1.get_children()).concat(this.subject2.get_children());
     }
@@ -450,6 +460,10 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         return CONJ_WIDTH + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH;
     }
 
+    get_atoms(atoms: string[]): Formula_Graphics_Element[] {
+        return this.subject1.get_atoms(atoms).concat(this.subject2.get_atoms(atoms));
+    }
+
     get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {
         return aux.concat([this.subject1, this.subject2]).concat(this.subject1.get_children()).concat(this.subject2.get_children());
     }
@@ -513,6 +527,10 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         return ICON_WIDTH + this.subject.get_width();
     }
 
+    get_atoms(atoms: string[]): Formula_Graphics_Element[] {
+        return this.subject.get_atoms(atoms);
+    }
+
     get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {
         return aux.concat([this.subject]).concat(this.subject.get_children());
     }
@@ -565,6 +583,10 @@ export class Atom_Graphics extends Formula_Graphics_Element {
         return ICON_WIDTH;
     }
 
+    get_atoms(atoms: string[]): Formula_Graphics_Element[] {
+        return atoms.includes(this.value) ? [this] : [];
+    }
+
     get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {
         return aux;
     }
@@ -612,6 +634,10 @@ export class Atom_Graphics extends Formula_Graphics_Element {
         return ICON_WIDTH;
     }
 
+    get_atoms(): Formula_Graphics_Element[] {
+        return [];
+    }
+
     get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {
         return aux;
     }
@@ -657,6 +683,10 @@ export class Atom_Graphics extends Formula_Graphics_Element {
 
     get_width(): number {
         return ICON_WIDTH;
+    }
+
+    get_atoms(): Formula_Graphics_Element[] {
+        return [];
     }
 
     get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {

@@ -1,9 +1,13 @@
+import { cloneDeep } from "lodash";
 import { Vector } from "matter";
+import { Atom } from "../game/Cf_Logic";
 import { Game_State } from "../game/Game_State";
 import { Star } from "../graphics/Star";
 import Base_Scene from "../util/Base_Scene";
 import { Graph } from "../util/Graph";
-import { duplicate_texture, dye_texture, fill_texture, Graph_Graphics_Mode, text_style } from "../util/UI_Utils";
+import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode, Graph_Graphics_Mode, text_style } from "../util/UI_Utils";
+import { Formula_Graphics, Formula_Graphics_Element, ICON_WIDTH } from "./Formula_Graphics";
+import { Graphics_Controller } from "./Graphics_Controller";
 
 const WORLD_WIDTH = 60;
 const ATOM_WIDTH = 20;
@@ -14,10 +18,19 @@ const IDLE_WORLD_COLOR = 0x9BBFE0;//0x7893AD;
 const IDLE_WORLD_HIGHLIGHT_COLOR = 0xACD4FA;
 const CURRENT_WORLD_COLOR = 0xE0AB79;
 const CURRENT_WORLD_HIGHLIGHT_COLOR = 0xFBC087;//0xFDD87C;
-const DELIM_WORLD_COLOR = 0x9C9BE0;
-const DELIM_WORLD_HIGHLIGHT_COLOR = 0xAEACFA;//0xC6C5FA;
+
+const WORLD_ALPHA: number = 0.85;
+const INACTIVE_WORLD_ALPHA: number = 0.45;
+const WORLD_BASE_HIGHLIGHT_ALPHA: number = 0.01;
+const WORLD_HIGHLIGHT_ALPHA: number = 0.3;
+
+const EDGE_ALPHA: number = 0.85;
+const INACTIVE_EDGE_ALPHA: number = 0.4;
+const ATOM_ALPHA: number = 1;
+const INACTIVE_ATOM_ALPHA: number = 0.7;//0.45;
 
 export class Graph_Graphics extends Phaser.GameObjects.Container {
+    private graphics_controller: Graphics_Controller;
     private game_state: Game_State;
     private graph: Graph;
     private worlds: World_Controller[] = [];
@@ -29,17 +42,19 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
 
     private rocket: Phaser.GameObjects.Sprite;
     
-    constructor(scene: Phaser.Scene, x: number, y: number, state: Game_State, current_world: integer, world_positions: [number, number][], edges: [integer, integer, integer][]) {
+    constructor(scene: Phaser.Scene, x: number, y: number, state: Game_State, current_world: integer, world_positions: [number, number][], edges: [integer, integer, integer][], graphics_controller: Graphics_Controller) {
         super(scene, x, y);
         this.game_state = state;
         this.graph = this.game_state.get_graph();
         this.current_world = current_world;
+        this.graphics_controller = graphics_controller;
 
         // add worlds
         let n = this.graph.get_V();
         if(world_positions.length != n) { throw new Error("Passed too many or too few positions!"); }
         for(let i=0; i<n; i++) {
-            let world = new World_Controller(scene, world_positions[i][0], world_positions[i][1], i, this);
+            let vertex_atoms = this.graph.get_worlds()[i].get_atoms().filter((value) => state.get_atoms().includes(value));
+            let world = new World_Controller(scene, world_positions[i][0], world_positions[i][1], i, vertex_atoms, this);
             this.worlds.push(world);
             world.add_to_container(this);
         }
@@ -51,19 +66,19 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
             let d = edges[i][1];
             let w = edges[i][2];
             if(o == d) { continue; }
-            let e = new Edge(scene, new Phaser.Math.Vector2(wps[o][0], wps[o][1]), new Phaser.Math.Vector2(wps[d][0], wps[d][1]), w);
-            e.add_to_container(this);
+            let edge = new Edge(scene, new Phaser.Math.Vector2(wps[o][0], wps[o][1]), new Phaser.Math.Vector2(wps[d][0], wps[d][1]), w);
+            this.worlds[o].add_edge(edge);
+            edge.add_to_container(this);
         }
 
         this.rocket = new Phaser.GameObjects.Sprite(scene, wps[this.current_world][0], wps[this.current_world][1], "rocket").setDisplaySize(WORLD_WIDTH + 30, WORLD_WIDTH + 30);
         this.add(this.rocket);
-        this.worlds[current_world].set_color(CURRENT_WORLD_COLOR, CURRENT_WORLD_HIGHLIGHT_COLOR);
 
         // add atoms
         let vertices = this.graph.get_worlds();
         for(let i=0; i<vertices.length; i++) {
             let v = vertices[i];
-            let vertex_atoms = v.get_atoms().filter((value) => state.get_atoms().includes(value)); // TODO: theres not nice filtering going on here
+            let vertex_atoms = this.worlds[i].get_atoms();//v.get_atoms().filter((value) => state.get_atoms().includes(value)); // TODO: theres not nice filtering going on here
             let x = world_positions[i][0];
             let y = world_positions[i][1];
             let r = 40;
@@ -71,10 +86,35 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
                 let frac = j/vertex_atoms.length;
                 let rad = frac * 2 * Math.PI;
                 //this.add(new Phaser.GameObjects.Ellipse(scene, x+Math.cos(rad)*r, y+Math.sin(rad)*r, 10, 10, vertex_colors[state.get_atoms().findIndex((value) => value == vertex_atoms[j])]));
-                this.add(new Phaser.GameObjects.Sprite(scene, x+Math.cos(rad)*r, y+Math.sin(rad)*r, "glow").setDisplaySize(ATOM_WIDTH, ATOM_WIDTH));
-                this.add(new Phaser.GameObjects.Sprite(scene, x+Math.cos(rad)*r, y+Math.sin(rad)*r, "atom_" + state.get_atoms().findIndex((curr) => curr == vertex_atoms[j])).setDisplaySize(ATOM_WIDTH, ATOM_WIDTH));
+                let glow = new Phaser.GameObjects.Sprite(scene, x+Math.cos(rad)*r, y+Math.sin(rad)*r, "glow").setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
+                let atom = new Phaser.GameObjects.Sprite(scene, x+Math.cos(rad)*r, y+Math.sin(rad)*r, "atom_" + state.get_atoms().findIndex((curr) => curr == vertex_atoms[j])).setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
+                this.worlds[i].add_atom_sprite(glow);
+                this.worlds[i].add_atom_sprite(atom);
+                this.add(glow);
+                this.add(atom);
+
+                atom.setInteractive(); // TODO: possibly hightlight world of atom?
+                atom.on('pointerover', () => {
+                    atom.setDisplaySize(35, 35);
+                    glow.setDisplaySize(35, 35);
+                    let atoms = (graphics_controller.get_mode() == Game_Graphics_Mode.Formula) ? graphics_controller.get_formula_graphics().get_formula().get_atoms([vertex_atoms[j]]) : graphics_controller.get_choice_controller().get_atoms([vertex_atoms[j]]);
+                    for(let i=0; i<atoms.length; i++) {
+                        atoms[i].setDisplaySize(ICON_WIDTH + 10, ICON_WIDTH + 10);
+                    }
+                });
+                atom.on('pointerout', () => {
+                    atom.setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
+                    glow.setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
+                    let atoms = (graphics_controller.get_mode() == Game_Graphics_Mode.Formula) ? graphics_controller.get_formula_graphics().get_formula().get_atoms([vertex_atoms[j]]) : graphics_controller.get_choice_controller().get_atoms([vertex_atoms[j]]);
+                    for(let i=0; i<atoms.length; i++) {
+                        atoms[i].setDisplaySize(ICON_WIDTH, ICON_WIDTH);
+                    }
+                });
             }
         }
+
+        //this.worlds[current_world].set_color(CURRENT_WORLD_COLOR, CURRENT_WORLD_HIGHLIGHT_COLOR);
+        this.set_sphere(current_world);
     }
 
     set_mode(mode: Graph_Graphics_Mode) {
@@ -113,22 +153,59 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         }
     }
 
+    set_sphere(current_world: integer, distance = Infinity) {
+        this.clear_sphere();
+        this.set_current_world(current_world);
+
+        let edges = this.graph.get_edges(current_world);
+        for(let i=0; i<edges.length; i++) {
+            if(edges[i][1] <= distance) {
+                this.worlds[edges[i][0].index].set_active(true);
+            }
+        }
+        let edge_graphics = this.worlds[current_world].get_edges();
+        for(let i=0; i<edge_graphics.length; i++) {
+            if(edge_graphics[i].get_weight() > distance) { continue; };
+            let edge = edge_graphics[i].get_sprites();
+            for(let j=0; j<edge.length; j++) {
+                edge[j].setAlpha(EDGE_ALPHA);
+            }
+        }
+    }
+
     set_current_world(current_world: integer) {
-        if(this.current_world != -1) { this.worlds[this.current_world].set_color(IDLE_WORLD_COLOR, IDLE_WORLD_HIGHLIGHT_COLOR); }
+        //if(this.current_world != -1) { this.worlds[this.current_world].set_color(IDLE_WORLD_COLOR, IDLE_WORLD_HIGHLIGHT_COLOR); }
         this.current_world = current_world;
-        this.worlds[current_world].set_color(CURRENT_WORLD_COLOR, CURRENT_WORLD_HIGHLIGHT_COLOR);
+        this.worlds[current_world].set_active(true);
+        //this.worlds[current_world].set_color(CURRENT_WORLD_COLOR, CURRENT_WORLD_HIGHLIGHT_COLOR);
         this.rocket.setPosition(this.worlds[this.current_world].get_x(), this.worlds[this.current_world].get_y());
     }
 
     set_delim_world(delim_world: integer) {
-        if(this.delim_world != -1) { this.worlds[this.delim_world].set_color(IDLE_WORLD_COLOR, IDLE_WORLD_HIGHLIGHT_COLOR); }
         this.delim_world = delim_world;
-        this.worlds[delim_world].set_color(DELIM_WORLD_COLOR, DELIM_WORLD_HIGHLIGHT_COLOR);
     }
 
     clear_delim_world() {
         if(this.delim_world != -1) { this.worlds[this.delim_world].set_color(IDLE_WORLD_COLOR, IDLE_WORLD_HIGHLIGHT_COLOR); }
         this.delim_world = -1;
+    }
+
+    clear_sphere() {
+        for(let i=0; i<this.worlds.length; i++) {
+            this.worlds[i].set_color(IDLE_WORLD_COLOR, IDLE_WORLD_HIGHLIGHT_COLOR);
+            this.worlds[i].set_active(false);
+            let edges = this.worlds[i].get_edges();
+            for(let j=0; j<edges.length; j++) {
+                let edge_sprites = edges[j].get_sprites();
+                for(let k=0; k<edge_sprites.length; k++) {
+                    edge_sprites[k].setAlpha(INACTIVE_EDGE_ALPHA);
+                }
+            }
+        }
+    }
+
+    get_graphics_controller(): Graphics_Controller {
+        return this.graphics_controller;
     }
 
     get_delim_world(): integer {
@@ -158,9 +235,9 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
             scene.load.image("arrowbody_"+i.toString(), "assets/arrows/Arrowbody_"+i.toString()+".png");
             scene.load.image("arrowtail_"+i.toString(), "assets/arrows/Arrowtail_"+i.toString()+".png");
         } */
-        scene.load.image("arrowhead", "assets/arrows/Arrowhead_10.png");
-        scene.load.image("arrowbody", "assets/arrows/Arrowbody_10.png");
-        scene.load.image("arrowtail", "assets/arrows/Arrowtail_11.png");
+        scene.load.image("arrowhead", "assets/arrows/Arrowhead_12.png");
+        scene.load.image("arrowbody", "assets/arrows/Arrowbody_12.png");
+        scene.load.image("arrowtail", "assets/arrows/Arrowtail_12.png");
         scene.load.image("marker", "assets/arrows/Ruler_Marker_3.png");
         scene.load.image("bat1c", "assets/Battery_1C.png");
         scene.load.image("bat2c", "assets/Battery_2C.png");
@@ -169,6 +246,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         //scene.load.image("rocket", "assets/Rocket_Icon_Wide_Glow.png");
         scene.load.image("rocket", "assets/Fly_By.png");
         scene.load.image("world", "assets/Earth_Small.png");
+        scene.load.image("grey_world", "assets/Earth_Grey.png");
     }
 
     static configure_sprites(scene: Phaser.Scene) {
@@ -185,25 +263,44 @@ export class World_Controller {
     private world: Phaser.GameObjects.Sprite;
     private hover_ellipse: Phaser.GameObjects.Ellipse;
     private index_text: Phaser.GameObjects.Text;
-    //private atoms: Phaser.GameObjects.Text[];
-    //private transitions: Edge[];
+    private atoms: string[];
+    private atom_sprites: Phaser.GameObjects.Sprite[] = [];
+    private edges: Edge[] = [];
     private base_color: number = IDLE_WORLD_COLOR;
     private highlight_color: number = IDLE_WORLD_HIGHLIGHT_COLOR;
-    
-    private base_alpha: number = 0.01;
-    private highlight_alpha: number = 0.3;
 
     private index: integer;
 
-    constructor(scene: Phaser.Scene, x_offset: number, y_offset: number, index: integer, graph_graphics: Graph_Graphics) {
+    constructor(scene: Phaser.Scene, x_offset: number, y_offset: number, index: integer, atoms: string[], graph_graphics: Graph_Graphics) {
         this.x = x_offset;
         this.y = y_offset;
-        this.world = new Phaser.GameObjects.Sprite(scene, x_offset, y_offset, "world").setAlpha(0.85);
-        this.hover_ellipse = new Phaser.GameObjects.Ellipse(scene, x_offset, y_offset, WORLD_WIDTH, WORLD_WIDTH, IDLE_WORLD_COLOR).setAlpha(this.base_alpha);
+        this.atoms = atoms;
+        this.world = new Phaser.GameObjects.Sprite(scene, x_offset, y_offset, "world").setAlpha(WORLD_ALPHA);
+        this.hover_ellipse = new Phaser.GameObjects.Ellipse(scene, x_offset, y_offset, WORLD_WIDTH, WORLD_WIDTH, IDLE_WORLD_COLOR).setAlpha(WORLD_BASE_HIGHLIGHT_ALPHA);
         this.index_text = new Phaser.GameObjects.Text(scene, x_offset, y_offset, index.toString(), text_style).setOrigin(0.5, 0.5).setAlpha(0); // DISPLAY WORLD INDEX
         this.setup_listeners();
         this.index = index;
         this.graph_graphics = graph_graphics;
+    }
+
+    set_active(active: boolean) {
+        this.world.setAlpha(active ? WORLD_ALPHA : 0.8/* INACTIVE_WORLD_ALPHA */);
+        this.world.setTint(active ? 0xffffff : 0xbbbbbb);
+        //this.world.setTexture(active ? "world" : "grey_world");
+        for(let i=0; i<this.atom_sprites.length; i++) {
+            this.atom_sprites[i].setAlpha(active ? ATOM_ALPHA : INACTIVE_ATOM_ALPHA);
+            this.atom_sprites[i].setTint(active ? 0xffffff : 0xbfbfbf);
+            if(active) {
+                this.atom_sprites[i].setInteractive();
+            } else{
+                this.atom_sprites[i].disableInteractive();
+            }
+        }
+        if(active) {
+            this.hover_ellipse.setInteractive();
+        } else{
+            this.hover_ellipse.disableInteractive();
+        }
     }
 
     set_color(base_color: number, highlight_color: number) {
@@ -212,10 +309,26 @@ export class World_Controller {
         this.highlight_color = highlight_color;
     }
 
+    add_edge(edge: Edge) {
+        this.edges.push(edge);
+    }
+
+    add_atom_sprite(atom_sprite: Phaser.GameObjects.Sprite) {
+        this.atom_sprites.push(atom_sprite);
+    }
+
     add_to_container(container: Phaser.GameObjects.Container) {
         container.add(this.world);
         container.add(this.hover_ellipse);
         container.add(this.index_text);
+    }
+
+    get_atoms(): string[] {
+        return this.atoms;
+    }
+
+    get_edges(): Edge[] {
+        return this.edges;
     }
 
     get_x(): number {
@@ -229,8 +342,29 @@ export class World_Controller {
     private setup_listeners() {
         this.hover_ellipse.setInteractive();
         this.hover_ellipse.on('pointerup', () => { this.graph_graphics.world_clicked(this.index); });
-        this.hover_ellipse.on('pointerover', () => { this.hover_ellipse.setAlpha(this.highlight_alpha);/* this.hover_ellipse.fillColor = this.highlight_color */ });
-        this.hover_ellipse.on('pointerout', () => { this.hover_ellipse.setAlpha(this.base_alpha); /* this.hover_ellipse.fillColor = this.base_color */ });
+        this.hover_ellipse.on('pointerover', () => {
+            this.hover_ellipse.setAlpha(WORLD_HIGHLIGHT_ALPHA);
+
+            for(let i=0; i<this.atom_sprites.length; i++) {
+                this.atom_sprites[i].setDisplaySize(25, 25);
+            }
+            let graphics_controller = this.graph_graphics.get_graphics_controller();
+            let atom_sprites = (graphics_controller.get_mode() == Game_Graphics_Mode.Formula) ? graphics_controller.get_formula_graphics().get_formula().get_atoms(this.atoms) : graphics_controller.get_choice_controller().get_atoms(this.atoms);
+            for(let i=0; i<atom_sprites.length; i++) {
+                atom_sprites[i].setDisplaySize(ICON_WIDTH + 10, ICON_WIDTH + 10); // TODO: +10 or +5 ?
+            }
+        });
+        this.hover_ellipse.on('pointerout', () => {
+            this.hover_ellipse.setAlpha(WORLD_BASE_HIGHLIGHT_ALPHA);
+            for(let i=0; i<this.atom_sprites.length; i++) {
+                this.atom_sprites[i].setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
+            }
+            let graphics_controller = this.graph_graphics.get_graphics_controller();
+            let atom_sprites = (graphics_controller.get_mode() == Game_Graphics_Mode.Formula) ? graphics_controller.get_formula_graphics().get_formula().get_atoms(this.atoms) : graphics_controller.get_choice_controller().get_atoms(this.atoms);
+            for(let i=0; i<atom_sprites.length; i++) {
+                atom_sprites[i].setDisplaySize(ICON_WIDTH, ICON_WIDTH);
+            }
+        });
     }
 }
 
@@ -242,9 +376,12 @@ export class Edge {
     private markers: Phaser.GameObjects.Sprite[] = [];
 
     private label: Phaser.GameObjects.Text;
+    private weight;
 
     // Origin and destination coords
     constructor(scene: Phaser.Scene, origin: Phaser.Math.Vector2, destination: Phaser.Math.Vector2, weight: integer) {
+        this.weight = weight;
+
         let delta = new Phaser.Math.Vector2(destination.x - origin.x, destination.y - origin.y);
         let midpoint = origin.lerp(destination, 0.5);
         let arrow_len = delta.length() - WORLD_WIDTH;
@@ -367,6 +504,14 @@ export class Edge {
            container.add(this.markers[i]);
         }
         //container.add(this.label);
+    }
+
+    get_sprites() {
+        return [this.arrowhead, this.arrowbody, this.arrowtail].concat(this.markers);
+    }
+
+    get_weight() {
+        return this.weight;
     }
 }
 

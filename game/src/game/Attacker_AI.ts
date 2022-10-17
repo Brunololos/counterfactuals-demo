@@ -131,19 +131,19 @@ export class Attacker_AI {
                 if(score == undefined) { continue; }
                 if(score[1] < best_blunderscore) {
                     chosen_move = move;
-                    chosen_world = (move.get_name() == Rules.Attacker_Sphere_Selection || move.get_name() == Rules.Defender_Sphere_Selection) ? next[j].get_delim_world() : next[j].get_current_world();
+                    chosen_world = (move.get_name() == Rules.Attacker_Sphere_Selection || move.get_name() == Rules.Defender_Sphere_Selection) ? next[j].get_delim_world().index : next[j].get_current_world().index;
                     best_blunderscore = score[1];
                     best_decisioncount = score[2];
                 } else if(score[1] == best_blunderscore && score[2] > best_decisioncount) {
                     chosen_move = move;
-                    chosen_world = (move.get_name() == Rules.Attacker_Sphere_Selection || move.get_name() == Rules.Defender_Sphere_Selection) ? next[j].get_delim_world() : next[j].get_current_world();
+                    chosen_world = (move.get_name() == Rules.Attacker_Sphere_Selection || move.get_name() == Rules.Defender_Sphere_Selection) ? next[j].get_delim_world().index : next[j].get_current_world().index;
                     best_blunderscore = score[1];
                     best_decisioncount = score[2];
 
                 }
             }
         }
-        return [chosen_move, chosen_world.index];
+        return [chosen_move, chosen_world];
     }
 
 }

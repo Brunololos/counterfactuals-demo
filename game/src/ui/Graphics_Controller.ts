@@ -49,11 +49,11 @@ export class Graphics_Controller {
         //this.back = new Phaser.GameObjects.Sprite(scene, w-0, 30, "back_big");
         this.back = this.create_back(scene, 25, 30);
 
-        this.graph_graphics = new Graph_Graphics(scene, w/2, (h - 200)/2, state, state.get_current_world().index, world_positions, state.get_graph().get_edge_list());
-
         this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms());
         this.choice = new Choice(scene, state);
         this.sup_panel = new Supposition_Panel(scene, w/2, h - 110, [this.formula, this.choice.get_option_graphic(0), this.choice.get_option_graphic(1), this.choice.get_option_boxes()[0], this.choice.get_option_boxes()[1]]);
+
+        this.graph_graphics = new Graph_Graphics(scene, w/2, (h - 200)/2, state, state.get_current_world().index, world_positions, state.get_graph().get_edge_list(), this);
 
         scene.add.existing(this.background);
         scene.add.existing(this.stars);
@@ -182,7 +182,7 @@ export class Graphics_Controller {
         this.formula.set_embedding_depth(this.formula.get_embedding_depth() + (( choice == Rules.Defender_Sphere_Selection || choice == Rules.Defender_World_Choice ) ? 0 : 1)); // TODO: find better way to check whether last Grame_Graphics_Mode was World_Choice
         this.formula.set_formula(formula);
         (state.get_mode() == State_Mode.Counterfactual) ? this.graph_graphics.set_delim_world(state.get_delim_world().index) : this.graph_graphics.clear_delim_world();
-        this.graph_graphics.set_current_world(state.get_current_world().index);
+        //this.graph_graphics.set_sphere(state.get_current_world().index, ((state.get_mode() == State_Mode.Counterfactual) ? state.get_radius() : undefined));
     }
 
     animate_move(state: Game_State, move: Rule, delim_world?: integer) {
@@ -200,7 +200,11 @@ export class Graphics_Controller {
         this.idle(this.formula.animate(applied.get_formula(), move.get_name()));
         
         (applied.get_mode() == State_Mode.Counterfactual) ? this.graph_graphics.set_delim_world(applied.get_delim_world().index) : this.graph_graphics.clear_delim_world();
-        this.graph_graphics.set_current_world(applied.get_current_world().index);
+        this.graph_graphics.set_sphere(applied.get_current_world().index, (state.get_mode() == State_Mode.Counterfactual
+                                                                        && move.get_name() != Rules.Attacker_Phi_Evaluation
+                                                                        && move.get_name() != Rules.Attacker_World_Choice
+                                                                        && move.get_name() != Rules.Defender_Phi_Evaluation
+                                                                        && move.get_name() != Rules.Defender_World_Choice) ? state.get_radius() : undefined);
     }
 
     transition_mode(mode: Game_Graphics_Mode) {
@@ -303,6 +307,14 @@ export class Graphics_Controller {
 
     get_world_choice(): integer {
         return this.graph_graphics.get_chosen_world();
+    }
+
+    get_formula_graphics(): Formula_Graphics {
+        return this.formula;
+    }
+
+    get_choice_controller(): Choice {
+        return this.choice;
     }
 
     is_ready(): boolean {

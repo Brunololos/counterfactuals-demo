@@ -71,10 +71,10 @@ export class Rules_Controller {
         let apply_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "a", undefined, delim_world);
         this.rules.push(Rule.create("Defender_Sphere_Selection", "Res", "d", "? |_|-> ?", apply_sphere_selection, is_another_world_reachable, true));
 
-        let apply_attacker_phi_eval = (state: Game_State) => state.configure("Res", state.get_formula().get_child("l"), "a/d", state.get_delim_world().index);
+        let apply_attacker_phi_eval = (state: Game_State) => state.configure("Res", state.get_formula().get_child("l"), "a/d", state.get_delim_world().index, -1);
         this.rules.push(Rule.create("Attacker_Phi_Evaluation", "Cf", "a", "? |_|-> ?", apply_attacker_phi_eval));
 
-        let apply_attacker_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Disjunction(new Negation(state.get_formula().get_child("l")), state.get_formula().get_child("r")), "d", delim_world);
+        let apply_attacker_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Disjunction(new Negation(state.get_formula().get_child("l")), state.get_formula().get_child("r")), "d", delim_world, -1);
         this.rules.push(Rule.create("Attacker_World_Choice", "Cf", "a", "? |_|-> ?", apply_attacker_world_choice, is_another_world_reachable_within_delim, true));
 
         let apply_vacuous_truth_claim = (state: Game_State) => state.configure("Vac", state.get_formula().get_child("l"), "a");
@@ -86,10 +86,10 @@ export class Rules_Controller {
         let apply_attacker_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "d", undefined, delim_world);
         this.rules.push(Rule.create("Attacker_Sphere_Selection", "Res", "a", "~(? |_|-> ?)", apply_attacker_sphere_selection, is_another_world_reachable, true));
 
-        let apply_defender_phi_eval = (state: Game_State) => state.configure("Res", new Negation(state.get_formula().get_child("ll")), "a/d", state.get_delim_world().index);
+        let apply_defender_phi_eval = (state: Game_State) => state.configure("Res", new Negation(state.get_formula().get_child("ll")), "a/d", state.get_delim_world().index, -1);
         this.rules.push(Rule.create("Defender_Phi_Evaluation", "Cf", "d", "~(? |_|-> ?)", apply_defender_phi_eval));
 
-        let apply_defender_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Negation(new Disjunction(new Negation(state.get_formula().get_child("ll")), state.get_formula().get_child("lr"))), "a", delim_world);
+        let apply_defender_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Negation(new Disjunction(new Negation(state.get_formula().get_child("ll")), state.get_formula().get_child("lr"))), "a", delim_world, -1);
         this.rules.push(Rule.create("Defender_World_Choice", "Cf", "d", "~(? |_|-> ?)", apply_defender_world_choice, is_another_world_reachable_within_delim, true));
 
         let apply_attacker_vacuous_truth_claim = (state: Game_State) => state.configure("Vac", state.get_formula().get_child("ll"), "d");
