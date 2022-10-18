@@ -305,9 +305,9 @@ export function create_cosmic_nebula_texture(scene: Phaser.Scene, width: number,
       center_dist = 1 - ((x_dist*x_dist + y_dist*y_dist)/4) / (((width/3)*(width/3) + (height/3)*(height/3))/4);
       center_dist = 1 - ((x_dist*x_dist + y_dist*y_dist)/4) / (((width*width  + height*height)/9)/4); */
       center_dist = 1 - ((x_dist*x_dist + y_dist*y_dist)/4) / div;
-      r = 64 + (noise.perlin2(j/width, i/height)+1)*63 + 64*center_dist;
-      g = 64 + (noise.perlin2((j+25)/width, i/height)+1)*64 + 64*center_dist;
-      b = 64 + (noise.perlin2((j-25)/width, i/height)+1)*64 + 64*center_dist;
+      r = 24 /* 64 */ + (noise.perlin2(j/width, i/height)+1)*63 + 64*center_dist;
+      g = 24 /* 64 */ + (noise.perlin2((j+25)/width, i/height)+1)*64 + 64*center_dist;
+      b = 24 /* 64 */ + (noise.perlin2((j-25)/width, i/height)+1)*64 + 64*center_dist;
       /* r = (noise.perlin2(j/width, i/height)+1)*128;
       g = (noise.perlin2((j+25)/width, i/height)+1)*128;
       b = (noise.perlin2((j-25)/width, i/height)+1)*128; */

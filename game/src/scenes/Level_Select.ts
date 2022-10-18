@@ -1,125 +1,136 @@
 import Base_Scene from "../util/Base_Scene";
 import Game_Scene from "./Game";
 
-const COLOR_PRIMARY = 0x4e342e;
-const COLOR_LIGHT = 0x7b5e57;
-const COLOR_DARK = 0x260e04;
-
 export default class Level_Select_Scene extends Base_Scene {
+    private rocket_launch;
+    private back;
 
-  constructor() {
-    super('Level_Select_Scene');
-  }
+    constructor() {
+        super('Level_Select_Scene');
+    }
 
-  preload() {
-    this.load.image("rocket_launch", "assets/Rocket_Launch.jpg");
-    this.load.image("back", "assets/Slant.png");
-    this.load.image("chunk_up", "assets/Chunk.png");
-    this.load.image("chunk_down", "assets/Chunk_Down.png");
-    this.load.image("chunk_down_hover", "assets/Chunk_Down_Hover.png");
-  }
+    preload() {
+        this.load.image("rocket_launch", "assets/Rocket_Launch.jpg");
+        this.load.image("back", "assets/Slant.png");
+        this.load.image("chunk_up", "assets/Chunk.png");
+        this.load.image("back_icon", "assets/Back_Icon.png");
+    }
 
-  create() {
-    let w = this.get_width();
-    let h = this.get_height();
+    create() {
+        let w = this.get_width();
+        let h = this.get_height();
 
-    this.add.existing(new Phaser.GameObjects.Sprite(this, w/2, h/2, "rocket_launch").setDisplaySize(w, h).setAlpha(0.5));
+        this.back = this.create_back(this, 25, 30);
 
-    var levels = [
-        { name: 'Disjunction' },
-        { name: 'Conjunction 1' },
-        { name: 'Conjunction 2' },
-        { name: 'Counterfactual 1' },
-        { name: 'Counterfactual 2' },
-        { name: 'Test' },
-    ];
+        this.rocket_launch = new Phaser.GameObjects.Sprite(this, w/2, h/2, "rocket_launch").setDisplaySize(w, h).setAlpha(0.5);
+        this.add.existing(this.rocket_launch);
 
-    var gridTable = this.create_grid_table(this, w/2, h/2, 760, 400, levels);
-  }
+        var levels = [
+            { name: 'Disjunction' },
+            { name: 'Conjunction 1' },
+            { name: 'Conjunction 2' },
+            { name: 'Counterfactual 1' },
+            { name: 'Counterfactual 2' },
+            { name: 'Test' },
+        ];
 
-  update(time: number, delta: number) {
-    
-  }
+        var gridTable = this.create_grid_table(this, w/2, h/2, 760, 400, levels);
 
-  on_resize(): void {
-      
-  }
+        const resize = () => {
+            this.game.scale.resize(window.innerWidth, window.innerHeight);
+            this.on_resize();
+        }    
+        window.addEventListener("resize", resize, false);
+    }
 
-  create_grid_table(scene: Phaser.Scene, x: number, y: number, w: number, h: number, levels) {
-    var grid_table = this.rexUI.add.gridTable({
-        x: x,//w/2,
-        y: y,//h/2,
-        width: w,//760,
-        height: h,//400,
+    update(time: number, delta: number) {
+        
+    }
 
-        scrollMode: 0, // 0:vertical, 1:horizontal
+    on_resize(): void {
+        let w = this.get_width();
+        let h = this.get_height();
+        this.rocket_launch.setPosition(w/2, h/2);
+        this.rocket_launch.setDisplaySize(w, h);
+    }
 
-        table: {
-            cellWidth: 480, //TODO: doubled width so it fits the starting screen
-            cellHeight: 120,
+    create_grid_table(scene: Phaser.Scene, x: number, y: number, w: number, h: number, levels) {
+        var grid_table = this.rexUI.add.gridTable({
+            x: x,//w/2,
+            y: y,//h/2,
+            width: w,//760,
+            height: h,//400,
 
-            columns: 2,
-
-            mask: {
-                padding: 2,
-            },
-
-            reuseCellContainer: true,
-        },
-
-        space: {
-            left: 20,
-            right: 20,
-            top: 20,
-            bottom: 20,
+            scrollMode: 0, // 0:vertical, 1:horizontal
 
             table: {
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
+                cellWidth: 480, //TODO: doubled width so it fits the starting screen
+                cellHeight: 120,
+
+                columns: 2,
+
+                mask: {
+                    padding: 2,
+                },
+
+                reuseCellContainer: true,
             },
-            header: 10,
-            footer: 10,
-        },
 
-        createCellContainerCallback: function (cell, cellContainer) {
-            var scene = cell.scene,
-                width = cell.width,
-                height = cell.height,
-                item = cell.item,
-                index = cell.index;
-            if (cellContainer === null) {
-                cellContainer = scene.create_button(scene, levels[index]);
-            }
+            space: {
+                left: 20,
+                right: 20,
+                top: 20,
+                bottom: 20,
 
-            // Set properties from item value
-            cellContainer!.setMinSize(240, 120); // Size might changed in this demo
-            cellContainer!.getElement('background').setTint(0xcccccc);
-            cellContainer!.getElement('text').setText(levels[item.id].name);
-            cellContainer!.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
-            return cellContainer;
-        },
-        items: this.create_items(6)
-    }).layout()
+                table: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0,
+                },
+                header: 10,
+                footer: 10,
+            },
 
-    grid_table
-        .on('cell.over', function (cellContainer, cellIndex, pointer) {
-            cellContainer.getElement('background').clearTint()
-            /* cellContainer.getElement('background').setVisible(false)
-            cellContainer.background = this.add.existing(new Phaser.GameObjects.Sprite(this, 0, 0, "chunk_down_hover")) */
-            /* cellContainer.background = this.add.existing(new Phaser.GameObjects.Sprite(this, 0, 0, "chunk_up"));
-            gridTable.layout(); */
-        }, this)
-        .on('cell.out', function (cellContainer, cellIndex, pointer) {
-            cellContainer.getElement('background').setTint(0xcccccc)
-        }, this)
-        .on('cell.click', function (cellContainer, cellIndex, pointer) {
-            this.scene.start('Game_Scene', { level: this.swap_xy(cellIndex) });
-        
-        }, this)
-    return grid_table;
-  }
+            createCellContainerCallback: function (cell, cellContainer) {
+                var scene = cell.scene,
+                    width = cell.width,
+                    height = cell.height,
+                    item = cell.item,
+                    index = cell.index;
+                if (cellContainer === null) {
+                    cellContainer = scene.create_button(scene, levels[index]);
+                }
+
+                // Set properties from item value
+                cellContainer!.setMinSize(240, 120); // Size might changed in this demo
+                //cellContainer!.getElement('background').setTint(0xcccccc);
+                cellContainer!.getElement('text').setText(levels[item.id].name);
+                //cellContainer!.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
+                return cellContainer;
+            },
+            items: this.create_items(6)
+        }).layout()
+
+        grid_table
+            .on('cell.over', function (cellContainer, cellIndex, pointer) {
+                //cellContainer.getElement('background').clearTint();
+                cellContainer.getElement('background').setTexture("chunk_down_hover");
+                /* cellContainer.getElement('background').setVisible(false);
+                cellContainer.background = this.add.existing(new Phaser.GameObjects.Sprite(this, 0, 0, "chunk_down_hover")) */
+                /* cellContainer.background = this.add.existing(new Phaser.GameObjects.Sprite(this, 0, 0, "chunk_up"));
+                gridTable.layout(); */
+            }, this)
+            .on('cell.out', function (cellContainer, cellIndex, pointer) {
+                //cellContainer.getElement('background').setTint(0xcccccc);
+                cellContainer.getElement('background').setTexture("chunk_down");
+            }, this)
+            .on('cell.click', function (cellContainer, cellIndex, pointer) {
+                this.scene.start('Game_Scene', { level: this.swap_xy(cellIndex) });
+            
+            }, this)
+        return grid_table;
+    }
 
     create_button(scene, level) {
         var button = scene.rexUI.add.label({
@@ -129,7 +140,7 @@ export default class Level_Select_Scene extends Base_Scene {
             orientation: 0,
             background: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "chunk_down")),
 
-            icon: scene.rexUI.add.roundRectangle(0, 0, 5, 5, 5, 0xffffff, 0x0),
+            icon: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "dot")),//scene.rexUI.add.roundRectangle(0, 0, 5, 5, 5, 0xffffff, 0x0),
             text: scene.add.text(0, 0, level.name),
 
             space: {
@@ -158,4 +169,44 @@ export default class Level_Select_Scene extends Base_Scene {
     swap_xy(index: number): number {
         return (index % 2)*2 + Math.ceil(index/2);
     }
+
+    private create_back(scene: Base_Scene, x, y) {
+        var button = scene.rexUI.add.label({
+            width: 60,
+            height: 60,
+
+            orientation: 0,
+
+            icon: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "back_icon").setDisplaySize(40, 40).setAlpha(0.6)),
+
+            space: {
+                icon: 10,
+                left: 15,
+                right: 0,
+                top: 0,
+                bottom: 0,
+            }
+        }).layout();
+
+        var buttons = scene.rexUI.add.buttons({
+            x: x,
+            y: y,
+            buttons: [],
+        })
+        .addButton(button)
+        .layout();
+
+        buttons.on('button.over', function(button, index, pointer, event) {
+            button.getElement('icon').setAlpha(1);
+        })
+        buttons.on('button.out', function(button, index, pointer, event) {
+            button.getElement('icon').setAlpha(0.6);
+        })
+        buttons.on('button.click', function(button, index, pointer, event) {
+            scene.scene.start('Main_Menu_Scene');
+        })
+
+        return buttons;
+    }
+
 }

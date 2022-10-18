@@ -391,7 +391,6 @@ export class Graphics_Controller {
         scene.load.image("back_panel", "assets/Slant_Right.png");
         scene.load.image("back_border", "assets/Slant_Right_Border.png");
         scene.load.image("back_fill", "assets/Slant_Right_Fill.png");
-        scene.load.image("back_icon", "assets/Back_Icon.png");
     }
 
     static configure_sprites(scene: Phaser.Scene) {
