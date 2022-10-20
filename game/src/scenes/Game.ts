@@ -62,19 +62,25 @@ export default class Game_Scene extends Base_Scene {
           return;
         case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Formula_Choice:
         case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Negated_Formula_Choice:
-        case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Counterfactual_Choice:
-        case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Negated_Counterfactual_Choice:
           move = this.graphics_controller.get_choice();
-          if(!move.get_world_input_requirement()) {
+          if(!move.get_world_input_requirement()) { // TODO: remove if-condition (not the contents)
             formula = move.apply(state).get_formula();
           }
           break;
-        case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.World_Choice:
-          move = this.graphics_controller.get_choice();
+        case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Formula:
+          this.graphics_controller.set_world_choice(moves);
+          return;
+        case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Sphere_Selection:
           world = this.graphics_controller.get_world_choice();
+          move = (world == -1) ? this.game_controller.get_rule(Rules.Defender_Vacuous_Truth_Claim) : this.game_controller.get_rule(Rules.Defender_Sphere_Selection);//moves[1] : moves[0];
           formula = move.apply(state, world).get_formula();
           break;
-        case type == Game_Turn_Type.Defenders_Resolution && graphics_mode == Game_Graphics_Mode.World_Choice:
+        case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Counterfactual_World_Choice:
+          world = this.graphics_controller.get_world_choice();
+          move = (world == -1) ? this.game_controller.get_rule(Rules.Defender_Phi_Evaluation) : this.game_controller.get_rule(Rules.Defender_World_Choice);//moves[1] : moves[0];
+          formula = move.apply(state, world).get_formula();
+          break;
+        case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Vacuous_World_Choice:
           move = moves[0];
           world = this.graphics_controller.get_world_choice();
           formula = move.apply(state, world).get_formula();
@@ -89,16 +95,18 @@ export default class Game_Scene extends Base_Scene {
           console.log("Cannot play any move! Game ended.");
           this.game_over = true;
           return;
+        default:
+          throw new Error("Fell through all game turn cases");
       }
 
       // fetch world choice parameter if needed
       let req_delim = this.game_controller.does_require_delim(move);
-      let world_choice_made = (graphics_mode == Game_Graphics_Mode.World_Choice);
+      let world_choice_made = (graphics_mode == Game_Graphics_Mode.Sphere_Selection || graphics_mode == Game_Graphics_Mode.Counterfactual_World_Choice || graphics_mode == Game_Graphics_Mode.Vacuous_World_Choice);
       let player_choice = type != Game_Turn_Type.Attackers_Resolution && type != Game_Turn_Type.Attackers_Choice;
-      if(req_delim && !world_choice_made && player_choice) {
-        this.graphics_controller.set_world_choice();
+      /* if(req_delim && !world_choice_made && player_choice) {
+        this.graphics_controller.set_world_choice(move);
         return;
-      } else if(req_delim && !world_choice_made && !player_choice) {
+      } else */ if(req_delim && !world_choice_made && !player_choice) {
         world = turn[2]!;
       }
 

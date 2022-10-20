@@ -70,6 +70,8 @@ export class Rules_Controller {
         // Counterfactual Would Rules
         let apply_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "a", undefined, delim_world);
         this.rules.push(Rule.create("Defender_Sphere_Selection", "Res", "d", "? |_|-> ?", apply_sphere_selection, is_another_world_reachable, true));
+        /* let apply_counterfactual = (state: Game_State, delim_world?: integer) => ((delim_world == -1) ? state.configure("Vac", state.get_formula().get_child("l"), "a") : state.configure("Cf", state.get_formula(), "a", undefined, delim_world));
+        this.rules.push(Rule.create("Defender_Counterfactual", "Res", "d", "? |_|-> ?", apply_counterfactual, is_another_world_reachable, true)); */
 
         let apply_attacker_phi_eval = (state: Game_State) => state.configure("Res", state.get_formula().get_child("l"), "a/d", state.get_delim_world().index, -1);
         this.rules.push(Rule.create("Attacker_Phi_Evaluation", "Cf", "a", "? |_|-> ?", apply_attacker_phi_eval));
@@ -149,6 +151,7 @@ export class Rules_Controller {
         let next;
         for(let i=0; i<moves.length; i++) {
             move = moves[i];
+
             if(move.get_world_input_requirement()) {
                 let g = state.get_graph();
                 let worlds = g.get_V();
@@ -179,6 +182,10 @@ export class Rules_Controller {
             }
         }
         return successorstates;
+    }
+
+    get_rule(name: Rules): Rule {
+        return cloneDeep(this.rules.find((value) => value.get_name() == name))!;
     }
 }
 
@@ -276,6 +283,7 @@ export enum Rules {
     Negated_Left_AND,
     Negated_Right_AND,
 
+    //Defender_Counterfactual,
     Defender_Sphere_Selection,
     Attacker_Phi_Evaluation,
     Attacker_World_Choice,

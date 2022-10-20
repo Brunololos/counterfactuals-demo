@@ -955,8 +955,8 @@ export class Formula_Animations {
                     offset: 0
                 }); */
                 return 1500;
-            case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Counterfactual_Choice:
-                timeline.add({ /* MOVE FORMULA TO RIGHT OR POSITION */
+            /* case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Counterfactual_Choice:
+                timeline.add({ MOVE FORMULA TO RIGHT OR POSITION
                     targets: f.get_children([f]),
                     x: '+='+(f.get_width()/2 + ICON_WIDTH/2).toString(),
                     duration: 1500,
@@ -965,7 +965,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE FORMULA EMBEDDING TO RIGHT OR POSITION */
+                timeline.add({ MOVE FORMULA EMBEDDING TO RIGHT OR POSITION
                     targets: f.get_embedding(true),
                     x: '+='+(f.get_width()/2 + ICON_WIDTH/2).toString(),
                     duration: 1500,
@@ -1000,7 +1000,7 @@ export class Formula_Animations {
                 disj.get_child("l").setAlpha(0);
                 disj.get_child("r").setAlpha(0);
 
-                timeline.add({ /* FADE CF_WOULD */
+                timeline.add({ FADE CF_WOULD
                     targets: cf_would,
                     alpha: 0,
                     duration: 1500,
@@ -1009,7 +1009,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE NEGATION */
+                timeline.add({ MOVE NEGATION
                     targets: f,
                     x: '+='+((f.get_width() - ICON_WIDTH)/2 + ICON_WIDTH).toString(),
                     duration: 1500,
@@ -1018,7 +1018,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE LEFT & RIGHT */
+                timeline.add({ MOVE LEFT & RIGHT
                     targets: cf_would.get_children(),
                     x: '+='+(( - ICON_WIDTH)/2 + cf_would.get_width()/2 + ICON_WIDTH*2.5 ).toString(),
                     duration: 1500,
@@ -1027,7 +1027,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE CF_WOULD EMBEDDINGS */
+                timeline.add({ MOVE CF_WOULD EMBEDDINGS
                     targets: cf_would.get_embedding(true),
                     x: '+='+(( - ICON_WIDTH)/2 + cf_would.get_width()/2 + ICON_WIDTH*2.5 ).toString(),
                     duration: 1500,
@@ -1036,7 +1036,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* FADE CF_WOULD EMBEDDING */
+                timeline.add({ FADE CF_WOULD EMBEDDING
                     targets: cf_would.get_embedding(),
                     alpha: 0,
                     duration: 1500,
@@ -1045,7 +1045,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* FADE IN NEGATION & DISJUNCTION */
+                timeline.add({ FADE IN NEGATION & DISJUNCTION
                     targets: [neg, disj],
                     alpha: 1,
                     duration: 1500,
@@ -1054,7 +1054,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 1500
                 });
-                timeline.add({ /* FADE IN EMBEDDING */
+                timeline.add({ FADE IN EMBEDDING
                     targets: disj.get_embedding(),
                     alpha: 1,
                     duration: 1500,
@@ -1063,7 +1063,13 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 1500
                 });
-                return 3000;
+                return 3000; */
+            case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Sphere_Selection:
+                return 0;
+            case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Counterfactual_World_Choice:
+                return 0;
+            case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Vacuous_World_Choice:
+                return 0;
             default:
                 return 1500;
         }

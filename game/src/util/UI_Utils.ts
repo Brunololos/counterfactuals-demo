@@ -7,15 +7,26 @@ export enum Game_Graphics_Mode {
     Formula,
     Formula_Choice,
     Negated_Formula_Choice,
-    Counterfactual_Choice,
-    Negated_Counterfactual_Choice,
-    World_Choice,
+    Sphere_Selection,
+    Counterfactual_World_Choice,
+    Vacuous_World_Choice,
     Transition
 }
 
 export enum Graph_Graphics_Mode {
     Display,
     World_Choice
+}
+
+export function is_world_choice(mode: Game_Graphics_Mode): boolean {
+  switch(mode) {
+    case Game_Graphics_Mode.Sphere_Selection:
+    case Game_Graphics_Mode.Counterfactual_World_Choice:
+    case Game_Graphics_Mode.Vacuous_World_Choice:
+      return true;
+    default:
+      return false;
+  }
 }
 
 export function duplicate_texture(scene: Phaser.Scene, texture_key: string, new_texture_key: string) {
@@ -375,7 +386,7 @@ export let Rule_Descriptions : string[] = [
   "You chose the left formula",
   "You chose the right formula",
 
-  "You chose to choose a sphere of accessibility",
+  "You chose a sphere of accessibility",
   "The attacker chose to evaluate the sphere-delimiting world", /* "The attacker chose to evaluate the antecedent at the sphere-delimiting world", */
   "The attacker chose a world to evaluate the counterfactual at",
   "You claimed that the counterfactual is vacuously true",

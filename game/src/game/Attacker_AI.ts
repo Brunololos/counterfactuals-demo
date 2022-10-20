@@ -5,7 +5,6 @@ import { Game_State } from "./Game_State";
 
 export class Attacker_AI {
 
-    // TODO: Replace "random" AI calls
     static choose_move(state: Game_State, moves: Rule[]): [Rule, integer] {
         let move = this.choose_random_move(moves);
         let delim_distance = (state.get_mode() == State_Mode.Counterfactual) ? state.get_radius() : Infinity;
@@ -52,10 +51,14 @@ export class Attacker_AI {
                 //console.log("Expanded State by:");
                 expanded.push(current);
                 did_expand = true;
+                //console.log(queue.map((value) => value.to_string()));
                 for(let i=0; i<states.length; i++) {
                     next = states[i];
                     //console.log(cloneDeep(expanded).map((value) => value.to_string()));
-                    if(!expanded.some((value) => value.equals(next)) && !queue.some((value) => value.equals(next))) {
+                    if(!expanded.some((value) => value.equals(next))) {
+                        if(queue.some((value) => value.equals(next))) {
+                            queue = queue.filter((value) => !value.equals(next));
+                        }
                         queue.push(next);
                         //console.log(next.to_string());
                     }
@@ -82,6 +85,9 @@ export class Attacker_AI {
                         let dec = 0;
                         for(let i=0; i<states.length; i++) {
                             next = states[i];
+                            /* console.log(next.to_string());
+                            console.log(states.map((value) => value.to_string()));
+                            console.log(blunderscores.map((value) => value[0].to_string())); */
                             let bs_entry = blunderscores.find((value) => value[0].equals(next))!;
                             score += bs_entry[1];
                             dec += bs_entry[2];
@@ -111,9 +117,9 @@ export class Attacker_AI {
                 queue.pop();
             }
         }
-        //console.log("Ended calculation with blunderscores:");
-        //console.log(blunderscores.map((value) => "[" + value[0].to_string() + ", " + value[1] + ", " + value[2] + "]"));
-        //console.log(blunderscores);
+        /* console.log("Ended calculation with blunderscores:");
+        console.log(blunderscores.map((value) => "[" + value[0].to_string() + ", " + value[1] + ", " + value[2] + "]"));
+        console.log(blunderscores); */
 
         // find best move evaluation
         let chosen_move;
@@ -131,12 +137,12 @@ export class Attacker_AI {
                 if(score == undefined) { continue; }
                 if(score[1] < best_blunderscore) {
                     chosen_move = move;
-                    chosen_world = (move.get_name() == Rules.Attacker_Sphere_Selection || move.get_name() == Rules.Defender_Sphere_Selection) ? next[j].get_delim_world().index : next[j].get_current_world().index;
+                    chosen_world = (move.get_name() == Rules.Attacker_Sphere_Selection) ? next[j].get_delim_world().index : next[j].get_current_world().index;
                     best_blunderscore = score[1];
                     best_decisioncount = score[2];
                 } else if(score[1] == best_blunderscore && score[2] > best_decisioncount) {
                     chosen_move = move;
-                    chosen_world = (move.get_name() == Rules.Attacker_Sphere_Selection || move.get_name() == Rules.Defender_Sphere_Selection) ? next[j].get_delim_world().index : next[j].get_current_world().index;
+                    chosen_world = (move.get_name() == Rules.Attacker_Sphere_Selection) ? next[j].get_delim_world().index : next[j].get_current_world().index;
                     best_blunderscore = score[1];
                     best_decisioncount = score[2];
 

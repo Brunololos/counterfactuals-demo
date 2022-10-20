@@ -64,10 +64,9 @@ atoms = [
     "The greek gods became revered throughout europe",
     "The toga became a fashion staple"
 ];
-worlds = [[atoms[0], atoms[3], atoms[5]], [atoms[0], atoms[2]], [atoms[4]], [atoms[1], atoms[2], atoms[3]], [atoms[1], atoms[4]], atoms.slice(0, 5), []];
-world_positions = [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150], [300, -150], [237, 203]];
-edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [6, 6, 0], [0, 1, 2],
-        [0, 2, 4], [0, 3, 5], [0, 4, 6], [0, 6, 6], [1, 2, 3], [2, 5, 1], [3, 5, 4], [4, 6, 5]];
+worlds = [[atoms[0], atoms[3], atoms[5]], [atoms[0], atoms[2]], [atoms[4]], [atoms[1], atoms[2], atoms[3]], [atoms[1], atoms[4]]];
+world_positions = [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150]];
+edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3], [1, 2, 3]];
 
 export let level5 = Level.create("Res", "(~A ^ B) |_|-> C"/* "~(A v ~B) |_|-> C" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
 
@@ -78,11 +77,12 @@ atoms = [
     "Blih",
     "Bloh",
 ];
-worlds = [[atoms[0], atoms[3], atoms[5]]];
-world_positions = [[0, 0]];
-edges = [[0, 0, 0]];
+worlds = [[atoms[3], atoms[5]], [atoms[0], atoms[1], atoms[2]], [atoms[4]], [atoms[1], atoms[2], atoms[3]], [atoms[1], atoms[4]], atoms.slice(0, 5), []];
+world_positions = [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150], [300, -150], [237, 203]];
+edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [6, 6, 0], [0, 1, 2],
+        [0, 2, 4], [0, 3, 5], [0, 4, 6], [0, 6, 6], [1, 2, 3], [2, 5, 1], [3, 5, 4], [4, 6, 5], [5, 0, 4], [6, 5, 2]];
 
-export let level6 = Level.create("Res", "~((~A v (B v ~C)) ^ ~A)"/* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
+export let level6 = Level.create("Res", "~(A |_|-> B)"/* "~((~A v (B v ~C)) ^ ~A)" *//* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
 
 export let levels = [level1, level2, level3, level4, level5, level6];
 

@@ -3,6 +3,7 @@ import { Game_State } from "./Game_State";
 import { Game_Turn_Type, State_Mode } from "../util/Game_Utils";
 import { cloneDeep } from "lodash";
 import { Attacker_AI } from "./Attacker_AI";
+import { createHistogram } from "perf_hooks";
 
 export class Game_Controller {
     private rules_controller: Rules_Controller;
@@ -20,8 +21,12 @@ export class Game_Controller {
         let att_move;
 
         switch(true) {
+            case def_moves.length > 1 && def_moves.some((value) => value.get_name() == Rules.Defender_Sphere_Selection
+                                                                || value.get_name() == Rules.Defender_Vacuous_World_Choice
+                                                                || value.get_name() == Rules.Defender_World_Choice):
+                return [Game_Turn_Type.Defenders_World_Choice, def_moves];
             case def_moves.length > 1:
-                return [Game_Turn_Type.Defenders_Choice, def_moves]
+                return [Game_Turn_Type.Defenders_Choice, def_moves];
 
             case def_moves.length == 1:
                 return [Game_Turn_Type.Defenders_Resolution, def_moves]
@@ -59,5 +64,9 @@ export class Game_Controller {
 
     get_state(): Game_State {
         return cloneDeep(this.state);
+    }
+
+    get_rule(name: Rules): Rule {
+        return this.rules_controller.get_rule(name);
     }
 }

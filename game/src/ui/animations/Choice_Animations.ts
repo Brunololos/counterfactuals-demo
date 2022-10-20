@@ -46,9 +46,9 @@ export class Choice_Animations {
                     offset: 0
                 });
                 return 1500;
-            /* DEFENDER_VACUOUS_TRUTH_CLAIM */
+            /* DEFENDER_VACUOUS_TRUTH_CLAIM
             case transition[0] == Game_Graphics_Mode.Counterfactual_Choice && transition[1] == Game_Graphics_Mode.Formula:
-                timeline.add({ /* FADE OPTION_BOXES, NOT CHOSEN OPTION & OR */
+                timeline.add({ FADE OPTION_BOXES, NOT CHOSEN OPTION & OR
                     targets: [c.get_or(), c.get_not_chosen_graphics(), c.get_option_boxes()[0], c.get_option_boxes()[1]],
                     alpha: 0,
                     duration: 1500,
@@ -57,7 +57,7 @@ export class Choice_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE CHOSEN FORMULA */
+                timeline.add({ MOVE CHOSEN FORMULA
                     targets: c.get_chosen_graphic(),
                     x: c.get_x(),
                     duration: 1500,
@@ -67,9 +67,9 @@ export class Choice_Animations {
                     offset: 0
                 });
                 return 1500;
-            /* DEFENDER_PHI_EVALUATION */
+            DEFENDER_PHI_EVALUATION
             case transition[0] == Game_Graphics_Mode.Negated_Counterfactual_Choice && transition[1] == Game_Graphics_Mode.Formula:
-                timeline.add({ /* FADE OPTION_BOXES, NOT CHOSEN OPTION & OR */
+                timeline.add({ FADE OPTION_BOXES, NOT CHOSEN OPTION & OR
                     targets: [c.get_or(), c.get_not_chosen_graphics(), c.get_option_boxes()[0], c.get_option_boxes()[1]],
                     alpha: 0,
                     duration: 1500,
@@ -78,7 +78,7 @@ export class Choice_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE CHOSEN FORMULA */
+                timeline.add({ MOVE CHOSEN FORMULA
                     targets: c.get_chosen_graphic(),
                     x: c.get_x(),
                     duration: 1500,
@@ -87,10 +87,12 @@ export class Choice_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                return 1500;
-            /* DEFENDER_SPHERE_SELECTION */
+                return 1500; */
+
+            // Not needed anymore, since we dont transition from Choice to world choice anymore
+            /* DEFENDER_SPHERE_SELECTION
             case transition[0] == Game_Graphics_Mode.Counterfactual_Choice && transition[1] == Game_Graphics_Mode.World_Choice:
-                timeline.add({ /* FADE OPTION_BOXES, NOT CHOSEN OPTION & OR */
+                timeline.add({ FADE OPTION_BOXES, NOT CHOSEN OPTION & OR
                     targets: [c.get_or(), c.get_not_chosen_graphics(), c.get_option_boxes()[0], c.get_option_boxes()[1]],
                     alpha: 0,
                     duration: 1500,
@@ -99,7 +101,7 @@ export class Choice_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE CHOSEN FORMULA */
+                timeline.add({ MOVE CHOSEN FORMULA
                     targets: c.get_chosen_graphic(),
                     x: c.get_x(),
                     duration: 1500,
@@ -109,9 +111,9 @@ export class Choice_Animations {
                     offset: 0
                 });
                 return 1500;
-            /* DEFENDER_WORLD_CHOICE */
+            DEFENDER_WORLD_CHOICE
             case transition[0] == Game_Graphics_Mode.Negated_Counterfactual_Choice && transition[1] == Game_Graphics_Mode.World_Choice:
-                timeline.add({ /* FADE OPTION_BOXES, NOT CHOSEN OPTION & OR */
+                timeline.add({ FADE OPTION_BOXES, NOT CHOSEN OPTION & OR
                     targets: [c.get_or(), c.get_not_chosen_graphics(), c.get_option_boxes()[0], c.get_option_boxes()[1]],
                     alpha: 0,
                     duration: 1500,
@@ -120,7 +122,7 @@ export class Choice_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE CHOSEN FORMULA */
+                timeline.add({ MOVE CHOSEN FORMULA
                     targets: c.get_chosen_graphic(),
                     x: c.get_x(),
                     duration: 1500,
@@ -129,9 +131,7 @@ export class Choice_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                return 1500;
-            case transition[0] == Game_Graphics_Mode.World_Choice && transition[1] == Game_Graphics_Mode.Formula:
-                return 1500;
+                return 1500; */
             default:
                 return 1500;
         }
