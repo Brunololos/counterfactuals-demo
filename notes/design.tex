@@ -171,7 +171,37 @@ $w \vDash \varphi \boxright \psi$, if a world $w'$ and an $r$ exist, such that $
 	\end{equation}
 	\begin{equation}
 		(\neg (\varphi\wedge\psi ),w)_d\rightarrow (\neg\psi ,w)_{d/a}
-	\end{equation}	
+	\end{equation}
+	\caption{rules of the propositional logic}
+	\label{fig:rules}
+\end{figure}
+
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(\Box\varphi ,w)_a\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\Box\varphi ,w)_a\rightarrow (\top ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg\Box\varphi ,w)_d\xrightarrow{[w\overset{r}{\leadsto}w']} (\neg\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg\Box\varphi ,w)_d\rightarrow (\neg\top ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\Diamond\varphi ,w)_d\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\Diamond\varphi ,w)_d\rightarrow (\bot ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg\Diamond\varphi ,w)_a\xrightarrow{[w\overset{r}{\leadsto}w']} (\neg\varphi ,w')_{d/a}
+	\end{equation}
+	\begin{equation}
+		(\neg\Diamond\varphi ,w)_a\rightarrow (\neg\bot ,w')_{d/a}
+	\end{equation}
 	\begin{equation}
 		(\varphi\boxright\psi ,w)_d\rightarrow (vac,\varphi ,w)_a
 	\end{equation}
@@ -202,7 +232,7 @@ $w \vDash \varphi \boxright \psi$, if a world $w'$ and an $r$ exist, such that $
 	\begin{equation}
 		(cf,\varphi ,\psi ,w,w',r)_d\xrightarrow{[w\overset{r^*}{\leadsto}w^*, r^*\leq r]}(\neg(\neg\varphi\vee\psi ),w^*)_a
 	\end{equation}
-	\caption{rules of the semantic game of counterfactuals}
+	\caption{rules of the modal operators}
 	\label{fig:rules}
 \end{figure}
 

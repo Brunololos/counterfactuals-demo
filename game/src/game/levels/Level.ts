@@ -4,9 +4,10 @@ import { Game_State } from "../Game_State";
 
 export class Level {
 
-    static create(state_mode: string, supposition: string, atoms: string[], turn: string, current_world: integer, delim_world: integer,
+    static create(name: string, state_mode: string, supposition: string, atoms: string[], turn: string, current_world: integer, delim_world: integer,
         worlds: string[][], world_positions: [number, number][], edges: [number, number, number][]): Level_State {
         return {
+            name: name,
             state_mode: state_mode,
             supposition: supposition,
             atoms: cloneDeep(atoms),
@@ -35,6 +36,7 @@ export class Level {
 }
 
 export interface Level_State {
+    name: string;
     state_mode: string;
     supposition: string;
     atoms: string[];

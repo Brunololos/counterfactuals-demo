@@ -21,9 +21,7 @@ export class Game_Controller {
         let att_move;
 
         switch(true) {
-            case def_moves.length > 1 && def_moves.some((value) => value.get_name() == Rules.Defender_Sphere_Selection
-                                                                || value.get_name() == Rules.Defender_Vacuous_World_Choice
-                                                                || value.get_name() == Rules.Defender_World_Choice):
+            case def_moves.some((value) => value.get_world_input_requirement()):
                 return [Game_Turn_Type.Defenders_World_Choice, def_moves];
             case def_moves.length > 1:
                 return [Game_Turn_Type.Defenders_Choice, def_moves];

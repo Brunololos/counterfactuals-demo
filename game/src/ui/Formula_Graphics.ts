@@ -1,7 +1,7 @@
 import { Rules } from "../game/Game_Rules";
 import Base_Scene from "../util/Base_Scene";
-import { Atom, Bottom, Cf_Would, Conjunction, Disjunction, Formula, Negation, Top } from "../game/Cf_Logic";
-import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode, hueshift_texture } from "../util/UI_Utils";
+import { Atom, Bottom, Cf_Would, Conjunction, Disjunction, Formula, Necessity, Negation, Possibility, Top } from "../game/Cf_Logic";
+import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode } from "../util/UI_Utils";
 import { Formula_Animations } from "./animations/Formula_Animations";
 import { cloneDeep } from "lodash";
 
@@ -35,6 +35,8 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("atom", "assets/Atom.png");
         scene.load.image("glow", "assets/Glow.png");
         scene.load.image("negation", "assets/Negation.png");
+        scene.load.image("necessity", "assets/Necessity.png");
+        scene.load.image("possibility", "assets/Possibility.png");
         scene.load.image("conjunction", "assets/AND.png");
         //scene.load.image("disjunction", "assets/Disjunction.png");
         scene.load.image("disjunction", "assets/OR.png");
@@ -56,9 +58,6 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
             duplicate_texture(scene, "fill_open", "fill_open_"+(i).toString());
             duplicate_texture(scene, "fill_connect", "fill_connect_"+(i).toString());
             duplicate_texture(scene, "fill_closed", "fill_closed_"+(i).toString());
-            hueshift_texture(scene, "fill_open_"+(i).toString(), i*(360/NUM_RECOLORS));
-            hueshift_texture(scene, "fill_connect_"+(i).toString(), i*(360/NUM_RECOLORS));
-            hueshift_texture(scene, "fill_closed_"+(i).toString(), i*(360/NUM_RECOLORS));
 
             duplicate_texture(scene, "atom", "atom_"+(i).toString());
             dye_texture(scene, "atom_"+(i).toString(), atom_colors[i]);
@@ -170,6 +169,12 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
                 subject1.offset(- CONJ_WIDTH/2 - subject2.get_width()/2);
                 subject2.offset(+ CONJ_WIDTH/2 + subject1.get_width()/2);
                 return new Conjunction_Graphics(scene, x + (subject1.get_width() - subject2.get_width())/2, y, subject1, subject2, embedded);
+            case to_parse instanceof Possibility:
+                subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
+                return new Possibility_Graphics(scene, x - subject.get_width()/2, y, subject);
+            case to_parse instanceof Necessity:
+                subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
+                return new Necessity_Graphics(scene, x - subject.get_width()/2, y, subject);
             case to_parse instanceof Negation:
                 subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
                 return new Negation_Graphics(scene, x - subject.get_width()/2, y, subject);
@@ -479,6 +484,131 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         container.add(this);
         this.subject1.add_to_container(container);
         this.subject2.add_to_container(container);
+    }
+}
+
+/**
+ * A graphics representation of the modal possibility operator
+ */
+ export class Possibility_Graphics extends Formula_Graphics_Element {
+    subject: Formula_Graphics_Element;
+
+    /**
+     * Visualize the possibility formula
+     * @param subject Formula graphics for possibility to be applied to
+     */
+    constructor(scene: Base_Scene, x: number, y: number, subject: Formula_Graphics_Element) {
+        super(scene, x, y, "possibility");
+        this.subject = subject;
+        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
+    }
+
+    get_child(path: string): Formula_Graphics_Element {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.subject.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("Possibility only has left child");
+        }
+    }
+
+    offset(x: number): void {
+        this.setX(this.x + x);
+        this.subject.offset(x);
+    }
+
+    scale_recursive(s: number): void {
+        this.setScale(this.scaleX * s, this.scaleY * s);
+        this.subject.scale_recursive(s);
+    }
+
+    set_depth(d: number): void {
+        this.setDepth(d);
+        this.subject.set_depth(d);
+    }
+
+    get_width(): number {
+        return ICON_WIDTH + this.subject.get_width();
+    }
+
+    get_atoms(atoms: string[]): Formula_Graphics_Element[] {
+        return this.subject.get_atoms(atoms);
+    }
+
+    get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {
+        return aux.concat([this.subject]).concat(this.subject.get_children());
+    }
+
+    get_embedding(recursive?: boolean): Phaser.GameObjects.Sprite[] {
+        return recursive ? this.subject.get_embedding(true) : [];
+    }
+
+    add_to_container(container: Phaser.GameObjects.Container): void {
+        container.add(this);
+        this.subject.add_to_container(container);
+    }
+}
+/**
+ * A graphics representation of the modal necessity operator
+ */
+ export class Necessity_Graphics extends Formula_Graphics_Element {
+    subject: Formula_Graphics_Element;
+
+    /**
+     * Visualize the necessity formula
+     * @param subject Formula graphics for necessity to be applied to
+     */
+    constructor(scene: Base_Scene, x: number, y: number, subject: Formula_Graphics_Element) {
+        super(scene, x, y, "necessity");
+        this.subject = subject;
+        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
+    }
+
+    get_child(path: string): Formula_Graphics_Element {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.subject.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("Necessity only has left child");
+        }
+    }
+
+    offset(x: number): void {
+        this.setX(this.x + x);
+        this.subject.offset(x);
+    }
+
+    scale_recursive(s: number): void {
+        this.setScale(this.scaleX * s, this.scaleY * s);
+        this.subject.scale_recursive(s);
+    }
+
+    set_depth(d: number): void {
+        this.setDepth(d);
+        this.subject.set_depth(d);
+    }
+
+    get_width(): number {
+        return ICON_WIDTH + this.subject.get_width();
+    }
+
+    get_atoms(atoms: string[]): Formula_Graphics_Element[] {
+        return this.subject.get_atoms(atoms);
+    }
+
+    get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {
+        return aux.concat([this.subject]).concat(this.subject.get_children());
+    }
+
+    get_embedding(recursive?: boolean): Phaser.GameObjects.Sprite[] {
+        return recursive ? this.subject.get_embedding(true) : [];
+    }
+
+    add_to_container(container: Phaser.GameObjects.Container): void {
+        container.add(this);
+        this.subject.add_to_container(container);
     }
 }
 

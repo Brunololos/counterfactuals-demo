@@ -1,4 +1,5 @@
 import Perlin from 'phaser3-rex-plugins/plugins/perlin.js';
+import { Rule, Rules } from '../game/Game_Rules';
 import Base_Scene from './Base_Scene';
 
 export let text_style = { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' };
@@ -7,6 +8,8 @@ export enum Game_Graphics_Mode {
     Formula,
     Formula_Choice,
     Negated_Formula_Choice,
+    Possibility_World_Choice,
+    Necessity_World_Choice,
     Sphere_Selection,
     Counterfactual_World_Choice,
     Vacuous_World_Choice,
@@ -20,12 +23,31 @@ export enum Graph_Graphics_Mode {
 
 export function is_world_choice(mode: Game_Graphics_Mode): boolean {
   switch(mode) {
+    case Game_Graphics_Mode.Possibility_World_Choice:
+    case Game_Graphics_Mode.Necessity_World_Choice:
     case Game_Graphics_Mode.Sphere_Selection:
     case Game_Graphics_Mode.Counterfactual_World_Choice:
     case Game_Graphics_Mode.Vacuous_World_Choice:
       return true;
     default:
       return false;
+  }
+}
+
+export function world_choice_moves_to_mode(moves: Rule[]): Game_Graphics_Mode {
+  switch(true) {
+    case moves.some((value) => value.get_name() == Rules.Possibility):
+      return Game_Graphics_Mode.Possibility_World_Choice;
+    case moves.some((value) => value.get_name() == Rules.Negated_Necessity):
+      return Game_Graphics_Mode.Necessity_World_Choice;
+    case moves.some((value) => value.get_name() == Rules.Defender_Sphere_Selection):
+      return Game_Graphics_Mode.Sphere_Selection;
+    case moves.some((value) => value.get_name() == Rules.Defender_World_Choice):
+      return Game_Graphics_Mode.Counterfactual_World_Choice;
+    case moves.some((value) => value.get_name() == Rules.Defender_Vacuous_World_Choice):
+      return Game_Graphics_Mode.Vacuous_World_Choice;
+    default:
+      throw new Error("Rules don't map to any world choice!");
   }
 }
 
@@ -69,6 +91,7 @@ export function dye_texture(scene: Phaser.Scene, texture_key: string, color: num
     let texture = scene.game.textures.get(texture_key);
     let canvas = texture.getSourceImage(texture_key);
     let context = (canvas as HTMLCanvasElement).getContext("2d");
+    context!.getContextAttributes().willReadFrequently = true;
     let image_data = context!.getImageData(0, 0, canvas.width, canvas.height);
     let pixel_array = image_data.data;
 
@@ -92,72 +115,6 @@ export function dye_texture(scene: Phaser.Scene, texture_key: string, color: num
     context!.putImageData(image_data, 0, 0);
     (texture as Phaser.Textures.CanvasTexture).refresh();
 }
-
-// Code by Matt Blackstone, https://stackoverflow.com/questions/8507885/shift-hue-of-an-rgb-color
-export function hueshift_texture(scene: Phaser.Scene, texture_key: string, delta_hue: number) {
-    let texture = scene.game.textures.get(texture_key);
-    let canvas = texture.getSourceImage(texture_key);
-    let context = (canvas as HTMLCanvasElement).getContext('2d');
-    let image_data = context!.getImageData(0, 0, canvas.width, canvas.height);
-    let pixel_array = image_data.data;
-
-    for (let i = 0; i < pixel_array.length / 4; i++) {
-
-        let index = i * 4
-        let data = pixel_array;
-
-        let r = data[index];
-        let g = data[index + 1];
-        let b = data[index + 2];
-
-        let result = rotateRGBHue(r, g, b, delta_hue);
-
-        data[index] = result[0];
-        data[index + 1] = result[1];
-        data[index + 2] = result[2];
-    }
-    context!.putImageData(image_data, 0, 0);
-    (texture as Phaser.Textures.CanvasTexture).refresh();
-}
-
-const deg = Math.PI / 180;
-
-export function rotateRGBHue(r, g, b, hue) {
-  const cosA = Math.cos(hue * deg);
-  const sinA = Math.sin(hue * deg);
-  const neo = [
-    cosA + (1 - cosA) / 3,
-    (1 - cosA) / 3 - Math.sqrt(1 / 3) * sinA,
-    (1 - cosA) / 3 + Math.sqrt(1 / 3) * sinA,
-  ];
-  const result = [
-    r * neo[0] + g * neo[1] + b * neo[2],
-    r * neo[2] + g * neo[0] + b * neo[1],
-    r * neo[1] + g * neo[2] + b * neo[0],
-  ];
-  return result.map(x => uint8(x));
-}
-
-export function dyeRGB(r, g, b, hue) {
-  const cosA = Math.cos(hue * deg);
-  const sinA = Math.sin(hue * deg);
-  const neo = [
-    cosA + (1 - cosA) / 3,
-    (1 - cosA) / 3 - Math.sqrt(1 / 3) * sinA,
-    (1 - cosA) / 3 + Math.sqrt(1 / 3) * sinA,
-  ];
-  const result = [
-    r * neo[0] + g * neo[1] + b * neo[2],
-    r * neo[2] + g * neo[0] + b * neo[1],
-    r * neo[1] + g * neo[2] + b * neo[0],
-  ];
-  return result.map(x => uint8(x));
-}
-
-export function uint8(value) {
-  return 0 > value ? 0 : (255 < value ? 255 : Math.round(value));
-}
-// End of Code by Matt Blackstone
 
 export function RGB_to_HSB(color: number): number[] {
     return [hue(color), sat(color), bright(color)];
@@ -206,29 +163,6 @@ export function hue(color: number): number {
     throw new Error("Hue ascertation failed!");
 }
 
-/* export function sat(color: number): number {
-    color = (color & 0xffffff);
-
-    let r = ((color & 0xff0000) >> 16) / 0xff;
-    let g = ((color & 0x00ff00) >> 8) / 0xff;
-    let b = (color & 0x0000ff) / 0xff;
-
-    let max = (r >= g) ? r : g;
-    max = (b > max) ? b : max;
-    
-    let min = (r <= g) ? r : g;
-    min = (b < min) ? b : min;
-
-    let lum = (max + min)/2;
-
-    switch(true) {
-      case lum < 1:
-        return (max - min)/(1-Math.abs(2*lum - 1));
-      case lum == 1:
-        return 0;
-    }
-    throw new Error("Saturation ascertation failed!");
-} */
 export function sat(color: number): number {
     color = (color & 0xffffff);
 
@@ -385,6 +319,15 @@ export let Rule_Descriptions : string[] = [
   "The attacker chose the right formula",
   "You chose the left formula",
   "You chose the right formula",
+
+  "The attacker chose a world",
+  "The attacker couldn't chose a world",
+  "You chose a world",
+  "You couldn't chose a world",
+  "You chose a world",
+  "You couldn't chose a world",
+  "The attacker chose a world",
+  "The attacker couldn't chose a world",
 
   "You chose a sphere of accessibility",
   "The attacker chose to evaluate the sphere-delimiting world", /* "The attacker chose to evaluate the antecedent at the sphere-delimiting world", */

@@ -100,6 +100,10 @@ export class Game_State {
         return this.r;
     }
 
+    has_radius(): boolean {
+        return (this.mode == State_Mode.Counterfactual);
+    }
+
     to_string(): string {   // Doesnt incorporate Graph information
         return "("+State_Mode[this.mode]+", "+this.supposition.to_string()+", "+this.current_world+", "+Player[this.active_player]+", "+this.delim_world+")";
     }

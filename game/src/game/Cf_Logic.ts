@@ -1,3 +1,5 @@
+const OP_CHARS = ['|', 'v', '^','<', '[', '~', '(', '_', '¯', '?'];
+
 /**
  * An abstract Superclass to all components of counterfactual logic
  */
@@ -10,7 +12,7 @@ export abstract class Formula {
      * @returns The root object of a tree of formula objects
      */
     static parse(to_parse: string, atoms: string[] = []): Formula {
-    //Symbols: "|_|->, v, ^, ~, (...), A-Z, _|_, ¯|¯, ?"
+    //Symbols: "|_|->, <>, [_] v, ^, ~, (...), A-Z, _|_, ¯|¯, ?"
     //Syntax: "~(A v B) |_|-> (C v ~(D))"
 
         // search for weakest binder
@@ -20,19 +22,25 @@ export abstract class Formula {
             let v = to_parse[w];
             switch(true) {
                 case to_parse.length >= i+5 && to_parse.slice(i, i+5) == "|_|->":
-                    w = (v != '|') ? i : w;
+                    w = (!OP_CHARS.slice(0, 1).includes(v)) ? i : w;
                     break;
                 case c == 'v':
-                    w = (v != '|' && v != 'v') ? i : w;
+                    w = (!OP_CHARS.slice(0, 3).includes(v)) ? i : w;
                     break;
                 case c == '^':
-                    w = (v != '|' && v != 'v' && v != '^') ? i : w;
+                    w = (!OP_CHARS.slice(0, 3).includes(v)) ? i : w;
+                    break;
+                case to_parse.length >= i+2 && to_parse.slice(i, i+2) == "<>":
+                    w = (!OP_CHARS.slice(0, 6).includes(v)) ? i : w;
+                    break;
+                case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "[_]":
+                    w = (!OP_CHARS.slice(0, 6).includes(v)) ? i : w;
                     break;
                 case c == '~':
-                    w = (v != '|' && v != 'v' && v != '^' && v != '~') ? i : w;
+                    w = (!OP_CHARS.slice(0, 6).includes(v)) ? i : w;
                     break;
                 case c == '(':
-                    w = (v != '|' && v != 'v' && v != '^' && v != '~' && v != '~') ? i : w;
+                    w = (!OP_CHARS.slice(0, 7).includes(v)) ? i : w; // TODO: was 0 -> 6 before (check if this creates bugs)
 
                     let unclosed_brackets = 1;
                     while(i < to_parse.length && unclosed_brackets > 0) {
@@ -42,16 +50,16 @@ export abstract class Formula {
                     }
                     break;
                 case c >= 'A' && c <= 'Z':
-                    w = (v != '|' && v != 'v' && v != '^' && v != '~' && v != '~' && (v < 'A' || v > 'Z')) ? i : w;
+                    w = (!OP_CHARS.slice(0, 7).includes(v) && (v < 'A' || v > 'Z')) ? i : w;
                     break;
                 case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "_|_":
-                    w = (v != '|' && v != 'v' && v != '^' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_') ? i : w;
+                    w = (!OP_CHARS.slice(0, 8).includes(v) && (v < 'A' || v > 'Z')) ? i : w;
                     break;
                 case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "¯|¯":
-                    w = (v != '|' && v != 'v' && v != '^' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_' && v != '¯') ? i : w;
+                    w = (!OP_CHARS.slice(0, 9).includes(v) && (v < 'A' || v > 'Z')) ? i : w;
                     break;
                 case c == '?':
-                    w = (v != '|' && v != 'v' && v != '^' && v != '~' && v != '~' && (v < 'A' || v > 'Z') && v != '_' && v != '¯' && v != '?') ? i : w;
+                    w = (!OP_CHARS.slice(0, 10).includes(v) && (v < 'A' || v > 'Z')) ? i : w;
                     break;
                 default:
                     break;
@@ -72,6 +80,10 @@ export abstract class Formula {
                 return new Conjunction(
                     Formula.parse(to_parse.slice(0, w), atoms),
                     Formula.parse(to_parse.slice(w+1, to_parse.length), atoms));
+            case c == '<':
+                return new Possibility(Formula.parse(to_parse.slice(w+2, to_parse.length), atoms));
+            case c == '[':
+                return new Necessity(Formula.parse(to_parse.slice(w+3, to_parse.length), atoms));
             case c == '~':
                 return new Negation(Formula.parse(to_parse.slice(w+1, to_parse.length), atoms));
             case c == '(':
@@ -173,6 +185,88 @@ export class Cf_Would extends Formula {
                 return this.consequent.get_child(path.slice(1, path.length));
             default:
                 throw new Error("path string may only contain the letters 'l' and 'r'");
+        }
+    }
+}
+
+/**
+ * A class representation of the modal possibility operator
+ */
+ export class Possibility extends Formula {
+    subject: Formula;
+
+    /**
+     * Apply the possibility operator a formula
+     * @param subject Formula to be Wrapped
+     */
+    constructor(subject: Formula) {
+        super();
+        this.subject = subject;
+    }
+
+    generate_atom_list(atoms?: string[]): string[] {
+        return this.subject.generate_atom_list(atoms);
+    }
+
+    to_string(atoms?: string[]): string {
+        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
+        let sub = this.subject.to_string(atoms);
+        return "<>" + (is_bin(this.subject) ? "(" + sub + ")": sub);
+    }
+
+    compare(comparand: Formula): boolean {
+        return (comparand instanceof Possibility && this.subject.compare(comparand.subject))
+        || comparand instanceof Any;
+    }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.subject.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("Possibility only has left child");
+        }
+    }
+}
+
+/**
+ * A class representation of the modal necessity operator
+ */
+ export class Necessity extends Formula {
+    subject: Formula;
+
+    /**
+     * Apply the necessity operator a formula
+     * @param subject Formula to be Wrapped
+     */
+    constructor(subject: Formula) {
+        super();
+        this.subject = subject;
+    }
+
+    generate_atom_list(atoms?: string[]): string[] {
+        return this.subject.generate_atom_list(atoms);
+    }
+
+    to_string(atoms?: string[]): string {
+        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
+        let sub = this.subject.to_string(atoms);
+        return "[_]" + (is_bin(this.subject) ? "(" + sub + ")": sub);
+    }
+
+    compare(comparand: Formula): boolean {
+        return (comparand instanceof Necessity && this.subject.compare(comparand.subject))
+        || comparand instanceof Any;
+    }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.subject.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("Necessity only has left child");
         }
     }
 }

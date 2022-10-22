@@ -63,13 +63,21 @@ export default class Game_Scene extends Base_Scene {
         case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Formula_Choice:
         case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Negated_Formula_Choice:
           move = this.graphics_controller.get_choice();
-          if(!move.get_world_input_requirement()) { // TODO: remove if-condition (not the contents)
-            formula = move.apply(state).get_formula();
-          }
+          formula = move.apply(state).get_formula();
           break;
         case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Formula:
           this.graphics_controller.set_world_choice(moves);
           return;
+        case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Possibility_World_Choice:
+          move = moves[0];
+          world = this.graphics_controller.get_world_choice();
+          formula = move.apply(state, world).get_formula();
+          break;
+        case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Necessity_World_Choice:
+          move = moves[0];
+          world = this.graphics_controller.get_world_choice();
+          formula = move.apply(state, world).get_formula();
+          break;
         case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Sphere_Selection:
           world = this.graphics_controller.get_world_choice();
           move = (world == -1) ? this.game_controller.get_rule(Rules.Defender_Vacuous_Truth_Claim) : this.game_controller.get_rule(Rules.Defender_Sphere_Selection);//moves[1] : moves[0];

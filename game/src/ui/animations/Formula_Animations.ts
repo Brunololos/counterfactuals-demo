@@ -570,51 +570,82 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 1500
                 });
-                    return 3000;
-                case Rules.Right_AND:
-                    left_child = f.get_child("l");
-                    right_child = f.get_child("r");
-                    timeline.add({ /* FADE CONJUNCTION & LEFT CHILD TREE */
-                        targets: left_child.get_children([f, left_child]),
-                        alpha: 0,
-                        duration: 1500,
-                        ease: 'Quart.Out',
-                        yoyo: false,
-                        repeat: 0,
-                        offset: 0
-                    });
-                    timeline.add({ /* FADE CONJUNCTION & LEFT_CHILD EMBEDDINGS */
-                        targets: f.get_embedding().concat(left_child.get_embedding(true)),
-                        alpha: 0,
-                        duration: 1500,
-                        ease: 'Quart.Out',
-                        yoyo: false,
-                        repeat: 0,
-                        offset: 0
-                    });
-                    timeline.add({ /* MOVE RIGHT CHILD */
-                        targets: right_child.get_children([right_child]),
-                        x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH).toString(),
-                        duration: 1500,
-                        ease: 'Quart.Out',
-                        yoyo: false,
-                        repeat: 0,
-                        offset: 1500
-                    });
-                    timeline.add({ /* MOVE RIGHT CHILD EMBEDDINGS */
-                        targets: right_child.get_embedding(true),
-                        x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH).toString(),
-                        duration: 1500,
-                        ease: 'Quart.Out',
-                        yoyo: false,
-                        repeat: 0,
-                        offset: 1500
-                    });
-                    return 3000;
-                case Rules.Negated_Left_AND:
-                    return 1500;
-                case Rules.Negated_Left_AND:
-                    return 1500;
+                return 3000;
+            case Rules.Right_AND:
+                left_child = f.get_child("l");
+                right_child = f.get_child("r");
+                timeline.add({ /* FADE CONJUNCTION & LEFT CHILD TREE */
+                    targets: left_child.get_children([f, left_child]),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE CONJUNCTION & LEFT_CHILD EMBEDDINGS */
+                    targets: f.get_embedding().concat(left_child.get_embedding(true)),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE RIGHT CHILD */
+                    targets: right_child.get_children([right_child]),
+                    x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500
+                });
+                timeline.add({ /* MOVE RIGHT CHILD EMBEDDINGS */
+                    targets: right_child.get_embedding(true),
+                    x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500
+                });
+                return 3000;
+            case Rules.Negated_Left_AND:
+                return 1500;
+            case Rules.Negated_Left_AND:
+                return 1500;
+            case Rules.Possibility:
+            case Rules.Necessity:
+                left = f.get_child("l");
+                timeline.add({ /* FADE MODAL OPERATOR */
+                    targets: f,
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE CHILDREN */
+                    targets: left.get_children([left]),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE EMBEDDINGS */
+                    targets: left.get_embedding(true),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                return 1500;
             case Rules.Attacker_Phi_Evaluation:
                 left = f.get_child("l");
                 right = f.get_child("r");
@@ -1069,6 +1100,9 @@ export class Formula_Animations {
             case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Counterfactual_World_Choice:
                 return 0;
             case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Vacuous_World_Choice:
+                return 0;
+            case transition[0] == Game_Graphics_Mode.Possibility_World_Choice && transition[1] == Game_Graphics_Mode.Formula:
+            case transition[0] == Game_Graphics_Mode.Necessity_World_Choice && transition[1] == Game_Graphics_Mode.Formula:
                 return 0;
             default:
                 return 1500;

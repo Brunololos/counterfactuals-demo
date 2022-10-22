@@ -1,9 +1,22 @@
-import { Level } from "./Level";
+import { Level, Level_State } from "./Level";
+
+let levellist: Level_State[] = [];
 
 let atoms: string[];
 let worlds: string[][];
 let world_positions: [number, number][];
 let edges: [number, number, number][];
+
+atoms = [
+    "Es regnet jeden Montag",
+    "Menschen schwitzen nicht",
+    "Eis schmilzt nicht"
+];
+worlds = [get(atoms, [0, 1])];
+world_positions = [[0, 0]];
+edges = [[0, 0, 0]];
+
+levellist.push(Level.create("Top & Bottom", "Res", "¯|¯ v _|_", atoms, "a/d", 0, -1, worlds, world_positions, edges));
 
 atoms = [
     "Es gibt Weltfrieden",
@@ -16,7 +29,7 @@ worlds = [get(atoms, [1, 2, 4])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
 
-export let level1 = Level.create("Res", "A v B", atoms, "a/d", 0, -1, worlds, world_positions, edges);
+levellist.push(Level.create("Disjunction", "Res", "A v B", atoms, "a/d", 0, -1, worlds, world_positions, edges));
 
 atoms = [
     "Menschen leben unterirdisch",
@@ -29,7 +42,7 @@ worlds = [get(atoms, [0, 1, 2, 4])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
 
-export let level2 = Level.create("Res", "(D ^ C) v A"/* "~(~D v ~C) v A" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
+levellist.push(Level.create("Conjunction 1", "Res", "(D ^ C) v A"/* "~(~D v ~C) v A" */, atoms, "a/d", 0, -1, worlds, world_positions, edges));
 
 atoms = [
     "Käse ist ein pflanzliches Produkt",
@@ -44,7 +57,40 @@ worlds = [get(atoms, [0, 1, 2, 3, 4, 5])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
 
-export let level3 = Level.create("Res", "(C ^ D) v (G ^ F)"/* "~(~C v ~D) v ~(~G v ~F)" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
+levellist.push(Level.create("Conjunction 2", "Res", "(C ^ D) v (G ^ F)"/* "~(~C v ~D) v ~(~G v ~F)" */, atoms, "a/d", 0, -1, worlds, world_positions, edges));
+
+atoms = [
+    "Die Mondlandung fand nie statt",
+    "Die Sonne hat einen Zwillingsstern",
+    "Der Neandertaler hat überlebt"
+];
+worlds = [[], get(atoms, [0, 2]), get(atoms, [1, 2]), get(atoms, [0, 1])];
+world_positions = [[0, 0], [50, -150], [-100, 100], [150, 75]];
+edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
+
+levellist.push(Level.create("Possibility", "Res", "<>B", atoms, "a/d", 0, -1, worlds, world_positions, edges));
+
+atoms = [
+    "Die Mondlandung fand nie statt",
+    "Die Sonne hat einen Zwillingsstern",
+    "Der Neandertaler hat überlebt",
+    "Fluggesellschaften sind an der kommerziellen Raumfahrt beteiligt"
+];
+worlds = [[], get(atoms, [0, 2]), get(atoms, [1, 2]), get(atoms, [1, 3]), get(atoms, [0, 1]), get(atoms, [0, 1]), get(atoms, [3])];
+world_positions = [[0, 0], [50, -150], [-100, 100], [150, 100], [30, 175], [175, -25], [-150, -50]];
+edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [6, 6, 0], [0, 1, 0], [0, 2, 0], [1, 5, 0], [2, 4, 0], [2, 6, 0], [5, 3, 0]];
+
+levellist.push(Level.create("Successive Possibility", "Res", "<><>D", atoms, "a/d", 0, -1, worlds, world_positions, edges));
+
+atoms = [
+    "Es gibt die Farbe Rot",
+    "Steinhauerei ist die verbreitetste Kunstform",
+];
+worlds = [[], [atoms[1]], get(atoms, [0, 1]), [atoms[0]]];
+world_positions = [[0, 0], [-50, -150], [-100, 100], [200, 50]];
+edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
+
+levellist.push(Level.create("Necessity", "Res", "~[_]B", atoms, "a/d", 0, -1, worlds, world_positions, edges));
 
 atoms = [
     "Es gibt den Weihnachtsmann",
@@ -54,7 +100,7 @@ worlds = [[], [atoms[1]], get(atoms, [0, 1]), [atoms[0]]];
 world_positions = [[0, 0], [-50, -150], [-100, 100], [200, 50]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 1], [0, 2, 2], [0, 3, 3]];
 
-export let level4 = Level.create("Res", "A |_|-> B", atoms, "a/d", 0, -1, worlds, world_positions, edges);
+levellist.push(Level.create("Counterfactual 1", "Res", "A |_|-> B", atoms, "a/d", 0, -1, worlds, world_positions, edges));
 
 atoms = [
     "Alexander the Great died at the age of 32",
@@ -66,9 +112,9 @@ atoms = [
 ];
 worlds = [[atoms[0], atoms[3], atoms[5]], [atoms[0], atoms[2]], [atoms[4]], [atoms[1], atoms[2], atoms[3]], [atoms[1], atoms[4]]];
 world_positions = [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150]];
-edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3], [1, 2, 3]];
+edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3]];
 
-export let level5 = Level.create("Res", "(~A ^ B) |_|-> C"/* "~(A v ~B) |_|-> C" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
+levellist.push(Level.create("Counterfactual 2", "Res", "(~A ^ B) |_|-> C"/* "~(A v ~B) |_|-> C" */, atoms, "a/d", 0, -1, worlds, world_positions, edges));
 
 atoms = [
     "Blah",
@@ -82,9 +128,19 @@ world_positions = [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150], [300, -150]
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [6, 6, 0], [0, 1, 2],
         [0, 2, 4], [0, 3, 5], [0, 4, 6], [0, 6, 6], [1, 2, 3], [2, 5, 1], [3, 5, 4], [4, 6, 5], [5, 0, 4], [6, 5, 2]];
 
-export let level6 = Level.create("Res", "~(A |_|-> B)"/* "~((~A v (B v ~C)) ^ ~A)" *//* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */, atoms, "a/d", 0, -1, worlds, world_positions, edges);
+/* "~(A |_|-> (A |_|-> B))" *//* "~((~A v (B v ~C)) ^ ~A)" *//* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */
+levellist.push(Level.create("Test", "Res", "<>A", atoms, "a/d", 0, -1, worlds, world_positions, edges));
 
-export let levels = [level1, level2, level3, level4, level5, level6];
+export let levels = levellist;
+
+export let level1 = levels[0];
+export let level2 = levels[1];
+export let level3 = levels[2];
+export let level4 = levels[3];
+export let level5 = levels[4];
+export let level6 = levels[5];
+export let level7 = levels[6];
+export let level8 = levels[7];
 
 /// EXTRA
 atoms = [

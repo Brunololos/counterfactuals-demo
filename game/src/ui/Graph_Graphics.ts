@@ -152,6 +152,8 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
                     this.worlds[i].set_animation(timeline);
                 }
                 break;
+            case Game_Graphics_Mode.Possibility_World_Choice:
+            case Game_Graphics_Mode.Necessity_World_Choice:
             case Game_Graphics_Mode.Vacuous_World_Choice:
                 for(let i=0; i<this.worlds.length; i++) {
                     if(!current.is_adj(i)) { continue; }
@@ -418,7 +420,7 @@ export class World_Controller {
 
         this.hover_ellipse.on('pointerout', () => {
             this.graph_graphics.clear_hover_ellipse_alphas();
-            if(is_world_choice(this.graph_graphics.get_graphics_controller().get_mode())) { this.graph_graphics.animate(Game_Graphics_Mode.Sphere_Selection); }
+            if(is_world_choice(this.graph_graphics.get_graphics_controller().get_mode())) { this.graph_graphics.animate(this.graph_graphics.get_graphics_controller().get_mode()); }
             for(let i=0; i<this.atom_sprites.length; i++) {
                 this.atom_sprites[i].setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
             }

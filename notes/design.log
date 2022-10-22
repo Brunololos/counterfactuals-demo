@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  18 OCT 2022 12:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  21 OCT 2022 19:53
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -833,7 +833,11 @@ File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count318
 \l__pdf_internal_box=\box65
 )
-(./design.aux)
+(./design.aux
+
+LaTeX Warning: Label `fig:rules' multiply defined.
+
+)
 \openout1 = `design.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 27.
@@ -1042,24 +1046,29 @@ Underfull \hbox (badness 10000) in paragraph at lines 78--83
 
  []
 
-[2] [3]
-Overfull \vbox (85.58958pt too high) has occurred while \output is active []
-
-
-[4
+[2] [3] [4
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.210 
-      ] (./design.aux)
+l.238 
+      ] [5
+pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.239 \end{document}
+                    ] (./design.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
 Package rerunfilecheck Info: File `design.out' has not changed.
 (rerunfilecheck)             Checksum: D00E12839466E5B0B1E1CFD3F2F062F5;990.
  ) 
 Here is how much of TeX's memory you used:
- 23919 strings out of 478300
- 441898 string characters out of 5849124
- 711261 words of memory out of 5000000
+ 23929 strings out of 478300
+ 442016 string characters out of 5849124
+ 711283 words of memory out of 5000000
  41595 multiletter control sequences out of 15000+600000
  527140 words of font info for 149 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1077,10 +1086,10 @@ ive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-
 dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type
 1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/
 uplri8a.pfb>
-Output written on design.pdf (4 pages, 108164 bytes).
+Output written on design.pdf (5 pages, 108898 bytes).
 PDF statistics:
- 175 PDF objects out of 1000 (max. 8388607)
- 139 compressed objects within 2 object streams
- 47 named destinations out of 1000 (max. 500000)
+ 190 PDF objects out of 1000 (max. 8388607)
+ 153 compressed objects within 2 object streams
+ 57 named destinations out of 1000 (max. 500000)
  69 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -16,8 +16,9 @@ export class Rules_Controller {
         let is_fact_unknown = (state: Game_State) => !state.get_current_world().is_atom_known_true((state.get_formula() as Atom).value);
         let is_negated_fact_known = (state: Game_State) => state.get_current_world().is_atom_known_true((state.get_formula().get_child("l") as Atom).value);
         let is_negated_fact_unknown = (state: Game_State) => !state.get_current_world().is_atom_known_true((state.get_formula().get_child("l") as Atom).value);
-        let is_another_world_reachable = (state: Game_State) => (state.get_current_world().get_edge_count() > 0);
-        let is_another_world_reachable_within_delim = (state: Game_State) => (state.get_current_world().get_edge_count() > 0 && state.get_current_world().get_edge_list().some((value) => value[1] <= state.get_radius()));
+        let is_no_world_reachable = (state: Game_State) => (state.get_current_world().get_edge_count() == 0);
+        let is_another_world_reachable = (state: Game_State) => (state.get_current_world().get_edge_count() > 0); // doesn't exclude itself i.e. reflexive edges
+        let is_another_world_reachable_within_delim = (state: Game_State) => (state.get_current_world().get_edge_count() > 0 && state.get_current_world().get_edge_list().some((value) => value[2] <= state.get_radius()));
 
         this.rules.push(Rule.create("Attacker_Victory", "Res", "a", "_|_"));
         this.rules.push(Rule.create("Defender_Victory", "Res", "a", "¯|¯"));
@@ -67,16 +68,42 @@ export class Rules_Controller {
         let apply_negated_right_and = (state: Game_State) => state.configure("Res", new Negation(state.get_formula().get_child("lr")), "a/d");
         this.rules.push(Rule.create("Negated_Right_AND", "Res", "d", "~(?^?)", apply_negated_right_and));
 
+        // Modal Operators
+
+        let apply_necessity = (state: Game_State, delim_world?: integer) => state.configure("Res", state.get_formula().get_child("l"), "a/d", delim_world);
+        this.rules.push(Rule.create("Necessity", "Res", "a", "[_] ?", apply_necessity, is_another_world_reachable, true));
+        // TODO: Vacuous Necessity? In our case we always have reflexive edges and thus a reachable world. In case no world is reachable necessity is vacuously true.
+        let apply_vacuous_necessity = (state: Game_State) => state.configure("Res", Formula.parse("¯|¯"), "a/d");
+        this.rules.push(Rule.create("Vacuous_Necessity", "Res", "a", "[_] ?", apply_vacuous_necessity, is_no_world_reachable));
+
+        let apply_negated_necessity = (state: Game_State, delim_world?: integer) => state.configure("Res", new Negation(state.get_formula().get_child("ll")), "a/d", delim_world);
+        this.rules.push(Rule.create("Negated_Necessity", "Res", "d", "~[_] ?", apply_negated_necessity, is_another_world_reachable, true));
+
+        let apply_vacuous_negated_necessity = (state: Game_State) => state.configure("Res", Formula.parse("~¯|¯"), "a/d");
+        this.rules.push(Rule.create("Vacuous_Negated_Necessity", "Res", "d", "~[_] ?", apply_vacuous_negated_necessity, is_no_world_reachable));
+
+
+        let apply_possibility = (state: Game_State, delim_world?: integer) => state.configure("Res", state.get_formula().get_child("l"), "a/d", delim_world);
+        this.rules.push(Rule.create("Possibility", "Res", "d", "<> ?", apply_possibility, is_another_world_reachable, true));
+        // TODO: Vacuous Possibility? In our case we always have reflexive edges and thus a reachable world. In case no world is reachable possibility is vacuously false.
+        let apply_vacuous_possibility = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "a/d");
+        this.rules.push(Rule.create("Vacuous_Possibility", "Res", "d", "<> ?", apply_vacuous_possibility, is_no_world_reachable));
+
+        let apply_negated_possibility = (state: Game_State, delim_world?: integer) => state.configure("Res", new Negation(state.get_formula().get_child("ll")), "a/d", delim_world);
+        this.rules.push(Rule.create("Negated_Possibility", "Res", "a", "~<> ?", apply_negated_possibility, is_another_world_reachable, true));
+
+        let apply_vacuous_negated_possibility = (state: Game_State) => state.configure("Res", Formula.parse("~_|_"), "a/d");
+        this.rules.push(Rule.create("Vacuous_Negated_Possibility", "Res", "a", "~<> ?", apply_vacuous_negated_possibility, is_no_world_reachable));
+
+
         // Counterfactual Would Rules
         let apply_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "a", undefined, delim_world);
         this.rules.push(Rule.create("Defender_Sphere_Selection", "Res", "d", "? |_|-> ?", apply_sphere_selection, is_another_world_reachable, true));
-        /* let apply_counterfactual = (state: Game_State, delim_world?: integer) => ((delim_world == -1) ? state.configure("Vac", state.get_formula().get_child("l"), "a") : state.configure("Cf", state.get_formula(), "a", undefined, delim_world));
-        this.rules.push(Rule.create("Defender_Counterfactual", "Res", "d", "? |_|-> ?", apply_counterfactual, is_another_world_reachable, true)); */
 
-        let apply_attacker_phi_eval = (state: Game_State) => state.configure("Res", state.get_formula().get_child("l"), "a/d", state.get_delim_world().index, -1);
+        let apply_attacker_phi_eval = (state: Game_State) => state.configure("Res", state.get_formula().get_child("l"), "a/d", state.get_delim_world().index, Infinity);
         this.rules.push(Rule.create("Attacker_Phi_Evaluation", "Cf", "a", "? |_|-> ?", apply_attacker_phi_eval));
 
-        let apply_attacker_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Disjunction(new Negation(state.get_formula().get_child("l")), state.get_formula().get_child("r")), "d", delim_world, -1);
+        let apply_attacker_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Disjunction(new Negation(state.get_formula().get_child("l")), state.get_formula().get_child("r")), "d", delim_world, Infinity);
         this.rules.push(Rule.create("Attacker_World_Choice", "Cf", "a", "? |_|-> ?", apply_attacker_world_choice, is_another_world_reachable_within_delim, true));
 
         let apply_vacuous_truth_claim = (state: Game_State) => state.configure("Vac", state.get_formula().get_child("l"), "a");
@@ -88,10 +115,10 @@ export class Rules_Controller {
         let apply_attacker_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "d", undefined, delim_world);
         this.rules.push(Rule.create("Attacker_Sphere_Selection", "Res", "a", "~(? |_|-> ?)", apply_attacker_sphere_selection, is_another_world_reachable, true));
 
-        let apply_defender_phi_eval = (state: Game_State) => state.configure("Res", new Negation(state.get_formula().get_child("ll")), "a/d", state.get_delim_world().index, -1);
+        let apply_defender_phi_eval = (state: Game_State) => state.configure("Res", new Negation(state.get_formula().get_child("ll")), "a/d", state.get_delim_world().index, Infinity);
         this.rules.push(Rule.create("Defender_Phi_Evaluation", "Cf", "d", "~(? |_|-> ?)", apply_defender_phi_eval));
 
-        let apply_defender_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Negation(new Disjunction(new Negation(state.get_formula().get_child("ll")), state.get_formula().get_child("lr"))), "a", delim_world, -1);
+        let apply_defender_world_choice = (state: Game_State, delim_world?: integer) => state.configure("Res", new Negation(new Disjunction(new Negation(state.get_formula().get_child("ll")), state.get_formula().get_child("lr"))), "a", delim_world, Infinity);
         this.rules.push(Rule.create("Defender_World_Choice", "Cf", "d", "~(? |_|-> ?)", apply_defender_world_choice, is_another_world_reachable_within_delim, true));
 
         let apply_attacker_vacuous_truth_claim = (state: Game_State) => state.configure("Vac", state.get_formula().get_child("ll"), "d");
@@ -158,6 +185,10 @@ export class Rules_Controller {
                 for(let j=0; j<worlds; j++) {
                     let possible = false;
                     switch(true) {
+                        case move.get_name() == Rules.Possibility:
+                        case move.get_name() == Rules.Negated_Possibility:
+                        case move.get_name() == Rules.Necessity:
+                        case move.get_name() == Rules.Negated_Necessity:
                         case move.get_name() == Rules.Defender_Sphere_Selection:
                         case move.get_name() == Rules.Attacker_Sphere_Selection:
                         case move.get_name() == Rules.Defender_Vacuous_World_Choice:
@@ -283,7 +314,15 @@ export enum Rules {
     Negated_Left_AND,
     Negated_Right_AND,
 
-    //Defender_Counterfactual,
+    Necessity,
+    Vacuous_Necessity,
+    Negated_Necessity,
+    Vacuous_Negated_Necessity,
+    Possibility,
+    Vacuous_Possibility,
+    Negated_Possibility,
+    Vacuous_Negated_Possibility,
+
     Defender_Sphere_Selection,
     Attacker_Phi_Evaluation,
     Attacker_World_Choice,

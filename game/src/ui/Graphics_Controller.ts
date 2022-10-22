@@ -5,7 +5,7 @@ import { Supposition_Panel } from "./Supposition_Panel";
 import { Bottom, Cf_Would, Disjunction, Formula, Negation } from "../game/Cf_Logic";
 import { Game_State } from "../game/Game_State";
 import { Choice } from "./Choice";
-import { create_cosmic_nebula_texture, dye_texture, Game_Graphics_Mode, Graph_Graphics_Mode, Rule_Descriptions, text_style } from "../util/UI_Utils";
+import { create_cosmic_nebula_texture, dye_texture, Game_Graphics_Mode, Graph_Graphics_Mode, Rule_Descriptions, text_style, world_choice_moves_to_mode } from "../util/UI_Utils";
 import { Graph_Graphics } from "./Graph_Graphics";
 import Base_Scene from "../util/Base_Scene";
 import { Formula_Graphics } from "./Formula_Graphics";
@@ -54,7 +54,7 @@ export class Graphics_Controller {
 
         this.graph_graphics = new Graph_Graphics(scene, w/2, (h - 200)/2, state, state.get_current_world().index, world_positions, state.get_graph().get_edge_list(), this);
 
-        this.vacuous = this.create_button(this.scene, "No World", w/2, h-235).setAlpha(0);
+        this.vacuous = this.create_vacuous(this.scene, "", w/2, h-235).setAlpha(0);
 
         scene.add.existing(this.background);
         scene.add.existing(this.stars);
@@ -86,6 +86,8 @@ export class Graphics_Controller {
                     this.ready = true;
                 }
                 break;
+            case Game_Graphics_Mode.Possibility_World_Choice:
+            case Game_Graphics_Mode.Necessity_World_Choice:
             case Game_Graphics_Mode.Sphere_Selection:
             case Game_Graphics_Mode.Counterfactual_World_Choice:
             case Game_Graphics_Mode.Vacuous_World_Choice:
@@ -100,8 +102,9 @@ export class Graphics_Controller {
                     switch(this.next_mode) {
                         case Game_Graphics_Mode.Formula:
                             if(this.next_animate) {
-                                console.log(this.next_state.to_string());
-                                this.animate_move(this.next_state, this.next_move);
+                                /* console.log(this.next_state.to_string());
+                                console.log(this.next_move); */
+                                this.animate_move(this.next_state, this.next_move, (this.next_move.get_world_input_requirement()) ? this.get_world_choice() : undefined);
                             } else {
                                 this.set_formula(this.next_state, this.next_formula);
                             }
@@ -110,10 +113,12 @@ export class Graphics_Controller {
                         case Game_Graphics_Mode.Negated_Formula_Choice:
                             this.set_choice(this.next_state, this.next_option1, this.next_option2);
                             break;
+                        case Game_Graphics_Mode.Possibility_World_Choice:
+                        case Game_Graphics_Mode.Necessity_World_Choice:
                         case Game_Graphics_Mode.Sphere_Selection:
                         case Game_Graphics_Mode.Counterfactual_World_Choice:
                         case Game_Graphics_Mode.Vacuous_World_Choice:
-                            this.set_world_choice([this.next_option1, this.next_option2]/* this.next_move */);
+                            this.set_world_choice((this.next_option2 == undefined) ? [this.next_option1] : [this.next_option1, this.next_option2]);
                             break;
                     }
                 }
@@ -123,10 +128,9 @@ export class Graphics_Controller {
     }
 
     set_world_choice(moves: Rule[]) {
-        let mode = (moves.some((value) => value.get_name() == Rules.Defender_Sphere_Selection)) ? Game_Graphics_Mode.Sphere_Selection : ((moves.some((value) => value.get_name() == Rules.Defender_World_Choice)) ? Game_Graphics_Mode.Counterfactual_World_Choice : Game_Graphics_Mode.Vacuous_World_Choice );
+        let mode = world_choice_moves_to_mode(moves);
         if(this.mode != mode) {
             console.log("> transitioning to World_Choice");
-            //this.next_move = move; // TODO:
             this.next_option1 = moves[0];
             this.next_option2 = moves[1];
             this.transition_mode(mode);
@@ -142,8 +146,6 @@ export class Graphics_Controller {
 
         let mode = Game_Graphics_Mode.Formula_Choice;
         mode = (is_negated_choice && !is_cf_choice) ? Game_Graphics_Mode.Negated_Formula_Choice : mode;
-        /* mode = (!is_negated_choice && is_cf_choice) ? Game_Graphics_Mode.Counterfactual_Choice : mode;
-        mode = (is_negated_choice && is_cf_choice) ? Game_Graphics_Mode.Negated_Counterfactual_Choice : mode; */
 
         if(this.mode != mode) {
             console.log("> transitioning to "+Game_Graphics_Mode[mode]);
@@ -162,14 +164,6 @@ export class Graphics_Controller {
                 this.sup_panel.set_caption("Choose a formula:", Text_Animation.PULSE);
                 this.choice.set(state, option1, option2, this.formula.get_embedding_depth());
                 break;
-            /* case Game_Graphics_Mode.Counterfactual_Choice:
-                this.sup_panel.set_caption("Claim vacuous truth or choose a sphere of accessibility", Text_Animation.PULSE);
-                this.choice.set_cf(state, option2, option1, this.formula.get_embedding_depth(), state.get_current_world().get_edges()[0][0].index); // TODO: Switching option1/2 so, that the vacuous truth claim is left and sphere selection right
-                break;
-            case Game_Graphics_Mode.Negated_Counterfactual_Choice:
-                this.sup_panel.set_caption("Evaluate the sphere delimiting world or choose a reachable world to disprove the counterfactual", Text_Animation.PULSE);
-                this.choice.set_cf(state, option1, option2, this.formula.get_embedding_depth(), state.get_current_world().get_edges()[0][0].index);
-                break; */
         }
         this.ready = false;
     }
@@ -191,7 +185,6 @@ export class Graphics_Controller {
 
     animate_move(state: Game_State, move: Rule, delim_world?: integer) {
         if(this.mode != Game_Graphics_Mode.Formula) {
-            console.log("> transitioning to Formula");
             this.transition_mode(Game_Graphics_Mode.Formula);
             this.next_move = move;
             this.next_state = state;
@@ -204,11 +197,7 @@ export class Graphics_Controller {
         this.idle(this.formula.animate(applied.get_formula(), move.get_name()));
         
         (applied.get_mode() == State_Mode.Counterfactual) ? this.graph_graphics.set_delim_world(applied.get_delim_world().index) : this.graph_graphics.clear_delim_world();
-        this.graph_graphics.set_sphere(applied.get_current_world().index, (state.get_mode() == State_Mode.Counterfactual
-                                                                        && move.get_name() != Rules.Attacker_Phi_Evaluation
-                                                                        && move.get_name() != Rules.Attacker_World_Choice
-                                                                        && move.get_name() != Rules.Defender_Phi_Evaluation
-                                                                        && move.get_name() != Rules.Defender_World_Choice) ? state.get_radius() : undefined); // TODO: Check over
+        this.graph_graphics.set_sphere(applied.get_current_world().index, (applied.has_radius()) ? applied.get_radius() : undefined);
     }
 
     transition_mode(mode: Game_Graphics_Mode) {
@@ -216,14 +205,6 @@ export class Graphics_Controller {
         this.mode = Game_Graphics_Mode.Transition;
         this.next_mode = mode;
         switch(true) {
-            /* case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Negated_Counterfactual_Choice:
-                console.log("> animating transition Formula -> Negated_Counterfactual_Choice");
-                this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
-                return;
-            case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Counterfactual_Choice:
-                console.log("> animating transition Formula -> Counterfactual_Choice");
-                this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
-                return; */
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Formula_Choice:
                 console.log("> animating transition Formula -> Formula_Choice");
                 this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
@@ -240,17 +221,9 @@ export class Graphics_Controller {
                 console.log("> animating transition Negated_Formula_Choice -> Formula");
                 this.idle(this.choice.animate_transition([old_mode, this.next_mode]));
                 return;
-            /* case old_mode == Game_Graphics_Mode.Counterfactual_Choice && this.next_mode == Game_Graphics_Mode.Formula:
-                console.log("> animating transition Counterfactual_Choice -> Formula");
-                this.idle(this.choice.animate_transition([old_mode, this.next_mode]));
-                return;
-            case old_mode == Game_Graphics_Mode.Negated_Counterfactual_Choice && this.next_mode == Game_Graphics_Mode.Formula:
-                console.log("> animating transition Negated_Counterfactual_Choice -> Formula");
-                this.idle(this.choice.animate_transition([old_mode, this.next_mode]));
-                return; */
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Sphere_Selection:
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Counterfactual_World_Choice:
-                console.log("> animating transition Formula -> World_Choice");
+                console.log("> animating transition Formula -> "+Game_Graphics_Mode[this.next_mode]);
                 this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
 
                 // TODO: Different vacuous button text for each mode
@@ -265,15 +238,19 @@ export class Graphics_Controller {
                     offset: 0,
                 });
                 this.graph_graphics.animate(this.next_mode);
-                // TODO: if state mode == Counterfactual --> animate formula
                 return;
+            case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Possibility_World_Choice:
+            case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Necessity_World_Choice:
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Vacuous_World_Choice:
-                this.set_mode(this.next_mode);
+                console.log("> animating transition Formula -> "+Game_Graphics_Mode[this.next_mode]);
+                this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
+                this.graph_graphics.animate(this.next_mode);
                 return;
             case old_mode == Game_Graphics_Mode.Sphere_Selection && this.next_mode == Game_Graphics_Mode.Formula:
             case old_mode == Game_Graphics_Mode.Counterfactual_World_Choice && this.next_mode == Game_Graphics_Mode.Formula:
-                console.log("> animating transition World_Choice -> Formula");
+                console.log("> animating transition "+Game_Graphics_Mode[old_mode]+" -> Formula");
                 this.graph_graphics.stop_animation();
+                this.graph_graphics.clear_hover_ellipse_alphas();
                 this.vacuous.disableInteractive();
                 this.scene.add.tween({
                     targets: this.vacuous,
@@ -286,7 +263,17 @@ export class Graphics_Controller {
                 });
                 this.set_mode(this.next_mode);
                 return;
+            case old_mode == Game_Graphics_Mode.Possibility_World_Choice && this.next_mode == Game_Graphics_Mode.Formula:
+            case old_mode == Game_Graphics_Mode.Necessity_World_Choice && this.next_mode == Game_Graphics_Mode.Formula:
+                console.log("> animating transition "+Game_Graphics_Mode[old_mode]+" -> Formula");
+                this.graph_graphics.stop_animation();
+                this.graph_graphics.clear_hover_ellipse_alphas();
+                this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
+                break;
             case old_mode == Game_Graphics_Mode.Vacuous_World_Choice && this.next_mode == Game_Graphics_Mode.Formula:
+                console.log("> animating transition "+Game_Graphics_Mode[old_mode]+" -> Formula");
+                this.graph_graphics.stop_animation();
+                this.graph_graphics.clear_hover_ellipse_alphas();
                 this.set_mode(this.next_mode);
                 break;
             default:
@@ -306,20 +293,28 @@ export class Graphics_Controller {
                 break;
             case Game_Graphics_Mode.Formula_Choice:
             case Game_Graphics_Mode.Negated_Formula_Choice:
-            /* case Game_Graphics_Mode.Counterfactual_Choice:
-            case Game_Graphics_Mode.Negated_Counterfactual_Choice: */
                 this.formula.setVisible(false);
                 this.choice.set_visible(true);
                 this.graph_graphics.set_mode(Graph_Graphics_Mode.Display);
                 break;
+            case Game_Graphics_Mode.Possibility_World_Choice:
+            case Game_Graphics_Mode.Necessity_World_Choice:
             case Game_Graphics_Mode.Sphere_Selection:
             case Game_Graphics_Mode.Counterfactual_World_Choice:
             case Game_Graphics_Mode.Vacuous_World_Choice:
-                //this.formula.setVisible(false);
-                //this.choice.set_visible(true);
+                this.formula.setVisible(true);
+                this.choice.set_visible(false);
                 this.graph_graphics.set_mode(Graph_Graphics_Mode.World_Choice);
                 break;
         }
+    }
+
+    set_vacuous_text(label: string) {
+        this.vacuous.getElement('text').setText(label);
+    }
+
+    set_vacuous_icon(texture_key: string) {
+        this.vacuous.getElement('icon').setTexture(texture_key);
     }
 
     resize_graphics() {
@@ -410,15 +405,58 @@ export class Graphics_Controller {
         return buttons;
     }
 
+    private create_vacuous(scene, label, x, y) {
+        var button = scene.rexUI.add.label({
+            width: 120,
+            height: 60,
+
+            orientation: 0,
+
+            background: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "chunk").setDisplayOrigin(0.5, 0.5)),
+
+            icon: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "none").setDisplaySize(40, 40).setDisplayOrigin(0.5, 0.5)),
+
+            space: {
+                left: 40,
+                right: 0,
+                top: 0,
+                bottom: 0,
+            }
+        });
+
+        var buttons = scene.rexUI.add.buttons({
+            x: x,
+            y: y,
+            buttons: [],
+        })
+        .addButton(button)
+        .layout();
+    
+        buttons.on('button.over', function(button, index, pointer, event) {
+            button.getElement('background').setTexture("chunk_hover");
+            button.getElement('background').setDisplayOrigin(0.5, 0.5);
+        })
+        buttons.on('button.out', function(button, index, pointer, event) {
+            button.getElement('background').setTexture("chunk");
+            button.getElement('background').setDisplayOrigin(0.5, 0.5);
+        })
+        buttons.on('button.click', function(button, index, pointer, event) {
+            scene.graphics_controller.ready = true;
+        })
+
+        return button;
+    }
+
     private create_button(scene, label, x, y) {
         var button = scene.rexUI.add.label({
             width: 120,
             height: 60,
 
             orientation: 0,
+
             background: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "chunk")),
 
-            text: scene.add.text(0, 0, label),
+            text: scene.add.text(0, 0, label, text_style),
 
             space: {
                 left: 20,
@@ -457,11 +495,15 @@ export class Graphics_Controller {
 
         Star.load_sprites(scene);
         let level = (scene as Game_Scene).get_level();
-        if(!scene.textures.getTextureKeys().includes("space"+level)) {
+        /* if(!scene.textures.getTextureKeys().includes("space"+level)) {
             create_cosmic_nebula_texture(scene, 1600, 1600, "space"+level);
             dye_texture(scene, "space"+level, 0x4C6793);
+        } */
+        if(!scene.textures.getTextureKeys().includes("space"+level)) {
+            scene.load.image("space"+level, "assets/backgrounds/Background"+level+".png");
         }
 
+        scene.load.image("none", "assets/None.png");
         scene.load.image("back_panel", "assets/Slant_Right.png");
         scene.load.image("back_border", "assets/Slant_Right_Border.png");
         scene.load.image("back_fill", "assets/Slant_Right_Fill.png");

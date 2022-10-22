@@ -1,3 +1,5 @@
+import { wrap } from "module";
+import { levels } from "../game/levels/Levels";
 import Base_Scene from "../util/Base_Scene";
 import Game_Scene from "./Game";
 
@@ -24,17 +26,8 @@ export default class Level_Select_Scene extends Base_Scene {
 
         this.rocket_launch = new Phaser.GameObjects.Sprite(this, w/2, h/2, "rocket_launch").setDisplaySize(w, h).setAlpha(0.5);
         this.add.existing(this.rocket_launch);
-
-        var levels = [
-            { name: 'Disjunction' },
-            { name: 'Conjunction 1' },
-            { name: 'Conjunction 2' },
-            { name: 'Counterfactual 1' },
-            { name: 'Counterfactual 2' },
-            { name: 'Test' },
-        ];
-
-        var gridTable = this.create_grid_table(this, w/2, h/2, 760, 400, levels);
+        
+        var gridTable = this.create_grid_table(this, w/2, h/2, 760, 640, levels);
 
         const resize = () => {
             this.game.scale.resize(window.innerWidth, window.innerHeight);
@@ -102,14 +95,18 @@ export default class Level_Select_Scene extends Base_Scene {
                     cellContainer = scene.create_button(scene, levels[index]);
                 }
 
+                let name = levels[item.id].name;
+                let wrapindex = name.indexOf(" ") + 1;
+                if(wrapindex == 0) { wrapindex == 16; }
+
                 // Set properties from item value
                 cellContainer!.setMinSize(240, 120); // Size might changed in this demo
                 //cellContainer!.getElement('background').setTint(0xcccccc);
-                cellContainer!.getElement('text').setText(levels[item.id].name);
+                cellContainer!.getElement('text').setText((name.length <= 16) ? name : name.slice(0, wrapindex) + "\n" + name.slice(wrapindex));
                 //cellContainer!.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
                 return cellContainer;
             },
-            items: this.create_items(6)
+            items: this.create_items(levels.length)
         }).layout()
 
         grid_table
@@ -126,13 +123,15 @@ export default class Level_Select_Scene extends Base_Scene {
                 cellContainer.getElement('background').setTexture("chunk_down");
             }, this)
             .on('cell.click', function (cellContainer, cellIndex, pointer) {
-                this.scene.start('Game_Scene', { level: this.swap_xy(cellIndex) });
+                this.scene.start('Game_Scene', { level: this.swap_xy(cellIndex, 2, Math.ceil(levels.length/2)) });
             
             }, this)
         return grid_table;
     }
 
     create_button(scene, level) {
+        let wrapindex = level.name.indexOf(" ") + 1;
+        if(wrapindex == 0) { wrapindex == 16; }
         var button = scene.rexUI.add.label({
             width: 240,
             height: 120,
@@ -141,7 +140,7 @@ export default class Level_Select_Scene extends Base_Scene {
             background: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "chunk_down")),
 
             icon: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "dot")),//scene.rexUI.add.roundRectangle(0, 0, 5, 5, 5, 0xffffff, 0x0),
-            text: scene.add.text(0, 0, level.name),
+            text: (level.name.length <= 16) ? scene.add.text(0, 0, level.name) : scene.add.text(0, 0, level.name.slice(0, wrapindex) + "\n" + level.name.slice(wrapindex)),
 
             space: {
                 icon: 10,
@@ -159,15 +158,15 @@ export default class Level_Select_Scene extends Base_Scene {
         var data = [];
         for (var i = 0; i < count; i++) {
             data.push({
-                id: this.swap_xy(i),
+                id: this.swap_xy(i, 2, Math.ceil(count/2)),
                 color: 0xffffff,
             } as never /* TODO: Why need be never type???? */);
         }
         return data;
     }
 
-    swap_xy(index: number): number {
-        return (index % 2)*2 + Math.ceil(index/2);
+    swap_xy(index: number, width: number, height: number): number {
+        return (index % width)*(height-1) + Math.ceil(index/width);
     }
 
     private create_back(scene: Base_Scene, x, y) {
