@@ -1,6 +1,6 @@
 import { Rules } from "../game/Game_Rules";
 import Base_Scene from "../util/Base_Scene";
-import { Atom, Bottom, Cf_Would, Conjunction, Disjunction, Formula, Necessity, Negation, Possibility, Top } from "../game/Cf_Logic";
+import { Atom, Bottom, Cf_Might, Cf_Would, Conjunction, Disjunction, Formula, Necessity, Negation, Possibility, Top } from "../game/Cf_Logic";
 import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode } from "../util/UI_Utils";
 import { Formula_Animations } from "./animations/Formula_Animations";
 import { cloneDeep } from "lodash";
@@ -30,8 +30,10 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
 
     static load_sprites(scene: Phaser.Scene) {
         if(scene.textures.getTextureKeys().includes("false")) { return; }
-        scene.load.image("false", "assets/False.png");
-        scene.load.image("true", "assets/True.png");
+        scene.load.image("loss", "assets/False.png");
+        scene.load.image("false", "assets/Tank_Empty.png");
+        scene.load.image("win", "assets/True.png");
+        scene.load.image("true", "assets/Flag.png");
         scene.load.image("atom", "assets/Atom.png");
         scene.load.image("glow", "assets/Glow.png");
         scene.load.image("negation", "assets/Negation.png");
@@ -41,6 +43,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         //scene.load.image("disjunction", "assets/Disjunction.png");
         scene.load.image("disjunction", "assets/OR.png");
         scene.load.image("cf_would", "assets/Cf_Would.png");
+        scene.load.image("cf_might", "assets/Cf_Might.png");
 
         /* scene.load.image("fill_open", "assets/Fill_Open.png");
         scene.load.image("fill_connect", "assets/Fill_Connect.png");
@@ -74,7 +77,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     animate(formula: Formula, rule: Rules): number {
         this.next_formula = formula;
         if(rule == Rules.Defender_Victory || rule == Rules.Attacker_Victory) { this.next_formula = undefined; }
-        if([Rules.Negated_Left_OR, Rules.Negated_Right_OR, Rules.Attacker_Vacuous_Truth_Claim].includes(rule)) { this.embedding_depth++; }
+        //if([Rules.Negated_Left_OR, Rules.Negated_Right_OR, Rules.Attacker_Vacuous_Truth_Claim].includes(rule)) { this.embedding_depth++; } // TODO: doesn't matter rn fix later
         return this.start_animation(rule);
     }
 
@@ -118,6 +121,13 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         return anim_time;
     }
 
+    set_tint(color: number) {
+        let children = this.getAll();
+        for(let i=0; i<children.length; i++) {
+            (children[i] as Phaser.GameObjects.Sprite).setTint(color);
+        }
+    }
+
     /**
      * Get the Formula_Graphics_Element tree root element
      * @returns Formula_Graphics_Element
@@ -151,6 +161,12 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     static parse(scene: Base_Scene, to_parse: Formula, x: number, y: number, atoms: string[]=[], embedded: number=0): Formula_Graphics_Element {
         let antecedent; let consequent; let subject1; let subject2; let subject;
         switch(true) {
+            case to_parse instanceof Cf_Might:
+                antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
+                consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
+                antecedent.offset(- ICON_WIDTH/2 - consequent.get_width()/2);
+                consequent.offset(+ ICON_WIDTH/2 + antecedent.get_width()/2);
+                return new Cf_Might_Graphics(scene, x + (antecedent.get_width() - consequent.get_width())/2, y, antecedent, consequent, embedded);
             case to_parse instanceof Cf_Would:
                 antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
                 consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
@@ -207,6 +223,98 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
 
     static get_embedding_sprite_key(embedded: integer): string {
         return "_"+(embedded % NUM_RECOLORS).toString();
+    }
+}
+
+/**
+ * A class representation of the counterfactual might operator
+ */
+ export class Cf_Might_Graphics extends Formula_Graphics_Element {
+    antecedent: Formula_Graphics_Element;
+    consequent: Formula_Graphics_Element;
+    brackets: Phaser.GameObjects.Sprite[] = [];
+
+    /**
+     * Create a counterfactual might between two formulas
+     * @param antedecent Formula
+     * @param consequent Formula
+     */
+    constructor(scene: Base_Scene, x: number, y: number, antedecent: Formula_Graphics_Element, consequent: Formula_Graphics_Element, embedded: integer) {
+        super(scene, x, y, "cf_might");
+        this.antecedent = antedecent;
+        this.consequent = consequent;
+
+        let w1 = this.antecedent.get_width();
+        let w2 = this.consequent.get_width();
+
+        if(embedded >= 0) {
+            let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 - BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));//.setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 + BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+        }
+        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
+    }
+
+    get_child(path: string): Formula_Graphics_Element {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.antecedent.get_child(path.slice(1, path.length));
+            case 'r':
+                return this.consequent.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("path string may only contain the letters 'l' and 'r'");
+        }
+    }
+
+    offset(x: number): void {
+        this.setX(this.x + x);
+        this.antecedent.offset(x);
+        this.consequent.offset(x);
+        for(let i=0; i<this.brackets.length; i++) {
+            this.brackets[i].setX(this.brackets[i].x + x);
+        }
+    }
+
+    scale_recursive(s: number): void {
+        this.setScale(this.scaleX * s, this.scaleY * s);
+        for(let i=0; i<this.brackets.length; i++) {
+            this.brackets[i].setScale(this.brackets[i].texture.key == "bracket_compact" ? this.brackets[i].scaleX * s : this.brackets[i].scaleX, this.brackets[i].scaleY * s);
+        }
+        this.antecedent.scale_recursive(s);
+        this.consequent.scale_recursive(s);
+    }
+
+    set_depth(d: number): void {
+        this.setDepth(d);
+        this.antecedent.set_depth(d);
+        this.consequent.set_depth(d);
+    }
+
+    get_width(): number {
+        return ICON_WIDTH + this.antecedent.get_width() + this.consequent.get_width() + 2*BRACKET_WIDTH;
+    }
+
+    get_atoms(atoms: string[]): Formula_Graphics_Element[] {
+        return this.antecedent.get_atoms(atoms).concat(this.consequent.get_atoms(atoms));
+    }
+
+    get_children(aux: Formula_Graphics_Element[] = []): Formula_Graphics_Element[] {
+        return aux.concat([this.antecedent, this.consequent]).concat(this.antecedent.get_children()).concat(this.consequent.get_children());
+    }
+
+    get_embedding(recursive?: boolean): Phaser.GameObjects.Sprite[] {
+        return recursive ? this.brackets.concat(this.antecedent.get_embedding(true)).concat(this.consequent.get_embedding(true)) : this.brackets;
+    }
+
+    add_to_container(container: Phaser.GameObjects.Container): void {
+        for(let i=0; i<this.brackets.length; i++) {
+            container.add(this.brackets[i]);
+        }
+        container.add(this);
+        this.antecedent.add_to_container(container);
+        this.consequent.add_to_container(container);
     }
 }
 
@@ -423,6 +531,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
             this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x + w2 + BRACKET_WIDTH */
         }
         this.setDisplaySize(DISJ_WIDTH, ICON_WIDTH);
+        //this.setTint(0xdd0000); // TODO: just red tint doesnt look great
     }
 
     get_child(path: string): Formula_Graphics_Element {

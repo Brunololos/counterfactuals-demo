@@ -1,6 +1,6 @@
 import { Game_Controller } from "../game/Game_Controller";
 import { Rule, Rules, Rules_Controller } from "../game/Game_Rules";
-import { Game_Turn_Type, State_Mode } from "../util/Game_Utils";
+import { Game_Turn_Type, Player, State_Mode } from "../util/Game_Utils";
 import { Supposition_Panel } from "./Supposition_Panel";
 import { Bottom, Cf_Would, Disjunction, Formula, Negation } from "../game/Cf_Logic";
 import { Game_State } from "../game/Game_State";
@@ -12,6 +12,8 @@ import { Formula_Graphics } from "./Formula_Graphics";
 import { Star } from "../graphics/Star";
 import Game_Scene from "../scenes/Game";
 import { Text_Animation } from "./animations/Text_Animations";
+import { levels } from "../game/levels/Levels";
+import { Text_Box_Controller } from "./Text_Box";
 
 /**
  * A class governing the visual representation of the abstract game of counterfactuals
@@ -21,6 +23,7 @@ export class Graphics_Controller {
     private background: Phaser.GameObjects.Sprite;
     private stars: Phaser.GameObjects.Container;
     private back;
+    private text_box;
     private sup_panel;
     private graph_graphics: Graph_Graphics;
     private formula: Formula_Graphics;
@@ -44,10 +47,12 @@ export class Graphics_Controller {
         this.scene = scene;
         let w = scene.get_width();
         let h = scene.get_height();
-        this.background = new Phaser.GameObjects.Sprite(scene, w/2, h/2, "space"+(scene as Game_Scene).get_level()).setDisplaySize(w, h).setDepth(-1);
+        let level = (scene as Game_Scene).get_level();
+        this.background = new Phaser.GameObjects.Sprite(scene, w/2, h/2, "space"+((level % 10))).setDisplaySize(w, h).setDepth(-1);
         this.stars = this.create_stars(scene, w, h);
         this.back = this.create_back(scene, 25, 30);
 
+        this.text_box = new Text_Box_Controller(scene, w/2, h-250, 500, 55, levels[level].description, levels[level].icon_keys);
         this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms());
         this.choice = new Choice(scene, state);
         this.sup_panel = new Supposition_Panel(scene, w/2, h - 110, [this.formula, this.choice.get_option_graphic(0), this.choice.get_option_graphic(1), this.choice.get_option_boxes()[0], this.choice.get_option_boxes()[1]]);
@@ -83,6 +88,7 @@ export class Graphics_Controller {
             case Game_Graphics_Mode.Negated_Formula_Choice:
                 if(this.choice.is_choice_made()) {
                     this.sup_panel.set_caption(Rule_Descriptions[this.choice.get_choice().get_name()]);
+                    this.sup_panel.transition(this.choice.get_choice().get_player());
                     this.ready = true;
                 }
                 break;
@@ -157,13 +163,14 @@ export class Graphics_Controller {
         }
         switch(mode) {
             case Game_Graphics_Mode.Formula_Choice:
-                this.sup_panel.set_caption("Choose a formula:", Text_Animation.PULSE);
+                this.sup_panel.set_caption("Choose next instructions:", Text_Animation.PULSE);
+                this.sup_panel.transition(option1.get_acting_player());
                 this.choice.set(state, option1, option2, this.formula.get_embedding_depth());
                 break;
             case Game_Graphics_Mode.Negated_Formula_Choice:
                 this.sup_panel.set_caption("Choose a formula:", Text_Animation.PULSE);
                 this.choice.set(state, option1, option2, this.formula.get_embedding_depth());
-                break;
+                break; // TODO: Negated_Formula_Choice is deprecated and not used anymore
         }
         this.ready = false;
     }
@@ -195,7 +202,8 @@ export class Graphics_Controller {
         let applied = move.apply(state, delim_world);
         console.log("> animating move " + Rules[move.get_name()] + " => " + applied.get_formula().to_string());
         this.idle(this.formula.animate(applied.get_formula(), move.get_name()));
-        
+        this.sup_panel.animate(move);
+
         (applied.get_mode() == State_Mode.Counterfactual) ? this.graph_graphics.set_delim_world(applied.get_delim_world().index) : this.graph_graphics.clear_delim_world();
         this.graph_graphics.set_sphere(applied.get_current_world().index, (applied.has_radius()) ? applied.get_radius() : undefined);
     }
@@ -292,7 +300,7 @@ export class Graphics_Controller {
                 this.graph_graphics.set_mode(Graph_Graphics_Mode.Display);
                 break;
             case Game_Graphics_Mode.Formula_Choice:
-            case Game_Graphics_Mode.Negated_Formula_Choice:
+            case Game_Graphics_Mode.Negated_Formula_Choice: //TODO: Negated_Formula_Choice doesnt exist anymore
                 this.formula.setVisible(false);
                 this.choice.set_visible(true);
                 this.graph_graphics.set_mode(Graph_Graphics_Mode.Display);
@@ -490,6 +498,7 @@ export class Graphics_Controller {
     static load_sprites(scene: Phaser.Scene) {
         Graph_Graphics.load_sprites(scene);
         Formula_Graphics.load_sprites(scene);
+        Text_Box_Controller.load_sprites(scene);
         Choice.load_sprites(scene);
         Supposition_Panel.load_sprites(scene);
 
@@ -499,8 +508,8 @@ export class Graphics_Controller {
             create_cosmic_nebula_texture(scene, 1600, 1600, "space"+level);
             dye_texture(scene, "space"+level, 0x4C6793);
         } */
-        if(!scene.textures.getTextureKeys().includes("space"+level)) {
-            scene.load.image("space"+level, "assets/backgrounds/Background"+level+".png");
+        if(!scene.textures.getTextureKeys().includes("space"+(level % 10))) {
+            scene.load.image("space"+(level % 10), "assets/backgrounds/Background"+(level % 10)+".png");
         }
 
         scene.load.image("none", "assets/None.png");

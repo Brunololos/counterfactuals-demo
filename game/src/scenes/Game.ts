@@ -111,10 +111,7 @@ export default class Game_Scene extends Base_Scene {
       let req_delim = this.game_controller.does_require_delim(move);
       let world_choice_made = (graphics_mode == Game_Graphics_Mode.Sphere_Selection || graphics_mode == Game_Graphics_Mode.Counterfactual_World_Choice || graphics_mode == Game_Graphics_Mode.Vacuous_World_Choice);
       let player_choice = type != Game_Turn_Type.Attackers_Resolution && type != Game_Turn_Type.Attackers_Choice;
-      /* if(req_delim && !world_choice_made && player_choice) {
-        this.graphics_controller.set_world_choice(move);
-        return;
-      } else */ if(req_delim && !world_choice_made && !player_choice) {
+      if(req_delim && !world_choice_made && !player_choice) {
         world = turn[2]!;
       }
 

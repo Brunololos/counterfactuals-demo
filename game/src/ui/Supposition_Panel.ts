@@ -1,12 +1,24 @@
+import { Rule, Rules } from "../game/Game_Rules";
 import Game_Scene from "../scenes/Game";
 import Base_Scene from "../util/Base_Scene";
+import { Player } from "../util/Game_Utils";
 import { banner_mask_path, create_shape_geometry_mask, text_style } from "../util/UI_Utils";
+import { Supposition_Panel_Animation, Supposition_Panel_Animations } from "./animations/Supposition_Panel_Animations";
 import { Text_Animation, Text_Animations } from "./animations/Text_Animations";
 
 export class Supposition_Panel extends Phaser.GameObjects.Container {
     private contents: Phaser.GameObjects.GameObject[] = [];
+    private panel: Phaser.GameObjects.Sprite;
+    private knob: Phaser.GameObjects.Sprite;
+
     private caption: Phaser.GameObjects.Text;
     private caption_animation_timeline: Phaser.Tweens.Timeline;
+
+    private player_ind1: Phaser.GameObjects.Sprite;
+    private player_ind2: Phaser.GameObjects.Sprite;
+
+    private tween_dummy: Phaser.GameObjects.Sprite;
+    private animation: Phaser.Tweens.Timeline;
 
     constructor(scene: Base_Scene, x: number, y: number, content?: Phaser.GameObjects.GameObject[]) {
         super(scene, x, y);
@@ -14,19 +26,26 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         let w = (scene as Game_Scene).get_width();
         let h = (this.scene as Base_Scene).get_height();
 
-        let panel = new Phaser.GameObjects.Sprite(scene, 0, 5, "sup_panel");
-        this.add(panel);
-        let knob = new Phaser.GameObjects.Sprite(scene, 0, 80, "sup_panel_knob"); /* 90 */
-        this.add(knob);
-        this.caption = new Phaser.GameObjects.Text(scene, 0, -60, "Can you prove this?", text_style);
+        this.panel = new Phaser.GameObjects.Sprite(scene, 0, 5, "sup_panel");
+        this.add(this.panel);
+        this.knob = new Phaser.GameObjects.Sprite(scene, 0, 80, "sup_panel_knob"); /* 90 */
+        this.add(this.knob);
+        this.caption = new Phaser.GameObjects.Text(scene, 0, -60, "Reach a habitable world", text_style);
         this.caption.setOrigin(0.5, 0.5);
         this.add(this.caption);
+
+        this.player_ind1 = new Phaser.GameObjects.Sprite(scene, -215, -61, "pilot").setDisplaySize(25, 25).setTint(0x00dd00);
+        this.player_ind2 = new Phaser.GameObjects.Sprite(scene, 215, -61, "pilot").setDisplaySize(25, 25).setTint(0x00dd00);
+        this.add(this.player_ind1);
+        this.add(this.player_ind2);
 
         let mask = create_shape_geometry_mask(scene, x, y + 5, 900, 200, banner_mask_path);
         for(let i=0; content != undefined && i<content.length; i++) {
             (content[i] as Phaser.GameObjects.Container || Phaser.GameObjects.Sprite || Phaser.GameObjects.Rectangle).setMask(mask);
         }
-        knob.setMask(mask);
+        this.knob.setMask(mask);
+
+        this.tween_dummy = new Phaser.GameObjects.Sprite(scene, 0, 0, "dot").setVisible(false);
     }
 
     /**
@@ -49,6 +68,35 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         let h = (this.scene as Base_Scene).get_height();
         this.setX(w/2);
         this.setY(h-100);
+    }
+
+    animate(move: Rule) {
+        if(this.animation != undefined) { this.animation.stop(); }
+        if(move.get_name() == Rules.Attacker_Victory) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Attacker_Victory);
+        } else if(move.get_name() == Rules.Defender_Victory) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Defender_Victory);
+        } else if(move.get_name() == Rules.Attacker_Negation) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Attacker_Shift_Switch);
+        } else if(move.get_name() == Rules.Defender_Negation) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Defender_Shift_Switch);
+        } else if(move.get_name() == Rules.Defender_Left_AND) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Defender_Left_AND);
+        } else if(move.get_name() == Rules.Defender_Right_AND) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Defender_Right_AND);
+        } else { return; }
+        this.animation.play();
+    }
+
+    transition(player: Player) {
+        if(this.animation != undefined) { this.animation.stop(); }
+        if(player == Player.Attacker) {
+            this.get_knob().setTint(0xdd0000);
+            this.get_panel().setTint(0xdd0000);
+        } else if(player == Player.Defender) {
+            this.get_knob().setTint(0xffffff);
+            this.get_panel().setTint(0xffffff);
+        }
     }
 
     animate_caption(animation: Text_Animation, timeout = -1) {
@@ -76,10 +124,39 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         this.animate_caption(animation, timeout);
     }
 
+    set_tint(color: number) {
+        let children = this.getAll();
+        for(let i=0; i<children.length; i++) {
+            (children[i] as Phaser.GameObjects.Sprite).setTint(color);
+        }
+    }
+
+    get_panel(): Phaser.GameObjects.Sprite {
+        return this.panel;
+    }
+
+    get_knob(): Phaser.GameObjects.Sprite {
+        return this.knob;
+    }
+
+    get_player_ind1(): Phaser.GameObjects.Sprite {
+        return this.player_ind1;
+    }
+
+    get_player_ind2(): Phaser.GameObjects.Sprite {
+        return this.player_ind2;
+    }
+
+    get_dummy(): Phaser.GameObjects.Sprite {
+        return this.tween_dummy;
+    }
+
     static load_sprites(scene: Phaser.Scene) {
         scene.load.image("sup_panel", "assets/Banner.png");
         scene.load.image("sup_panel_knob", "assets/Banner_Knob.png");
         scene.load.image("sup_panel_mask", "assets/Banner_Clip_Mask.png");
+        scene.load.image("pilot", "assets/Pilot.png");
+        //scene.load.image("copilot", "assets/Copilot.png");
     }
 
     static createPanel = function (scene, content) {

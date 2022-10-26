@@ -105,6 +105,6 @@ export class Game_State {
     }
 
     to_string(): string {   // Doesnt incorporate Graph information
-        return "("+State_Mode[this.mode]+", "+this.supposition.to_string()+", "+this.current_world+", "+Player[this.active_player]+", "+this.delim_world+")";
+        return "("+State_Mode[this.mode]+", "+this.supposition.to_string(this.atoms)+", "+this.current_world+", "+Player[this.active_player]+", "+this.delim_world+")";
     }
 }

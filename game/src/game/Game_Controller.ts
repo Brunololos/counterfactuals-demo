@@ -3,7 +3,6 @@ import { Game_State } from "./Game_State";
 import { Game_Turn_Type, State_Mode } from "../util/Game_Utils";
 import { cloneDeep } from "lodash";
 import { Attacker_AI } from "./Attacker_AI";
-import { createHistogram } from "perf_hooks";
 
 export class Game_Controller {
     private rules_controller: Rules_Controller;
@@ -23,6 +22,7 @@ export class Game_Controller {
         switch(true) {
             case def_moves.some((value) => value.get_world_input_requirement()):
                 return [Game_Turn_Type.Defenders_World_Choice, def_moves];
+
             case def_moves.length > 1:
                 return [Game_Turn_Type.Defenders_Choice, def_moves];
 

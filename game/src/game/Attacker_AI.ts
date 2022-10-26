@@ -44,14 +44,17 @@ export class Attacker_AI {
             let did_expand = false;
             let states = rc.next_game_states(current);
             //console.log("Read "+current.to_string()+" from queue with length "+queue.length+":");
+            //console.log(cloneDeep(states).map((value) => value.to_string()));
 
 
             let next;
             if(!expanded.some((value) => value.equals(current))) {
+                //console.log("Queue: " + queue.map((value) => value.to_string()));
+                //console.log("Queue: ");
+                //console.log(cloneDeep(queue));
                 //console.log("Expanded State by:");
                 expanded.push(current);
                 did_expand = true;
-                //console.log(queue.map((value) => value.to_string()));
                 for(let i=0; i<states.length; i++) {
                     next = states[i];
                     //console.log(cloneDeep(expanded).map((value) => value.to_string()));
@@ -60,7 +63,7 @@ export class Attacker_AI {
                             queue = queue.filter((value) => !value.equals(next));
                         }
                         queue.push(next);
-                        //console.log(next.to_string());
+                        //console.log("Queued: "+next.to_string());
                     }
                 }
             }
@@ -70,8 +73,9 @@ export class Attacker_AI {
                 //console.log("Didnt Expand --> Processing State");
                 let att_moves = rc.attacker_moves(current);
                 let def_moves = rc.defender_moves(current);
+                //console.log(def_moves.map((value) => Rules[value.get_name()]))
                 switch(true) {
-                    case att_moves.some((value) => value.get_name() == Rules.Defender_Victory):
+                    case def_moves.some((value) => value.get_name() == Rules.Defender_Victory):
                         //console.log("Adding State to Defenders winning region...");
                         blunderscores.push([current, 1, 0]);
                         break;

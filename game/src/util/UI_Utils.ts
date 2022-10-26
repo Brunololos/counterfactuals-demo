@@ -2,7 +2,13 @@ import Perlin from 'phaser3-rex-plugins/plugins/perlin.js';
 import { Rule, Rules } from '../game/Game_Rules';
 import Base_Scene from './Base_Scene';
 
-export let text_style = { fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif' };
+export let text_style = {
+  fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
+  wordWrap: {
+    width: 1000
+  },
+  maxLines: 3
+};
 
 export enum Game_Graphics_Mode {
     Formula,
@@ -36,7 +42,12 @@ export function is_world_choice(mode: Game_Graphics_Mode): boolean {
 
 export function world_choice_moves_to_mode(moves: Rule[]): Game_Graphics_Mode {
   switch(true) {
-    case moves.some((value) => value.get_name() == Rules.Possibility):
+    case moves.some((value) => value.get_name() == Rules.Defender_Possibility):
+    case moves.some((value) => value.get_name() == Rules.Attacker_Necessity):
+      return Game_Graphics_Mode.Possibility_World_Choice;
+    case moves.some((value) => value.get_name() == Rules.Defender_Sphere_Selection):
+      return Game_Graphics_Mode.Possibility_World_Choice;
+    /* case moves.some((value) => value.get_name() == Rules.Possibility):
       return Game_Graphics_Mode.Possibility_World_Choice;
     case moves.some((value) => value.get_name() == Rules.Negated_Necessity):
       return Game_Graphics_Mode.Necessity_World_Choice;
@@ -45,7 +56,7 @@ export function world_choice_moves_to_mode(moves: Rule[]): Game_Graphics_Mode {
     case moves.some((value) => value.get_name() == Rules.Defender_World_Choice):
       return Game_Graphics_Mode.Counterfactual_World_Choice;
     case moves.some((value) => value.get_name() == Rules.Defender_Vacuous_World_Choice):
-      return Game_Graphics_Mode.Vacuous_World_Choice;
+      return Game_Graphics_Mode.Vacuous_World_Choice; */
     default:
       throw new Error("Rules don't map to any world choice!");
   }
@@ -303,22 +314,44 @@ export function create_shape_geometry_mask(scene: Base_Scene, x: number, y: numb
 export let Rule_Descriptions : string[] = [
   "You lose!",
   "You win!",
-  "Resolving negated Untruth...",
-  "Resolving negated Truth...",
-  "The atom is true at the current world",
-  "The atom is false at the current world",
-  "The atom is true at the current world",
-  "The atom is false at the current world",
+  /* "You win!",
+  "You lose!", */
 
-  "Eliminating double negation...",
+  "Your copilot landed",
+  "You landed",
+  "Your copilot stranded",
+  "You stranded",
+
+  "The world is habitable",
+  "The world is habitable",
+  "The world is uninhabitable",
+  "The world is uninhabitable",
+  /* "The atom is true at the current world",
+  "The atom is true at the current world",
+  "The atom is false at the current world",
+  "The atom is false at the current world", */
+
+  "Your shift begins", // TODO: Maybe better description of Pilot/Copilot shifts starting & ending
+  "Your shift ends",
+
+  "The copilot chose the left instructions",
+  "The copilot chose the right instructions",
+  "You chose the left instructions",
+  "You chose the right instructions",
+
+  "You took over chose the left instructions",
+  "You took over chose the right instructions",
+  "The copilot took over and chose the left instructions",
+  "The copilot took over chose the right instructions",
+
+  /* "The attacker chose the left formula",
+  "The attacker chose the right formula",
   "You chose the left formula",
   "You chose the right formula",
   "The attacker chose the left formula",
   "The attacker chose the right formula",
-  "The attacker chose the left formula",
-  "The attacker chose the right formula",
   "You chose the left formula",
-  "You chose the right formula",
+  "You chose the right formula", */
 
   "The attacker chose a world",
   "The attacker couldn't chose a world",

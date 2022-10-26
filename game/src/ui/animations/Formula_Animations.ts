@@ -5,51 +5,14 @@ import { BRACKET_WIDTH, CONJ_WIDTH, DISJ_WIDTH, Formula_Graphics, Formula_Graphi
 export class Formula_Animations {
     static fill_animation_timeline(timeline: Phaser.Tweens.Timeline, move: Rules, formula: Formula_Graphics): number {
         let f = formula.get_formula();
-        let top, bottom, atom, neg, conj, disj, cf_would, left_child, right_child, left, right;
+        let top, bottom, atom, neg, conj, disj, ness, poss, cf_would, left_child, right_child, left, right;
         switch(move) {
             case Rules.Attacker_Victory:
-                return 1500;
-            /* case Rules.Defender_Victory:
-                let top = formula.add_temporary_formula("_|_");
-                top.setTexture("true");
-                top.setAlpha(0);
-                top.setX(0);
-                timeline.add({ FADE NEGATION & BOTTOM
-                    targets: [f, f.get_child("l")],
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0,
-                });
-                timeline.add({ FADE NEGATION & BOTTOM
-                    targets: [f, f.get_child("l")],
-                    x: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0,
-                });
-                timeline.add({ FADE IN TOP
-                    targets: top,
-                    alpha: 1,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                return 1500;
-            case Rules.Known_Fact:
-                neg = formula.add_temporary_formula("~_|_");
-                neg.setAlpha(0);
-                neg.setX(0);
-                bottom = neg.get_child("l");
+                bottom = formula.add_temporary_formula("_|_");
+                bottom.setTexture("loss");
                 bottom.setAlpha(0);
                 bottom.setX(0);
-                timeline.add({ FADE ATOM
+                timeline.add({ /* FADE TOP */
                     targets: f,
                     alpha: 0,
                     duration: 1500,
@@ -58,435 +21,81 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ MOVE NEGATION
-                    targets: neg,
-                    x: - ICON_WIDTH/2,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ MOVE BOTTOM
+                timeline.add({ /* FADE IN LOSS */
                     targets: bottom,
-                    x: ICON_WIDTH/2,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ FADE IN NEGATION & BOTTOM
-                    targets: [neg, bottom],
                     alpha: 1,
                     duration: 1500,
-                    ease: 'Quart.Out',
+                    ease: 'Quart.In',
                     yoyo: false,
                     repeat: 0,
                     offset: 0
                 });
-                return 1500; */
+                return 1500;
             case Rules.Defender_Victory:
-                /* top = formula.add_temporary_formula("_|_");
-                top.setTexture("true");
-                top.setAlpha(1);
-                top.setX(0);
-                bottom = f.get_child("l");
-                f.setAlpha(0);
-                bottom.setAlpha(0); */
-                return 1500;
-            case Rules.Negated_Bottom:
-                top = formula.add_temporary_formula("¯|¯");
-                top.setAlpha(0);
-                top.setX(0);
-                bottom = f.get_child("l");
-                timeline.add({ /* FADE NEGATION & BOTTOM */
-                    targets: [f, bottom],
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE NEGATION */
-                    targets: f,
-                    x: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE BOTTOM */
-                    targets: bottom,
-                    x: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE IN TOP */
-                    targets: top,
-                    alpha: 1,
-                    duration: 1500,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                return 1500;
-            case Rules.Negated_Top:
-                bottom = formula.add_temporary_formula("_|_");
-                bottom.setAlpha(0);
-                bottom.setX(0);
-                top = f.get_child("l");
-                timeline.add({ /* FADE NEGATION & TOP */
-                    targets: [f, top],
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE NEGATION */
-                    targets: f,
-                    x: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE TOP */
-                    targets: top,
-                    x: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE IN BOTTOM */
-                    targets: bottom,
-                    alpha: 1,
-                    duration: 1500,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                return 1500;
-            case Rules.Known_Fact:
-                top = formula.add_temporary_formula("¯|¯");
-                top.setAlpha(0);
-                top.setX(0);
-                timeline.add({ /* FADE ATOM */
-                    targets: f,
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE IN TOP */
-                    targets: top,
-                    alpha: 1,
-                    duration: 1500,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                return 1500;
-            case Rules.Unknown_Fact:
-                bottom = formula.add_temporary_formula("_|_");
-                bottom.setAlpha(0);
-                bottom.setX(0);
-                timeline.add({ /* FADE ATOM */
-                    targets: f,
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE IN BOTTOM */
-                    targets: bottom,
-                    alpha: 1,
-                    duration: 1500,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                return 1500;
-            case Rules.Negated_Known_Fact:
-                top = formula.add_temporary_formula("¯|¯");
-                top.setAlpha(0);
-                top.setX( ICON_WIDTH/2 );
-                atom = f.get_child("l");
-                timeline.add({ /* FADE ATOM */
-                    targets: atom,
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE IN TOP */
-                    targets: top,
-                    alpha: 1,
-                    duration: 1500,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                return 1500;
-            /* case Rules.Negated_Known_Fact:
-                bottom = formula.add_temporary_formula("_|_");
-                bottom.setAlpha(0);
-                bottom.setX(0);
-                atom = f.get_child("l");
-                timeline.add({ FADE NEGATION & ATOM
-                    targets: [f, atom],
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ MOVE NEGATION
-                    targets: f,
-                    x: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ MOVE ATOM
-                    targets: atom,
-                    x: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ FADE IN BOTTOM
-                    targets: bottom,
-                    alpha: 1,
-                    duration: 1500,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                return 1500; */
-            case Rules.Negated_Unknown_Fact:
-                bottom = formula.add_temporary_formula("_|_");
-                bottom.setAlpha(0);
-                bottom.setX( ICON_WIDTH/2 );
-                atom = f.get_child("l");
-                timeline.add({ /* FADE ATOM */
-                    targets: atom,
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE IN BOTTOM */
-                    targets: bottom,
-                    alpha: 1,
-                    duration: 1500,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                return 1500;
-            /* case Rules.Negated_Unknown_Fact:
                 top = formula.add_temporary_formula("_|_");
-                top.setTexture("true");
+                top.setTexture("win");
                 top.setAlpha(0);
                 top.setX(0);
-                bottom = formula.add_temporary_formula("_|_");
-                bottom.setAlpha(0);
-                bottom.setX( ICON_WIDTH/2 );
-                atom = f.get_child("l");
-                timeline.add({ FADE ATOM
-                    targets: atom,
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ FADE IN BOTTOM
-                    targets: bottom,
-                    alpha: 1,
-                    duration: 1500,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ FADE NEGATION & BOTTOM
-                    targets: [f, bottom],
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 1500
-                });
-                timeline.add({ MOVE NEGATION
+                timeline.add({ /* FADE TOP */
                     targets: f,
-                    x: 0,
+                    alpha: 0,
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
                     repeat: 0,
-                    offset: 1500
+                    offset: 0
                 });
-                timeline.add({ MOVE BOTTOM
-                    targets: bottom,
-                    x: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 1500
-                });
-                timeline.add({ FADE IN TOP
+                timeline.add({ /* FADE IN WIN */
                     targets: top,
                     alpha: 1,
                     duration: 1500,
                     ease: 'Quart.In',
                     yoyo: false,
                     repeat: 0,
-                    offset: 1500
-                });
-                return 3000; */
-            case Rules.Double_Negation:
-                neg = f.get_child("l");
-                timeline.add({ /* MOVE PARENT NEGATION */
-                    targets: f,
-                    x: f.x + ICON_WIDTH/2,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE CHILD NEGATION */
-                    targets: neg,
-                    x: neg.x - ICON_WIDTH/2,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE BOTH NEGATIONS */
-                    targets: [f, neg],
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE CHILD NEGATION CHILDREN */
-                    targets: neg.get_children(),
-                    x: '-='+ICON_WIDTH.toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 1500
-                });
-                timeline.add({ /* MOVE CHILD NEGATION CHILDREN EMBEDDINGS */
-                    targets: neg.get_child("l").get_embedding(true),
-                    x: '-='+ICON_WIDTH.toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 1500
-                });
-                return 3000;
-            case Rules.Left_OR:
                 return 1500;
-            case Rules.Right_OR:
+
+            case Rules.Attacker_Landing:
+                return 1000;
+            case Rules.Defender_Landing:
+                return 1000;
+            case Rules.Attacker_Stranding:
+                return 1000;
+            case Rules.Defender_Stranding:
+                return 1000;
+            
+            case Rules.Attacker_Known_Fact:
+            case Rules.Defender_Known_Fact:
+                top = formula.add_temporary_formula("¯|¯");
+                top.setAlpha(0);
+                top.setX(0);
+                timeline.add({ /* FADE ATOM */
+                    targets: f,
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE IN TOP */
+                    targets: top,
+                    alpha: 1,
+                    duration: 1500,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
                 return 1500;
-            case Rules.Negated_Left_OR:
-                disj = f.get_child("l");
-                left_child = f.get_child("ll");
-                right_child = f.get_child("lr");
-                timeline.add({ /* FADE DISJUNCTION & RIGHT CHILD TREE */
-                    targets: right_child.get_children([disj, right_child]),
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE DISJUNCTION & RIGHT_CHILD EMBEDDINGS */
-                    targets: disj.get_embedding().concat(right_child.get_embedding(true)),
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE NEGATION */
+            case Rules.Attacker_Unknown_Fact:
+            case Rules.Defender_Unknown_Fact:
+                bottom = formula.add_temporary_formula("_|_");
+                bottom.setAlpha(0);
+                bottom.setX(0);
+                timeline.add({ /* FADE ATOM */
                     targets: f,
-                    x: '+='+((disj.get_width() - left_child.get_width())/2).toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 1500
-                });
-                timeline.add({ /* MOVE LEFT CHILD */
-                    targets: left_child.get_children([left_child]),
-                    x: '+='+((disj.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 1500
-                });
-                timeline.add({ /* MOVE LEFT CHILD EMBEDDINGS */
-                    targets: left_child.get_embedding(true),
-                    x: '+='+((disj.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 1500
-                });
-                return 3000;
-            case Rules.Negated_Right_OR:
-                disj = f.get_child("l");
-                left_child = f.get_child("ll");
-                right_child = f.get_child("lr");
-                timeline.add({ /* FADE DISJUNCTION & LEFT CHILD TREE */
-                    targets: left_child.get_children([disj, left_child]),
                     alpha: 0,
                     duration: 1500,
                     ease: 'Quart.Out',
@@ -494,47 +103,51 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* FADE DISJUNCTION EMBEDDING & LEFT_CHILD EMBEDDINGS */
-                    targets: disj.get_embedding().concat(left_child.get_embedding(true)),
-                    alpha: 0,
+                timeline.add({ /* FADE IN BOTTOM */
+                    targets: bottom,
+                    alpha: 1,
                     duration: 1500,
-                    ease: 'Quart.Out',
+                    ease: 'Quart.In',
                     yoyo: false,
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE NEGATION */
+                return 1500;
+            case Rules.Attacker_Negation:
+            case Rules.Defender_Negation:
+                left = f.get_child("l");
+                timeline.add({ /* FADE NEGATION */
                     targets: f,
-                    x: '+='+((f.get_width() - ICON_WIDTH)/2 - right_child.get_width()/2).toString(),
+                    alpha: 0,
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
                     repeat: 0,
-                    offset: 1500
+                    offset: 0
                 });
-                timeline.add({ /* MOVE RIGHT CHILD */
-                    targets: right_child.get_children([right_child]),
-                    x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH + ICON_WIDTH/2).toString(),
+                timeline.add({ /* MOVE CHILDREN */
+                    targets: left.get_children([left]),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
                     repeat: 0,
-                    offset: 1500
+                    offset: 0
                 });
-                timeline.add({ /* MOVE RIGHT CHILD EMBEDDINGS */
-                    targets: right_child.get_embedding(true),
-                    x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH + ICON_WIDTH/2).toString(),
+                timeline.add({ /* MOVE EMBEDDINGS */
+                    targets: left.get_embedding(true),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
                     repeat: 0,
-                    offset: 1500
+                    offset: 0
                 });
-                return 3000;
-            case Rules.Left_AND:
+                return 1500;
+            case Rules.Attacker_Left_OR:
                 left_child = f.get_child("l");
                 right_child = f.get_child("r");
-                timeline.add({ /* FADE CONJUNCTION & RIGHT CHILD TREE */
+                timeline.add({ /* FADE DISJUNCTION & RIGHT CHILD TREE */
                     targets: right_child.get_children([f, right_child]),
                     alpha: 0,
                     duration: 1500,
@@ -543,7 +156,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* FADE CONJUNCTION & RIGHT_CHILD EMBEDDINGS */
+                timeline.add({ /* FADE DISJUNCTION & RIGHT_CHILD EMBEDDINGS */
                     targets: f.get_embedding().concat(right_child.get_embedding(true)),
                     alpha: 0,
                     duration: 1500,
@@ -571,10 +184,10 @@ export class Formula_Animations {
                     offset: 1500
                 });
                 return 3000;
-            case Rules.Right_AND:
+            case Rules.Attacker_Right_OR:
                 left_child = f.get_child("l");
                 right_child = f.get_child("r");
-                timeline.add({ /* FADE CONJUNCTION & LEFT CHILD TREE */
+                timeline.add({ /* FADE DISJUNCTION & LEFT CHILD TREE */
                     targets: left_child.get_children([f, left_child]),
                     alpha: 0,
                     duration: 1500,
@@ -583,7 +196,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* FADE CONJUNCTION & LEFT_CHILD EMBEDDINGS */
+                timeline.add({ /* FADE DISJUNCTION & LEFT_CHILD EMBEDDINGS */
                     targets: f.get_embedding().concat(left_child.get_embedding(true)),
                     alpha: 0,
                     duration: 1500,
@@ -611,11 +224,194 @@ export class Formula_Animations {
                     offset: 1500
                 });
                 return 3000;
-            case Rules.Negated_Left_AND:
+            case Rules.Defender_Left_OR:
+            case Rules.Defender_Right_OR:
                 return 1500;
-            case Rules.Negated_Left_AND:
+            case Rules.Attacker_Left_AND:
+            case Rules.Attacker_Right_AND:
+                return 1000;
+            case Rules.Defender_Left_AND:
+                left_child = f.get_child("l");
+                right_child = f.get_child("r");
+
+                timeline.add({ /* CENTER FORMULA ON CONJUNCTION */
+                    targets: f.get_children([f]),
+                    x: '+='+(-f.x).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* CENTER EMBEDDINGS ON CONJUNCTION */
+                    targets: f.get_embedding(true),
+                    x: '+='+(-f.x).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE CONJUNCTION & RIGHT CHILD TREE */
+                    targets: right_child.get_children([f, right_child]),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500
+                });
+                timeline.add({ /* FADE CONJUNCTION & RIGHT_CHILD EMBEDDINGS */
+                    targets: f.get_embedding().concat(right_child.get_embedding(true)),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500
+                });
+                timeline.add({ /* MOVE LEFT CHILD */
+                    targets: left_child.get_children([left_child]),
+                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 3000
+                });
+                timeline.add({ /* MOVE LEFT CHILD EMBEDDINGS */
+                    targets: left_child.get_embedding(true),
+                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 3000
+                });
+                return 4500;
+            case Rules.Defender_Right_AND:
+                left_child = f.get_child("l");
+                right_child = f.get_child("r");
+
+                timeline.add({ /* CENTER FORMULA ON CONJUNCTION */
+                    targets: f.get_children([f]),
+                    x: '+='+(-f.x).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* CENTER EMBEDDINGS ON CONJUNCTION */
+                    targets: f.get_embedding(true),
+                    x: '+='+(-f.x).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE CONJUNCTION & LEFT CHILD TREE */
+                    targets: left_child.get_children([f, left_child]),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500
+                });
+                timeline.add({ /* FADE CONJUNCTION & LEFT_CHILD EMBEDDINGS */
+                    targets: f.get_embedding().concat(left_child.get_embedding(true)),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500
+                });
+                timeline.add({ /* MOVE RIGHT CHILD */
+                    targets: right_child.get_children([right_child]),
+                    x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 3000
+                });
+                timeline.add({ /* MOVE RIGHT CHILD EMBEDDINGS */
+                    targets: right_child.get_embedding(true),
+                    x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 3000
+                });
+                return 4500;
+            case Rules.Attacker_Possibility:
+                left = f.get_child("l");
+                timeline.add({ /* FADE POSSIBILITY */
+                    targets: f,
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE CHILDREN */
+                    targets: left.get_children([left]),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE EMBEDDINGS */
+                    targets: left.get_embedding(true),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
                 return 1500;
-            case Rules.Possibility:
+            case Rules.Attacker_Vacuous_Possibility: // TODO:
+                return 1500;
+            case Rules.Defender_Possibility:
+                left = f.get_child("l");
+                timeline.add({ /* FADE POSSIBILITY */
+                    targets: f,
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE CHILDREN */
+                    targets: left.get_children([left]),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE EMBEDDINGS */
+                    targets: left.get_embedding(true),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                return 1500;
+            case Rules.Defender_Vacuous_Possibility: // TODO:
+                return 1500;
             case Rules.Necessity:
                 left = f.get_child("l");
                 timeline.add({ /* FADE MODAL OPERATOR */
