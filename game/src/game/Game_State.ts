@@ -50,8 +50,8 @@ export class Game_State {
         let new_mode = State_Mode_Abbreviations.get(mode) ?? this.mode;
         let new_supposition = cloneDeep(supposition);
         let new_active_player = Player_Abbreviations.get(player) ?? this.active_player;
-        let new_current_world = current_world || this.current_world;
-        let new_delim_world = delim_world || this.delim_world;
+        let new_current_world = current_world ?? this.current_world;
+        let new_delim_world = delim_world ?? this.delim_world;
         return new Game_State(new_mode, this.get_graph(), new_supposition, new_current_world, new_active_player, this.atoms, new_delim_world);
     }
 
@@ -105,6 +105,6 @@ export class Game_State {
     }
 
     to_string(): string {   // Doesnt incorporate Graph information
-        return "("+State_Mode[this.mode]+", "+this.supposition.to_string()+", "+this.current_world+", "+Player[this.active_player]+", "+this.delim_world+")";
+        return "("+State_Mode[this.mode]+", "+this.supposition.to_string(this.atoms)+", "+this.current_world+", "+Player[this.active_player]+", "+this.delim_world+")";
     }
 }

@@ -6,7 +6,6 @@ import { Formula, Negation } from "../game/Cf_Logic";
 import { Game_Graphics_Mode, text_style } from "../util/UI_Utils";
 import { Choice_Animations } from "./animations/Choice_Animations";
 import { CONJ_WIDTH, DISJ_WIDTH, Formula_Graphics, Formula_Graphics_Element } from "./Formula_Graphics";
-import { stat } from "fs";
 
 export const OR_WIDTH = 60;
 export const OPTION_BOX_HOVER = 60/255;//130/255;

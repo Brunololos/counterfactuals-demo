@@ -1,4 +1,13 @@
-const OP_CHARS = ['|', 'v', '^','<', '[', '~', '(', '_', '¯', '?'];
+const OP_CHARS = ['⩽', '|', 'v', '^','<', '[', '~', '(', '_', '¯', '?'];
+
+export const CF_MIGHT = "⩽⩾->";
+export const CF_WOULD = "|_|->";
+export const POSS = "<>";
+export const NESS = "[_]";
+export const DISJ = "v";
+export const CONJ = "^";
+export const NEG = "~";
+export const ANY = "?";
 
 /**
  * An abstract Superclass to all components of counterfactual logic
@@ -12,7 +21,7 @@ export abstract class Formula {
      * @returns The root object of a tree of formula objects
      */
     static parse(to_parse: string, atoms: string[] = []): Formula {
-    //Symbols: "|_|->, <>, [_] v, ^, ~, (...), A-Z, _|_, ¯|¯, ?"
+    //Symbols: "⩽⩾->, |_|->, <>, [_] v, ^, ~, (...), A-Z, _|_, ¯|¯, ?"
     //Syntax: "~(A v B) |_|-> (C v ~(D))"
 
         // search for weakest binder
@@ -21,26 +30,29 @@ export abstract class Formula {
             let c = to_parse[i];
             let v = to_parse[w];
             switch(true) {
-                case to_parse.length >= i+5 && to_parse.slice(i, i+5) == "|_|->":
+                case to_parse.length >= i+4 && to_parse.slice(i, i+4) == "⩽⩾->":
                     w = (!OP_CHARS.slice(0, 1).includes(v)) ? i : w;
                     break;
+                case to_parse.length >= i+5 && to_parse.slice(i, i+5) == "|_|->":
+                    w = (!OP_CHARS.slice(0, 2).includes(v)) ? i : w;
+                    break;
                 case c == 'v':
-                    w = (!OP_CHARS.slice(0, 3).includes(v)) ? i : w;
+                    w = (!OP_CHARS.slice(0, 4).includes(v)) ? i : w;
                     break;
                 case c == '^':
-                    w = (!OP_CHARS.slice(0, 3).includes(v)) ? i : w;
+                    w = (!OP_CHARS.slice(0, 4).includes(v)) ? i : w;
                     break;
                 case to_parse.length >= i+2 && to_parse.slice(i, i+2) == "<>":
-                    w = (!OP_CHARS.slice(0, 6).includes(v)) ? i : w;
+                    w = (!OP_CHARS.slice(0, 7).includes(v)) ? i : w;
                     break;
                 case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "[_]":
-                    w = (!OP_CHARS.slice(0, 6).includes(v)) ? i : w;
+                    w = (!OP_CHARS.slice(0, 7).includes(v)) ? i : w;
                     break;
                 case c == '~':
-                    w = (!OP_CHARS.slice(0, 6).includes(v)) ? i : w;
+                    w = (!OP_CHARS.slice(0, 7).includes(v)) ? i : w;
                     break;
                 case c == '(':
-                    w = (!OP_CHARS.slice(0, 7).includes(v)) ? i : w; // TODO: was 0 -> 6 before (check if this creates bugs)
+                    w = (!OP_CHARS.slice(0, 8).includes(v)) ? i : w; // TODO: was 0 -> 7 before (check if this creates bugs)
 
                     let unclosed_brackets = 1;
                     while(i < to_parse.length && unclosed_brackets > 0) {
@@ -50,16 +62,16 @@ export abstract class Formula {
                     }
                     break;
                 case c >= 'A' && c <= 'Z':
-                    w = (!OP_CHARS.slice(0, 7).includes(v) && (v < 'A' || v > 'Z')) ? i : w;
-                    break;
-                case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "_|_":
                     w = (!OP_CHARS.slice(0, 8).includes(v) && (v < 'A' || v > 'Z')) ? i : w;
                     break;
-                case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "¯|¯":
+                case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "_|_":
                     w = (!OP_CHARS.slice(0, 9).includes(v) && (v < 'A' || v > 'Z')) ? i : w;
                     break;
-                case c == '?':
+                case to_parse.length >= i+3 && to_parse.slice(i, i+3) == "¯|¯":
                     w = (!OP_CHARS.slice(0, 10).includes(v) && (v < 'A' || v > 'Z')) ? i : w;
+                    break;
+                case c == '?':
+                    w = (!OP_CHARS.slice(0, 11).includes(v) && (v < 'A' || v > 'Z')) ? i : w;
                     break;
                 default:
                     break;
@@ -68,9 +80,13 @@ export abstract class Formula {
         // recursively parse the string
         let c = to_parse[w];
         switch(true) {
+            case c == '⩽':
+                return new Cf_Might(
+                    Formula.parse(to_parse.slice(0, w), atoms),
+                    Formula.parse(to_parse.slice(w+4, to_parse.length), atoms));
             case c == '|':
                 return new Cf_Would(
-                    Formula.parse(to_parse.slice(0, w), atoms), 
+                    Formula.parse(to_parse.slice(0, w), atoms),
                     Formula.parse(to_parse.slice(w+5, to_parse.length), atoms));
             case c == 'v':
                 return new Disjunction(
@@ -140,6 +156,56 @@ export abstract class Formula {
 }
 
 /**
+ * A class representation of the counterfactual might operator
+ */
+export class Cf_Might extends Formula {
+    antecedent: Formula;
+    consequent: Formula;
+
+    /**
+     * Create a counterfactual might statement
+     * @param antecedent Antecedent formula
+     * @param consequent Consequent formula
+     */
+    constructor(antecedent: Formula, consequent: Formula) {
+        super();
+        this.antecedent = antecedent;
+        this.consequent = consequent;
+    }
+
+    generate_atom_list(atoms?: string[]): string[] {
+        let new_atoms = this.antecedent.generate_atom_list(atoms);
+        new_atoms = this.consequent.generate_atom_list(new_atoms);
+        return new_atoms;
+    }
+
+    to_string(atoms?: string[]): string {
+        atoms = atoms ?? [];
+        let is_bin = (f: Formula) => (f instanceof Cf_Might || f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
+        let left = this.antecedent.to_string(atoms);
+        let right = this.consequent.to_string(atoms);
+        return (is_bin(this.antecedent) ? "(" + left + ")" : left) + " ⩽⩾-> " + (is_bin(this.consequent) ? "(" + right + ")" : right);
+    }
+
+    compare(comparand: Formula): boolean {
+        return (comparand instanceof Cf_Might && this.antecedent.compare(comparand.antecedent) && this.consequent.compare(comparand.consequent))
+        || comparand instanceof Any;
+    }
+
+    get_child(path: string): Formula {
+        if(path.length == 0) { return this; }
+        switch(path[0]) {
+            case 'l':
+                return this.antecedent.get_child(path.slice(1, path.length));
+            case 'r':
+                return this.consequent.get_child(path.slice(1, path.length));
+            default:
+                throw new Error("path string may only contain the letters 'l' and 'r'");
+        }
+    }
+}
+
+/**
  * A class representation of the counterfactual would operator
  */
 export class Cf_Would extends Formula {
@@ -165,7 +231,7 @@ export class Cf_Would extends Formula {
 
     to_string(atoms?: string[]): string {
         atoms = atoms ?? [];
-        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
+        let is_bin = (f: Formula) => (f instanceof Cf_Might || f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
         let left = this.antecedent.to_string(atoms);
         let right = this.consequent.to_string(atoms);
         return (is_bin(this.antecedent) ? "(" + left + ")" : left) + " |_|-> " + (is_bin(this.consequent) ? "(" + right + ")" : right);
@@ -209,7 +275,7 @@ export class Cf_Would extends Formula {
     }
 
     to_string(atoms?: string[]): string {
-        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
+        let is_bin = (f: Formula) => (f instanceof Cf_Might || f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
         let sub = this.subject.to_string(atoms);
         return "<>" + (is_bin(this.subject) ? "(" + sub + ")": sub);
     }
@@ -250,7 +316,7 @@ export class Cf_Would extends Formula {
     }
 
     to_string(atoms?: string[]): string {
-        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
+        let is_bin = (f: Formula) => (f instanceof Cf_Might || f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
         let sub = this.subject.to_string(atoms);
         return "[_]" + (is_bin(this.subject) ? "(" + sub + ")": sub);
     }
@@ -297,7 +363,7 @@ export class Disjunction extends Formula {
 
     to_string(atoms?: string[]): string {
         atoms = atoms ?? [];
-        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
+        let is_bin = (f: Formula) => (f instanceof Cf_Might || f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
         let left = this.subject1.to_string(atoms);
         let right = this.subject2.to_string(atoms);
         return (is_bin(this.subject1) ? "(" + left + ")" : left) + " v " + (is_bin(this.subject2) ? "(" + right + ")" : right);
@@ -349,7 +415,7 @@ export class Conjunction extends Formula {
 
     to_string(atoms?: string[]): string {
         atoms = atoms ?? [];
-        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
+        let is_bin = (f: Formula) => (f instanceof Cf_Might || f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
         let left = this.subject1.to_string(atoms);
         let right = this.subject2.to_string(atoms);
         return (is_bin(this.subject1) ? "(" + left + ")" : left) + " ^ " + (is_bin(this.subject2) ? "(" + right + ")" : right);
@@ -395,7 +461,7 @@ export class Negation extends Formula {
     }
 
     to_string(atoms?: string[]): string {
-        let is_bin = (f: Formula) => (f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
+        let is_bin = (f: Formula) => (f instanceof Cf_Might || f instanceof Cf_Would || f instanceof Disjunction || f instanceof Conjunction);
         let sub = this.subject.to_string(atoms);
         return "~" + (is_bin(this.subject) ? "(" + sub + ")": sub);
     }

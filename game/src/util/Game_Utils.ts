@@ -7,7 +7,8 @@ export enum Player {
 export enum State_Mode {
     Resolve,         /* Resolve the formula at the current world */
     Vacuous,         /* Evaluate vacuous truth for the current world */
-    Counterfactual   /* Evaluate non-vacuous truth throughout the current sphere of accessibility */
+    Counterfactual,  /* Evaluate non-vacuous truth throughout the current sphere of accessibility */
+    Victory          /* Game has ended */
 }
 
 export enum Game_Turn_Type {
@@ -29,5 +30,19 @@ export let Player_Abbreviations = new Map<string, Player>([
 export let State_Mode_Abbreviations = new Map<string, State_Mode>([
     ["Res", State_Mode.Resolve],
     ["Cf", State_Mode.Counterfactual],
-    ["Vac", State_Mode.Vacuous]
+    ["Vac", State_Mode.Vacuous],
+    ["Vic", State_Mode.Victory]
 ]);
+
+export function toggle_player(player: Player): Player {
+    switch(player) {
+        case Player.Attacker:
+            return Player.Defender;
+        case Player.Defender:
+            return Player.Attacker;
+        case Player.Either:
+            return Player.Either;
+        default:
+            throw new Error("Unknown Player type");
+    }
+}

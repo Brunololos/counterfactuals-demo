@@ -123,7 +123,8 @@ export default class Level_Select_Scene extends Base_Scene {
                 cellContainer.getElement('background').setTexture("chunk_down");
             }, this)
             .on('cell.click', function (cellContainer, cellIndex, pointer) {
-                this.scene.start('Game_Scene', { level: this.swap_xy(cellIndex, 2, Math.ceil(levels.length/2)) });
+                //this.scene.start('Game_Scene', { level: this.swap_xy(cellIndex, 2, Math.ceil(levels.length/2)) });
+                this.scene.start('Game_Scene', { level: cellIndex });
             
             }, this)
         return grid_table;
@@ -158,7 +159,8 @@ export default class Level_Select_Scene extends Base_Scene {
         var data = [];
         for (var i = 0; i < count; i++) {
             data.push({
-                id: this.swap_xy(i, 2, Math.ceil(count/2)),
+                //id: this.swap_xy(i, 2, Math.ceil(count/2)),
+                id: i,
                 color: 0xffffff,
             } as never /* TODO: Why need be never type???? */);
         }
