@@ -55,6 +55,10 @@ export default class Level_Select_Scene extends Base_Scene {
             height: h,//400,
 
             scrollMode: 0, // 0:vertical, 1:horizontal
+            mouseWheelScroller: {
+                focus: false,
+                speed: 0.3
+            },
 
             table: {
                 cellWidth: 480, //TODO: doubled width so it fits the starting screen
