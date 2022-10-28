@@ -87,13 +87,13 @@ export class Rules_Controller {
 
         let apply_attacker_possibility = (state: Game_State, delim_world?: integer) => state.configure("Res", state.get_formula().get_child("l"), "a", delim_world);
         this.rules.push(Rule.create("Attacker_Possibility", "Res", "a", "<>?", apply_attacker_possibility, is_another_world_reachable, true));
-        // TODO: Vacuous Possibility? In our case we always have reflexive edges and thus a reachable world. In case no world is reachable possibility is vacuously false.
+        // Vacuous Possibility: In case no world is reachable possibility is vacuously false.
         let apply_attacker_vacuous_possibility = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "a");
         this.rules.push(Rule.create("Attacker_Vacuous_Possibility", "Res", "a", "<>?", apply_attacker_vacuous_possibility, is_no_world_reachable));
 
         let apply_defender_possibility = (state: Game_State, delim_world?: integer) => state.configure("Res", state.get_formula().get_child("l"), "d", delim_world);
         this.rules.push(Rule.create("Defender_Possibility", "Res", "d", "<>?", apply_defender_possibility, is_another_world_reachable, true));
-        // TODO: Vacuous Possibility? In our case we always have reflexive edges and thus a reachable world. In case no world is reachable possibility is vacuously false.
+        // Vacuous Possibility: In case no world is reachable possibility is vacuously false.
         let apply_defender_vacuous_possibility = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "d");
         this.rules.push(Rule.create("Defender_Vacuous_Possibility", "Res", "d", "<>?", apply_defender_vacuous_possibility, is_no_world_reachable));
 

@@ -84,19 +84,18 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
             this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Defender_Left_AND);
         } else if(move.get_name() == Rules.Defender_Right_AND) {
             this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Defender_Right_AND);
+        } else if(move.get_name() == Rules.Attacker_Necessity) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Attacker_Necessity);
+        } else if(move.get_name() == Rules.Defender_Necessity) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Defender_Necessity);
         } else { return; }
         this.animation.play();
     }
 
     transition(player: Player) {
         if(this.animation != undefined) { this.animation.stop(); }
-        if(player == Player.Attacker) {
-            this.get_knob().setTint(0xdd0000);
-            this.get_panel().setTint(0xdd0000);
-        } else if(player == Player.Defender) {
-            this.get_knob().setTint(0xffffff);
-            this.get_panel().setTint(0xffffff);
-        }
+        this.animation = Supposition_Panel_Animations.create_transition(this.scene, this, player);
+        this.animation.play();
     }
 
     animate_caption(animation: Text_Animation, timeout = -1) {

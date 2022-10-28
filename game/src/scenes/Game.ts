@@ -61,7 +61,6 @@ export default class Game_Scene extends Base_Scene {
           this.graphics_controller.set_choice(state, moves[0], moves[1]);
           return;
         case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Formula_Choice:
-        case type == Game_Turn_Type.Defenders_Choice && graphics_mode == Game_Graphics_Mode.Negated_Formula_Choice:
           move = this.graphics_controller.get_choice();
           formula = move.apply(state).get_formula();
           break;

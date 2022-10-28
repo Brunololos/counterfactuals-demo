@@ -13,7 +13,6 @@ export let text_style = {
 export enum Game_Graphics_Mode {
     Formula,
     Formula_Choice,
-    Negated_Formula_Choice,
     Possibility_World_Choice,
     Necessity_World_Choice,
     Sphere_Selection,
@@ -60,6 +59,32 @@ export function world_choice_moves_to_mode(moves: Rule[]): Game_Graphics_Mode {
     default:
       throw new Error("Rules don't map to any world choice!");
   }
+}
+
+export function interpolate_colors(color1: number, color2: number, frac: number) {
+  if(frac < 0 || frac > 1) { return; }
+
+  let source = Phaser.Display.Color.IntegerToColor(color1);
+  let dest = Phaser.Display.Color.IntegerToColor(color2);
+
+  let color = new Phaser.Display.Color(
+    source.red + (dest.red - source.red) * frac,
+    source.green + (dest.green - source.green) * frac,
+    source.blue + (dest.blue - source.blue) * frac,
+    source.alpha + (dest.alpha - source.alpha) * frac
+  );
+  return color.color32;
+  /* let r1 = color1 >> 16;
+  let r2 = color2 >> 16;
+  let g1 = (color1 & 0x00ff00) >> 8;
+  let g2 = (color2 & 0x00ff00) >> 8;
+  let b1 = color1 & 0x0000ff;
+  let b2 = color2 & 0x0000ff;
+
+  let r = r1 + (r2 - r1) * frac;
+  let g = g1 + (g2 - g1) * frac;
+  let b = b1 + (b2 - b1) * frac;
+  return r << 16 + g << 8 + b; */
 }
 
 export function duplicate_texture(scene: Phaser.Scene, texture_key: string, new_texture_key: string) {
@@ -311,6 +336,14 @@ export function create_shape_geometry_mask(scene: Base_Scene, x: number, y: numb
   return graphics.createGeometryMask();
 }
 
+export function describe_move(move: Rule): string {
+  switch(move.get_name()) {
+    // TODO: need a special description for jumping in place
+    default:
+      return Rule_Descriptions[move.get_name()];
+  }
+}
+
 export let Rule_Descriptions : string[] = [
   "You lose!",
   "You win!",
@@ -353,14 +386,22 @@ export let Rule_Descriptions : string[] = [
   "You chose the left formula",
   "You chose the right formula", */
 
-  "The attacker chose a world",
+  "The copilot jumped to a world",
+  "The copilot couldn't jump to a world",
+  "You jumped to a world",
+  "You couldn't jump to a world",
+  "You took over and jumped to a world",
+  "The copilot couldn't jump to a world",
+  "The copilot took over and jumped to a world",
+  "You couldn't jump to a world",
+  /* "The attacker chose a world",
   "The attacker couldn't chose a world",
   "You chose a world",
   "You couldn't chose a world",
   "You chose a world",
   "You couldn't chose a world",
   "The attacker chose a world",
-  "The attacker couldn't chose a world",
+  "The attacker couldn't chose a world", */
 
   "You chose a sphere of accessibility",
   "The attacker chose to evaluate the sphere-delimiting world", /* "The attacker chose to evaluate the antecedent at the sphere-delimiting world", */

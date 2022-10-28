@@ -412,7 +412,7 @@ export class Formula_Animations {
                 return 1500;
             case Rules.Defender_Vacuous_Possibility: // TODO:
                 return 1500;
-            case Rules.Necessity:
+            case Rules.Attacker_Necessity:
                 left = f.get_child("l");
                 timeline.add({ /* FADE MODAL OPERATOR */
                     targets: f,
@@ -442,6 +442,43 @@ export class Formula_Animations {
                     offset: 0
                 });
                 return 1500;
+            case Rules.Attacker_Vacuous_Necessity: // TODO:
+                return 1500;
+            case Rules.Defender_Necessity:
+                left = f.get_child("l");
+                timeline.add({ /* FADE MODAL OPERATOR */
+                    targets: f,
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE CHILDREN */
+                    targets: left.get_children([left]),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE EMBEDDINGS */
+                    targets: left.get_embedding(true),
+                    x: '+='+(-ICON_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                return 1500;
+            case Rules.Defender_Vacuous_Necessity: // TODO:
+                return 1500;
+
+
+            
             case Rules.Attacker_Phi_Evaluation:
                 left = f.get_child("l");
                 right = f.get_child("r");

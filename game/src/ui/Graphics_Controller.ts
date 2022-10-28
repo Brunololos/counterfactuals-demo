@@ -5,7 +5,7 @@ import { Supposition_Panel } from "./Supposition_Panel";
 import { Bottom, Cf_Would, Disjunction, Formula, Negation } from "../game/Cf_Logic";
 import { Game_State } from "../game/Game_State";
 import { Choice } from "./Choice";
-import { create_cosmic_nebula_texture, dye_texture, Game_Graphics_Mode, Graph_Graphics_Mode, Rule_Descriptions, text_style, world_choice_moves_to_mode } from "../util/UI_Utils";
+import { create_cosmic_nebula_texture, describe_move, dye_texture, Game_Graphics_Mode, Graph_Graphics_Mode, Rule_Descriptions, text_style, world_choice_moves_to_mode } from "../util/UI_Utils";
 import { Graph_Graphics } from "./Graph_Graphics";
 import Base_Scene from "../util/Base_Scene";
 import { Formula_Graphics } from "./Formula_Graphics";
@@ -85,7 +85,6 @@ export class Graphics_Controller {
                 }
                 break;
             case Game_Graphics_Mode.Formula_Choice:
-            case Game_Graphics_Mode.Negated_Formula_Choice:
                 if(this.choice.is_choice_made()) {
                     this.sup_panel.set_caption(Rule_Descriptions[this.choice.get_choice().get_name()]);
                     this.sup_panel.transition(this.choice.get_choice().get_player());
@@ -116,7 +115,6 @@ export class Graphics_Controller {
                             }
                             break;
                         case Game_Graphics_Mode.Formula_Choice:
-                        case Game_Graphics_Mode.Negated_Formula_Choice:
                             this.set_choice(this.next_state, this.next_option1, this.next_option2);
                             break;
                         case Game_Graphics_Mode.Possibility_World_Choice:
@@ -147,11 +145,8 @@ export class Graphics_Controller {
     }
 
     set_choice(state: Game_State, option1: Rule, option2: Rule) {
-        let is_negated_choice = (state.get_formula() instanceof Negation);
         let is_cf_choice = (state.get_formula() instanceof Cf_Would) || (state.get_formula().get_child("l") instanceof Cf_Would);
-
         let mode = Game_Graphics_Mode.Formula_Choice;
-        mode = (is_negated_choice && !is_cf_choice) ? Game_Graphics_Mode.Negated_Formula_Choice : mode;
 
         if(this.mode != mode) {
             console.log("> transitioning to "+Game_Graphics_Mode[mode]);
@@ -167,10 +162,6 @@ export class Graphics_Controller {
                 this.sup_panel.transition(option1.get_acting_player());
                 this.choice.set(state, option1, option2, this.formula.get_embedding_depth());
                 break;
-            case Game_Graphics_Mode.Negated_Formula_Choice:
-                this.sup_panel.set_caption("Choose a formula:", Text_Animation.PULSE);
-                this.choice.set(state, option1, option2, this.formula.get_embedding_depth());
-                break; // TODO: Negated_Formula_Choice is deprecated and not used anymore
         }
         this.ready = false;
     }
@@ -198,7 +189,7 @@ export class Graphics_Controller {
             this.next_animate = true;
             if(this.mode == Game_Graphics_Mode.Transition) { return };
         }
-        this.sup_panel.set_caption(Rule_Descriptions[move.get_name()], (move.get_name() == Rules.Defender_Victory) ? Text_Animation.PULSE : Text_Animation.NONE);
+        this.sup_panel.set_caption(describe_move(move), (move.get_name() == Rules.Defender_Victory) ? Text_Animation.PULSE : Text_Animation.NONE);
         let applied = move.apply(state, delim_world);
         console.log("> animating move " + Rules[move.get_name()] + " => " + applied.get_formula().to_string());
         this.idle(this.formula.animate(applied.get_formula(), move.get_name()));
@@ -219,14 +210,6 @@ export class Graphics_Controller {
                 return;
             case old_mode == Game_Graphics_Mode.Formula_Choice && this.next_mode == Game_Graphics_Mode.Formula:
                 console.log("> animating transition Formula_Choice -> Formula");
-                this.idle(this.choice.animate_transition([old_mode, this.next_mode]));
-                return;
-            case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Negated_Formula_Choice:
-                console.log("> animating transition Formula -> Negated_Formula_Choice");
-                this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
-                return;
-            case old_mode == Game_Graphics_Mode.Negated_Formula_Choice && this.next_mode == Game_Graphics_Mode.Formula:
-                console.log("> animating transition Negated_Formula_Choice -> Formula");
                 this.idle(this.choice.animate_transition([old_mode, this.next_mode]));
                 return;
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Sphere_Selection:
@@ -253,6 +236,7 @@ export class Graphics_Controller {
                 console.log("> animating transition Formula -> "+Game_Graphics_Mode[this.next_mode]);
                 this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
                 this.graph_graphics.animate(this.next_mode);
+                this.sup_panel.transition(Player.Defender);
                 return;
             case old_mode == Game_Graphics_Mode.Sphere_Selection && this.next_mode == Game_Graphics_Mode.Formula:
             case old_mode == Game_Graphics_Mode.Counterfactual_World_Choice && this.next_mode == Game_Graphics_Mode.Formula:
@@ -300,7 +284,6 @@ export class Graphics_Controller {
                 this.graph_graphics.set_mode(Graph_Graphics_Mode.Display);
                 break;
             case Game_Graphics_Mode.Formula_Choice:
-            case Game_Graphics_Mode.Negated_Formula_Choice: //TODO: Negated_Formula_Choice doesnt exist anymore
                 this.formula.setVisible(false);
                 this.choice.set_visible(true);
                 this.graph_graphics.set_mode(Graph_Graphics_Mode.Display);
