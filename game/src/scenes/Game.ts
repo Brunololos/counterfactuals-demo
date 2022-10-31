@@ -137,7 +137,7 @@ export default class Game_Scene extends Base_Scene {
   }
 
   on_resize(): void {
-    this.graphics_controller.resize_graphics();
+    //this.graphics_controller.resize_graphics();
   }
 
   did_game_end(move: Rule): boolean {
