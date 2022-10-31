@@ -44,8 +44,12 @@ export function world_choice_moves_to_mode(moves: Rule[]): Game_Graphics_Mode {
     case moves.some((value) => value.get_name() == Rules.Defender_Possibility):
     case moves.some((value) => value.get_name() == Rules.Attacker_Necessity):
       return Game_Graphics_Mode.Possibility_World_Choice;
-    case moves.some((value) => value.get_name() == Rules.Defender_Sphere_Selection):
-      return Game_Graphics_Mode.Possibility_World_Choice;
+    case moves.some((value) => value.get_name() == Rules.Defender_Might_Sphere_Selection):
+    //case moves.some((value) => value.get_name() == Rules.Attacker_Might_Sphere_Selection):
+      return Game_Graphics_Mode.Sphere_Selection;
+    case moves.some((value) => value.get_name() == Rules.Defender_Might_Closer_Phi_World):
+    case moves.some((value) => value.get_name() == Rules.Defender_Might_Target_Evaluation):
+      return Game_Graphics_Mode.Counterfactual_World_Choice;
     /* case moves.some((value) => value.get_name() == Rules.Possibility):
       return Game_Graphics_Mode.Possibility_World_Choice;
     case moves.some((value) => value.get_name() == Rules.Negated_Necessity):
@@ -157,7 +161,7 @@ export function RGB_to_HSB(color: number): number[] {
 }
 
 export function HSB_to_RGB(hue: number, sat: number, bright: number): number {
-  let r, g, b;
+  let r=0, g=0, b=0;
   let v = bright;
   let i = Math.floor(hue * 6);
   let f = hue * 6 - i;
@@ -403,17 +407,25 @@ export let Rule_Descriptions : string[] = [
   "The attacker chose a world",
   "The attacker couldn't chose a world", */
 
-  "You chose a sphere of accessibility",
-  "The attacker chose to evaluate the sphere-delimiting world", /* "The attacker chose to evaluate the antecedent at the sphere-delimiting world", */
+  "The copilot limited the ships jump-range",
+  "The jump-drive malfunctioned", // No worlds to jump to
+  "You took over and jumped to the limit-world",
+  "You took over and jumped to a closer world",
+  "You limited the ships jump-range",
+  "The jump-drive malfunctioned", // No worlds to jump to
+  "The copilot took over and jumped to the limit-world",
+  "The copilot took over and jumped to a closer world",
+  /* "You chose a sphere of accessibility",
+  "The attacker chose to evaluate the sphere-delimiting world", //"The attacker chose to evaluate the antecedent at the sphere-delimiting world",
   "The attacker chose a world to evaluate the counterfactual at",
   "You claimed that the counterfactual is vacuously true",
   "The attacker chose a world to disprove your vacuous truth claim",
 
   "The attacker chose a sphere of accessibility",
-  "You chose to evaluate the sphere-delimiting world", /* "You chose to evaluate the antecedent at the sphere-delimiting world", */
+  "You chose to evaluate the sphere-delimiting world", //"You chose to evaluate the antecedent at the sphere-delimiting world",
   "You chose to evaluate the counterfactual at a world",
   "The attacker claimed that the counterfactual is vacuously true",
-  "You chose a world to disprove the attackers vacuous truth claim",
+  "You chose a world to disprove the attackers vacuous truth claim", */
 
   ""];
 

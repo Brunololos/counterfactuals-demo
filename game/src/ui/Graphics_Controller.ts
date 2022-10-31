@@ -107,8 +107,6 @@ export class Graphics_Controller {
                     switch(this.next_mode) {
                         case Game_Graphics_Mode.Formula:
                             if(this.next_animate) {
-                                /* console.log(this.next_state.to_string());
-                                console.log(this.next_move); */
                                 this.animate_move(this.next_state, this.next_move, (this.next_move.get_world_input_requirement()) ? this.get_world_choice() : undefined);
                             } else {
                                 this.set_formula(this.next_state, this.next_formula);
@@ -218,7 +216,7 @@ export class Graphics_Controller {
                 this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
 
                 // TODO: Different vacuous button text for each mode
-                this.vacuous.setInteractive();
+                /* this.vacuous.setInteractive();
                 this.scene.add.tween({
                     targets: this.vacuous,
                     alpha: 1,
@@ -227,7 +225,7 @@ export class Graphics_Controller {
                     yoyo: false,
                     repeat: 0,
                     offset: 0,
-                });
+                }); */
                 this.graph_graphics.animate(this.next_mode);
                 return;
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Possibility_World_Choice:
@@ -243,7 +241,7 @@ export class Graphics_Controller {
                 console.log("> animating transition "+Game_Graphics_Mode[old_mode]+" -> Formula");
                 this.graph_graphics.stop_animation();
                 this.graph_graphics.clear_hover_ellipse_alphas();
-                this.vacuous.disableInteractive();
+                /* this.vacuous.disableInteractive();
                 this.scene.add.tween({
                     targets: this.vacuous,
                     alpha: 0,
@@ -252,7 +250,7 @@ export class Graphics_Controller {
                     yoyo: false,
                     repeat: 0,
                     offset: 0,
-                });
+                }); */
                 this.set_mode(this.next_mode);
                 return;
             case old_mode == Game_Graphics_Mode.Possibility_World_Choice && this.next_mode == Game_Graphics_Mode.Formula:

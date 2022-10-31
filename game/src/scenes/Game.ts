@@ -79,12 +79,12 @@ export default class Game_Scene extends Base_Scene {
           break;
         case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Sphere_Selection:
           world = this.graphics_controller.get_world_choice();
-          move = (world == -1) ? this.game_controller.get_rule(Rules.Defender_Vacuous_Truth_Claim) : this.game_controller.get_rule(Rules.Defender_Sphere_Selection);//moves[1] : moves[0];
+          move = this.game_controller.get_rule(Rules.Defender_Might_Sphere_Selection);//moves[1] : moves[0];
           formula = move.apply(state, world).get_formula();
           break;
         case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Counterfactual_World_Choice:
           world = this.graphics_controller.get_world_choice();
-          move = (world == -1) ? this.game_controller.get_rule(Rules.Defender_Phi_Evaluation) : this.game_controller.get_rule(Rules.Defender_World_Choice);//moves[1] : moves[0];
+          move = (world == state.get_delim_world().index) ? this.game_controller.get_rule(Rules.Defender_Might_Target_Evaluation) : this.game_controller.get_rule(Rules.Defender_Might_Closer_Phi_World);//moves[1] : moves[0];
           formula = move.apply(state, world).get_formula();
           break;
         case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Vacuous_World_Choice:

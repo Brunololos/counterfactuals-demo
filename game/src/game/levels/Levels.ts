@@ -197,6 +197,24 @@ text_icon_keys = ["necessity"];
 
 levellist.push(Level.create("Jump Override"/* "Necessity" */, "Res", "[_](D ^ C) v <>B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
+atoms = [
+    "Die Mondlandung fand nie statt",
+    "Die Sonne hat einen Zwillingsstern",
+    "Der Neandertaler hat überlebt",
+    "Fluggesellschaften sind an der kommerziellen Raumfahrt beteiligt"
+];
+worlds = [get(atoms, [3]), get(atoms, [2]), get(atoms, [0, 2]), get(atoms, [3]), get(atoms, [2, 3, 4])];
+world_positions = [[0, 0], [175, 0], [-50, 135], [75, -100], [-50, -150]];
+edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3], [1, 2, 1], [2, 4, 3], [3, 1, 2], [3, 4, 1]];
+text = "Um den Schaden der aufgedeckten Sicherheitslücke einzudämmen hast du ein Protokoll geschrieben,\n"
+     + "welches dir die Möglichkeit gibt die Sprungreichweite des Parallelweltenantriebs vor Übernahme durch deinen Kopiloten auf die Distanz zu einer Zielwelt zu begrenzen.\n"
+     + "Die für einen Sprung benötigte Energie wird im Piloteninterface neben den Sprungkorridoren angezeigt.\n"
+     + "Mit seinen erweiterten Zugriffsfähigkeiten, kann dein Kopilot in der Folge entweder zu der durch dich ausgewählten Zielwelt springen\n"
+     + "oder zu einer näheren Welt springen und einen Schichtwechsel in den Boardcomputer eintragen.";
+text_icon_keys = ["cf_might"];
+
+levellist.push(Level.create("Jump Scramble"/* "Cf_Might" */, "Res", "A ⩽⩾-> C", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+
 /*atoms = [
     "Es gibt die Farbe Rot",
     "Steinhauerei ist die verbreitetste Kunstform",

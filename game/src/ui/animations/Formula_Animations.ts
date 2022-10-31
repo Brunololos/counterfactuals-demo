@@ -477,48 +477,342 @@ export class Formula_Animations {
             case Rules.Defender_Vacuous_Necessity: // TODO:
                 return 1500;
 
-
-            
-            case Rules.Attacker_Phi_Evaluation:
+            case Rules.Defender_Might_Sphere_Selection:
+                return 1500;
+            case Rules.Defender_Vacuous_Might_Sphere_Selection:
+                bottom = formula.add_temporary_formula("_|_");
+                bottom.setAlpha(0);
+                bottom.setX(0);
+                timeline.add({ /* FADE FORMULA */
+                    targets: f.get_children([f]),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE FORMULA EMBEDDINGS */
+                    targets: f.get_embedding(true),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE IN BOTTOM */
+                    targets: bottom,
+                    alpha: 1,
+                    duration: 1500,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                return 1500;
+            case Rules.Attacker_Might_Target_Evaluation:
                 left = f.get_child("l");
                 right = f.get_child("r");
-                timeline.add({ /* FADE CF_WOULD & CONSEQUENT */
+                conj = formula.add_temporary_formula("_|_");
+                conj.setTexture("conjunction");
+                conj.setAlpha(0);
+                conj.setX(0);
+                timeline.add({ /* FADE CF_MIGHT */
+                    targets: f,
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE LEFT */
+                    targets: left.get_children([left]),
+                    x: '+=' + ((ICON_WIDTH - CONJ_WIDTH)/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE LEFT EMBEDDINGS */
+                    targets: left.get_embedding(true),
+                    x: '+=' + ((ICON_WIDTH - CONJ_WIDTH)/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE RIGHT */
+                    targets: right.get_children([right]),
+                    x: '-=' + ((ICON_WIDTH - CONJ_WIDTH)/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE RIGHT EMBEDDINGS */
+                    targets: right.get_embedding(true),
+                    x: '-=' + ((ICON_WIDTH - CONJ_WIDTH)/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE CF_MIGHT LEFT EMBEDDING */
+                    targets: f.get_embedding()[0],
+                    x: '+=' + ((ICON_WIDTH - CONJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE CF_MIGHT RIGHT EMBEDDING */
+                    targets: f.get_embedding()[2],
+                    x: '-=' + ((ICON_WIDTH - CONJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE IN CONJUNCTION */
+                    targets: conj,
+                    alpha: 1,
+                    duration: 1500,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                return 1500;
+            case Rules.Attacker_Might_Closer_Phi_World:
+                left = f.get_child("l");
+                right = f.get_child("r");
+                neg = formula.add_temporary_formula("_|_");
+                neg.setTexture("negation");
+                neg.setAlpha(0);
+                neg.setX(-f.get_child("l").get_width()/2);
+                timeline.add({ /* FADE CF_MIGHT & RIGHT */
                     targets: right.get_children([f, right]),
                     alpha: 0,
-                    duration: 3000,
+                    duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* FADE CF_WOULD & CONSEQUENT EMBEDDINGS */
+                timeline.add({ /* FADE CF_MIGHT & RIGHT EMBEDDINGS */
                     targets: right.get_embedding(true).concat(f.get_embedding()),
                     alpha: 0,
-                    duration: 3000,
+                    duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE ANTECEDENT */
+                timeline.add({ /* MOVE LEFT */
                     targets: left.get_children([left]),
-                    x: '+='+((f.get_width() - left.get_width())/2 - BRACKET_WIDTH).toString(),
+                    x: '+=' + ((right.get_width() + ICON_WIDTH)/2 + ICON_WIDTH/2).toString(),
                     duration: 3000,
                     ease: 'Quart.Out',
                     yoyo: false,
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* MOVE ANTECEDENT EMBEDDINGS */
+                timeline.add({ /* MOVE LEFT EMBEDDINGS */
                     targets: left.get_embedding(true),
-                    x: '+='+((f.get_width() - left.get_width())/2 - BRACKET_WIDTH).toString(),
+                    x: '+=' + ((right.get_width() + ICON_WIDTH)/2 + ICON_WIDTH/2).toString(),
                     duration: 3000,
                     ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE IN NEGATION */
+                    targets: neg,
+                    alpha: 1,
+                    duration: 3000,
+                    ease: 'Quart.In',
                     yoyo: false,
                     repeat: 0,
                     offset: 0
                 });
                 return 3000;
+
+            case Rules.Attacker_Might_Sphere_Selection:
+                return 1500;
+            case Rules.Attacker_Vacuous_Might_Sphere_Selection:
+                bottom = formula.add_temporary_formula("_|_");
+                bottom.setAlpha(0);
+                bottom.setX(0);
+                timeline.add({ /* FADE FORMULA */
+                    targets: f.get_children([f]),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE FORMULA EMBEDDINGS */
+                    targets: f.get_embedding(true),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE IN BOTTOM */
+                    targets: bottom,
+                    alpha: 1,
+                    duration: 1500,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                return 1500;
+            case Rules.Defender_Might_Target_Evaluation: // TODO:
+                left = f.get_child("l");
+                right = f.get_child("r");
+                conj = formula.add_temporary_formula("_|_");
+                conj.setTexture("conjunction");
+                conj.setAlpha(0);
+                conj.setX(0);
+                timeline.add({ /* FADE CF_MIGHT */
+                    targets: f,
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE LEFT */
+                    targets: left.get_children([left]),
+                    x: '+=' + ((ICON_WIDTH - CONJ_WIDTH)/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE LEFT EMBEDDINGS */
+                    targets: left.get_embedding(true),
+                    x: '+=' + ((ICON_WIDTH - CONJ_WIDTH)/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE RIGHT */
+                    targets: right.get_children([right]),
+                    x: '-=' + ((ICON_WIDTH - CONJ_WIDTH)/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE RIGHT EMBEDDINGS */
+                    targets: right.get_embedding(true),
+                    x: '-=' + ((ICON_WIDTH - CONJ_WIDTH)/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE CF_MIGHT LEFT EMBEDDING */
+                    targets: f.get_embedding()[0],
+                    x: '+=' + ((ICON_WIDTH - CONJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE CF_MIGHT RIGHT EMBEDDING */
+                    targets: f.get_embedding()[2],
+                    x: '-=' + ((ICON_WIDTH - CONJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE IN CONJUNCTION */
+                    targets: conj,
+                    alpha: 1,
+                    duration: 1500,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                return 1500;
+            case Rules.Defender_Might_Closer_Phi_World:
+                left = f.get_child("l");
+                right = f.get_child("r");
+                neg = formula.add_temporary_formula("_|_");
+                neg.setTexture("negation");
+                neg.setAlpha(0);
+                neg.setX(-f.get_child("l").get_width()/2);
+                timeline.add({ /* FADE CF_MIGHT & RIGHT */
+                    targets: right.get_children([f, right]),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE CF_MIGHT & RIGHT EMBEDDINGS */
+                    targets: right.get_embedding(true).concat(f.get_embedding()),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE LEFT */
+                    targets: left.get_children([left]),
+                    x: '+=' + ((right.get_width() + ICON_WIDTH)/2 + ICON_WIDTH/2).toString(),
+                    duration: 3000,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* MOVE LEFT EMBEDDINGS */
+                    targets: left.get_embedding(true),
+                    x: '+=' + ((right.get_width() + ICON_WIDTH)/2 + ICON_WIDTH/2).toString(),
+                    duration: 3000,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                timeline.add({ /* FADE IN NEGATION */
+                    targets: neg,
+                    alpha: 1,
+                    duration: 3000,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0
+                });
+                return 3000;
+
             case Rules.Attacker_World_Choice:
                 left = f.get_child("l");
                 right = f.get_child("r");
