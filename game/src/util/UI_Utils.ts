@@ -45,21 +45,14 @@ export function world_choice_moves_to_mode(moves: Rule[]): Game_Graphics_Mode {
     case moves.some((value) => value.get_name() == Rules.Attacker_Necessity):
       return Game_Graphics_Mode.Possibility_World_Choice;
     case moves.some((value) => value.get_name() == Rules.Defender_Might_Sphere_Selection):
+    case moves.some((value) => value.get_name() == Rules.Defender_Would_Sphere_Selection):
     //case moves.some((value) => value.get_name() == Rules.Attacker_Might_Sphere_Selection):
       return Game_Graphics_Mode.Sphere_Selection;
     case moves.some((value) => value.get_name() == Rules.Defender_Might_Closer_Phi_World):
     case moves.some((value) => value.get_name() == Rules.Defender_Might_Target_Evaluation):
+    case moves.some((value) => value.get_name() == Rules.Defender_Would_Closer_Phi_World):
+    case moves.some((value) => value.get_name() == Rules.Defender_Would_Target_Evaluation):
       return Game_Graphics_Mode.Counterfactual_World_Choice;
-    /* case moves.some((value) => value.get_name() == Rules.Possibility):
-      return Game_Graphics_Mode.Possibility_World_Choice;
-    case moves.some((value) => value.get_name() == Rules.Negated_Necessity):
-      return Game_Graphics_Mode.Necessity_World_Choice;
-    case moves.some((value) => value.get_name() == Rules.Defender_Sphere_Selection):
-      return Game_Graphics_Mode.Sphere_Selection;
-    case moves.some((value) => value.get_name() == Rules.Defender_World_Choice):
-      return Game_Graphics_Mode.Counterfactual_World_Choice;
-    case moves.some((value) => value.get_name() == Rules.Defender_Vacuous_World_Choice):
-      return Game_Graphics_Mode.Vacuous_World_Choice; */
     default:
       throw new Error("Rules don't map to any world choice!");
   }
@@ -97,7 +90,7 @@ export function duplicate_texture(scene: Phaser.Scene, texture_key: string, new_
     let canvas_texture = scene.game.textures.createCanvas(new_texture_key, texture_source.width, texture_source.height);
     let canvas = canvas_texture.getSourceImage();
     let context = (canvas as HTMLCanvasElement).getContext('2d');
-    context!.getContextAttributes().willReadFrequently = true;
+    //context!.getContextAttributes().willReadFrequently = true;
     context!.drawImage((texture_source as HTMLImageElement), 0, 0);
     (canvas_texture as Phaser.Textures.CanvasTexture).refresh();
 }
@@ -106,7 +99,6 @@ export function fill_texture(scene: Phaser.Scene, texture_key: string, color: nu
     let texture = scene.game.textures.get(texture_key);
     let canvas = texture.getSourceImage(texture_key);
     let context = (canvas as HTMLCanvasElement).getContext('2d');
-    context!.getContextAttributes().willReadFrequently = true;
     let image_data = context!.getImageData(0, 0, canvas.width, canvas.height);
     let pixel_array = image_data.data;
 
@@ -131,7 +123,6 @@ export function dye_texture(scene: Phaser.Scene, texture_key: string, color: num
     let texture = scene.game.textures.get(texture_key);
     let canvas = texture.getSourceImage(texture_key);
     let context = (canvas as HTMLCanvasElement).getContext("2d");
-    context!.getContextAttributes().willReadFrequently = true;
     let image_data = context!.getImageData(0, 0, canvas.width, canvas.height);
     let pixel_array = image_data.data;
 
@@ -415,6 +406,15 @@ export let Rule_Descriptions : string[] = [
   "The jump-drive malfunctioned", // No worlds to jump to
   "The copilot took over and jumped to the limit-world",
   "The copilot took over and jumped to a closer world",
+
+  "The copilot took over and limited the ships jump-range",
+  "The jump-drive malfunctioned while the copilot took over", // No worlds to jump to
+  "You jumped to the limit-world",
+  "You jumped to a closer world",
+  "You took over and limited the ships jump-range",
+  "The jump-drive malfunctioned while you took over", // No worlds to jump to
+  "The copilot jumped to the limit-world",
+  "The copilot jumped to a closer world",
   /* "You chose a sphere of accessibility",
   "The attacker chose to evaluate the sphere-delimiting world", //"The attacker chose to evaluate the antecedent at the sphere-delimiting world",
   "The attacker chose a world to evaluate the counterfactual at",

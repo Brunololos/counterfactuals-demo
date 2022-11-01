@@ -88,6 +88,18 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
             this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Attacker_Necessity);
         } else if(move.get_name() == Rules.Defender_Necessity) {
             this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Defender_Necessity);
+        } else if(move.get_name() == Rules.Attacker_Might_Target_Evaluation) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Attacker_Might_Target_Evaluation);
+        } else if(move.get_name() == Rules.Attacker_Might_Closer_Phi_World) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Attacker_Might_Closer_Phi_World);
+        } else if(move.get_name() == Rules.Attacker_Would_Sphere_Selection) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Attacker_Would_Sphere_Selection);
+        } else if(move.get_name() == Rules.Defender_Would_Sphere_Selection) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Defender_Would_Sphere_Selection);
+        } else if(move.get_name() == Rules.Attacker_Vacuous_Would_Sphere_Selection) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Attacker_Vacuous_Would_Sphere_Selection);
+        } else if(move.get_name() == Rules.Defender_Vacuous_Would_Sphere_Selection) {
+            this.animation = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Defender_Vacuous_Would_Sphere_Selection);
         } else { return; }
         this.animation.play();
     }

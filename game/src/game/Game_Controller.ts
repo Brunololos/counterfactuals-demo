@@ -46,6 +46,7 @@ export class Game_Controller {
     execute_move(move: Rule, world?: integer) {
         this.state = move.apply(this.state, world);
         let mode = this.state.get_mode();
+        console.log("---> " + Rules[move.get_name()]); //TODO:
         switch(mode) {
             case State_Mode.Resolve:
                 console.log("---> " + this.state.get_formula().to_string()+" at world "+this.state.get_current_world().index);

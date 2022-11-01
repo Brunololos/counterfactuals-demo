@@ -106,7 +106,7 @@ export default class Level_Select_Scene extends Base_Scene {
                 // Set properties from item value
                 cellContainer!.setMinSize(240, 120); // Size might changed in this demo
                 //cellContainer!.getElement('background').setTint(0xcccccc);
-                cellContainer!.getElement('text').setText((name.length <= 16) ? name : name.slice(0, wrapindex) + "\n" + name.slice(wrapindex));
+                cellContainer!.getElement('text').setText((name.length <= 16) ? "\n" + name + "\n" : name.slice(0, wrapindex) + "\n" + name.slice(wrapindex)); // Weird but "\n" + name + "\n" is displayed sharper than simply name
                 //cellContainer!.getElement('icon').setFillStyle(item.color); // Set fill color of round rectangle object
                 return cellContainer;
             },

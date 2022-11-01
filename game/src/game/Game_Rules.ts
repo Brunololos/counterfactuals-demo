@@ -1,5 +1,5 @@
 import {cloneDeep} from 'lodash';
-import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any, Conjunction } from "./Cf_Logic";
+import { Formula, Cf_Would, Disjunction, Negation, Atom, Bottom, Any, Conjunction, Top } from "./Cf_Logic";
 import { Player, State_Mode, Game_Turn_Type, Player_Abbreviations, State_Mode_Abbreviations, toggle_player } from "../util/Game_Utils"
 import { Game_State } from "./Game_State"
 
@@ -135,30 +135,31 @@ export class Rules_Controller {
         let apply_attacker_might_closer_phi_world = (state: Game_State, delim_world?: integer) => state.configure("Res", new Negation(state.get_formula().get_child("l")), "d", delim_world, Infinity);
         this.rules.push(Rule.create("Attacker_Might_Closer_Phi_World", "Cf", "a", "? ⩽⩾-> ?", apply_attacker_might_closer_phi_world, is_another_world_reachable_within_strict_delim, true));
 
-        /* let apply_defender_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "a", undefined, delim_world);
-        this.rules.push(Rule.create("Defender_Sphere_Selection", "Res", "d", "? ⩽⩾-> ?", apply_defender_sphere_selection, is_another_world_reachable, true));
 
-        let apply_defender_vacuous_sphere_selection = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "d", undefined);
-        this.rules.push(Rule.create("Defender_Vacuous_Sphere_Selection", "Res", "d", "? ⩽⩾-> ?", apply_defender_vacuous_sphere_selection, is_no_world_reachable));
+        let apply_attacker_would_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "d", undefined, delim_world);
+        this.rules.push(Rule.create("Attacker_Would_Sphere_Selection", "Res", "d", "? |_|-> ?", apply_attacker_would_sphere_selection, is_another_world_reachable, true).set_inverted(true));
 
-        let apply_attacker_target_evaluation = (state: Game_State) => state.configure("Res", new Conjunction(state.get_formula().get_child("l"), state.get_formula().get_child("r")), "d", state.get_delim_world().index, Infinity);
-        this.rules.push(Rule.create("Attacker_Target_Evaluation", "Cf", "a", "? ⩽⩾-> ?", apply_attacker_target_evaluation));
+        let apply_attacker_vacuous_would_sphere_selection = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "a", undefined);
+        this.rules.push(Rule.create("Attacker_Vacuous_Would_Sphere_Selection", "Res", "d", "? |_|-> ?", apply_attacker_vacuous_would_sphere_selection, is_no_world_reachable).set_inverted(true));
 
-        let apply_attacker_closer_phi_world = (state: Game_State, delim_world?: integer) => state.configure("Res", state.get_formula().get_child("l"), "a", delim_world, Infinity);
-        this.rules.push(Rule.create("Attacker_Closer_Phi_World", "Cf", "a", "? ⩽⩾-> ?", apply_attacker_closer_phi_world, is_another_world_reachable_within_strict_delim, true));
+        let apply_defender_would_target_evaluation = (state: Game_State) => state.configure("Res", new Disjunction(new Negation(state.get_formula().get_child("l")), state.get_formula().get_child("r")), "d", state.get_delim_world().index, Infinity);
+        this.rules.push(Rule.create("Defender_Would_Target_Evaluation", "Cf", "d", "? |_|-> ?", apply_defender_would_target_evaluation));
 
-        let apply_attacker_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "d", undefined, delim_world);
-        this.rules.push(Rule.create("Attacker_Sphere_Selection", "Res", "a", "? ⩽⩾-> ?", apply_attacker_sphere_selection, is_another_world_reachable, true));
+        let apply_defender_would_closer_phi_world = (state: Game_State, delim_world?: integer) => state.configure("Res", state.get_formula().get_child("l"), "d", delim_world, Infinity);
+        this.rules.push(Rule.create("Defender_Would_Closer_Phi_World", "Cf", "d", "? |_|-> ?", apply_defender_would_closer_phi_world, is_another_world_reachable_within_strict_delim, true));
+    
+        let apply_defender_would_sphere_selection = (state: Game_State, delim_world?: integer) => state.configure("Cf", state.get_formula(), "a", undefined, delim_world);
+        this.rules.push(Rule.create("Defender_Would_Sphere_Selection", "Res", "a", "? |_|-> ?", apply_defender_would_sphere_selection, is_another_world_reachable, true).set_inverted(true));
 
-        let apply_attacker_vacuous_sphere_selection = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "a", undefined);
-        this.rules.push(Rule.create("Attacker_Vacuous_Sphere_Selection", "Res", "a", "? ⩽⩾-> ?", apply_attacker_vacuous_sphere_selection, is_no_world_reachable));
+        let apply_defender_vacuous_would_sphere_selection = (state: Game_State) => state.configure("Res", Formula.parse("_|_"), "d", undefined);
+        this.rules.push(Rule.create("Defender_Vacuous_Would_Sphere_Selection", "Res", "a", "? |_|-> ?", apply_defender_vacuous_would_sphere_selection, is_no_world_reachable).set_inverted(true));
 
-        let apply_defender_target_evaluation = (state: Game_State) => state.configure("Res", new Conjunction(state.get_formula().get_child("l"), state.get_formula().get_child("r")), "a", state.get_delim_world().index, Infinity);
-        this.rules.push(Rule.create("Defender_Target_Evaluation", "Cf", "d", "? ⩽⩾-> ?", apply_defender_target_evaluation));
+        let apply_attacker_would_target_evaluation = (state: Game_State) => state.configure("Res", new Disjunction(new Negation(state.get_formula().get_child("l")), state.get_formula().get_child("r")), "a", state.get_delim_world().index, Infinity);
+        this.rules.push(Rule.create("Attacker_Would_Target_Evaluation", "Cf", "a", "? |_|-> ?", apply_attacker_would_target_evaluation));
 
-        let apply_defender_closer_phi_world = (state: Game_State, delim_world?: integer) => state.configure("Res", state.get_formula().get_child("l"), "d", delim_world, Infinity);
-        this.rules.push(Rule.create("Defender_Closer_Phi_World", "Cf", "d", "? ⩽⩾-> ?", apply_defender_closer_phi_world, is_another_world_reachable_within_strict_delim, true));
- */
+        let apply_attacker_would_closer_phi_world = (state: Game_State, delim_world?: integer) => state.configure("Res", state.get_formula().get_child("l"), "a", delim_world, Infinity);
+        this.rules.push(Rule.create("Attacker_Would_Closer_Phi_World", "Cf", "a", "? |_|-> ?", apply_attacker_would_closer_phi_world, is_another_world_reachable_within_strict_delim, true));
+
     }
 
     /**
@@ -224,10 +225,14 @@ export class Rules_Controller {
                         case move.get_name() == Rules.Defender_Necessity:
                         case move.get_name() == Rules.Defender_Might_Sphere_Selection:
                         case move.get_name() == Rules.Attacker_Might_Sphere_Selection:
+                        case move.get_name() == Rules.Attacker_Would_Sphere_Selection:
+                        case move.get_name() == Rules.Defender_Would_Sphere_Selection:
                             possible = state.get_current_world().is_adj(j);
                             break;
                         case move.get_name() == Rules.Attacker_Might_Closer_Phi_World:
                         case move.get_name() == Rules.Defender_Might_Closer_Phi_World:
+                        case move.get_name() == Rules.Attacker_Would_Closer_Phi_World:
+                        case move.get_name() == Rules.Defender_Would_Closer_Phi_World:
                             possible = state.get_current_world().is_adj(j) && state.get_current_world().get_edge(j)[1] < state.get_radius();
                             break;
                         default:
@@ -382,23 +387,14 @@ export enum Rules {
     Attacker_Might_Target_Evaluation,
     Attacker_Might_Closer_Phi_World,
 
-
-
-
-    /* Attacker_Sphere_Selection,
-    Attacker_Vacuous_Sphere_Selection,
-    Defender_Target_Evaluation,
-    Defender_Closer_Phi_World, */
-
-    /* Defender_Sphere_Selection,
-    Defender_Vacuous_Sphere_Selection,
-    Attacker_Target_Evaluation,
-    Attacker_Closer_Phi_World,
-    Attacker_Sphere_Selection,
-    Attacker_Vacuous_Sphere_Selection,
-    Defender_Target_Evaluation,
-    Defender_Closer_Phi_World, */
-
+    Attacker_Would_Sphere_Selection,
+    Attacker_Vacuous_Would_Sphere_Selection,
+    Defender_Would_Target_Evaluation,
+    Defender_Would_Closer_Phi_World,
+    Defender_Would_Sphere_Selection,
+    Defender_Vacuous_Would_Sphere_Selection,
+    Attacker_Would_Target_Evaluation,
+    Attacker_Would_Closer_Phi_World,
 
     No_Transition
 }

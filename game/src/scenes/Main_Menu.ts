@@ -28,7 +28,7 @@ export default class Main_Menu_Scene extends Base_Scene {
         const resize = () => {
             this.game.scale.resize(window.innerWidth, window.innerHeight);
             this.on_resize();
-        }    
+        }
         window.addEventListener("resize", resize, false);
     }
 

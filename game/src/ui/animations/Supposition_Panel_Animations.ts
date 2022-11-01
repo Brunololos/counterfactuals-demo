@@ -14,6 +14,12 @@ export enum Supposition_Panel_Animation {
     Defender_Right_AND,
     Attacker_Necessity,
     Defender_Necessity,
+    Attacker_Might_Target_Evaluation,
+    Attacker_Might_Closer_Phi_World,
+    Attacker_Would_Sphere_Selection,
+    Defender_Would_Sphere_Selection,
+    Attacker_Vacuous_Would_Sphere_Selection,
+    Defender_Vacuous_Would_Sphere_Selection,
 }
 
 export class Supposition_Panel_Animations {
@@ -291,6 +297,188 @@ export class Supposition_Panel_Animations {
                         let frac = timeline.elapsed/1500;
                         let prev_color = sup_panel.get_panel().tintTopLeft;
                         let color = interpolate_colors(prev_color, 0xdd0000, frac);
+                        sup_panel.get_knob().setTint(color);
+                        sup_panel.get_panel().setTint(color);
+                    }
+                });
+                return;
+            case Supposition_Panel_Animation.Attacker_Might_Target_Evaluation: // TODO: So fast it looks flickery
+                timeline.add({
+                    targets: sup_panel.get_dummy(),
+                    x: 0,
+                    duration: 750,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0,
+                    onUpdate: function(tween: Phaser.Tweens.Tween) {
+                        if(timeline.totalElapsed > 750) { return; }
+                        let frac = timeline.elapsed/750;
+                        let prev_color = sup_panel.get_panel().tintTopLeft;
+                        let color = interpolate_colors(prev_color, 0xdd0000, frac);
+                        sup_panel.get_knob().setTint(color);
+                        sup_panel.get_panel().setTint(color);
+                    }
+                });
+                timeline.add({
+                    targets: sup_panel.get_dummy(),
+                    x: 0,
+                    duration: 750,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 750,
+                    onUpdate: function(tween: Phaser.Tweens.Tween) {
+                        if(timeline.totalElapsed > 1500) { return; }
+                        let frac = (timeline.elapsed-750)/750;
+                        let prev_color = sup_panel.get_panel().tintTopLeft;
+                        let color = interpolate_colors(prev_color, 0xffffff, frac);
+                        sup_panel.get_knob().setTint(color);
+                        sup_panel.get_panel().setTint(color);
+                    }
+                });
+                return;
+            case Supposition_Panel_Animation.Attacker_Might_Closer_Phi_World:
+                timeline.add({
+                    targets: sup_panel.get_dummy(),
+                    x: 0,
+                    duration: 1500,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0,
+                    onUpdate: function(tween: Phaser.Tweens.Tween) {
+                        if(timeline.totalElapsed > 1500) { return; }
+                        let frac = timeline.elapsed/1500;
+                        let prev_color = sup_panel.get_panel().tintTopLeft;
+                        let color = interpolate_colors(prev_color, 0xdd0000, frac);
+                        sup_panel.get_knob().setTint(color);
+                        sup_panel.get_panel().setTint(color);
+                    }
+                });
+                timeline.add({
+                    targets: sup_panel.get_dummy(),
+                    x: 0,
+                    duration: 1500,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500,
+                    onUpdate: function(tween: Phaser.Tweens.Tween) {
+                        if(timeline.totalElapsed > 3000) { return; }
+                        let frac = (timeline.elapsed-1500)/1500;
+                        let prev_color = sup_panel.get_panel().tintTopLeft;
+                        let color = interpolate_colors(prev_color, 0xffffff, frac);
+                        sup_panel.get_knob().setTint(color);
+                        sup_panel.get_panel().setTint(color);
+                    }
+                });
+                return;
+            case Supposition_Panel_Animation.Attacker_Would_Sphere_Selection:
+                timeline.add({
+                    targets: sup_panel.get_dummy(),
+                    x: 0,
+                    duration: 750,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0,
+                    onUpdate: function(tween: Phaser.Tweens.Tween) {
+                        if(timeline.totalElapsed > 750) { return; }
+                        let frac = timeline.elapsed/750;
+                        let prev_color = sup_panel.get_panel().tintTopLeft;
+                        let color = interpolate_colors(prev_color, 0xdd0000, frac);
+                        sup_panel.get_knob().setTint(color);
+                        sup_panel.get_panel().setTint(color);
+                    }
+                });
+                timeline.add({
+                    targets: sup_panel.get_dummy(),
+                    x: 0,
+                    duration: 750,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 750,
+                    onUpdate: function(tween: Phaser.Tweens.Tween) {
+                        if(timeline.totalElapsed > 1500) { return; }
+                        let frac = (timeline.elapsed-750)/750;
+                        let prev_color = sup_panel.get_panel().tintTopLeft;
+                        let color = interpolate_colors(prev_color, 0xffffff, frac);
+                        sup_panel.get_knob().setTint(color);
+                        sup_panel.get_panel().setTint(color);
+                    }
+                });
+                return;
+            case Supposition_Panel_Animation.Defender_Would_Sphere_Selection:
+                timeline.add({
+                    targets: sup_panel.get_dummy(),
+                    x: 0,
+                    duration: 750,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0,
+                    onUpdate: function(tween: Phaser.Tweens.Tween) {
+                        if(timeline.totalElapsed > 750) { return; }
+                        let frac = timeline.elapsed/750;
+                        let prev_color = sup_panel.get_panel().tintTopLeft;
+                        let color = interpolate_colors(prev_color, 0xffffff, frac);
+                        sup_panel.get_knob().setTint(color);
+                        sup_panel.get_panel().setTint(color);
+                    }
+                });
+                timeline.add({
+                    targets: sup_panel.get_dummy(),
+                    x: 0,
+                    duration: 750,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 750,
+                    onUpdate: function(tween: Phaser.Tweens.Tween) {
+                        if(timeline.totalElapsed > 1500) { return; }
+                        let frac = (timeline.elapsed-750)/750;
+                        let prev_color = sup_panel.get_panel().tintTopLeft;
+                        let color = interpolate_colors(prev_color, 0xdd0000, frac);
+                        sup_panel.get_knob().setTint(color);
+                        sup_panel.get_panel().setTint(color);
+                    }
+                });
+                return;
+            case Supposition_Panel_Animation.Attacker_Vacuous_Would_Sphere_Selection:
+                timeline.add({
+                    targets: sup_panel.get_dummy(),
+                    x: 0,
+                    duration: 1500,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0,
+                    onUpdate: function(tween: Phaser.Tweens.Tween) {
+                        if(timeline.totalElapsed > 1500) { return; }
+                        let frac = timeline.elapsed/1500;
+                        let prev_color = sup_panel.get_panel().tintTopLeft;
+                        let color = interpolate_colors(prev_color, 0xdd0000, frac);
+                        sup_panel.get_knob().setTint(color);
+                        sup_panel.get_panel().setTint(color);
+                    }
+                });
+                return;
+            case Supposition_Panel_Animation.Defender_Vacuous_Would_Sphere_Selection:
+                timeline.add({
+                    targets: sup_panel.get_dummy(),
+                    x: 0,
+                    duration: 1500,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0,
+                    onUpdate: function(tween: Phaser.Tweens.Tween) {
+                        if(timeline.totalElapsed > 1500) { return; }
+                        let frac = timeline.elapsed/1500;
+                        let prev_color = sup_panel.get_panel().tintTopLeft;
+                        let color = interpolate_colors(prev_color, 0xffffff, frac);
                         sup_panel.get_knob().setTint(color);
                         sup_panel.get_panel().setTint(color);
                     }

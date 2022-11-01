@@ -56,7 +56,9 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
 
     static configure_sprites(scene: Phaser.Scene) {
         if(scene.textures.getTextureKeys().includes("fill_open_0")) { return; }
-        let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xC55300, 0xA2B5BB, 0xFF8FB1, 0x47B5FF, 0x562B08, 0x84513D];
+        //let atom_colors = [0xF5C92A, 0x27577F, 0xFF577F, 0x27571B, 0xD3402A]; // TODO: make colors pop more like 0xFF577F,
+        let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xFF577F, 0xA2B5BB, 0x47B5FF/* , 0x84513D */];
+        //let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xA2B5BB, 0xFF8FB1, 0x47B5FF, 0x84513D];
         for(let i=0; i<NUM_RECOLORS; i++) {
             duplicate_texture(scene, "fill_open", "fill_open_"+(i).toString());
             duplicate_texture(scene, "fill_connect", "fill_connect_"+(i).toString());
