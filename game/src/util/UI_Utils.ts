@@ -23,7 +23,9 @@ export enum Game_Graphics_Mode {
 
 export enum Graph_Graphics_Mode {
     Display,
-    World_Choice
+    World_Choice,
+    Might_World_Choice,
+    Would_World_Choice
 }
 
 export function is_world_choice(mode: Game_Graphics_Mode): boolean {

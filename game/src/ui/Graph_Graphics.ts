@@ -1,8 +1,9 @@
 import { cloneDeep, some } from "lodash";
-import { Atom } from "../game/Cf_Logic";
+import { Atom, Formula } from "../game/Cf_Logic";
 import { Rules } from "../game/Game_Rules";
 import { Game_State } from "../game/Game_State";
 import { Star } from "../graphics/Star";
+import Game_Scene from "../scenes/Game";
 import Base_Scene from "../util/Base_Scene";
 import { Graph } from "../util/Graph";
 import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode, Graph_Graphics_Mode, is_world_choice, text_style } from "../util/UI_Utils";
@@ -30,7 +31,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
     private target: Phaser.GameObjects.Sprite;
     private animation: Phaser.Tweens.Timeline;
     
-    constructor(scene: Phaser.Scene, x: number, y: number, state: Game_State, current_world: integer, world_positions: [number, number][], edges: [integer, integer, integer][], graphics_controller: Graphics_Controller) {
+    constructor(scene: Base_Scene, x: number, y: number, state: Game_State, current_world: integer, world_positions: [number, number][], edges: [integer, integer, integer][], graphics_controller: Graphics_Controller) {
         super(scene, x, y);
         this.game_state = state;
         this.graph = this.game_state.get_graph();
@@ -187,6 +188,8 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
                 // TODO: Play some cute animation, expand atom-icons to textboxes
                 break;
             case Graph_Graphics_Mode.World_Choice:
+            case Graph_Graphics_Mode.Might_World_Choice:
+            case Graph_Graphics_Mode.Would_World_Choice:
                 let edge = this.game_state.get_graph().get_world(this.current_world).get_edges().find(x => (x[0].get_index() == world));
                 let delim_edge = this.game_state.get_graph().get_world(this.current_world).get_edges().find(x => (x[0].get_index() == this.delim_world));
                 let max_distance = (delim_edge != undefined) ? delim_edge[1] : Infinity;
@@ -232,6 +235,40 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         this.target.setVisible(true);
     }
 
+    set_might_hints(delim_world: integer) {
+        let current_world = this.current_world;
+        let distance = this.graph.get_world(current_world).get_edge(delim_world)[1];
+        let state = (this.scene as Game_Scene).get_state();
+        let atoms = state.get_atoms();
+        let left = state.get_formula().get_child("l").to_string(atoms);
+        let right = state.get_formula().get_child("r").to_string(atoms);
+
+        let edges = this.graph.get_edges(current_world);
+        for(let i=0; i<edges.length; i++) {
+            if(edges[i][1] < distance) {
+                this.worlds[edges[i][0].index].set_hint("~"+left, atoms);
+            }
+        }
+        this.worlds[delim_world].set_hint("("+left+") ^ ("+right+")", atoms);
+    }
+
+    set_would_hints(delim_world: integer) {
+        let current_world = this.current_world;
+        let distance = this.graph.get_world(current_world).get_edge(delim_world)[1];
+        let state = (this.scene as Game_Scene).get_state();
+        let atoms = state.get_atoms();
+        let left = state.get_formula().get_child("l").to_string(atoms);
+        let right = state.get_formula().get_child("r").to_string(atoms);
+
+        let edges = this.graph.get_edges(current_world);
+        for(let i=0; i<edges.length; i++) {
+            if(edges[i][1] < distance) {
+                this.worlds[edges[i][0].index].set_hint(left, atoms);
+            }
+        }
+        this.worlds[delim_world].set_hint("(~"+left+") v ("+right+")", atoms);
+    }
+
     clear_hover_ellipse_alphas() {
         for(let i=0; i<this.worlds.length; i++) {
             this.worlds[i].get_hover_ellipse().setAlpha(WORLD_BASE_HIGHLIGHT_ALPHA);
@@ -257,6 +294,12 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         }
     }
 
+    clear_hints() {
+        for(let i=0; i<this.worlds.length; i++) {
+            this.worlds[i].clear_hint();
+        }
+    }
+
     get_graphics_controller(): Graphics_Controller {
         return this.graphics_controller;
     }
@@ -272,6 +315,10 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
     get_chosen_world(): integer {
         if(!this.choice_made) { throw new Error("No world choice has yet been made"); }
         return this.chosen_world;
+    }
+
+    get_mode(): Graph_Graphics_Mode {
+        return this.mode;
     }
 
     is_choice_made(): boolean {
@@ -301,6 +348,11 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("world", "assets/Earth_Small.png");
         scene.load.image("grey_world", "assets/Earth_Grey.png");
         scene.load.image("target", "assets/Earth_Target.png");
+        //scene.load.image("speech", "assets/Speech_Bubble.png");
+        scene.load.image("speech", "assets/Hint_Panel.png");
+        scene.load.image("speech_left", "assets/Speech_Bubble_Left.png");
+        scene.load.image("speech_mid", "assets/Speech_Bubble_Mid.png");
+        scene.load.image("speech_right", "assets/Speech_Bubble_Right.png");
     }
 
     static configure_sprites(scene: Phaser.Scene) {
@@ -311,12 +363,15 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
 }
 
 export class World_Controller {
+    private scene: Base_Scene;
     private x: number;
     private y: number;
     private graph_graphics: Graph_Graphics;
     private world: Phaser.GameObjects.Sprite;
     private circle: Phaser.GameObjects.Sprite;
     private hover_ellipse: Phaser.GameObjects.Ellipse;
+    private speech_bubble: Phaser.GameObjects.Sprite[] = [];
+    private hint: Formula_Graphics;
     private index_text: Phaser.GameObjects.Text;
     private atoms: string[];
     private atom_sprites: Phaser.GameObjects.Sprite[] = [];
@@ -325,13 +380,19 @@ export class World_Controller {
 
     private index: integer;
 
-    constructor(scene: Phaser.Scene, x_offset: number, y_offset: number, index: integer, atoms: string[], graph_graphics: Graph_Graphics) {
+    constructor(scene: Base_Scene, x_offset: number, y_offset: number, index: integer, atoms: string[], graph_graphics: Graph_Graphics) {
+        this.scene = scene;
         this.x = x_offset;
         this.y = y_offset;
         this.atoms = atoms;
         this.world = new Phaser.GameObjects.Sprite(scene, x_offset, y_offset, "world").setAlpha(WORLD_ALPHA);
         this.circle = new Phaser.GameObjects.Sprite(scene, x_offset, y_offset, "target").setDisplaySize(WORLD_WIDTH, WORLD_WIDTH).setVisible(false);
         this.hover_ellipse = new Phaser.GameObjects.Ellipse(scene, x_offset, y_offset, WORLD_WIDTH, WORLD_WIDTH, IDLE_WORLD_COLOR).setAlpha(WORLD_BASE_HIGHLIGHT_ALPHA);
+        this.speech_bubble.push(new Phaser.GameObjects.Sprite(scene, x_offset-35, y_offset, "speech_left").setDisplaySize(20, 60).setVisible(false));
+        this.speech_bubble.push(new Phaser.GameObjects.Sprite(scene, x_offset, y_offset, "speech_mid").setDisplaySize(50, 60).setVisible(false));
+        this.speech_bubble.push(new Phaser.GameObjects.Sprite(scene, x_offset+35, y_offset, "speech_right").setDisplaySize(20, 60).setVisible(false));
+        this.hint = new Formula_Graphics(scene, x_offset, y_offset+WORLD_WIDTH/4, Formula.parse("_|_"), ["A"]).setVisible(false);
+        this.hint.get_formula().scale_recursive(0.5);
         this.index_text = new Phaser.GameObjects.Text(scene, x_offset, y_offset, index.toString(), text_style).setOrigin(0.5, 0.5).setAlpha(0); // DISPLAY WORLD INDEX
         this.setup_listeners();
         this.index = index;
@@ -369,6 +430,33 @@ export class World_Controller {
         this.hover_ellipse.fillColor = base_color;
     }
 
+    set_hint(formula: string, atoms: string[]) {
+        this.hint.destroy(); // TODO: Need to destroy old speech bubbles?
+        //this.speech_bubble.forEach((value) => value.destroy());
+        //this.speech_bubble.forEach((value) => (value.parentContainer != undefined) ? value.destroy() : 1 == 1);
+        this.hint = new Formula_Graphics(this.scene, this.x, this.y+WORLD_WIDTH/4 + 1, Formula.parse(formula, atoms), atoms);
+        this.hint.get_formula().scale_recursive(0.5);
+
+
+        let hint_len = this.hint.get_width();
+        this.speech_bubble.push(new Phaser.GameObjects.Sprite(this.scene, this.x-hint_len/2-10+5, this.y, "speech_left").setDisplaySize(20, 60));
+        this.speech_bubble.push(new Phaser.GameObjects.Sprite(this.scene, this.x, this.y, "speech_mid").setDisplaySize(hint_len-10, 60));
+        this.speech_bubble.push(new Phaser.GameObjects.Sprite(this.scene, this.x+hint_len/2+10-5, this.y, "speech_right").setDisplaySize(20, 60));
+
+        let container = this.world.parentContainer;
+        if(container != undefined) {
+            container.add(this.speech_bubble);
+            container.add(this.hint);
+        }
+        this.speech_bubble.forEach((value) => value.setVisible(true));
+        this.hint.setVisible(true);
+    }
+
+    clear_hint() {
+        this.speech_bubble.forEach((value) => value.setVisible(false));
+        this.hint.setVisible(false);
+    }
+
     add_edge(edge: Edge) {
         this.edges.push(edge);
     }
@@ -381,6 +469,8 @@ export class World_Controller {
         container.add(this.world);
         container.add(this.circle);
         container.add(this.hover_ellipse);
+        container.add(this.speech_bubble);
+        container.add(this.hint);
         container.add(this.index_text);
     }
 
@@ -424,6 +514,12 @@ export class World_Controller {
             for(let i=0; i<atom_sprites.length; i++) {
                 atom_sprites[i].setDisplaySize(ICON_WIDTH + 10, ICON_WIDTH + 10); // TODO: +10 or +5 ?
             }
+
+            if(this.graph_graphics.get_mode() == Graph_Graphics_Mode.Might_World_Choice) {
+                this.graph_graphics.set_might_hints(this.index);
+            } /* else if(this.graph_graphics.get_mode() == Graph_Graphics_Mode.Would_World_Choice) {
+                this.graph_graphics.set_would_hints(this.index);
+            } */
         });
 
         this.hover_ellipse.on('pointerout', () => {
@@ -437,6 +533,10 @@ export class World_Controller {
             let atom_sprites = (graphics_controller.get_mode() == Game_Graphics_Mode.Formula || is_world_choice(graphics_controller.get_mode())) ? graphics_controller.get_formula_graphics().get_formula().get_atoms(this.atoms) : graphics_controller.get_choice_controller().get_atoms(this.atoms);
             for(let i=0; i<atom_sprites.length; i++) {
                 atom_sprites[i].setDisplaySize(ICON_WIDTH, ICON_WIDTH);
+            }
+
+            if(this.graph_graphics.get_mode() == Graph_Graphics_Mode.Might_World_Choice) {
+                this.graph_graphics.clear_hints();
             }
         });
     }

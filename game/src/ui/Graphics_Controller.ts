@@ -203,8 +203,15 @@ export class Graphics_Controller {
         this.idle(this.formula.animate(applied.get_formula(), move.get_name()));
         this.sup_panel.animate(move);
 
-        (applied.get_mode() == State_Mode.Counterfactual) ? this.graph_graphics.set_delim_world(applied.get_delim_world().index) : this.graph_graphics.clear_delim_world();
+        if(applied.get_mode() == State_Mode.Counterfactual) {
+            this.graph_graphics.set_delim_world(applied.get_delim_world().index);
+        } else {
+            this.graph_graphics.clear_delim_world();
+            this.graph_graphics.clear_hints();
+        }
+        // TODO: Something wonky is going on with radius, sometimes get_raius return infinity, though the game_states radius property is 2
         this.graph_graphics.set_sphere(applied.get_current_world().index, (applied.has_radius()) ? applied.get_radius() : undefined);
+        if(move.get_name() == Rules.Attacker_Would_Sphere_Selection) { this.graph_graphics.set_would_hints(delim_world!); }
     }
 
     transition_mode(mode: Game_Graphics_Mode) {
@@ -298,12 +305,20 @@ export class Graphics_Controller {
                 break;
             case Game_Graphics_Mode.Possibility_World_Choice:
             case Game_Graphics_Mode.Necessity_World_Choice:
+                this.formula.setVisible(true);
+                this.choice.set_visible(false);
+                this.graph_graphics.set_mode(Graph_Graphics_Mode.World_Choice);
+                break;
             case Game_Graphics_Mode.Sphere_Selection:
+                this.formula.setVisible(true);
+                this.choice.set_visible(false);
+                this.graph_graphics.set_mode(Graph_Graphics_Mode.Might_World_Choice);
+                break;
             case Game_Graphics_Mode.Counterfactual_World_Choice:
             case Game_Graphics_Mode.Vacuous_World_Choice:
                 this.formula.setVisible(true);
                 this.choice.set_visible(false);
-                this.graph_graphics.set_mode(Graph_Graphics_Mode.World_Choice);
+                this.graph_graphics.set_mode(Graph_Graphics_Mode.Would_World_Choice);
                 break;
         }
     }

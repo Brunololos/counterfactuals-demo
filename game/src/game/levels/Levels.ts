@@ -207,11 +207,12 @@ atoms = [
 worlds = [get(atoms, [3]), get(atoms, [2]), get(atoms, [0, 2]), get(atoms, [3]), get(atoms, [2, 3, 4])];
 world_positions = [[0, 0], [175, 0], [-50, 135], [75, -100], [-50, -150]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3]/* , [1, 2, 1], [2, 4, 3], [3, 1, 2], [3, 4, 1] */];
-text = "Um den Schaden der aufgedeckten Sicherheitslücke einzudämmen hast du ein Protokoll geschrieben,\n"
-     + "welches dir die Möglichkeit gibt die Sprungreichweite des Parallelweltenantriebs vor Übernahme durch deinen Kopiloten auf die Distanz zu einer Zielwelt zu begrenzen.\n"
+text = "Um den Schaden der aufgedeckten Sicherheitslücke einzudämmen hast du ein Protokoll geschrieben, "
+     + "welches dir die Möglichkeit gibt\ndie Sprungreichweite des Parallelweltenantriebs vor Übernahme durch deinen Kopiloten auf die Distanz zu einer Zielwelt zu begrenzen.\n"
      + "Die für einen Sprung benötigte Energie wird im Piloteninterface neben den Sprungkorridoren angezeigt.\n"
-     + "Mit seinen erweiterten Zugriffsfähigkeiten, kann dein Kopilot in der Folge entweder zu der durch dich ausgewählten Zielwelt springen\n"
-     + "oder zu einer näheren Welt springen und einen Schichtwechsel in den Boardcomputer eintragen.";
+     + "Mit seinen erweiterten Zugriffsfähigkeiten kann dein Kopilot in der Folge entweder zu der durch dich ausgewählten Zielwelt springen\n"
+     + "oder zu einer näheren Welt springen und einen Schichtwechsel in den Boardcomputer eintragen. "
+     + "Die Abänderung des Handlungsplans wird an den erreichbaren Welten angezeigt";
 text_icon_keys = ["cf_might"];
 
 levellist.push(Level.create("Jump Scramble"/* "Cf_Might" */, "Res", "A ⩽⩾-> C", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
@@ -233,7 +234,7 @@ atoms = [
 worlds = [[], [atoms[1]], get(atoms, [0, 1]), [atoms[0]]];
 world_positions = [[0, 0], [-50, -150], [-100, 100], [200, 50]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 1], [0, 2, 2], [0, 3, 3]];
-text = "Counterfactual";
+text = "Unglücklicherweise ist es deinem Kopiloten gelungen deinen Sprunglimitierungsmechanismus gegen dich einzusetzen. Nun kannst du nur noch zu der von ihm ausgewählten oder näheren Welt springen.";
 text_icon_keys = ["cf_would"];
 
 levellist.push(Level.create("Limiting Copilot"/* "Counterfactual 1" */, "Res", "A |_|-> B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));

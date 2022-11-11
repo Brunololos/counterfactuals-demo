@@ -146,4 +146,8 @@ export default class Game_Scene extends Base_Scene {
     return this.level;
   }
 
+  get_state(): Game_State {
+    return this.game_controller.get_state();
+  }
+
 }
