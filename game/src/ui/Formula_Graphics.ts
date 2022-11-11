@@ -37,11 +37,12 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("atom", "assets/Atom.png");
         scene.load.image("glow", "assets/Glow.png");
         scene.load.image("negation", "assets/Negation.png");
-        scene.load.image("necessity", "assets/Necessity.png");
-        scene.load.image("possibility", "assets/Possibility.png");
-        scene.load.image("conjunction", "assets/AND.png");
+        scene.load.image("possibility", "assets/Possibility_Basic.png");
+        scene.load.image("necessity", "assets/Necessity_Basic.png");
+        
         //scene.load.image("disjunction", "assets/Disjunction.png");
         scene.load.image("disjunction", "assets/OR.png");
+        scene.load.image("conjunction", "assets/AND.png");
         scene.load.image("cf_would", "assets/Cf_Would.png");
         scene.load.image("cf_might", "assets/Cf_Might.png");
 
@@ -57,7 +58,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     static configure_sprites(scene: Phaser.Scene) {
         if(scene.textures.getTextureKeys().includes("fill_open_0")) { return; }
         //let atom_colors = [0xF5C92A, 0x27577F, 0xFF577F, 0x27571B, 0xD3402A]; // TODO: make colors pop more like 0xFF577F,
-        let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xFF577F, 0xA2B5BB, 0x47B5FF/* , 0x84513D */];
+        let atom_colors = [0xFFCB42, 0x42855B, 0x533483, /* 0xFF577F */0xFF4842, 0xA2B5BB, 0x47B5FF/* , 0x84513D */, 0xFF8118, 0x2766FA]; // TODO: Fix wrong atom color
         //let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xA2B5BB, 0xFF8FB1, 0x47B5FF, 0x84513D];
         for(let i=0; i<NUM_RECOLORS; i++) {
             duplicate_texture(scene, "fill_open", "fill_open_"+(i).toString());
@@ -67,6 +68,8 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
             duplicate_texture(scene, "atom", "atom_"+(i).toString());
             dye_texture(scene, "atom_"+(i).toString(), atom_colors[i]);
         }
+        /* duplicate_texture(scene, "possibility", "necessity")
+        dye_texture(scene, "necessity", 0xdd3d3d) */
     }
 
     animate_transition(transition: [Game_Graphics_Mode, Game_Graphics_Mode]): number {
@@ -280,9 +283,12 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     scale_recursive(s: number): void {
+        this.setX(this.x * s);
         this.setScale(this.scaleX * s, this.scaleY * s);
         for(let i=0; i<this.brackets.length; i++) {
-            this.brackets[i].setScale(this.brackets[i].texture.key == "bracket_compact" ? this.brackets[i].scaleX * s : this.brackets[i].scaleX, this.brackets[i].scaleY * s);
+            this.brackets[i].setX(this.brackets[i].x * s);
+            //this.brackets[i].setScale(this.brackets[i].texture.key == "bracket_compact" ? this.brackets[i].scaleX * s : this.brackets[i].scaleX, this.brackets[i].scaleY * s);
+            this.brackets[i].setScale(this.brackets[i].scaleX * s, this.brackets[i].scaleY * s);
         }
         this.antecedent.scale_recursive(s);
         this.consequent.scale_recursive(s);
@@ -295,7 +301,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     get_width(): number {
-        return ICON_WIDTH + this.antecedent.get_width() + this.consequent.get_width() + 2*BRACKET_WIDTH;
+        return ICON_WIDTH*this.scaleX + this.antecedent.get_width() + this.consequent.get_width() + 2*BRACKET_WIDTH*this.scaleX;
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -372,9 +378,12 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     scale_recursive(s: number): void {
+        this.setX(this.x * s);
         this.setScale(this.scaleX * s, this.scaleY * s);
         for(let i=0; i<this.brackets.length; i++) {
-            this.brackets[i].setScale(this.brackets[i].texture.key == "bracket_compact" ? this.brackets[i].scaleX * s : this.brackets[i].scaleX, this.brackets[i].scaleY * s);
+            this.brackets[i].setX(this.brackets[i].x * s);
+            //this.brackets[i].setScale(this.brackets[i].texture.key == "bracket_compact" ? this.brackets[i].scaleX * s : this.brackets[i].scaleX, this.brackets[i].scaleY * s);
+            this.brackets[i].setScale(this.brackets[i].scaleX * s, this.brackets[i].scaleY * s);
         }
         this.antecedent.scale_recursive(s);
         this.consequent.scale_recursive(s);
@@ -387,7 +396,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     get_width(): number {
-        return ICON_WIDTH + this.antecedent.get_width() + this.consequent.get_width() + 2*BRACKET_WIDTH;
+        return ICON_WIDTH*this.scaleX + this.antecedent.get_width() + this.consequent.get_width() + 2*BRACKET_WIDTH*this.scaleX;
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -465,9 +474,12 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     scale_recursive(s: number): void {
+        this.setX(this.x * s);
         this.setScale(this.scaleX * s, this.scaleY * s);
         for(let i=0; i<this.brackets.length; i++) {
-            this.brackets[i].setScale(this.brackets[i].texture.key == "bracket_compact" ? this.brackets[i].scaleX * s : this.brackets[i].scaleX, this.brackets[i].scaleY * s);
+            this.brackets[i].setX(this.brackets[i].x * s);
+            //this.brackets[i].setScale(this.brackets[i].texture.key == "bracket_compact" ? this.brackets[i].scaleX * s : this.brackets[i].scaleX, this.brackets[i].scaleY * s);
+            this.brackets[i].setScale(this.brackets[i].scaleX * s, this.brackets[i].scaleY * s);
         }
         this.subject1.scale_recursive(s);
         this.subject2.scale_recursive(s);
@@ -480,7 +492,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     get_width(): number {
-        return DISJ_WIDTH + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH;
+        return DISJ_WIDTH*this.scaleX + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH*this.scaleX;
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -558,9 +570,12 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     scale_recursive(s: number): void {
+        this.setX(this.x * s);
         this.setScale(this.scaleX * s, this.scaleY * s);
         for(let i=0; i<this.brackets.length; i++) {
-            this.brackets[i].setScale(this.brackets[i].texture.key == "bracket_compact" ? this.brackets[i].scaleX * s : this.brackets[i].scaleX, this.brackets[i].scaleY * s);
+            this.brackets[i].setX(this.brackets[i].x * s);
+            //this.brackets[i].setScale(this.brackets[i].texture.key == "bracket_compact" ? this.brackets[i].scaleX * s : this.brackets[i].scaleX, this.brackets[i].scaleY * s);
+            this.brackets[i].setScale(this.brackets[i].scaleX * s, this.brackets[i].scaleY * s);
         }
         this.subject1.scale_recursive(s);
         this.subject2.scale_recursive(s);
@@ -573,7 +588,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     get_width(): number {
-        return CONJ_WIDTH + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH;
+        return CONJ_WIDTH*this.scaleX + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH*this.scaleX;
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -630,6 +645,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     scale_recursive(s: number): void {
+        this.setX(this.x * s);
         this.setScale(this.scaleX * s, this.scaleY * s);
         this.subject.scale_recursive(s);
     }
@@ -640,7 +656,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     get_width(): number {
-        return ICON_WIDTH + this.subject.get_width();
+        return ICON_WIDTH*this.scaleX + this.subject.get_width();
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -692,6 +708,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     scale_recursive(s: number): void {
+        this.setX(this.x * s);
         this.setScale(this.scaleX * s, this.scaleY * s);
         this.subject.scale_recursive(s);
     }
@@ -702,7 +719,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     get_width(): number {
-        return ICON_WIDTH + this.subject.get_width();
+        return ICON_WIDTH*this.scaleX + this.subject.get_width();
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -755,6 +772,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     scale_recursive(s: number): void {
+        this.setX(this.x * s);
         this.setScale(this.scaleX * s, this.scaleY * s);
         this.subject.scale_recursive(s);
     }
@@ -765,7 +783,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
     }
 
     get_width(): number {
-        return ICON_WIDTH + this.subject.get_width();
+        return ICON_WIDTH*this.scaleX + this.subject.get_width();
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -813,6 +831,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
     }
 
     scale_recursive(s: number): void {
+        this.setX(this.x * s);
         this.setScale(this.scaleX * s, this.scaleY * s);
     }
 
@@ -821,7 +840,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
     }
 
     get_width(): number {
-        return ICON_WIDTH;
+        return ICON_WIDTH*this.scaleX;
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -864,6 +883,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
     }
 
     scale_recursive(s: number): void {
+        this.setX(this.x * s);
         this.setScale(this.scaleX * s, this.scaleY * s);
     }
 
@@ -872,7 +892,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
     }
 
     get_width(): number {
-        return ICON_WIDTH;
+        return ICON_WIDTH*this.scaleX;
     }
 
     get_atoms(): Formula_Graphics_Element[] {
@@ -915,6 +935,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
     }
 
     scale_recursive(s: number): void {
+        this.setX(this.x * s);
         this.setScale(this.scaleX * s, this.scaleY * s);
     }
 
@@ -923,7 +944,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
     }
 
     get_width(): number {
-        return ICON_WIDTH;
+        return ICON_WIDTH*this.scaleX;
     }
 
     get_atoms(): Formula_Graphics_Element[] {

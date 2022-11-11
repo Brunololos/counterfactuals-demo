@@ -331,6 +331,14 @@ export function create_shape_geometry_mask(scene: Base_Scene, x: number, y: numb
   return graphics.createGeometryMask();
 }
 
+export function linebreaks(text: string): number {
+  let n = 0;
+  for(let i=0; i<text.length; i++) {
+    if(text[i] == '\n') { n++; }
+  }
+  return n;
+}
+
 export function describe_move(move: Rule): string {
   switch(move.get_name()) {
     // TODO: need a special description for jumping in place

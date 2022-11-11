@@ -230,6 +230,8 @@ export class Choice {
         this.option1_box.setY(h-100);
         this.option2.setY(h-100);
         this.option2_box.setY(h-100);
+
+        // TODO: Resize issues
     }
 
     set_visible(visible: boolean) {
@@ -264,7 +266,7 @@ export class Choice {
         return this.or;
     }
 
-    get_option_boxes(): Phaser.GameObjects.Rectangle[] {
+    get_option_boxes(): Phaser.GameObjects.Sprite[] {
         return [this.option1_box, this.option2_box];
     }
 

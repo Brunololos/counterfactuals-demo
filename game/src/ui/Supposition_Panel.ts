@@ -46,6 +46,59 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         this.knob.setMask(mask);
 
         this.tween_dummy = new Phaser.GameObjects.Sprite(scene, 0, 0, "dot").setVisible(false);
+
+
+        /* var postFxPlugin = this.scene.rexGlowFilterPipeline;
+        let gameObject = this.panel;
+
+        gameObject
+            .setInteractive()
+            .on('pointerover', function () {
+
+            // Add postfx pipeline
+            var pipeline = postFxPlugin.add(gameObject);
+            gameObject.glowTask = gameObject.scene.tweens.add({
+                targets: pipeline,
+                intensity: 0.02,
+                ease: 'Quart.Out',
+                duration: 1000,
+                repeat: -1,
+                yoyo: true
+            });
+        }) */
+        // TODO: Glow effects
+        /* var postFxPlugin = this.scene.rexGlowFilterPipeline;
+        let gameObject = this.panel;
+
+        // Add postfx pipeline
+        var pipeline = postFxPlugin.add(gameObject);
+        let timeline = this.scene.tweens.createTimeline({
+            loop: -1
+        });
+        timeline.add({
+            targets: pipeline,
+            intensity: 0.02,
+            ease: 'Quart.In',
+            duration: 750,
+            repeat: 0,
+            yoyo: false
+        });
+        timeline.add({
+            targets: pipeline,
+            intensity: 0,
+            ease: 'Quart.Out',
+            duration: 750,
+            repeat: 0,
+            yoyo: false
+        });
+
+
+        gameObject
+            .setInteractive()
+            .on('pointerover', function () {
+            gameObject.glowTask = timeline;
+            timeline.play();
+        }) */
     }
 
     /**

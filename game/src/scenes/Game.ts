@@ -9,6 +9,7 @@ import { Game_Graphics_Mode } from '../util/UI_Utils';
 import Base_Scene from '../util/Base_Scene';
 import { Level, Level_State } from '../game/levels/Level';
 import { levels } from '../game/levels/Levels';
+import { Rule_Graphics } from '../ui/Rule_Graphics';
 
 export default class Game_Scene extends Base_Scene {
 

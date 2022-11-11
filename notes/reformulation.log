@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  3 NOV 2022 13:28
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  4 NOV 2022 19:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**design.tex
-(./design.tex
+**reformulation.tex
+(./reformulation.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-05-04>
 (c:/texlive/2022/texmf-dist/tex/latex/paper/paper.cls
@@ -59,6 +59,11 @@ Package babel Info: Hyphen rules for 'newzealand' set to \l@ukenglish
 )))
 (c:/texlive/2022/texmf-dist/tex/latex/base/textcomp.sty
 Package: textcomp 2020/02/02 v2.0n Standard LaTeX package
+)
+(c:/texlive/2022/texmf-dist/tex/latex/amsfonts/euscript.sty
+Package: euscript 2009/06/22 v3.00 Euler Script fonts
+LaTeX Font Info:    Overwriting math alphabet `\EuScript' in version `bold'
+(Font)                  U/eus/m/n --> U/eus/b/n on input line 33.
 )
 (c:/texlive/2022/texmf-dist/tex/latex/amsmath/amsmath.sty
 Package: amsmath 2021/10/15 v2.17l AMS math features
@@ -822,7 +827,7 @@ Package: float 2001/11/08 v1.3d Float enhancements (AL)
 (c:/texlive/2022/texmf-dist/tex/latex/needspace/needspace.sty
 Package: needspace 2010/09/12 v1.3d reserve vertical space
 )
-LaTeX Font Info:    Trying to load font information for T1+pxr on input line 27
+LaTeX Font Info:    Trying to load font information for T1+pxr on input line 28
 .
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxr.fd
@@ -833,55 +838,55 @@ File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count318
 \l__pdf_internal_box=\box65
 )
-(./design.aux
+(./reformulation.aux
 
-LaTeX Warning: Label `fig:rules' multiply defined.
+LaTeX Warning: Label `fig:neg_rules' multiply defined.
 
 )
-\openout1 = `design.aux'.
+\openout1 = `reformulation.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 27.
+LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 28.
 LaTeX Font Info:    Trying to load font information for OML+pxmi on input line 
-27.
+28.
  (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omlpxmi.fd
 File: omlpxmi.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 28.
 LaTeX Font Info:    Trying to load font information for OMS+pxsy on input line 
-27.
+28.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omspxsy.fd
 File: omspxsy.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 28.
 LaTeX Font Info:    Trying to load font information for OMX+pxex on input line 
-27.
+28.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omxpxex.fd
 File: omxpxex.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 27.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 28.
 LaTeX Font Info:    Trying to load font information for U+pxexa on input line 2
-7.
+8.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxexa.fd
 File: upxexa.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-Package hyperref Info: Link coloring OFF on input line 27.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 28.
+LaTeX Font Info:    ... okay on input line 28.
+Package hyperref Info: Link coloring OFF on input line 28.
 
 (c:/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -894,13 +899,13 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count319
 )
-LaTeX Info: Redefining \ref on input line 27.
-LaTeX Info: Redefining \pageref on input line 27.
-LaTeX Info: Redefining \nameref on input line 27.
+LaTeX Info: Redefining \ref on input line 28.
+LaTeX Info: Redefining \pageref on input line 28.
+LaTeX Info: Redefining \nameref on input line 28.
 
-(./design.out) (./design.out)
+(./reformulation.out) (./reformulation.out)
 \@outlinefile=\write4
-\openout4 = `design.out'.
+\openout4 = `reformulation.out'.
 
 
 (c:/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -925,171 +930,170 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Trying to load font information for T1+pxss on input line 4
-9.
+LaTeX Font Info:    Trying to load font information for T1+pxss on input line 5
+0.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxss.fd
 File: t1pxss.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 49.
-LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 4
-9.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 50.
+LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 5
+0.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/ot1pxr.fd
 File: ot1pxr.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxmia on input line 4
-9.
+LaTeX Font Info:    Trying to load font information for U+pxmia on input line 5
+0.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxmia.fd
 File: upxmia.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsya on input line 4
-9.
+LaTeX Font Info:    Trying to load font information for U+pxsya on input line 5
+0.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsya.fd
 File: upxsya.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 4
-9.
+LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 5
+0.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyb.fd
 File: utxsyb.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 4
-9.
+LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 5
+0.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyc.fd
 File: upxsyc.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for T1+pxtt on input line 4
-9.
+LaTeX Font Info:    Trying to load font information for T1+pxtt on input line 5
+0.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxtt.fd
 File: t1pxtt.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <10> not available
-(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 49.
+(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 50.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 50.
-
-Underfull \hbox (badness 10000) in paragraph at lines 51--68
-
- []
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 51.
+ [1
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 51--68
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 51--68
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 51--68
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 51--68
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 51--68
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 51--68
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 51--68
-
- []
-
-[1
-
-
-{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 70--73
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 70--73
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 78--83
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 78--83
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 78--83
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 78--83
-
- []
-
-[2] [3] [4
+{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.239 
-      ] [5
+l.124 	T
+        he negation is resolved by switching the active player.]
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 145--146
+
+ []
+
+[3
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.240 \end{document}
-                    ] (./design.aux)
+l.188 \end{figure}
+                  
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.188 \end{figure}
+                  
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.188 \end{figure}
+                  ]
+Underfull \hbox (badness 10000) in paragraph at lines 191--196
+
+ []
+
+[4
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.222 \end{figure}
+                  ]
+Underfull \hbox (badness 10000) in paragraph at lines 223--225
+
+ []
+
+[5
+pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.227 	\newpage
+               ]
+LaTeX Font Info:    Trying to load font information for U+eus on input line 254
+.
+ (c:/texlive/2022/texmf-dist/tex/latex/amsfonts/ueus.fd
+File: ueus.fd 2013/01/14 v3.01 Euler Script
+)
+[6
+pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.260 \end{document}
+                    
+pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.260 \end{document}
+                    
+pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) ha
+s been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.260 \end{document}
+                    ] (./reformulation.aux)
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package rerunfilecheck Info: File `design.out' has not changed.
+Package rerunfilecheck Info: File `reformulation.out' has not changed.
 (rerunfilecheck)             Checksum: D00E12839466E5B0B1E1CFD3F2F062F5;990.
  ) 
 Here is how much of TeX's memory you used:
- 23929 strings out of 478300
- 442016 string characters out of 5849124
- 711283 words of memory out of 5000000
- 41595 multiletter control sequences out of 15000+600000
- 527140 words of font info for 149 fonts, out of 8000000 for 9000
+ 23977 strings out of 478300
+ 443257 string characters out of 5849124
+ 710800 words of memory out of 5000000
+ 41638 multiletter control sequences out of 15000+600000
+ 527740 words of font info for 152 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 100i,13n,104p,432b,345s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,14n,104p,603b,366s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
-f-dist/fonts/type1/public/pxfonts/pxsy.pfb><c:/texlive/2022/texmf-dist/fonts/ty
-pe1/public/pxfonts/pxsya.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxf
-onts/pxsyb.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/pxsyc.pfb
-><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxb.pfb><c:/texlive/20
-22/texmf-dist/fonts/type1/public/pxfonts/rpxmi.pfb><c:/texlive/2022/texmf-dist/
-fonts/type1/public/pxfonts/rpxr.pfb><c:/texlive/2022/texmf-dist/fonts/type1/pub
-lic/txfonts/t1xtt.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvb
-8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texl
-ive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-
-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type
-1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/
-uplri8a.pfb>
-Output written on design.pdf (5 pages, 109393 bytes).
+f-dist/fonts/type1/public/amsfonts/euler/eusm10.pfb><c:/texlive/2022/texmf-dist
+/fonts/type1/public/pxfonts/pxex.pfb><c:/texlive/2022/texmf-dist/fonts/type1/pu
+blic/pxfonts/pxsy.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/px
+sya.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/pxsyb.pfb><c:/te
+xlive/2022/texmf-dist/fonts/type1/public/pxfonts/pxsyc.pfb><c:/texlive/2022/tex
+mf-dist/fonts/type1/public/pxfonts/rpxb.pfb><c:/texlive/2022/texmf-dist/fonts/t
+ype1/public/pxfonts/rpxmi.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/px
+fonts/rpxr.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb
+><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/20
+22/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/f
+onts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/
+palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a
+.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
+Output written on reformulation.pdf (6 pages, 122083 bytes).
 PDF statistics:
- 190 PDF objects out of 1000 (max. 8388607)
- 153 compressed objects within 2 object streams
- 57 named destinations out of 1000 (max. 500000)
+ 198 PDF objects out of 1000 (max. 8388607)
+ 156 compressed objects within 2 object streams
+ 52 named destinations out of 1000 (max. 500000)
  69 words of extra memory for PDF output out of 10000 (max. 10000000)
 

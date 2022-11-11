@@ -1,0 +1,260 @@
+\documentclass[a4paper,american]{paper}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\pagestyle{plain}
+\usepackage{babel}
+\usepackage{textcomp}
+\usepackage[mathscr]{euscript}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{setspace}
+\usepackage[unicode=true]{hyperref}
+\usepackage{breakurl}
+\usepackage{txfonts}
+\usepackage{pxfonts}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{tkz-graph}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{needspace}
+
+\graphicspath{ {./images/} }
+
+\makeatletter
+\providecommand*{\code}[1]{\texttt{#1}}
+\makeatother
+
+\begin{document}
+
+\title{An interactive demonstration of counterfactual truth conditions%
+	\footnote{Further title proposals:
+		(B) Creating an educational computer game about counterfactuals in terms of a centered system of spheres
+		(C) Implementing a computer game illustrating the truth conditions of counterfactuals as variably strict conditionals
+	}
+}
+
+\subtitle{Proposal for a Bachelor Thesis (v0.5, 3 August 2022)}
+
+\author{%
+	Andreas Paul Bruno Lönne\\
+	\code{\href{mailto:loenne@campus.tu-berlin.de}{loenne@campus.tu-berlin.de}}
+}
+
+\institution{
+	Technische Universität Berlin\\discourse
+	Degree program: Bachelor Informatik / Computer Science
+}
+
+\maketitle
+
+\section*{Definitions}
+\subsection{Counterfactual formulas}
+$Atoms = \{x,y,...\}$
+
+$\Phi = \{\varphi, \psi,... \}$
+
+$\varphi, \psi ::= \bot \mid x \mid \neg \varphi \mid \Box \varphi \mid \Diamond \varphi \mid \varphi \vee \psi \mid \varphi \wedge \psi \mid \varphi \boxright \psi \mid \varphi \Diamondright \psi$
+
+\subsection{Worlds}
+$W = \{w,v,...\}$
+
+\subsection{Facts}
+$F \colon W \rightarrow 2^{Atoms}$
+
+\subsection{Similarity relation}
+$\leadsto \colon W\times \mathbb{R} \times W$
+
+\subsection{Accessible worlds}
+$W_w = \{w'\mid w \overset{r}{\leadsto} w'\}$
+
+\newpage
+\subsection{Truth conditions of counterfactual logic}
+$w \vDash \bot$ is always false. \\
+$w \vDash \top$ is always true. \\
+$w \vDash x$ iff $x \in V(w)$. \\
+$w \vDash \neg \varphi$ iff $w \nvDash \varphi$. \\
+$w \vDash \varphi \vee \psi$ iff $(w \vDash \varphi$ or $w \vDash \psi)$ \\
+$w \vDash \varphi \wedge \psi$ iff $(w \vDash \varphi$ and $w \vDash \psi)$ \\
+$w \vDash \Box \varphi$ iff for every world $w'$, for which an $r$ with $w\overset{r}{\leadsto} w'$ exists, $w' \vDash \varphi$ holds true. \\
+$w \vDash \Diamond \varphi$ iff a world $w'$ and an $r$ exist, such that $w\overset{r}{\leadsto} w'$ and $w' \vDash \varphi$ hold true. \\
+$w \vDash \varphi \boxright \psi$, if no world $w'$ and $r$ exist, such that $w' \vDash \varphi$ and $w\overset{r}{\leadsto} w'$. \\
+$w \vDash \varphi \boxright \psi$, if a world $w'$ and an $r$ exist, such that $w'\vDash \varphi$ and $w\overset{r}{\leadsto} w'$ and for each world $w*$, for which a $r*\leq r$ exists, such that $w\overset{r*}{\leadsto} w*$, $w*\vDash\psi\vee\neg\varphi$ holds true. \\
+$w \vDash \varphi \Diamondright \psi$, iff a world $w'$ and an $r$ exist, such that $w\overset{r}{\leadsto} w'$ and $w' \vDash \varphi$ hold and for each world $w''$, for which an $r''$ exists, such that $w\overset{r''}{\leadsto}w''$ and $w'' \vDash \varphi$ hold true, a world $w*$ and an $r*$ exist, such that $r* \leq r''$ and $w\overset{r''}{\leadsto}w''$ and $w'' \vDash \varphi \wedge \psi$.
+\subsection{Similarity graph}
+\begin{equation}
+	G = (V,E,F)\text{, such that }V \subseteq W\text{ and }E \subseteq \leadsto
+\end{equation}
+
+\section*{Rules of the semantic game}
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(\top ,w)_{a}\hspace{10pt}\text{Attacker wins}
+	\end{equation}
+	\begin{equation}
+		(\top ,w)_{d}\hspace{10pt}\text{Defender wins}
+	\end{equation}
+	\begin{equation}
+		(\bot ,w)_{a}\hspace{10pt}\text{Attacker loses}
+	\end{equation}
+	\begin{equation}
+		(\bot ,w)_{d}\hspace{10pt}\text{Defender loses}
+	\end{equation}
+	\caption{Win conditions}
+	\label{fig:win_rules}
+\end{figure}
+	The win conditions for attacker and defender are identical.
+	A player who reaches a top-symbol wins and a player who reaches a bottom symbol loses.
+	Since attacker and defender are treated equally in this game formulation i will introduce the shorthands $e\in\{ a, d\}$ and $o = \{ a, d\}\setminus{}e$ to avoid the duplication of every rule.
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(x,w)_{e}\xrightarrow{x\in F(w)}(\top ,w)_{e}
+	\end{equation}
+	\begin{equation}
+		(x,w)_{e}\xrightarrow{x\not\in F(w)}(\bot ,w)_{e}
+	\end{equation}
+	\begin{equation}
+		(\neg\varphi ,w)_{e}\rightarrow (\varphi ,w)_{o}
+	\end{equation}
+	\caption{Atom resolution \& Negation}
+	\label{fig:neg_rules}
+\end{figure}
+	The negation is resolved by switching the active player.
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(\varphi\vee\psi ,w)_e\rightarrow (\varphi ,w)_{e}
+	\end{equation}
+	\begin{equation}
+		(\varphi\vee\psi ,w)_e\rightarrow (\psi ,w)_{e}
+	\end{equation}
+	\begin{equation}
+		(\varphi\wedge\psi ,w)_e\rightarrow (And, \varphi\wedge\psi ,w)_{o}
+	\end{equation}
+	\begin{equation}
+		(And, \varphi\wedge\psi ,w)_e\rightarrow (\varphi ,w)_{o}
+	\end{equation}
+	\begin{equation}
+		(And, \varphi\wedge\psi ,w)_e\rightarrow (\psi ,w)_{o}
+	\end{equation}
+	\caption{Disjunction \& Conjunction}
+	\label{fig:neg_rules}
+\end{figure}
+	According to the disjunctions truth conditions the active-("proving")-player may choose which subformula to evaluate further. Conversely the conjunctions truth conditions are modelled by allowing the nonactive-("disproving")-player to make that choice instead. \\\\
+	
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(\Diamond\varphi ,w)_e\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{e}
+	\end{equation}
+	\begin{equation}
+		(\Diamond\varphi ,w)_e\rightarrow (\bot ,w)_{e}\text{,}
+	\end{equation}
+	if no world $w'$ and $r$ exist, such that $w\overset{r}{\leadsto}w'$.
+	\begin{equation}
+		(\Box\varphi ,w)_e\rightarrow (Nec,\Box\varphi ,w')_{o}
+	\end{equation}
+	\begin{equation}
+		(\Box\varphi ,w)_e\rightarrow (\top ,w)_{e}
+	\end{equation}
+	if no world $w'$ and $r$ exist, such that $w\overset{r}{\leadsto}w'$.
+	\begin{equation}
+		(Nec, \Box\varphi ,w)_e\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{o}
+	\end{equation}
+	\caption{Possibility \& Necessity}
+	\label{fig:modal_operator_rules}
+\end{figure}
+
+	Regarding the case that no world is accessible the modal possibility operator evaluates to false, since it stipulates the existence of a world. The necessity operator on the other hand only stipulates its subformula to hold at each accessible world and would thus be vacuously true.
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(\varphi\Diamondright\psi ,w)_e\xrightarrow{[w\overset{r}{\leadsto}w']} (Cf,\varphi\Diamondright\psi ,w,w',r)_o
+	\end{equation}
+	\begin{equation}
+		(\varphi\Diamondright\psi ,w)_e\rightarrow (\bot ,w)_e
+	\end{equation}
+	if no world $w'$ and $r$ exist, such that $w\overset{r}{\leadsto}w'$.
+	\begin{equation}
+		(Cf,\varphi\Diamondright\psi ,w,w',r)_e\xrightarrow{[w\overset{r^*}{\leadsto}w^*,r^*< r]} (\varphi ,w*)_o
+	\end{equation}
+	\begin{equation}
+		(Cf,\varphi\Diamondright\psi ,w,w',r)_e\rightarrow (\varphi\wedge\psi ,w')_o
+	\end{equation}
+	\caption{Counterfactual might}
+	\label{fig:counterfactual_might_rules}
+\end{figure}
+	The truth conditions of the counterfactual might operator are as described in figure~\ref{fig:counterfactual_might}.
+	
+	I have reduced Lewis' truth conditions to the existence of a $\varphi$ \& $\psi$-world among the closest $\varphi$-worlds. This is derived from Lewis' truth conditions as follows. \\
+	Suppose no $\varphi$-world is accessible from $w$, that is, no $r$ and $w'$ exist such that $w\overset{r}{\leadsto}w'$ and $w'\vDash\varphi$. Then it follows that no $r$ and $w'$ exist such that $w\overset{r}{\leadsto}w'$ and $w'\vDash\varphi\wedge\psi$. \\
+	Now suppose that a closest $\varphi$-world $w'$ to $w$ exists, that is, some $r$ and $w'$ exist such that $w\overset{r}{\leadsto}w'$ and $w'\vDash\varphi$ and no $r*$ and $w*$ exist such that $w\overset{r*}{\leadsto}w*$, $w*\vDash\varphi$ and $r*<r$. \\
+	Then if a $\varphi$ \& $\psi$-world $w''$ exists such that $w\overset{r}{\leadsto}w''$, $w''\vDash\varphi\wedge\psi$, $w''$ is included in every sphere $w'$ is included in. Since we supposed that $w'$ is the closest $\varphi$-world to $w$, we can conclude by the nesting property of centered systems of spheres, that the set of spheres centered on $w$, that contain $w'$, is the same set as the set of spheres centered on $w$, that contain at least one $\varphi$-world. Thus every sphere centered on $w$, that contains a $\varphi$-world also contains a $\varphi\wedge\psi$-world. \\
+	On the other hand if no $\varphi$ \& $\psi$-world $w''$ exists such that $w\overset{r}{\leadsto}w''$, $w''\vDash\varphi\wedge\psi$, then there simply exists the sphere delimited by $w'$ and centered on $w$, that contains at least a $phi$-world we named $w'$ and no $\varphi\wedge\psi$-world. \\
+	
+	Here just a few quick comments about the Rules: \\
+	Rule (20) makes the active-("proving")-player lose in case no worlds are accessible at all. \\
+	Rule (19) is the active players choice of a sphere of accessibility, by choosing a deliminating world. The deliminating world has to be a $\varphi\wedge\psi$-world and a closest $\varphi$-world to win the game.\\
+	Rule (21) gives the previous non-active-player the opportunity to disprove the chosen world is a closest $\varphi$-world. \\
+	Rule (22) lets the previous non-active-player evaluate the chosen world on whether it is a $\varphi\wedge\psi$-world.
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(\varphi\boxright\psi ,w)_e\rightarrow (Would,\varphi\boxright\psi ,w)_o
+	\end{equation}
+	\begin{equation}
+		(Would,\varphi\boxright\psi ,w)_e\rightarrow (\bot ,w)_e
+	\end{equation}
+	if no world $w'$ and $r$ exist, such that $w\overset{r}{\leadsto}w'$.
+	\begin{equation}
+		(Would,\varphi\boxright\psi ,w)_e\xrightarrow{[w\overset{r}{\leadsto}w']} (Cf,\varphi\boxright\psi ,w,w',r)_o
+	\end{equation}
+	\begin{equation}
+		(Cf,\varphi\boxright\psi ,w,w',r)_e\xrightarrow{[w\overset{r^*}{\leadsto}w^*,r^*< r]} (\varphi ,w*)_e
+	\end{equation}
+	\begin{equation}
+		(Cf,\varphi\boxright\psi ,w,w',r)_e\rightarrow (\neg\varphi\vee\psi ,w')_e
+	\end{equation}
+	\caption{Counterfactual would}
+	\label{fig:counterfactual_would_rules}
+\end{figure}
+	The rules for the counterfactual would are defined analogously to the counterfactual might rules and stated simplest by the question "Is no $\varphi$ \& $\neg\psi$-world among the closest $\varphi$-worlds?". \\
+	The non-active-("disproving")-player becomes active and has to choose a $\varphi$ \& $\neg\psi$-world, thats also a closest $\varphi$-world to win. Then the formerly active-("proving")-player becomes active once more and may choose to either contend that the chosen world is a closest $\varphi$-world (Rule (26)) or claim that the chosen world is not a $\varphi$ \& $\neg\psi$-world. \\
+
+	Note that the game is defined in a way to have the defender i.e. player always start as the active player and prove a formula. Should the defender not start as the active player their goal simply changes to disprove the formula instead of proving it.
+	\newpage
+\begin{figure}[H]
+	\centering
+	$\phi\Diamondright\psi$ is true at a world i (according to a system of spheres \$) if and only if both
+	\begin{itemize}
+	\item[(1)] some $\phi$-world belongs to some sphere $S$ in $\$_i$, and
+	\item[(2)] every sphere $S$ in $\$_i$ that contains at least one $\phi$-world contains at least one world where $\phi$ \& $\psi$ holds.
+	\end{itemize}
+	\caption{Lewis' counterfactual might truth conditions}
+	\label{fig:counterfactual_might}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	$\phi\boxright\psi$ is true at a world i (according to a system of spheres \$) if and only if either
+	\begin{itemize}
+	\item[(1)] no $\phi$-world belongs to any sphere $S$ in $\$_i$, or
+	\item[(2)] some sphere $S$ in $\$_i$ does contain at least one $\phi$-world, and $\phi\supset\psi$ holds at every world in $S$.
+	\end{itemize}
+	\caption{Lewis' counterfactual would truth conditions}
+	\label{fig:counterfactual_would}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	Let $\$$ be an assignment to each possible world $i$ of a set $\$_i$ of sets of possible worlds. Then $\$$ is called a (centered) system of spheres, and the members of each $\$_i$ are called spheres around $i$, if and only if, for each world $i$, the following conditions hold.
+	\begin{itemize}
+	\item[(C)] $\$_i$ is centered on $i$; that is, the set $\{i\}$ having $i$ as its only member belongs to $\$_i$.
+	\item[(1)] $\$_i$ is nested; that is, whenever $S$ and $T$ belong to $\$_i$, either $S$ is included in $T$ or $T$ is included in $S$.
+	\item[(2)] $\$_i$ is closed under unions; that is, whenever $\mathscr{S}$ is a subset of $\$_i$ and $\bigcup\mathscr{S}$ is the set of all worlds $j$ such that $j$ belongs to some member of $\mathscr{S}$, $\bigcup\mathscr{S}$ belongs to $\$_i$.
+	\item[(3)] $\$_i$ is closed under (nonempty) intersections; that is, whenever $\mathscr{S}$ is a nonempty subset of $\$_i$ and $\bigcap\mathscr{S}$ is the set of all worlds $j$ such that $j$ belongs to every member of $\mathscr{S}$, $\bigcap\mathscr{S}$ belongs to $\$_i$.
+	\end{itemize}
+	\caption{Lewis' (centered) system of spheres}
+	\label{fig:system_of_spheres}
+\end{figure}
+\end{document}

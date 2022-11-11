@@ -253,9 +253,9 @@
     "sourcemap-codec" "^1.4.4"
 
 "minimatch@^3.0.4":
-  "integrity" "sha512-yJHVQEhyqPLUTgt9B83PXu6W3rx4MvvHvSUvToogpwoGDOUQ+yDrR0HRot+yOCdCO7u4hX3pWft6kWBBcqh0UA=="
-  "resolved" "https://registry.npmjs.org/minimatch/-/minimatch-3.0.4.tgz"
-  "version" "3.0.4"
+  "integrity" "sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw=="
+  "resolved" "https://registry.npmjs.org/minimatch/-/minimatch-3.1.2.tgz"
+  "version" "3.1.2"
   dependencies:
     "brace-expansion" "^1.1.7"
 
@@ -317,10 +317,10 @@
     "eventemitter3" "^4.0.7"
     "path" "^0.12.7"
 
-"phaser3-rex-plugins@^1.1.73":
-  "integrity" "sha512-eMXzdflypPN3aW9/ZIAgVFb1WOSgOQ29ee69RUbNZOgHuJpMI78CXLEQ9Op3gtdQ3ITALd/i47W2WWGaSK5z6Q=="
-  "resolved" "https://registry.npmjs.org/phaser3-rex-plugins/-/phaser3-rex-plugins-1.1.73.tgz"
-  "version" "1.1.73"
+"phaser3-rex-plugins@^1.1.75":
+  "integrity" "sha512-r6F1xIWBZCHe1fr4WtQiglETvMBr8WeCFtq87UPszgl4f9nLjJ2uEKjFKX+YGk31O8/2ST097OpcYvIIeGUnrQ=="
+  "resolved" "https://registry.npmjs.org/phaser3-rex-plugins/-/phaser3-rex-plugins-1.1.75.tgz"
+  "version" "1.1.75"
   dependencies:
     "eventemitter3" "^3.1.2"
     "handlebars" "^4.7.7"

@@ -14,6 +14,7 @@ import Game_Scene from "../scenes/Game";
 import { Text_Animation } from "./animations/Text_Animations";
 import { levels } from "../game/levels/Levels";
 import { Text_Box_Controller } from "./Text_Box";
+import { Rules_Column } from "./Rules_Column";
 
 /**
  * A class governing the visual representation of the abstract game of counterfactuals
@@ -23,6 +24,8 @@ export class Graphics_Controller {
     private background: Phaser.GameObjects.Sprite;
     private stars: Phaser.GameObjects.Container;
     private back;
+    private help;
+    private rules_column: Rules_Column;
     private text_box;
     private sup_panel;
     private graph_graphics: Graph_Graphics;
@@ -52,7 +55,10 @@ export class Graphics_Controller {
         this.stars = this.create_stars(scene, w, h);
         this.back = this.create_back(scene, 25, 30);
 
+        this.rules_column = new Rules_Column(scene, w-180, 0, state.get_formula().to_string());
         this.text_box = new Text_Box_Controller(scene, w/2, h-250, 500, 55, levels[level].description, levels[level].icon_keys);
+        this.help = this.create_help(scene, w-35, 30, this.rules_column, this.text_box);
+
         this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms());
         this.choice = new Choice(scene, state);
         this.sup_panel = new Supposition_Panel(scene, w/2, h - 110, [this.formula, this.choice.get_option_graphic(0), this.choice.get_option_graphic(1), this.choice.get_option_boxes()[0], this.choice.get_option_boxes()[1]]);
@@ -64,13 +70,17 @@ export class Graphics_Controller {
         scene.add.existing(this.background);
         scene.add.existing(this.stars);
 
+        scene.children.add(this.graph_graphics);
+
         scene.add.existing(this.back);
+        scene.add.existing(this.help);
+        this.rules_column.add_to_scene();
 
         scene.children.add(this.sup_panel);
-        scene.children.add(this.graph_graphics);
         scene.children.add(this.formula);
         this.choice.add_to_scene();
 
+        this.rules_column.set_visible(false);
         this.set_mode(Game_Graphics_Mode.Formula);
         this.choice.set_visible(false);
     }
@@ -394,6 +404,46 @@ export class Graphics_Controller {
         return buttons;
     }
 
+    private create_help(scene: Base_Scene, x, y, rules_column: Rules_Column, text_box: Text_Box_Controller) {
+        var button = scene.rexUI.add.label({
+            width: 60,
+            height: 60,
+
+            orientation: 0,
+
+            icon: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "help_icon").setDisplaySize(40, 40).setAlpha(0.6)),
+
+            space: {
+                icon: 10,
+                left: 15,
+                right: 0,
+                top: 0,
+                bottom: 0,
+            }
+        }).layout();
+
+        var buttons = scene.rexUI.add.buttons({
+            x: x,
+            y: y,
+            buttons: [],
+        })
+        .addButton(button)
+        .layout();
+
+        buttons.on('button.over', function(button, index, pointer, event) {
+            button.getElement('icon').setAlpha(1);
+            //text_box.deactivate();
+            rules_column.set_visible(true);
+        })
+        buttons.on('button.out', function(button, index, pointer, event) {
+            button.getElement('icon').setAlpha(0.6);
+            //text_box.activate();
+            rules_column.set_visible(false);
+        })
+
+        return buttons;
+    }
+
     private create_vacuous(scene, label, x, y) {
         var button = scene.rexUI.add.label({
             width: 120,
@@ -479,6 +529,7 @@ export class Graphics_Controller {
     static load_sprites(scene: Phaser.Scene) {
         Graph_Graphics.load_sprites(scene);
         Formula_Graphics.load_sprites(scene);
+        Rules_Column.load_sprites(scene);
         Text_Box_Controller.load_sprites(scene);
         Choice.load_sprites(scene);
         Supposition_Panel.load_sprites(scene);
@@ -499,6 +550,8 @@ export class Graphics_Controller {
         scene.load.image("back_fill", "assets/Slant_Right_Fill.png");
         scene.load.image("chunk", "assets/Small_Chunk.png");
         scene.load.image("chunk_hover", "assets/Small_Chunk_Hover.png");
+
+        scene.load.image("help_icon", "assets/Help_Icon.png");
     }
 
     static configure_sprites(scene: Phaser.Scene) {

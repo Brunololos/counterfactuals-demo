@@ -23,7 +23,8 @@ text = "Du und dein Kopilot seid mit der wichtigen Mission betraut eine zweite E
      + "welcher Sprünge zu anderen Versionen der Erde ermöglicht.\n"
      + "Da diese Technologie noch gefährlich und unerprobt ist hat euer Boardcomputer eine Abfolge von Handlungsanweisungen berechnet, " /* Flugplan */
     
-     + "mittels welcher eine neue Erde sicher erreichbar ist.\n\n\n"
+     + "mittels welcher eine neue Erde sicher erreichbar ist.\n"
+     + "Zusätzlich zeigt euch der Boardcomputer in der Kopfzeile darüber eure aktuelle Aufgabe und den aktiven Piloten an.\n"
 
      + "Du und dein Kopilot könnt es kaum erwarten und wollt beide der erste Mensch sein, "
      + "der auf der neuen Welt landet und einen großen Schritt für die Menschheit macht.\n"
@@ -205,7 +206,7 @@ atoms = [
 ];
 worlds = [get(atoms, [3]), get(atoms, [2]), get(atoms, [0, 2]), get(atoms, [3]), get(atoms, [2, 3, 4])];
 world_positions = [[0, 0], [175, 0], [-50, 135], [75, -100], [-50, -150]];
-edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3], [1, 2, 1], [2, 4, 3], [3, 1, 2], [3, 4, 1]];
+edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3]/* , [1, 2, 1], [2, 4, 3], [3, 1, 2], [3, 4, 1] */];
 text = "Um den Schaden der aufgedeckten Sicherheitslücke einzudämmen hast du ein Protokoll geschrieben,\n"
      + "welches dir die Möglichkeit gibt die Sprungreichweite des Parallelweltenantriebs vor Übernahme durch deinen Kopiloten auf die Distanz zu einer Zielwelt zu begrenzen.\n"
      + "Die für einen Sprung benötigte Energie wird im Piloteninterface neben den Sprungkorridoren angezeigt.\n"

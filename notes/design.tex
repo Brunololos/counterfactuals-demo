@@ -87,7 +87,7 @@ $Atoms = \{x,y,...\}$
 
 $\Phi = \{\varphi, \psi,... \}$
 
-$\varphi, \psi ::= \bot \mid x \mid \neg \varphi \mid \Box \varphi \mid \Diamond \varphi \mid \varphi \vee \psi \mid \varphi \wedge \psi \mid \varphi \boxright \psi$
+$\varphi, \psi ::= \bot \mid x \mid \neg \varphi \mid \Box \varphi \mid \Diamond \varphi \mid \varphi \vee \psi \mid \varphi \wedge \psi \mid \varphi \boxright \psi \mid \varphi \Diamondright \psi$
 
 \subsection{Worlds}
 $W = \{w,v,...\}$
@@ -111,7 +111,8 @@ $w \vDash \varphi \wedge \psi$ iff $(w \vDash \varphi$ and $w \vDash \psi)$ \\
 $w \vDash \Box \varphi$ iff for every world $w'$, for which an $r$ with $w\overset{r}{\leadsto} w'$ exists, $w' \vDash \varphi$ holds true. \\
 $w \vDash \Diamond \varphi$ iff a world $w'$ and an $r$ exist, such that $w\overset{r}{\leadsto} w'$ and $w' \vDash \varphi$ hold true. \\
 $w \vDash \varphi \boxright \psi$, if no world $w'$ and $r$ exist, such that $w' \vDash \varphi$ and $w\overset{r}{\leadsto} w'$. \\
-$w \vDash \varphi \boxright \psi$, if a world $w'$ and an $r$ exist, such that $w'\vDash \varphi$ and $w\overset{r}{\leadsto} w'$ and for each world $w*$, for which a $r*\leq r$ exists, such that $w\overset{r*}{\leadsto} w*$, $w*\vDash\psi\vee\neg\varphi$ holds true.
+$w \vDash \varphi \boxright \psi$, if a world $w'$ and an $r$ exist, such that $w'\vDash \varphi$ and $w\overset{r}{\leadsto} w'$ and for each world $w*$, for which a $r*\leq r$ exists, such that $w\overset{r*}{\leadsto} w*$, $w*\vDash\psi\vee\neg\varphi$ holds true. \\
+$w \vDash \varphi \Diamondright \psi$, iff a world $w'$ and an $r$ exist, such that $w\overset{r}{\leadsto} w'$ and $w' \vDash \varphi$ hold and for each world $w''$, for which an $r''$ exists, such that $w\overset{r''}{\leadsto}w''$ and $w'' \vDash \varphi$ hold true, a world $w*$ and an $r*$ exist, such that $r* \leq r''$ and $w\overset{r''}{\leadsto}w''$ and $w'' \vDash \varphi \wedge \psi$.
 \subsection{Similarity graph}
 \begin{equation}
 	G = (V,E,F)\text{, such that }V \subseteq W\text{ and }E \subseteq \leadsto
@@ -182,25 +183,25 @@ $w \vDash \varphi \boxright \psi$, if a world $w'$ and an $r$ exist, such that $
 		(\Box\varphi ,w)_a\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{d/a}
 	\end{equation}
 	\begin{equation}
-		(\Box\varphi ,w)_a\rightarrow (\top ,w')_{d/a}
+		(\Box\varphi ,w)_a\rightarrow (\top ,w)_{d/a}
 	\end{equation}
 	\begin{equation}
 		(\neg\Box\varphi ,w)_d\xrightarrow{[w\overset{r}{\leadsto}w']} (\neg\varphi ,w')_{d/a}
 	\end{equation}
 	\begin{equation}
-		(\neg\Box\varphi ,w)_d\rightarrow (\neg\top ,w')_{d/a}
+		(\neg\Box\varphi ,w)_d\rightarrow (\neg\top ,w)_{d/a}
 	\end{equation}
 	\begin{equation}
 		(\Diamond\varphi ,w)_d\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{d/a}
 	\end{equation}
 	\begin{equation}
-		(\Diamond\varphi ,w)_d\rightarrow (\bot ,w')_{d/a}
+		(\Diamond\varphi ,w)_d\rightarrow (\bot ,w)_{d/a}
 	\end{equation}
 	\begin{equation}
 		(\neg\Diamond\varphi ,w)_a\xrightarrow{[w\overset{r}{\leadsto}w']} (\neg\varphi ,w')_{d/a}
 	\end{equation}
 	\begin{equation}
-		(\neg\Diamond\varphi ,w)_a\rightarrow (\neg\bot ,w')_{d/a}
+		(\neg\Diamond\varphi ,w)_a\rightarrow (\neg\bot ,w)_{d/a}
 	\end{equation}
 	\begin{equation}
 		(\varphi\boxright\psi ,w)_d\rightarrow (vac,\varphi ,w)_a

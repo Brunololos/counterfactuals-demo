@@ -1,25 +1,40 @@
 import { text_style } from "../util/UI_Utils";
 
-const COLOR_PRIMARY = 0x4e342e;
-const COLOR_LIGHT = 0x7b5e57;
-const COLOR_DARK = 0x260e04;
-
 export class Text_Box_Controller {
     private text_box;
+    private active = true;
 
     constructor(scene: Phaser.Scene, x: number, y: number, width: number, height: number, text: string, icon_keys: string[]) {
-        this.text_box = createTextBox(scene, x, y, {
+        this.text_box = createTextBox(scene, x, y, this, {
             wrapWidth: width,
             fixedWidth: width,
             fixedHeight: height,
             icon_keys: icon_keys
         })
         .start(text, 50);
-        if(text == "") { this.text_box.setVisible(false); }
+        if(text == "") { this.text_box.setVisible(false); this.set_active(false); }
     }
 
     add_to_container(container: Phaser.GameObjects.Container) {
         container.add(this.text_box);
+    }
+
+    activate() {
+        if(!this.active) { return; }
+        this.text_box.setVisible(true);
+        this.text_box.getElement('icon').setVisible(true);
+        this.text_box.resume();
+    }
+
+    deactivate() {
+        if(!this.active) { return; }
+        this.text_box.setVisible(false);
+        this.text_box.getElement('icon').setVisible(false);
+        this.text_box.pause();
+    }
+
+    set_active(active: boolean) {
+        this.active = active;
     }
 
     static load_sprites(scene: Phaser.Scene) {
@@ -27,11 +42,12 @@ export class Text_Box_Controller {
 
         scene.load.image("long_chunk", "assets/Long_Chunk.png");
         scene.load.image("pilots_icon", "assets/Pilots.png");
+        scene.load.image("slim_empty_icon", "assets/Empty_Slim_Icon.png");
     }
 }
 
 const GetValue = Phaser.Utils.Objects.GetValue;
-var createTextBox = function (scene, x, y, config) {
+var createTextBox = function (scene, x, y, text_box_controller, config) {
     var wrapWidth = GetValue(config, 'wrapWidth', 0);
     var fixedWidth = GetValue(config, 'fixedWidth', 0);
     var fixedHeight = GetValue(config, 'fixedHeight', 0);
@@ -43,7 +59,7 @@ var createTextBox = function (scene, x, y, config) {
 
             background: scene.add.image(0, 0, "long_chunk"),
 
-            icon: (icon_keys.length > 0) ? ((icon_keys[0] == "") ? scene.add.image(0, 0, "dot").setVisible(false) : scene.add.image(0, 0, icon_keys[0])) : undefined,
+            icon: ((icon_keys.length <= 0 || icon_keys[0] == "") ? scene.add.image(0, 0, 'slim_empty_icon') : scene.add.image(0, 0, icon_keys[0])),
 
             text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
 
@@ -77,13 +93,14 @@ var createTextBox = function (scene, x, y, config) {
                         this.getElement('icon').setVisible(true);
                         icon_keys = icon_keys.slice(1, icon_keys.length);
                     } else if(icon_keys.length > 0 && icon_keys[0] == "") {
-                        this.getElement('icon').setTexture('dot');
+                        this.getElement('icon').setTexture('slim_empty_icon');
                         this.getElement('icon').setVisible(false);
                         icon_keys = icon_keys.slice(1, icon_keys.length);
                     }
                     this.layout();
                 } else { 
                     this.setVisible(false);
+                    text_box_controller.set_active(false);
                 }
             }
         }, textBox)
