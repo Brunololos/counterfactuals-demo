@@ -72,7 +72,7 @@ $W_w = \{w'\mid w \overset{r}{\leadsto} w'\}$
 \subsection{Truth conditions of counterfactual logic}
 $w \vDash \bot$ is always false. \\
 $w \vDash \top$ is always true. \\
-$w \vDash x$ iff $x \in V(w)$. \\
+$w \vDash x$ iff $x \in F(w)$. \\
 $w \vDash \neg \varphi$ iff $w \nvDash \varphi$. \\
 $w \vDash \varphi \vee \psi$ iff $(w \vDash \varphi$ or $w \vDash \psi)$ \\
 $w \vDash \varphi \wedge \psi$ iff $(w \vDash \varphi$ and $w \vDash \psi)$ \\
@@ -106,7 +106,7 @@ $w \vDash \varphi \Diamondright \psi$, iff a world $w'$ and an $r$ exist, such t
 \end{figure}
 	The win conditions for attacker and defender are identical.
 	A player who reaches a top-symbol wins and a player who reaches a bottom symbol loses.
-	Since attacker and defender are treated equally in this game formulation i will introduce the shorthands $e\in\{ a, d\}$ and $o = \{ a, d\}\setminus{}e$ to avoid the duplication of every rule.
+	Since attacker and defender are treated equally in this game formulation i will introduce the shorthands $e\in\{ a, d\}$ and $o \in \{ a, d\}\setminus{}\{ e\}$ to avoid the duplication of every rule.
 \begin{figure}[H]
 	\centering
 	\begin{equation}
@@ -196,7 +196,7 @@ $w \vDash \varphi \Diamondright \psi$, iff a world $w'$ and an $r$ exist, such t
 	
 	Here just a few quick comments about the Rules: \\
 	Rule (20) makes the active-("proving")-player lose in case no worlds are accessible at all. \\
-	Rule (19) is the active players choice of a sphere of accessibility, by choosing a deliminating world. The deliminating world has to be a $\varphi\wedge\psi$-world and a closest $\varphi$-world to win the game.\\
+	Rule (19) is the active players choice of a sphere of accessibility, by choosing a delimiting world. The delimiting world has to be a $\varphi\wedge\psi$-world and a closest $\varphi$-world to win the game.\\
 	Rule (21) gives the previous non-active-player the opportunity to disprove the chosen world is a closest $\varphi$-world. \\
 	Rule (22) lets the previous non-active-player evaluate the chosen world on whether it is a $\varphi\wedge\psi$-world.
 \begin{figure}[H]
@@ -257,4 +257,25 @@ $w \vDash \varphi \Diamondright \psi$, iff a world $w'$ and an $r$ exist, such t
 	\caption{Lewis' (centered) system of spheres}
 	\label{fig:system_of_spheres}
 \end{figure}
+\section*{Correctness and Termination Proofs}
+\subsection{Strategy}
+A strategy is a partial function $s: S\rightharpoonup P$ from the set of game states $S$ to the set of plays $\rightarrow$.
+A strategy is called $winning$, if no losing sequence of moves exists, where every move the defender made was part of the winning strategy.
+\subsection{Correctness}
+This proof will show that whenever a counterfactual formula is true, its proving player has a winning strategy.
+
+For the formula $\top$, that is satisfied by every world $w$ ($w\vDash\top$), and is consequently always true, the proving player either wins through strategy $s$ with $((\top, w)_e, rule 2)\in s$ or $((\top, w)_e, rule 3)\in s$.
+
+For the formula $\bot$, that is satisfied by no world and is consequently never true, the proving player loses as per rules 4 and 5.
+
+\subsection{stuff}
+This proof will show that (a) whenever a counterfactual formula is true, the defender has a winning strategy and that (b) the semantic game always terminates. I will show, that for each formula, the corresponding semantic game has these properties.
+
+For the formula $\top$, that is satisfied by every world $w$ ($w\vDash\top$), and is consequently always true, the corresponding starting state is $(\top , w)_d$. As per rule 2 the defender wins.
+
+The formula $\neg\varphi$ is satisfied by any world $w$ ($w\vDash\neg\varphi$), that doesn't satisfy $\varphi$ ($w\vDash\varphi$ is false). If the disproving player of $\neg\varphi$ can prove $w\vDash\varphi$, he also disproves $w\vDash\neg\varphi$.
+
+The formula $\varphi\vee\psi$ is satisfied by a world $w$ ($w\vDash\varphi\vee\psi$) iff either $\varphi$ is satisfied by $w$ ($w\vDash\varphi$) or $\psi$ is satisfied by $w$ ($w\vDash\psi$). If $w\vDash\varphi$ or $w\vDash\psi$, the defender can choose the according case and thus, win.
+
+
 \end{document}

@@ -1,0 +1,200 @@
+\documentclass[a4paper,american]{paper}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\pagestyle{plain}
+\usepackage{babel}
+\usepackage{textcomp}
+\usepackage[mathscr]{euscript}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{setspace}
+\usepackage[unicode=true]{hyperref}
+\usepackage{breakurl}
+\usepackage{txfonts}
+\usepackage{pxfonts}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage{tkz-graph}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{needspace}
+\usepackage[left=3.5cm,right=3.5cm]{geometry}
+
+\graphicspath{ {./images/} }
+\date{\today}
+
+\makeatletter
+\providecommand*{\code}[1]{\texttt{#1}}
+\makeatother
+
+\theoremstyle{definition}\newtheorem{definition}{Definition}
+\hyphenation{counterfactual}
+\hyphenation{possible}
+\hyphenation{worlds}
+\hyphenation{model}
+\hyphenation{structure}
+
+\begin{document}
+
+\title{An interactive demonstration of counterfactual truth conditions}
+
+\subtitle{Bachelor Thesis}
+
+\author{%
+	Andreas Paul Bruno Lönne\\
+	\code{\href{mailto:loenne@campus.tu-berlin.de}{loenne@campus.tu-berlin.de}}
+}
+
+\institution{
+	Technische Universität Berlin\\discourse
+	Degree program: Bachelor Informatik / Computer Science
+}
+
+\maketitle
+
+\begin{abstract}
+In this thesis, I address the scarcity of online resources, showcasing counterfactual truth conditions in an intuitive and digestible manner. To this end I (i) formulate a semantic satisfiability game for counterfactual sentences; (ii) prove its correctness; (iii) prove that it always halts after a finite number of moves; (iv) develop a browserbased web-application, that makes the semantic game of counterfactuals playable.
+\end{abstract}
+\section{Introduction}
+In this thesis i make the attempt to create an application that is able to convey Lewis' counterfactual truthconditions by way of a semantic two-player game and inspire players to learn more about counterfactuals.\\
+\textit{Background and literature\\
+To this end i defined a semantic game of counterfactuals and implemented a browserbased demonstration game.\\
+The document is laid out as follows:\\
+First i will explain counterfactuals.\\
+First i will begin by introducing the counterfactual logic im basing the semantic game of counterfactuals on. Then i will give game-theoretical definitions and formulate two versions of the semantic game. After that ...}
+\section{Counterfactuals}
+\textit{Counterfactuals} are statements about what might or would have been the case, if things took place differently than they did. One may think to themselves "If I had not forgotten about my appointment, I would not have been late". Or one may wonder "If Alexander the Great had not died at the age of 32 and attacked europe, would the Romans have defeated him?". Such \textit{counterfactual~thought}---that is the thought of alternate outcomes---is essential for reasoning, deduction and cognitive function. \cite{byrne_counterfactual_2016} Due to its abundance in human thought, the ability to imagine alternate realities seems trivial to most. But making rigorous statements or claims about them is difficult. This is because communicating a complete and consistent account of the state of affairs of an alternate reality---similar in complexity to ours--- is difficult, if not impossible. One may attempt to circumvent this issue by giving the state of affairs of an alternate reality as a deviation from the state of affairs of reality. But consider this. 
+Take our previous example about Alexander the Great and assume that the imagined alternative reality is identical to our reality, except that Alexander the Great did not die at the age of 32 and attacked europe. Now suppose we know about reality that Alexanders troops remained outside of europe. Then this should also be the case in the alternate reality, we attempt to describe. If we are to assume that an army cannot be in two places at the same time and Alexander could not have attacked europe without his army, then Alexanders troops could not have remained outside of europe and attacked europe at the same time.
+We find, that simply deviating from our own reality in a few concrete ways may produce internally inconsistent alternate realities, which cannot be alternate realities, because they could never exist in the first place.\\
+Instead of trying to fully describe an alternate reality, we want to assert some statement over, 
+
+- possible world is complete and consistent account of alternate reality
+- we can compare possible worlds with respect to their similarity
+- counterfactual structure antecedent -> consequent
+- interpret counterfactual to mean something like "In all the closest alternate realities, where antecedent, then consequent"
+\textit{
+- disagreement on implicit premises\\
+- incongruent premises\\
+- possible world semantics (there is a real world, a world is a way the real world could have been (semantic trick or truth?))\\
+Counterfactual constructions mitigate this issue by assuming the alternate reality to be as similar to reality as possible and deviate in the states of affairs, that are explicitly mentioned to differ.\\
+---> possible worlds intro (closest world, where antecedent holds)\\
+// TODO: identical not possible\\
+- implicit antecedents (hard to define, disagreement about them)\\
+- invoke possible worlds\\
+- accessiblity (worlds too remote)\\
+- similarity\\
+- explain sphere of accessibility
+}
+\section{The semantic game of counterfactuals}
+\textit{two-player game about proving counterfactual sentences\\
+I will give two formulations\\
+- the first making the limit assumption\\
+- the second not doing so}
+\subsection{Counterfactual logic}
+This section is concerned with defining counterfactual logic. First it provides a brief definition of well-formed counterfactual formulas, then introduces possible world semantics and concludes by defining the truth conditions of counterfactual logic.
+
+\subsubsection{Counterfactual formulas}
+We call $\Phi = \{\varphi ,\psi ,...\}$ the set of all well-formed counterfactual formulas.
+\begin{definition}[Well-formed counterfactual formula]
+Given an infinite set of atomic formula symbols $Atoms = \{ x, y, ...\}$ and an alphabet $A~=~\{\bot ,\top ,\neg ,\vee ,\wedge ,\Diamond ,\Box ,\Diamondright ,\boxright\}\cup Atoms$, the structure of every well-formed counterfactual formula is expressed through the following Backus-Naur form.
+\begin{equation}
+\varphi, \psi ::= \bot \mid x \mid \neg \varphi \mid \Box \varphi \mid \Diamond \varphi \mid \varphi \vee \psi \mid \varphi \wedge \psi \mid \varphi \boxright \psi \mid \varphi \Diamondright \psi
+\end{equation}
+\end{definition}
+
+\subsubsection{Possible worlds semantics}
+In order to evaluate the non-truth-functional connectives of counterfactual~logic, we define a variation of the Kripke~structure in \cite{kripke_modal_logic_1963}. To evaluate Lewis' counterfactual truth conditions \cite{lewis_counterfactuals_1973}, we also introduce a notion of similarity between possible worlds to the accessibility relation.
+\begin{definition}[counterfactual kripke structure]
+The {\it counterfactual kripke structure} is an ordered triple $(W, \leadsto ,F)$, where $W=\{w,v,...\}$ is the set of all "possible~worlds", $\leadsto \colon W\times \mathbb{R} \times W$ is the similarity relation, and $F \colon W \rightarrow 2^{Atoms}$ is an assignment of each world, to a set of atomic formulas.
+\end{definition}
+\noindent Let us explain further the members of our counterfactual~kripke~structure.\\
+The set of all possible~worlds $W$ represents all complete and self-consistent ways reality could have been. $F$ in turn, describes the state of affairs at each world. It assigns to each world a set of atomic propositions, that are the case at it. The similarity relations purpose is twofold. It serves as an accessibility relation, restricting accessibility between worlds and also carries information about comparative similarity between worlds. In particular this means for any two worlds $w$ and $v$, that iff $w\overset{r}{\leadsto} v$, then $v$ is called accessible from $w$. $w\overset{r}{\leadsto} v$ also means, that $r$ is a measure of similarity between $w$ and $v$, from the standpoint of $w$. We can suppose another world $v'$, with $w\overset{r'}{\leadsto} v'$ and compare $r$ and $r'$. If $r < r'$, we can conclude, that $v$ is more similar to $w$ than $v'$, from the standpoint of $w$. Additionally we note, that for our purposes $\leadsto$ will always contain a tuple $(w, 0, w)$ for each world $w\in W$. This is because we assume analogously to Kripke, that worlds are self-similar and are accessible from themselves. Finally we introduce $W_w = \{w'\mid w \overset{r}{\leadsto} w'\}$ as a shorthand for the set of all accessible worlds, from a world $w$.
+\subsubsection{Truth conditions of counterfactual logic}
+Given a counterfactual~kripke~structure $S = (W, \leadsto ,F)$ and a world $w$,\\
+$S,w\nvDash\bot$.\\
+$S,w\vDash\top$.\\
+$S,w\vDash x$ iff $x\in F(w)$.\\
+$S,w\vDash \neg\varphi$ iff $S,w\nvDash\varphi$.\\
+$S,w\vDash \varphi\vee\psi$ iff ($S,w\vDash\varphi$ or $S,w\vDash\psi$).\\
+$S,w\vDash \varphi\wedge\psi$ iff ($S,w\vDash\varphi$ and $S,w\vDash\psi$).\\
+$S,w\vDash \Diamond \varphi$ iff a world $w'\in W_w$ exists, such that $S,w' \vDash \varphi$.\\
+$S,w\vDash \Box \varphi$ iff for every world $w'\in W_w$, it is true that $S,w' \vDash \varphi$.\\
+$S,w\vDash \varphi \Diamondright \psi$, iff both 
+\begin{itemize}
+	\item[(1)] a world $w'\in W_w$ exists, such that $S,w' \vDash \varphi$,
+	\item[(2)] for every world $w''$, for which an $r''$ exists, such that $w\overset{r''}{\leadsto}w''$ and $S,w'' \vDash \varphi\wedge\neg\psi$ are true, a world $w^*$ and an $r^*$ exist, such that $r^* \leq r''$ and $w\overset{r^*}{\leadsto}w^*$ and $S,w^* \vDash \varphi\wedge\psi$.
+\end{itemize}
+
+\noindent$S,w \vDash \varphi \boxright \psi$, iff either
+\begin{itemize}
+	\item[(1)] no world $w'\in W_w$ exists, such that $S,w' \vDash \varphi$.
+	\item[(2)] a world $w'$ and an $r$ exist, such that $w\overset{r}{\leadsto} w'$ and $S,w'\vDash \varphi$ and for each world $w^*$, for which an $r^*$ exists, such that $r^*\leq r$ and $w\overset{r^*}{\leadsto} w^*$, it is true that $S,w^*\vDash\psi\vee\neg\varphi$.
+\end{itemize}
+\subsection{Semantic game}
+This section offers an overview and basic definitions for the semantic~game~of~counterfactuals. The semantic~game~of~counterfactuals is a sequential two-player satisfiability game, wherein a \textit{defender} $d$ tries to prove a counterfactual formula and an \textit{attacker} $a$ tries to disprove it. The game is played on a labeled transition system, where the respective active player of a game state chooses a transition to another game state.
+\begin{definition}[Game state]
+A game state is a tuple that can take any one of the forms
+\begin{itemize}
+	\item[(1)] $(\varphi ,w)_p$
+	\item[(2)] $(\varphi ,w, e)_p$
+	\item[(3)] $(\varphi ,w,w',r)_p$
+\end{itemize}
+where $\varphi\in\Phi$; $w,w'\in W$; $r\in\mathbb{R}$ and $p,e\in\{ a,d\}$.
+\end{definition}
+\noindent Of these types of game states (1) is the most common. It carries a counterfactual formula, a current world and is indexed with the active player. It is employed to resolve atomic formulas $x,y,...$ and the propositional symbols $\top,\neg,\vee,\Diamond$; while also serving as an initial and final state type for other resolutions. (2) is a type of game state, that represents a player temporarily becoming active and choosing a state transition. $e$ holds the previous active player, which will resume being active after the next state transition. Lastly state type (3) is an extension of (1), describing a game state where a sphere~of~accessibility has been chosen. $w'$ is a sphere-delimiting world, lying exactly on the surface of said sphere~of~accessibility with radius $r$. We will look at this in further detail in the next subsetion.\\
+We call the set of all game states $G$.\\
+\begin{definition}[Set of Labels]
+$\Sigma$ is a finite set of labels. $\Sigma =\{$
+\begin{itemize}
+	\item Top,
+	\item Negation,
+	\item
+\end{itemize}
+$\}$
+\end{definition}
+\noindent Transitions of the labeled transition system are called moves.
+\begin{definition}[Move]
+A move is a transition function $m: game state \rightarrow game state$
+\begin{itemize}
+	\item[(1)]
+	\item[(2)]
+	\item[(3)]
+\end{itemize}
+\end{definition}
+\begin{definition}[Labeled transition system]
+A labeled transition system is a tuple $(G,\Sigma ,\rightarrow )$
+\end{definition}
+\begin{definition}[Semantic game of counterfactuals]
+A labeled transition system is a tuple $(G,\Sigma ,\rightarrow )$
+\end{definition}
+\subsection{Formulation of the semantic games rules}
+- Rules\\ (stuck player loses)
+- Employment of the Limit assumption
+- alternative semantic game rules
+\subsection{Game in game-theoretical formulation}
+This section is concerned with explaining core ideas and definitions related to semantic two-player games.
+- game is like a conversation between players
+- show something through their interplay
+- show truth of counterfactual formula
+\begin{definition}[]
+
+\end{definition}
+- game states (formula, current world, player)\\
+- game outcomes (winning/losing)\\
+- moves\\
+- play (sequence of moves)\\
+- winning play\\
+- game tuple (state, moves)\\
+- strategy (mapping from game states to moves)\\
+\subsection{Correctness proof}
+\subsection{Termination proof}
+
+\section{The educational game}
+\subsection{Correspondance between semantic game and computer game}
+\section{Results}
+\subsection{Player feedback}
+\bibliographystyle{alphaurl}
+\nocite{*}
+\bibliography{thesis}
+
+\end{document}

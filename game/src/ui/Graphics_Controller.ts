@@ -8,13 +8,15 @@ import { Choice } from "./Choice";
 import { create_cosmic_nebula_texture, describe_move, dye_texture, Game_Graphics_Mode, Graph_Graphics_Mode, Rule_Descriptions, text_style, world_choice_moves_to_mode } from "../util/UI_Utils";
 import { Graph_Graphics } from "./Graph_Graphics";
 import Base_Scene from "../util/Base_Scene";
-import { Formula_Graphics } from "./Formula_Graphics";
+import { Formula_Graphics, ICON_WIDTH } from "./Formula_Graphics";
 import { Star } from "../graphics/Star";
 import Game_Scene from "../scenes/Game";
 import { Text_Animation } from "./animations/Text_Animations";
 import { levels } from "../game/levels/Levels";
 import { Text_Box_Controller } from "./Text_Box";
 import { Rules_Column } from "./Rules_Column";
+import Container from "phaser3-rex-plugins/templates/ui/container/Container";
+import { Icon_Text } from "./Icon_Text";
 
 /**
  * A class governing the visual representation of the abstract game of counterfactuals
@@ -83,6 +85,26 @@ export class Graphics_Controller {
         this.rules_column.set_visible(false);
         this.set_mode(Game_Graphics_Mode.Formula);
         this.choice.set_visible(false);
+
+        /* let text = new Phaser.GameObjects.Text(scene, w/2, h/2, "This is the logical Top Symbol:", text_style).setOrigin(0, 0.5);
+        scene.add.existing(text);
+        let top = new Phaser.GameObjects.Sprite(scene, w/2 + text.text.length*7, h/2, "true").setScale(0.5).setOrigin(0, 0.2);
+        scene.add.existing(top); */
+        //let textln = new Phaser.GameObjects.Text(scene, w/2 + text.text.length*7+ICON_WIDTH*0.6+5, h/2, "This is the logical Top Symbol:", text_style).setOrigin(0, 0.5);
+        /* let textln = new Phaser.GameObjects.Text(scene, w/2, h/2, "                               And here comes more text.", text_style).setOrigin(0, 0);
+        textln.setWordWrapWidth(200); */
+
+        /* let textln = new Phaser.GameObjects.Text(scene, w/2, h/2, "This is the logical Top Symbol:         And here comes more text. Here comes more Blah and plaguies and stuff'n shite.", text_style).setOrigin(0, 0);
+        textln.setWordWrapWidth(300);
+        textln.setLineSpacing(2);
+        scene.add.existing(textln); */
+
+        /* scene.add.rectangle(w/2, h/2, 490, 55, 0x444444, 1).setOrigin(0, 0);
+
+        let c = new Phaser.GameObjects.Container(scene, w/2, h/2);
+        let icon_text = new Icon_Text(scene, 0, 0, 490, 55, "This is the logical Top Symbol:{copilot}And here comes more text. Here te{pilot}comes more Blah and plaguies and stuff'n stuff. {pilot} Text objects work by creating their own internal hidden Canvas and then renders text to it using the standard Canvas fillText API. It then creates a texture from this canvas which is rendered to your game during the render pass.", text_style);
+        icon_text.add_to_container(c);
+        scene.add.existing(c); */
     }
 
     update(time: number) {
@@ -548,6 +570,7 @@ export class Graphics_Controller {
         Text_Box_Controller.load_sprites(scene);
         Choice.load_sprites(scene);
         Supposition_Panel.load_sprites(scene);
+        Icon_Text.load_sprites(scene);
 
         Star.load_sprites(scene);
         let level = (scene as Game_Scene).get_level();
