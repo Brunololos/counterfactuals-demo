@@ -277,5 +277,21 @@ The formula $\neg\varphi$ is satisfied by any world $w$ ($w\vDash\neg\varphi$), 
 
 The formula $\varphi\vee\psi$ is satisfied by a world $w$ ($w\vDash\varphi\vee\psi$) iff either $\varphi$ is satisfied by $w$ ($w\vDash\varphi$) or $\psi$ is satisfied by $w$ ($w\vDash\psi$). If $w\vDash\varphi$ or $w\vDash\psi$, the defender can choose the according case and thus, win.
 
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(\varphi ,w)_{p}\nrightarrow\text{Player p loses}
+	\end{equation}
+	\begin{equation}
+		(\top ,w)_{p}\hspace{10pt}\text{Player p wins}
+	\end{equation}
+	\caption{Updated Win conditions}
+	\label{fig:win_rules}
+\end{figure}
+Labeled Transition system
+\begin{definition}[Labeled transition system]
+A labeled transition system is a tuple $(G,\Sigma ,\rightarrow )$, where $G$ is the set of all game states, $\Sigma$ is a set of labels and $\rightarrow$ is a transition relation.
+\end{definition}
+
 
 \end{document}

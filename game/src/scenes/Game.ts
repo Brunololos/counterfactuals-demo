@@ -35,6 +35,10 @@ export default class Game_Scene extends Base_Scene {
   create() {
     Graphics_Controller.configure_sprites(this);
     this.load_level(levels[this.level]);
+
+    this.input.keyboard.addKeys('Q,E');
+    this.input.keyboard.on('keydown-' + 'Q', function (event) { if(this.level-1 >= 0) { this.scene.restart({level: this.level-1}); } }, this);
+    this.input.keyboard.on('keydown-' + 'E', function (event) { if(this.level+1 < levels.length) { this.scene.restart({level: this.level+1}); } }, this);
   }
 
   update(time: number, delta: number): void {
@@ -42,7 +46,7 @@ export default class Game_Scene extends Base_Scene {
     let now = Date.now();
     this.graphics_controller.update(now);
 
-    if(!this.game_over && this.graphics_controller.is_ready() /* && false */) { // TODO: remove false
+    if(!this.game_over && this.graphics_controller.is_ready()) {
       let state = this.game_controller.get_state();
       let turn = this.game_controller.determine_next_moves();
       let type = turn[0];

@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  30 NOV 2022 17:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  25 NOV 2022 16:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**thesis.tex
-(./thesis.tex
+**Cutout.tex
+(./Cutout.tex
 LaTeX2e <2021-11-15> patch level 1
 L3 programming layer <2022-05-04>
 (c:/texlive/2022/texmf-dist/tex/latex/paper/paper.cls
@@ -858,8 +858,8 @@ File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count322
 \l__pdf_internal_box=\box65
 )
-(./thesis.aux)
-\openout1 = `thesis.aux'.
+(./Cutout.aux)
+\openout1 = `Cutout.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 37.
 LaTeX Font Info:    Trying to load font information for OML+pxmi on input line 
@@ -919,9 +919,9 @@ LaTeX Info: Redefining \ref on input line 37.
 LaTeX Info: Redefining \pageref on input line 37.
 LaTeX Info: Redefining \nameref on input line 37.
 
-(./thesis.out) (./thesis.out)
+(./Cutout.out) (./Cutout.out)
 \@outlinefile=\write4
-\openout4 = `thesis.out'.
+\openout4 = `Cutout.out'.
 
 
 (c:/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -1029,83 +1029,82 @@ LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <9> not available
 (Font)              Font shape `T1/pxss/bx/n' tried instead on input line 55.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
 (Font)              Font shape `T1/pxss/bx/n' tried instead on input line 58.
- [1
+
+
+LaTeX Warning: Citation `byrne_counterfactual_2016' on page 1 undefined on inpu
+t line 66.
+
+[1
 
 
 {c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Trying to load font information for U+eus on input line 86.
 
+LaTeX Warning: Citation `morreau_overall_similarity_2010' on page 2 undefined o
+n input line 75.
+
+
+LaTeX Warning: Citation `lewis_counterfactuals_1973' on page 2 undefined on inp
+ut line 77.
+
+LaTeX Font Info:    Trying to load font information for U+eus on input line 86.
 
 (c:/texlive/2022/texmf-dist/tex/latex/amsfonts/ueus.fd
 File: ueus.fd 2013/01/14 v3.01 Euler Script
-) [2] [3
+) [2]
+No file Cutout.bbl.
+[3
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.122 
-      
+l.118 \end{document}
+                    
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.122 
-      
+l.118 \end{document}
+                    
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.122 
-      ]
-LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <10> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 123.
- [4] [5] [6] [7
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.321 \subsection
-                 {Playing the game}] [8
-pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.324 \end{definition}
-                      ]
-Underfull \hbox (badness 10000) in paragraph at lines 329--341
+l.118 \end{document}
+                    ] (./Cutout.aux)
 
- []
+LaTeX Warning: There were undefined references.
 
-(./thesis.bbl) [9] (./thesis.aux)
-Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 1525BD4136AEB51A4E2638F6F3F03E43;3600.
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package rerunfilecheck Info: File `Cutout.out' has not changed.
+(rerunfilecheck)             Checksum: A54961A9F61FDE330EF5735DBC723B32;439.
  ) 
 Here is how much of TeX's memory you used:
- 24502 strings out of 478300
- 451239 string characters out of 5849124
- 730575 words of memory out of 5000000
- 42108 multiletter control sequences out of 15000+600000
- 522655 words of font info for 119 fonts, out of 8000000 for 9000
+ 24392 strings out of 478300
+ 449674 string characters out of 5849124
+ 721026 words of memory out of 5000000
+ 42081 multiletter control sequences out of 15000+600000
+ 518790 words of font info for 114 fonts, out of 8000000 for 9000
  1146 hyphenation exceptions out of 8191
- 100i,14n,104p,1303b,432s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,6n,104p,1105b,362s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
 f-dist/fonts/type1/public/amsfonts/euler/eusm10.pfb><c:/texlive/2022/texmf-dist
 /fonts/type1/public/pxfonts/pxex.pfb><c:/texlive/2022/texmf-dist/fonts/type1/pu
 blic/pxfonts/pxsy.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/px
-sya.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/pxsyb.pfb><c:/te
-xlive/2022/texmf-dist/fonts/type1/public/pxfonts/pxsyc.pfb><c:/texlive/2022/tex
-mf-dist/fonts/type1/public/pxfonts/rpxb.pfb><c:/texlive/2022/texmf-dist/fonts/t
-ype1/public/pxfonts/rpxmi.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/px
-fonts/rpxr.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb
-><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/20
-22/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/f
-onts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/
-palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a
-.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on thesis.pdf (9 pages, 135663 bytes).
+syc.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxb.pfb><c:/tex
+live/2022/texmf-dist/fonts/type1/public/pxfonts/rpxmi.pfb><c:/texlive/2022/texm
+f-dist/fonts/type1/public/pxfonts/rpxr.pfb><c:/texlive/2022/texmf-dist/fonts/ty
+pe1/public/txfonts/t1xtt.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvet
+ic/uhvb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><
+c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022
+/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fon
+ts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/pa
+latino/uplri8a.pfb>
+Output written on Cutout.pdf (3 pages, 103924 bytes).
 PDF statistics:
- 299 PDF objects out of 1000 (max. 8388607)
- 253 compressed objects within 3 object streams
- 88 named destinations out of 1000 (max. 500000)
- 181 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 115 PDF objects out of 1000 (max. 8388607)
+ 81 compressed objects within 1 object stream
+ 11 named destinations out of 1000 (max. 500000)
+ 37 words of extra memory for PDF output out of 10000 (max. 10000000)
 

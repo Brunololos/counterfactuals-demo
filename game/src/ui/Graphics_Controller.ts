@@ -99,10 +99,15 @@ export class Graphics_Controller {
         textln.setLineSpacing(2);
         scene.add.existing(textln); */
 
+        //scene.get_canvas().getContext("2d")!.font = 10 + 'px';
+        //var context = scene.get_canvas().getContext("2d");
+        //context!.font = 10 + 'px';
         /* scene.add.rectangle(w/2, h/2, 490, 55, 0x444444, 1).setOrigin(0, 0);
 
         let c = new Phaser.GameObjects.Container(scene, w/2, h/2);
-        let icon_text = new Icon_Text(scene, 0, 0, 490, 55, "This is the logical Top Symbol:{copilot}And here comes more text. Here te{pilot}comes more Blah and plaguies and stuff'n stuff. {pilot} Text objects work by creating their own internal hidden Canvas and then renders text to it using the standard Canvas fillText API. It then creates a texture from this canvas which is rendered to your game during the render pass.", text_style);
+        //let icon_text = new Icon_Text(scene, 0, 0, 490, 55, "This is the logical Top Symbol:{copilot}And here comes more text. Here te{pilot}comes more Blah and plaguies and stuff'n stuff. {pilot} Text objects work by creating their own internal hidden Canvas and then renders text to it using the standard Canvas fillText API. It then creates a texture from this canvas which is rendered to your game during the render pass.", text_style);
+        let icon_text = new Icon_Text(scene, 0, 0, 490, 55, "Du{pilot}und dein Kopilot{copilot}seid mit der wichtigen Mission betraut p p p und kam eine zweite Erde zu finden. "
+                                                            + "Zu diesem Zweck wurde euer Raumschiff mit einem bahnbrechenden Parallelwelten-antrieb ausgerüstet,\n", text_style);
         icon_text.add_to_container(c);
         scene.add.existing(c); */
     }
@@ -231,8 +236,7 @@ export class Graphics_Controller {
             this.graph_graphics.clear_delim_world();
             this.graph_graphics.clear_hints();
         }
-        // TODO: Something wonky is going on with radius, sometimes get_raius return infinity, though the game_states radius property is 2
-        this.graph_graphics.set_sphere(applied.get_current_world().index, (applied.has_radius()) ? applied.get_radius() : undefined);
+        this.graph_graphics.set_sphere(applied.get_current_world().index, (applied.has_radius()) ? applied.get_delim_world().index : undefined, (applied.has_radius()) ? applied.get_radius() : undefined, move.get_name() == Rules.Attacker_Would_Sphere_Selection || move.get_name() == Rules.Defender_Would_Sphere_Selection || move.get_name() == Rules.Attacker_Might_Sphere_Selection || move.get_name() == Rules.Defender_Might_Sphere_Selection);
         if(move.get_name() == Rules.Attacker_Would_Sphere_Selection) { this.graph_graphics.set_would_hints(delim_world!); }
     }
 

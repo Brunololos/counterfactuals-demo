@@ -53,38 +53,65 @@
 \maketitle
 
 \begin{abstract}
-In this thesis, I address the scarcity of online resources, showcasing counterfactual truth conditions in an intuitive and digestible manner. To this end I (i) formulate a semantic satisfiability game for counterfactual sentences; (ii) prove its correctness; (iii) prove that it always halts after a finite number of moves; (iv) develop a browserbased web-application, that makes the semantic game of counterfactuals playable.
+In this thesis, I address the scarcity of online resources showcasing counterfactual truth conditions in an intuitive and digestible manner. To this end I (i) formulate a semantic satisfiability game for counterfactual sentences; (ii) prove its correctness; (iii) prove that it always halts after a finite number of moves; (iv) develop a browserbased web-application, that makes the semantic game of counterfactuals playable.
 \end{abstract}
 \section{Introduction}
-In this thesis i make the attempt to create an application that is able to convey Lewis' counterfactual truthconditions by way of a semantic two-player game and inspire players to learn more about counterfactuals.\\
+In this thesis I make the attempt to create an application that is able to convey Lewis' counterfactual truth conditions by way of a semantic two-player game and inspire players to learn more about counterfactuals.\\
 \textit{Background and literature\\
 To this end i defined a semantic game of counterfactuals and implemented a browserbased demonstration game.\\
 The document is laid out as follows:\\
 First i will explain counterfactuals.\\
-First i will begin by introducing the counterfactual logic im basing the semantic game of counterfactuals on. Then i will give game-theoretical definitions and formulate two versions of the semantic game. After that ...}
+First i will begin by introducing the counterfactual logic I am basing the semantic game of counterfactuals on. Then i will give game-theoretical definitions and formulate two versions of the semantic game. After that ...}
 \section{Counterfactuals}
-\textit{Counterfactuals} are statements about what might or would have been the case, if things took place differently than they did. One may think to themselves "If I had not forgotten about my appointment, I would not have been late". Or one may wonder "If Alexander the Great had not died at the age of 32 and attacked europe, would the Romans have defeated him?". Such \textit{counterfactual~thought}---that is the thought of alternate outcomes---is essential for reasoning, deduction and cognitive function. \cite{byrne_counterfactual_2016} Due to its abundance in human thought, the ability to imagine alternate realities seems trivial to most. But making rigorous statements or claims about them is difficult. This is because communicating a complete and consistent account of the state of affairs of an alternate reality---similar in complexity to ours--- is difficult, if not impossible. One may attempt to circumvent this issue by giving the state of affairs of an alternate reality as a deviation from the state of affairs of reality. But consider this. 
-Take our previous example about Alexander the Great and assume that the imagined alternative reality is identical to our reality, except that Alexander the Great did not die at the age of 32 and attacked europe. Now suppose we know about reality that Alexanders troops remained outside of europe. Then this should also be the case in the alternate reality, we attempt to describe. If we are to assume that an army cannot be in two places at the same time and Alexander could not have attacked europe without his army, then Alexanders troops could not have remained outside of europe and attacked europe at the same time.
-We find, that simply deviating from our own reality in a few concrete ways may produce internally inconsistent alternate realities, which cannot be alternate realities, because they could never exist in the first place.\\
-Instead of trying to fully describe an alternate reality, we want to assert some statement over, 
-
-- possible world is complete and consistent account of alternate reality
-- we can compare possible worlds with respect to their similarity
-- counterfactual structure antecedent -> consequent
-- interpret counterfactual to mean something like "In all the closest alternate realities, where antecedent, then consequent"
-\textit{
-- disagreement on implicit premises\\
-- incongruent premises\\
-- possible world semantics (there is a real world, a world is a way the real world could have been (semantic trick or truth?))\\
-Counterfactual constructions mitigate this issue by assuming the alternate reality to be as similar to reality as possible and deviate in the states of affairs, that are explicitly mentioned to differ.\\
----> possible worlds intro (closest world, where antecedent holds)\\
-// TODO: identical not possible\\
-- implicit antecedents (hard to define, disagreement about them)\\
-- invoke possible worlds\\
-- accessiblity (worlds too remote)\\
-- similarity\\
-- explain sphere of accessibility
-}
+\textit{Counterfactuals} are statements about what might or would have been the case, if things took place differently than they did. One may think to themselves "If I had not forgotten about my appointment, I would have been punctual". Or one may wonder "If Alexander the Great had not died at the age of 32 and attacked europe, would the Romans have defeated him?". Such \textit{counterfactual~thought}---that is the thought of alternate outcomes---is essential for reasoning, deduction and cognitive function. \cite{byrne_counterfactual_2016} Due to its abundance in human thought, the ability to imagine alternate realities seems trivial to most. But making rigorous statements or claims about them is difficult. This is because communicating a complete and consistent account of the state of affairs of an alternate reality---similar in complexity to ours--- is difficult, if not impossible. One may attempt to circumvent this issue by giving the state of affairs of an alternate reality as a deviation from the state of affairs of reality. But consider this. 
+Take our previous example about Alexander the Great and assume that the imagined alternate reality is identical to our reality, except that Alexander the Great did not die at the age of 32 and attacked europe. Now suppose we know about reality, that Alexanders troops remained outside of europe. Then this should also be the case in the alternate reality we attempted to describe. If we are to assume that an army cannot be in two places at the same time and Alexander could not have attacked europe without his army, then Alexanders troops could not have remained outside of europe and attacked europe at the same time.
+We find, that simply deviating from our own reality in a few concrete ways may produce internally inconsistent alternate realities, which cannot be alternate realities, because they are not ways the world could have been.\\
+To avoid this problem we forgo describing alternate realities alltogether. We call a complete and consistent way the world is or could have been, a possible world. And agree that we refer to a possible world, most similar to ours, where our stipulation is true. So our example is to be read as "In a world most similar to our own, where Alexander the Great did not die at the age of 32 and attacked europe, the romans would have defeated him". In this way---although we may not know the state of affairs of a possible world---we are able to assign definite truth values to our counterfactual sentence for any possible state of affairs at that world. However we need to note, that this approach assumes the notion of comparative similarity between possible worlds. Which means that given any 3 worlds $w,v_1,v_2$, with respect to their overall similarity from the standpoint of $w$, either
+\begin{itemize}
+\item $w$ is more similar to $v_1$, than to $v_2$,
+\item $w$ is more similar to $v_2$, than to $v_1$,
+\item or $w$ is equally similar to $v_1$ and $v_2$.
+\end{itemize}
+While the notion of an aggregate overall similarity between possible worlds appears justified at first glance, it has been subject of contention. \cite{morreau_overall_similarity_2010}
+\subsection{Lewis' counterfactual operators}
+With these introductory thoughts out of the way, let us talk in greater detail about the counterfactual operators themselves. Lewis introduces the counterfactual would $\boxright$ and counterfactual might $\Diamondright$ operators as binary modal operators. \cite{lewis_counterfactuals_1973} When we write $\varphi\boxright\psi$, we call the formula $\varphi$ the antecedent and the formula $\psi$ the consequent. We may informally rewrite one of our former examples as "I did not forget about my appointment $\boxright$ I was punctual" and read it the following way.\\
+Read $\varphi\boxright\psi$ as "If it were the case that $\varphi$, then it would be the case that $\psi$", and\\
+read $\varphi\Diamondright\psi$ as "If it were the case that $\varphi$, then it might be the case that $\psi$".\\
+Lewis defines the truth conditions of his operators with respect to a system of spheres, that is defined as follows.
+\begin{figure}[H]
+	Let $\$$ be an assignment to each possible world $i$ of a set $\$_i$ of sets of possible worlds. Then $\$$ is called a (centered) system of spheres, and the members of each $\$_i$ are called spheres around $i$, if and only if, for each world $i$, the following conditions hold.
+	\begin{itemize}
+	\item[(C)] $\$_i$ is centered on $i$; that is, the set $\{i\}$ having $i$ as its only member belongs to $\$_i$.
+	\item[(1)] $\$_i$ is nested; that is, whenever $S$ and $T$ belong to $\$_i$, either $S$ is included in $T$ or $T$ is included in $S$.
+	\item[(2)] $\$_i$ is closed under unions; that is, whenever $\mathscr{S}$ is a subset of $\$_i$ and $\bigcup\mathscr{S}$ is the set of all worlds $j$ such that $j$ belongs to some member of $\mathscr{S}$, $\bigcup\mathscr{S}$ belongs to $\$_i$.
+	\item[(3)] $\$_i$ is closed under (nonempty) intersections; that is, whenever $\mathscr{S}$ is a nonempty subset of $\$_i$ and $\bigcap\mathscr{S}$ is the set of all worlds $j$ such that $j$ belongs to every member of $\mathscr{S}$, $\bigcap\mathscr{S}$ belongs to $\$_i$.
+	\end{itemize}
+	\caption{Lewis' (centered) system of spheres}
+	\label{fig:system_of_spheres}
+\end{figure}
+\noindent \textit{Illustrate example system of spheres and explain \$}\\
+A world where $\varphi$ holds is called a $\varphi$-world.
+\noindent And his counterfactual truth conditions are:
+\begin{figure}[H]
+	\centering
+	$\varphi\Diamondright\psi$ is true at a world i (according to a system of spheres \$) if and only if both
+	\begin{itemize}
+	\item[(1)] some $\varphi$-world belongs to some sphere $S$ in $\$_i$, and
+	\item[(2)] every sphere $S$ in $\$_i$ that contains at least one $\varphi$-world contains at least one world where $\varphi\wedge\psi$ holds.
+	\end{itemize}
+	\caption{Lewis' counterfactual might truth conditions}
+	\label{fig:counterfactual_might}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	$\varphi\boxright\psi$ is true at a world i (according to a system of spheres \$) if and only if either
+	\begin{itemize}
+	\item[(1)] no $\varphi$-world belongs to any sphere $S$ in $\$_i$, or
+	\item[(2)] some sphere $S$ in $\$_i$ does contain at least one $\varphi$-world, and $\varphi\rightarrow\psi$ holds at every world in $S$.
+	\end{itemize}
+	\caption{Lewis' counterfactual would truth conditions}
+	\label{fig:counterfactual_would}
+\end{figure}
 \section{The semantic game of counterfactuals}
 \textit{two-player game about proving counterfactual sentences\\
 I will give two formulations\\
@@ -98,7 +125,7 @@ We call $\Phi = \{\varphi ,\psi ,...\}$ the set of all well-formed counterfactua
 \begin{definition}[Well-formed counterfactual formula]
 Given an infinite set of atomic formula symbols $Atoms = \{ x, y, ...\}$ and an alphabet $A~=~\{\bot ,\top ,\neg ,\vee ,\wedge ,\Diamond ,\Box ,\Diamondright ,\boxright\}\cup Atoms$, the structure of every well-formed counterfactual formula is expressed through the following Backus-Naur form.
 \begin{equation}
-\varphi, \psi ::= \bot \mid x \mid \neg \varphi \mid \Box \varphi \mid \Diamond \varphi \mid \varphi \vee \psi \mid \varphi \wedge \psi \mid \varphi \boxright \psi \mid \varphi \Diamondright \psi
+\varphi, \psi ::= \bot \mid \top \mid x \mid \neg \varphi \mid \Box \varphi \mid \Diamond \varphi \mid \varphi \vee \psi \mid \varphi \wedge \psi \mid \varphi \boxright \psi \mid \varphi \Diamondright \psi
 \end{equation}
 \end{definition}
 
@@ -109,6 +136,7 @@ The {\it counterfactual kripke structure} is an ordered triple $(W, \leadsto ,F)
 \end{definition}
 \noindent Let us explain further the members of our counterfactual~kripke~structure.\\
 The set of all possible~worlds $W$ represents all complete and self-consistent ways reality could have been. $F$ in turn, describes the state of affairs at each world. It assigns to each world a set of atomic propositions, that are the case at it. The similarity relations purpose is twofold. It serves as an accessibility relation, restricting accessibility between worlds and also carries information about comparative similarity between worlds. In particular this means for any two worlds $w$ and $v$, that iff $w\overset{r}{\leadsto} v$, then $v$ is called accessible from $w$. $w\overset{r}{\leadsto} v$ also means, that $r$ is a measure of similarity between $w$ and $v$, from the standpoint of $w$. We can suppose another world $v'$, with $w\overset{r'}{\leadsto} v'$ and compare $r$ and $r'$. If $r < r'$, we can conclude, that $v$ is more similar to $w$ than $v'$, from the standpoint of $w$. Additionally we note, that for our purposes $\leadsto$ will always contain a tuple $(w, 0, w)$ for each world $w\in W$. This is because we assume analogously to Kripke, that worlds are self-similar and are accessible from themselves. Finally we introduce $W_w = \{w'\mid w \overset{r}{\leadsto} w'\}$ as a shorthand for the set of all accessible worlds, from a world $w$.
+\newpage
 \subsubsection{Truth conditions of counterfactual logic}
 Given a counterfactual~kripke~structure $S = (W, \leadsto ,F)$ and a world $w$,\\
 $S,w\nvDash\bot$.\\
@@ -130,8 +158,10 @@ $S,w\vDash \varphi \Diamondright \psi$, iff both
 	\item[(1)] no world $w'\in W_w$ exists, such that $S,w' \vDash \varphi$.
 	\item[(2)] a world $w'$ and an $r$ exist, such that $w\overset{r}{\leadsto} w'$ and $S,w'\vDash \varphi$ and for each world $w^*$, for which an $r^*$ exists, such that $r^*\leq r$ and $w\overset{r^*}{\leadsto} w^*$, it is true that $S,w^*\vDash\psi\vee\neg\varphi$.
 \end{itemize}
-\subsection{Semantic game}
-This section offers an overview and basic definitions for the semantic~game~of~counterfactuals. The semantic~game~of~counterfactuals is a sequential two-player satisfiability game, wherein a \textit{defender} $d$ tries to prove a counterfactual formula and an \textit{attacker} $a$ tries to disprove it. The game is played on a labeled transition system, where the respective active player of a game state chooses a transition to another game state.
+\subsection{The semantic game of counterfactuals}
+This subsection offers an overview and introduction to the semantic~game~of~counterfactuals. The semantic~game~of~counterfactuals is a sequential two-player satisfiability game, wherein a \textit{defender} $d$ tries to prove a counterfactual formula and an \textit{attacker} $a$ tries to disprove it. The defender begins the game as the \textit{active~player}, with a counterfactual~formula at a possible~world. As the active player makes moves, the counterfactual formula is resolved step by step, until a player resolves a $\top$ and wins or cannot make any move and loses. Throughout the game, moves may also change the active player and possible world.
+\subsubsection{Game state}
+Game states form the backbone of the semantic game of counterfactuals, by describing its game positions. Each game state describes the game at a discrete point in time, inbetween moves.
 \begin{definition}[Game state]
 A game state is a tuple that can take any one of the forms
 \begin{itemize}
@@ -141,50 +171,172 @@ A game state is a tuple that can take any one of the forms
 \end{itemize}
 where $\varphi\in\Phi$; $w,w'\in W$; $r\in\mathbb{R}$ and $p,e\in\{ a,d\}$.
 \end{definition}
-\noindent Of these types of game states (1) is the most common. It carries a counterfactual formula, a current world and is indexed with the active player. It is employed to resolve atomic formulas $x,y,...$ and the propositional symbols $\top,\neg,\vee,\Diamond$; while also serving as an initial and final state type for other resolutions. (2) is a type of game state, that represents a player temporarily becoming active and choosing a state transition. $e$ holds the previous active player, which will resume being active after the next state transition. Lastly state type (3) is an extension of (1), describing a game state where a sphere~of~accessibility has been chosen. $w'$ is a sphere-delimiting world, lying exactly on the surface of said sphere~of~accessibility with radius $r$. We will look at this in further detail in the next subsetion.\\
-We call the set of all game states $G$.\\
-\begin{definition}[Set of Labels]
-$\Sigma$ is a finite set of labels. $\Sigma =\{$
-\begin{itemize}
-	\item Top,
-	\item Negation,
-	\item
-\end{itemize}
-$\}$
-\end{definition}
-\noindent Transitions of the labeled transition system are called moves.
+\noindent Of these types of game states (1) is the most common. It carries a counterfactual formula, the current world and is indexed with the active player. It is employed to resolve atomic formulas $x,y,...$ and the propositional symbols $\top,\neg,\vee,\Diamond$; while also serving as an initial and final state type for other resolutions. (2) is a type of game state, that represents a player temporarily becoming active and choosing a state transition. $e$ holds the previous active player, which will resume being active after the next state transition. Lastly game~state~type~(3) is an extension of~(1), describing a game state where a sphere~of~accessibility has been chosen. $w'$ is a \textit{sphere-delimiting~world}, lying exactly on the surface of said sphere~of~accessibility with radius $r$. We will look at this in further detail in the next subsetion.\\
+We call the set of all game states $G$.
+\subsubsection{Moves}
+When the active player transforms the current game state into another and progresses the game, we call that a move. Formally we represent this in the following way.
 \begin{definition}[Move]
-A move is a transition function $m: game state \rightarrow game state$
-\begin{itemize}
-	\item[(1)]
-	\item[(2)]
-	\item[(3)]
-\end{itemize}
+A move $m$ is a tuple $m\in G\times G$.
 \end{definition}
-\begin{definition}[Labeled transition system]
-A labeled transition system is a tuple $(G,\Sigma ,\rightarrow )$
+\noindent The first element of the tuple is the initial game state, while the second one is the resulting game state. We define the set of moves $\rightarrow$ specific to the semantic~game~of~counterfactuals.
+\begin{definition}[Moves]
+$\rightarrow$ is a set of moves, such that for each world $w$, player $p$ ..., the following is true. And for each $p$, $np\in \{ a,d\}\setminus{}\{p\}$.
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(x ,w)_{p}\xrightarrow{[x\in F(w)]} (\top ,w)_{p}
+	\end{equation}
+	\begin{equation}
+		(\neg\varphi ,w)_{p}\rightarrow (\varphi ,w)_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\vee\psi ,w)_{p}\rightarrow (\varphi ,w)_{p}
+	\end{equation}
+	\begin{equation}
+		(\varphi\vee\psi ,w)_{p}\rightarrow (\psi ,w)_{p}
+	\end{equation}
+	\begin{equation}
+		(\varphi\wedge\psi ,w)_{p}\rightarrow (\varphi\wedge\psi ,w,p)_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\wedge\psi ,w,e)_{p}\rightarrow (\varphi ,w)_{e}
+	\end{equation}
+	\begin{equation}
+		(\varphi\wedge\psi ,w,e)_{p}\rightarrow (\psi ,w)_{e}
+	\end{equation}
+	\begin{equation}
+		(\Diamond\varphi ,w)_{p}\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{p}
+	\end{equation}
+	\begin{equation}
+		(\Box\varphi ,w)_{p}\rightarrow (\Box\varphi ,w,p)_{np}
+	\end{equation}
+	\begin{equation}
+		(\Box\varphi ,w,e)_{p}\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{e}
+	\end{equation}
+	\begin{equation}
+		(\varphi\Diamondright\psi ,w)_{p}\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi\Diamondright\psi ,w,w',r)_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\Diamondright\psi ,w,w',r)_{p}\rightarrow (\varphi\wedge\psi ,w')_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\Diamondright\psi ,w,w',r)_{p}\xrightarrow{[w\overset{r^*}{\leadsto}w^*, r<r^*]} (\neg\varphi ,w^*)_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\boxright\psi ,w)_{p}\rightarrow (\varphi\boxright\psi ,w,p)_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\boxright\psi ,w,e)_{p}\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi\boxright\psi ,w,w',r)_{e}
+	\end{equation}
+	\begin{equation}
+		(\varphi\boxright\psi ,w,w',r)_{p}\rightarrow (\neg\varphi\vee\psi ,w')_{p}
+	\end{equation}
+	\begin{equation}
+		(\varphi\boxright\psi ,w,w',r)_{p}\xrightarrow{[w\overset{r^*}{\leadsto}w^*, r<r^*]} (\varphi ,w^*)_{p}
+	\end{equation}
+	\caption{Moves of the semantic game of counterfactuals}
+	\label{fig:win_rules}
+\end{figure}
 \end{definition}
-\begin{definition}[Semantic game of counterfactuals]
-A labeled transition system is a tuple $(G,\Sigma ,\rightarrow )$
+\subsubsection{The transition system}
+The moves, that can be played in a given game state, are determined by a transition system~$L$. It contains transitions between game states, which we call moves. To arrive at our definiton for $L$, let us first define game states and transitions themselves.
+\begin{definition}[Transition system]
+A transition system is a tuple $(G,\rightarrow )$, where $G$ is the set of all game states and $\rightarrow$ is a transition relation.
 \end{definition}
-\subsection{Formulation of the semantic games rules}
-- Rules\\ (stuck player loses)
-- Employment of the Limit assumption
+\subsection{Limit Assumption}
+- explain limit assumption\\
+- justify limit assumption (finite graph satisfies it anyways, nicer interactive presentation)\\
 - alternative semantic game rules
-\subsection{Game in game-theoretical formulation}
-This section is concerned with explaining core ideas and definitions related to semantic two-player games.
-- game is like a conversation between players
-- show something through their interplay
-- show truth of counterfactual formula
-\begin{definition}[]
-
+\subsection{Alternative game rules}
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(x ,w)_{p}\xrightarrow{[x\in F(w)]} (\top ,w)_{p}
+	\end{equation}
+	\begin{equation}
+		(\neg\varphi ,w)_{p}\rightarrow (\varphi ,w)_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\vee\psi ,w)_{p}\rightarrow (\varphi ,w)_{p}
+	\end{equation}
+	\begin{equation}
+		(\varphi\vee\psi ,w)_{p}\rightarrow (\psi ,w)_{p}
+	\end{equation}
+	\begin{equation}
+		(\varphi\wedge\psi ,w)_{p}\rightarrow (\varphi\wedge\psi ,w,p)_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\wedge\psi ,w,e)_{p}\rightarrow (\varphi ,w)_{e}
+	\end{equation}
+	\begin{equation}
+		(\varphi\wedge\psi ,w,e)_{p}\rightarrow (\psi ,w)_{e}
+	\end{equation}
+	\begin{equation}
+		(\Diamond\varphi ,w)_{p}\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{p}
+	\end{equation}
+	\begin{equation}
+		(\Box\varphi ,w)_{p}\rightarrow (\Box\varphi ,w,p)_{np}
+	\end{equation}
+	\begin{equation}
+		(\Box\varphi ,w,e)_{p}\xrightarrow{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{e}
+	\end{equation}
+	//TODO: Check truth conditions
+	\begin{equation}
+		(\varphi\Diamondright\psi ,w)_p\rightarrow (\varphi\Diamondright\psi ,w,p)_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\Diamondright\psi ,w,e)_{p}\rightarrow (vac, \varphi\Diamondright\psi ,w)_{e}
+	\end{equation}
+	\begin{equation}
+		(vac, \varphi\Diamondright\psi ,w)_p\xrightarrow{[w\overset{r}{\leadsto}w']}(\varphi ,w')_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\Diamondright\psi ,w,e)_p\xrightarrow{[w\overset{r}{\leadsto}w']}(\varphi\Diamondright\psi ,w,w',r)_{e}
+	\end{equation}
+	\begin{equation}
+		(\varphi\Diamondright\psi ,w,w',r)_p\rightarrow (\neg\varphi\vee\psi ,w')_{p}
+	\end{equation}
+	\begin{equation}
+		(\varphi\Diamondright\psi ,w,w',r)_p\xrightarrow{[w\overset{r^*}{\leadsto}w^*,r^*\leq r]}(\varphi\wedge\psi ,w^*)_{p}
+	\end{equation}
+	//TODO: Check truth conditions
+	\begin{equation}
+		(\varphi\boxright\psi ,w)_p\rightarrow (vac, \varphi\boxright\psi ,w)_{np}
+	\end{equation}
+	\begin{equation}
+		(vac, \varphi\boxright\psi ,w)_p\xrightarrow{[w\overset{r}{\leadsto}w']}(\neg\varphi ,w')_{e}
+	\end{equation}
+	\begin{equation}
+		(\varphi\boxright\psi ,w)_p\xrightarrow{[w\overset{r}{\leadsto}w']}(\varphi\boxright\psi ,w,w',r)_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\boxright\psi ,w,w',r)_p\rightarrow (\varphi ,w')_{np}
+	\end{equation}
+	\begin{equation}
+		(\varphi\boxright\psi ,w,w',r)_p\xrightarrow{[w\overset{r^*}{\leadsto}w^*,r^*\leq r]}(\neg\varphi\vee\psi ,w^*)_{np}
+	\end{equation}
+	\caption{alternate rules of the semantic game of counterfactuals}
+	\label{fig:rules}
+\end{figure}
+\subsection{Playing the game}
+\begin{definition}[Semantic game of counterfactuals]
+The semantic game of counterfactuals is an ordered tuple $(I, L, A, D)$, where $I\in G$ is the initial game state; $L$ is a transition system for game states; $A$ is the attacker's strategy and $D$ is the defender's strategy.
 \end{definition}
+
+TODO: Add ending game states
+- Rules\\ (stuck player loses)
+
+- game is like a conversation between players\\
+- show something through their interplay\\
+- show truth of counterfactual formula\\
+- Game produces a play\\
 - game states (formula, current world, player)\\
 - game outcomes (winning/losing)\\
 - moves\\
 - play (sequence of moves)\\
 - winning play\\
 - game tuple (state, moves)\\
+- subgame\\
 - strategy (mapping from game states to moves)\\
 \subsection{Correctness proof}
 \subsection{Termination proof}

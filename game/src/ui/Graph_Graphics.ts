@@ -55,7 +55,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
             let d = edges[i][1];
             let w = edges[i][2];
             if(o == d) { continue; }
-            let edge = new Edge(scene, new Phaser.Math.Vector2(wps[o][0], wps[o][1]), new Phaser.Math.Vector2(wps[d][0], wps[d][1]), w);
+            let edge = new Edge(scene, new Phaser.Math.Vector2(wps[o][0], wps[o][1]), new Phaser.Math.Vector2(wps[d][0], wps[d][1]), w, d);
             this.worlds[o].add_edge(edge);
             edge.add_to_container(this);
         }
@@ -105,7 +105,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
             this.add(this.target);
         }
 
-        this.set_sphere(current_world);
+        this.set_sphere(current_world); //TODO: INIT?
     }
 
     set_mode(mode: Graph_Graphics_Mode) {
@@ -148,7 +148,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
                 let adj = current.get_edge_list();
                 let r = adj.find((value) => (value[1] == this.delim_world))![2];
                 for(let i=0; i<this.worlds.length; i++) {
-                    if(!adj.some((value) => (value[1] == i && value[2] <= r))) { continue; }
+                    if(!adj.some((value) => (value[1] == i && (value[2] < r || (value[2] == r && value[1] == this.delim_world))))) { continue; }
                     blink_worlds.push(this.worlds[i]);
                 }
                 timeline = World_Animations.create(this.scene, blink_worlds, World_Animation.BLINK);
@@ -201,20 +201,23 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         }
     }
 
-    set_sphere(current_world: integer, delim_world = -1, distance = Infinity) {
+    set_sphere(current_world: integer, delim_world = -1, distance = Infinity, only_delim = false) {
         this.clear_sphere();
         this.set_current_world(current_world);
         this.set_delim_world(delim_world);
 
+        if(delim_world != -1) { distance = this.graph.get_world(current_world).get_edge(delim_world)[1]; }
+
         let edges = this.graph.get_edges(current_world);
         for(let i=0; i<edges.length; i++) {
-            if(edges[i][1] <= distance) {
+            if(edges[i][1] < distance || (edges[i][1] == distance && (edges[i][0].index == delim_world || !only_delim))) {
                 this.worlds[edges[i][0].index].set_active(true);
             }
         }
         let edge_graphics = this.worlds[current_world].get_edges();
         for(let i=0; i<edge_graphics.length; i++) {
             if(edge_graphics[i].get_weight() > distance) { continue; };
+            if((edge_graphics[i].get_weight() == distance && edge_graphics[i].get_dest() != delim_world && only_delim)) { continue; };
             let edge = edge_graphics[i].get_sprites();
             for(let j=0; j<edge.length; j++) {
                 edge[j].setAlpha(EDGE_ALPHA);
@@ -551,10 +554,12 @@ export class Edge {
 
     private label: Phaser.GameObjects.Text;
     private weight;
+    private dest;
 
     // Origin and destination coords
-    constructor(scene: Phaser.Scene, origin: Phaser.Math.Vector2, destination: Phaser.Math.Vector2, weight: integer) {
+    constructor(scene: Phaser.Scene, origin: Phaser.Math.Vector2, destination: Phaser.Math.Vector2, weight: integer, dest: integer) {
         this.weight = weight;
+        this.dest = dest;
 
         let delta = new Phaser.Math.Vector2(destination.x - origin.x, destination.y - origin.y);
         let midpoint = origin.lerp(destination, 0.5);
@@ -686,6 +691,10 @@ export class Edge {
 
     get_weight() {
         return this.weight;
+    }
+
+    get_dest() {
+        return this.dest;
     }
 }
 
