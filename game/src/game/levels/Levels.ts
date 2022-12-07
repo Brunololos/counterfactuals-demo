@@ -271,7 +271,7 @@ text = "";
 text_icon_keys = [];
 
 /* "~¯|¯" "~(A |_|-> (A |_|-> B))" *//* "~((~A v (B v ~C)) ^ ~A)" *//* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */
-levellist.push(Level.create("Test", "Res", "~(~A v ~~B)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+levellist.push(Level.create("Test", "Res", "~((~A v C) ^ ~~B)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 export let levels = levellist;
 

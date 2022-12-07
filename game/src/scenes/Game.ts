@@ -39,6 +39,7 @@ export default class Game_Scene extends Base_Scene {
     this.input.keyboard.addKeys('Q,E');
     this.input.keyboard.on('keydown-' + 'Q', function (event) { if(this.level-1 >= 0) { this.scene.restart({level: this.level-1}); } }, this);
     this.input.keyboard.on('keydown-' + 'E', function (event) { if(this.level+1 < levels.length) { this.scene.restart({level: this.level+1}); } }, this);
+    this.input.keyboard.on('keydown-' + 'R', function (event) { this.scene.restart({level: this.level}); }, this);
   }
 
   update(time: number, delta: number): void {

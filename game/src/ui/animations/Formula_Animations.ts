@@ -856,7 +856,8 @@ export class Formula_Animations {
                 neg = formula.add_temporary_formula("_|_");
                 neg.setTexture("negation");
                 neg.setAlpha(0);
-                neg.setX(-left.get_width()/2 - DISJ_WIDTH/2 - right.get_width()/2);
+                neg.setX(-left.get_width()/2 + (ICON_WIDTH - DISJ_WIDTH)/2 - ICON_WIDTH/2 - right.get_width()/2 + BRACKET_WIDTH); // TODO:
+                console.log(- f.get_width()/2);
                 timeline.add({ /* FADE CF_MIGHT */
                     targets: f,
                     alpha: 0,
@@ -1201,6 +1202,7 @@ export class Formula_Animations {
                 return 0;
             case transition[0] == Game_Graphics_Mode.Possibility_World_Choice && transition[1] == Game_Graphics_Mode.Formula:
             case transition[0] == Game_Graphics_Mode.Necessity_World_Choice && transition[1] == Game_Graphics_Mode.Formula:
+            case transition[0] == Game_Graphics_Mode.Counterfactual_World_Choice && transition[1] == Game_Graphics_Mode.Formula:
                 return 0;
             default:
                 return 1500;

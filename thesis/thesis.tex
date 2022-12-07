@@ -15,6 +15,8 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,positioning,calc}
 \usepackage{tkz-graph}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{needspace}
@@ -26,6 +28,11 @@
 \makeatletter
 \providecommand*{\code}[1]{\texttt{#1}}
 \makeatother
+
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\algnewcommand{\TRUE}{\textbf{true}}
+\algnewcommand{\FALSE}{\textbf{false}}
 
 \theoremstyle{definition}\newtheorem{definition}{Definition}
 \hyphenation{counterfactual}
@@ -89,7 +96,7 @@ Lewis defines the truth conditions of his operators with respect to a system of 
 	\caption{Lewis' (centered) system of spheres}
 	\label{fig:system_of_spheres}
 \end{figure}
-\noindent \textit{Illustrate example system of spheres and explain \$}\\
+\noindent \textit{Illustrate example system of spheres and explain \$}\\\\
 A world where $\varphi$ holds is called a $\varphi$-world.
 \noindent And his counterfactual truth conditions are:
 \begin{figure}[H]
@@ -125,14 +132,14 @@ We call $\Phi = \{\varphi ,\psi ,...\}$ the set of all well-formed counterfactua
 \begin{definition}[Well-formed counterfactual formula]
 Given an infinite set of atomic formula symbols $Atoms = \{ x, y, ...\}$ and an alphabet $A~=~\{\bot ,\top ,\neg ,\vee ,\wedge ,\Diamond ,\Box ,\Diamondright ,\boxright\}\cup Atoms$, the structure of every well-formed counterfactual formula is expressed through the following Backus-Naur form.
 \begin{equation}
-\varphi, \psi ::= \bot \mid \top \mid x \mid \neg \varphi \mid \Box \varphi \mid \Diamond \varphi \mid \varphi \vee \psi \mid \varphi \wedge \psi \mid \varphi \boxright \psi \mid \varphi \Diamondright \psi
+\varphi, \psi ::= \bot \mid \top \mid x \mid \neg \varphi \mid \varphi \vee \psi \mid \varphi \wedge \psi \mid \Diamond \varphi \mid \Box \varphi \mid \varphi \boxright \psi \mid \varphi \Diamondright \psi
 \end{equation}
 \end{definition}
 
 \subsubsection{Possible worlds semantics}
 In order to evaluate the non-truth-functional connectives of counterfactual~logic, we define a variation of the Kripke~structure in \cite{kripke_modal_logic_1963}. To evaluate Lewis' counterfactual truth conditions \cite{lewis_counterfactuals_1973}, we also introduce a notion of similarity between possible worlds to the accessibility relation.
 \begin{definition}[counterfactual kripke structure]
-The {\it counterfactual kripke structure} is an ordered triple $(W, \leadsto ,F)$, where $W=\{w,v,...\}$ is the set of all "possible~worlds", $\leadsto \colon W\times \mathbb{R} \times W$ is the similarity relation, and $F \colon W \rightarrow 2^{Atoms}$ is an assignment of each world, to a set of atomic formulas.
+A {\it counterfactual kripke structure} is an ordered triple $(W, \leadsto ,F)$, where $W=\{w,v,...\}$ is the set of all possible~worlds, $\leadsto \colon W\times \mathbb{R} \times W$ is the similarity relation, and $F \colon W \rightarrow 2^{Atoms}$ is an assignment of each world, to a set of atomic formulas.
 \end{definition}
 \noindent Let us explain further the members of our counterfactual~kripke~structure.\\
 The set of all possible~worlds $W$ represents all complete and self-consistent ways reality could have been. $F$ in turn, describes the state of affairs at each world. It assigns to each world a set of atomic propositions, that are the case at it. The similarity relations purpose is twofold. It serves as an accessibility relation, restricting accessibility between worlds and also carries information about comparative similarity between worlds. In particular this means for any two worlds $w$ and $v$, that iff $w\overset{r}{\leadsto} v$, then $v$ is called accessible from $w$. $w\overset{r}{\leadsto} v$ also means, that $r$ is a measure of similarity between $w$ and $v$, from the standpoint of $w$. We can suppose another world $v'$, with $w\overset{r'}{\leadsto} v'$ and compare $r$ and $r'$. If $r < r'$, we can conclude, that $v$ is more similar to $w$ than $v'$, from the standpoint of $w$. Additionally we note, that for our purposes $\leadsto$ will always contain a tuple $(w, 0, w)$ for each world $w\in W$. This is because we assume analogously to Kripke, that worlds are self-similar and are accessible from themselves. Finally we introduce $W_w = \{w'\mid w \overset{r}{\leadsto} w'\}$ as a shorthand for the set of all accessible worlds, from a world $w$.
@@ -149,13 +156,13 @@ $S,w\vDash \Diamond \varphi$ iff a world $w'\in W_w$ exists, such that $S,w' \vD
 $S,w\vDash \Box \varphi$ iff for every world $w'\in W_w$, it is true that $S,w' \vDash \varphi$.\\
 $S,w\vDash \varphi \Diamondright \psi$, iff both 
 \begin{itemize}
-	\item[(1)] a world $w'\in W_w$ exists, such that $S,w' \vDash \varphi$,
+	\item[(1)] a world $w'\in W_w$ exists, such that $S,w' \vDash \varphi$, and
 	\item[(2)] for every world $w''$, for which an $r''$ exists, such that $w\overset{r''}{\leadsto}w''$ and $S,w'' \vDash \varphi\wedge\neg\psi$ are true, a world $w^*$ and an $r^*$ exist, such that $r^* \leq r''$ and $w\overset{r^*}{\leadsto}w^*$ and $S,w^* \vDash \varphi\wedge\psi$.
 \end{itemize}
 
 \noindent$S,w \vDash \varphi \boxright \psi$, iff either
 \begin{itemize}
-	\item[(1)] no world $w'\in W_w$ exists, such that $S,w' \vDash \varphi$.
+	\item[(1)] no world $w'\in W_w$ exists, such that $S,w' \vDash \varphi$, or
 	\item[(2)] a world $w'$ and an $r$ exist, such that $w\overset{r}{\leadsto} w'$ and $S,w'\vDash \varphi$ and for each world $w^*$, for which an $r^*$ exists, such that $r^*\leq r$ and $w\overset{r^*}{\leadsto} w^*$, it is true that $S,w^*\vDash\psi\vee\neg\varphi$.
 \end{itemize}
 \subsection{The semantic game of counterfactuals}
@@ -220,7 +227,7 @@ $\rightarrow$ is a set of moves, such that for each world $w$, player $p$ ..., t
 		(\varphi\Diamondright\psi ,w,w',r)_{p}\rightarrow (\varphi\wedge\psi ,w')_{np}
 	\end{equation}
 	\begin{equation}
-		(\varphi\Diamondright\psi ,w,w',r)_{p}\xrightarrow{[w\overset{r^*}{\leadsto}w^*, r<r^*]} (\neg\varphi ,w^*)_{np}
+		(\varphi\Diamondright\psi ,w,w',r)_{p}\xrightarrow{[w\overset{r^*}{\leadsto}w^*, r^*<r]} (\neg\varphi ,w^*)_{np}
 	\end{equation}
 	\begin{equation}
 		(\varphi\boxright\psi ,w)_{p}\rightarrow (\varphi\boxright\psi ,w,p)_{np}
@@ -232,7 +239,7 @@ $\rightarrow$ is a set of moves, such that for each world $w$, player $p$ ..., t
 		(\varphi\boxright\psi ,w,w',r)_{p}\rightarrow (\neg\varphi\vee\psi ,w')_{p}
 	\end{equation}
 	\begin{equation}
-		(\varphi\boxright\psi ,w,w',r)_{p}\xrightarrow{[w\overset{r^*}{\leadsto}w^*, r<r^*]} (\varphi ,w^*)_{p}
+		(\varphi\boxright\psi ,w,w',r)_{p}\xrightarrow{[w\overset{r^*}{\leadsto}w^*, r^*<r]} (\varphi ,w^*)_{p}
 	\end{equation}
 	\caption{Moves of the semantic game of counterfactuals}
 	\label{fig:win_rules}
@@ -299,12 +306,9 @@ A transition system is a tuple $(G,\rightarrow )$, where $G$ is the set of all g
 	\begin{equation}
 		(\varphi\Diamondright\psi ,w,w',r)_p\xrightarrow{[w\overset{r^*}{\leadsto}w^*,r^*\leq r]}(\varphi\wedge\psi ,w^*)_{p}
 	\end{equation}
-	//TODO: Check truth conditions
+	//TODO: Accurate truth conditions
 	\begin{equation}
-		(\varphi\boxright\psi ,w)_p\rightarrow (vac, \varphi\boxright\psi ,w)_{np}
-	\end{equation}
-	\begin{equation}
-		(vac, \varphi\boxright\psi ,w)_p\xrightarrow{[w\overset{r}{\leadsto}w']}(\neg\varphi ,w')_{e}
+		(\varphi\boxright\psi ,w)_p\rightarrow (\Box\neg\varphi ,w)_{p}
 	\end{equation}
 	\begin{equation}
 		(\varphi\boxright\psi ,w)_p\xrightarrow{[w\overset{r}{\leadsto}w']}(\varphi\boxright\psi ,w,w',r)_{np}
@@ -320,7 +324,7 @@ A transition system is a tuple $(G,\rightarrow )$, where $G$ is the set of all g
 \end{figure}
 \subsection{Playing the game}
 \begin{definition}[Semantic game of counterfactuals]
-The semantic game of counterfactuals is an ordered tuple $(I, L, A, D)$, where $I\in G$ is the initial game state; $L$ is a transition system for game states; $A$ is the attacker's strategy and $D$ is the defender's strategy.
+The semantic game of counterfactuals is an ordered tuple $(I, E, L)$, where $I\in G$ is the initial game state; $E\subseteq G$ is the set of ending game states; $L$ is a transition system for game states.
 \end{definition}
 
 TODO: Add ending game states
@@ -337,16 +341,49 @@ TODO: Add ending game states
 - winning play\\
 - game tuple (state, moves)\\
 - subgame\\
-- strategy (mapping from game states to moves)\\
+- strategy (mapping from game states to moves (positional game, thus state-based is okay, otherwise partial mapping from partial plays to moves))\\
 \subsection{Correctness proof}
 \subsection{Termination proof}
 
 \section{The educational game}
 \subsection{Correspondance between semantic game and computer game}
+\subsection{Artificial intelligence}
+\begin{algorithm}[H]
+\caption{Adjusted MiniMax Algorithm}\label{alg:minimax}
+\begin{algorithmic}
+\Require $s$ (game state)
+\Function{MiniMax}{$s$}\Comment{Calculate best move}
+	\State $Q \gets [s]$\Comment{Setup queue, expanded node and score lists}
+	\State $E \gets []$
+	\State $SC \gets []$
+	\While{$Q$ not empty}
+		\State $current \gets \Call{POP}{Q}$
+		\State $e \gets \FALSE$
+		\State $states \gets \Call{NEXTSTATES}{s}$
+		\State Let $n$
+		\If{c not in E}
+			\State \Call{PUSH}{E, current}
+			\State $e \gets \TRUE$
+			\For{each state in states}
+				\If{state not in E}
+					\If{state in Q}
+						\State \Call{REMOVEEACH}{Q, state}
+					\EndIf
+					\State \Call{PUSH}{Q, state}
+				\EndIf
+			\EndFor
+		\EndIf
+		\If{e = \FALSE}
+			// TODO:
+		\EndIf
+	\EndWhile
+\EndFunction\\
+NEXT calculates the next game states and returns them
+\end{algorithmic}
+\end{algorithm}
 \section{Results}
 \subsection{Player feedback}
 \bibliographystyle{alphaurl}
 \nocite{*}
 \bibliography{thesis}
-
 \end{document}

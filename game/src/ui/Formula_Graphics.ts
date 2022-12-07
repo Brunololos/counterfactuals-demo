@@ -58,7 +58,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     static configure_sprites(scene: Phaser.Scene) {
         if(scene.textures.getTextureKeys().includes("fill_open_0")) { return; }
         //let atom_colors = [0xF5C92A, 0x27577F, 0xFF577F, 0x27571B, 0xD3402A]; // TODO: make colors pop more like 0xFF577F,
-        let atom_colors = [0xFFCB42, 0x42855B, 0x533483, /* 0xFF577F */0xFF4842, 0xA2B5BB, 0x47B5FF/* , 0x84513D */, 0xFF8118, 0x2766FA]; // TODO: Fix wrong atom color
+        let atom_colors = [0xFFCB42, 0x42855B, 0x533483, /* 0xFF577F */0xFF4842, 0xA2B5BB, 0x47B5FF/* , 0x84513D */, 0xFF42CA, 0x2766FA]; // TODO: Fix wrong atom color
         //let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xA2B5BB, 0xFF8FB1, 0x47B5FF, 0x84513D];
         for(let i=0; i<NUM_RECOLORS; i++) {
             duplicate_texture(scene, "fill_open", "fill_open_"+(i).toString());
@@ -198,7 +198,8 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
                 return new Necessity_Graphics(scene, x - subject.get_width()/2, y, subject);
             case to_parse instanceof Negation:
                 subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
-                return new Negation_Graphics(scene, x - subject.get_width()/2, y, subject);
+                return new Negation_Graphics(scene, x - subject.get_width()/2 + ((subject instanceof Conjunction_Graphics || subject instanceof  Disjunction_Graphics || subject instanceof Cf_Might_Graphics || subject instanceof  Cf_Would_Graphics) ? + BRACKET_WIDTH/2 : 0), y, subject);
+                // TODO: Fix random Bracket Offset for binary operators //In ..._Would_Target_Evaluation Animation set correct negation offset // rm offset in Formula creation
             case to_parse instanceof Atom:
                 return new Atom_Graphics(scene, x, y, (to_parse as Atom).value,  atoms);
             case to_parse instanceof Bottom:

@@ -18,6 +18,7 @@
 \usepackage{graphicx}
 \usepackage{float}
 \usepackage{needspace}
+\theoremstyle{definition}\newtheorem{definition}{Definition}
 
 \graphicspath{ {./images/} }
 
@@ -280,10 +281,16 @@ The formula $\varphi\vee\psi$ is satisfied by a world $w$ ($w\vDash\varphi\vee\p
 \begin{figure}[H]
 	\centering
 	\begin{equation}
+		(\top ,w)_{p}\hspace{10pt}\text{Player p wins}
+	\end{equation}
+	\begin{equation}
 		(\varphi ,w)_{p}\nrightarrow\text{Player p loses}
 	\end{equation}
 	\begin{equation}
-		(\top ,w)_{p}\hspace{10pt}\text{Player p wins}
+		(\varphi ,w,e)_{p}\nrightarrow\text{Player p loses}
+	\end{equation}
+	\begin{equation}
+		(\varphi ,w,w',r)_{p}\nrightarrow\text{Player p loses}
 	\end{equation}
 	\caption{Updated Win conditions}
 	\label{fig:win_rules}

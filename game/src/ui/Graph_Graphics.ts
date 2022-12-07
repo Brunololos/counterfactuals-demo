@@ -269,7 +269,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
                 this.worlds[edges[i][0].index].set_hint(left, atoms);
             }
         }
-        this.worlds[delim_world].set_hint("(~"+left+") v ("+right+")", atoms);
+        this.worlds[delim_world].set_hint("(~("+left+")) v ("+right+")", atoms);
     }
 
     clear_hover_ellipse_alphas() {
