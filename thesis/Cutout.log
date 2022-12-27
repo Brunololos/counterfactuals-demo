@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  25 NOV 2022 16:44
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  26 DEC 2022 15:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1031,46 +1031,41 @@ LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
 (Font)              Font shape `T1/pxss/bx/n' tried instead on input line 58.
 
 
-LaTeX Warning: Citation `byrne_counterfactual_2016' on page 1 undefined on inpu
-t line 66.
+LaTeX Warning: Citation `kripke_modal_logic_1963' on page 1 undefined on input 
+line 71.
 
 [1
 
 
-{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
+Underfull \hbox (badness 10000) in paragraph at lines 127--128
 
-LaTeX Warning: Citation `morreau_overall_similarity_2010' on page 2 undefined o
-n input line 75.
+ []
 
+[4]
+Overfull \hbox (8.12721pt too wide) in paragraph at lines 200--210
+[]\T1/pxr/m/n/10 (15), (16), (17), (18), (19) In a sim-i-lar vain to the con-ju
+nc-tion and ne-ces-sity, the counterfactual
+ []
 
-LaTeX Warning: Citation `lewis_counterfactuals_1973' on page 2 undefined on inp
-ut line 77.
-
-LaTeX Font Info:    Trying to load font information for U+eus on input line 86.
-
-(c:/texlive/2022/texmf-dist/tex/latex/amsfonts/ueus.fd
-File: ueus.fd 2013/01/14 v3.01 Euler Script
-) [2]
-No file Cutout.bbl.
-[3
+[5
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.118 \end{document}
-                    
+l.210 \subsection
+                 {Limit Assumption}] [6] [7] [8]
+
+LaTeX Warning: Reference `fig:counterfactual_might' on page 9 undefined on inpu
+t line 280.
+
+[9
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
 s been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.118 \end{document}
-                    
-pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.118 \end{document}
-                    ] (./Cutout.aux)
+l.282 
+      ] (./Cutout.bbl) [10] (./Cutout.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1078,33 +1073,33 @@ LaTeX Warning: There were undefined references.
 LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
 Package rerunfilecheck Info: File `Cutout.out' has not changed.
-(rerunfilecheck)             Checksum: A54961A9F61FDE330EF5735DBC723B32;439.
+(rerunfilecheck)             Checksum: CE71F545480BE628EF9A8F328FFC8621;1848.
  ) 
 Here is how much of TeX's memory you used:
- 24392 strings out of 478300
- 449674 string characters out of 5849124
- 721026 words of memory out of 5000000
- 42081 multiletter control sequences out of 15000+600000
- 518790 words of font info for 114 fonts, out of 8000000 for 9000
+ 24456 strings out of 478300
+ 450434 string characters out of 5849124
+ 735231 words of memory out of 5000000
+ 42084 multiletter control sequences out of 15000+600000
+ 519077 words of font info for 113 fonts, out of 8000000 for 9000
  1146 hyphenation exceptions out of 8191
- 100i,6n,104p,1105b,362s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,14n,104p,2401b,487s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
-f-dist/fonts/type1/public/amsfonts/euler/eusm10.pfb><c:/texlive/2022/texmf-dist
-/fonts/type1/public/pxfonts/pxex.pfb><c:/texlive/2022/texmf-dist/fonts/type1/pu
-blic/pxfonts/pxsy.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/px
-syc.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxb.pfb><c:/tex
-live/2022/texmf-dist/fonts/type1/public/pxfonts/rpxmi.pfb><c:/texlive/2022/texm
-f-dist/fonts/type1/public/pxfonts/rpxr.pfb><c:/texlive/2022/texmf-dist/fonts/ty
-pe1/public/txfonts/t1xtt.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvet
-ic/uhvb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><
-c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022
-/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fon
-ts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/pa
-latino/uplri8a.pfb>
-Output written on Cutout.pdf (3 pages, 103924 bytes).
+f-dist/fonts/type1/public/pxfonts/pxsy.pfb><c:/texlive/2022/texmf-dist/fonts/ty
+pe1/public/pxfonts/pxsya.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxf
+onts/pxsyb.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/pxsyc.pfb
+><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxb.pfb><c:/texlive/20
+22/texmf-dist/fonts/type1/public/pxfonts/rpxmi.pfb><c:/texlive/2022/texmf-dist/
+fonts/type1/public/pxfonts/rpxr.pfb><c:/texlive/2022/texmf-dist/fonts/type1/pub
+lic/txfonts/t1xtt.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvb
+8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texl
+ive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-
+dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type
+1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/
+uplri8a.pfb>
+Output written on Cutout.pdf (10 pages, 134323 bytes).
 PDF statistics:
- 115 PDF objects out of 1000 (max. 8388607)
- 81 compressed objects within 1 object stream
- 11 named destinations out of 1000 (max. 500000)
- 37 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 244 PDF objects out of 1000 (max. 8388607)
+ 201 compressed objects within 3 object streams
+ 74 named destinations out of 1000 (max. 500000)
+ 101 words of extra memory for PDF output out of 10000 (max. 10000000)
 
