@@ -27,6 +27,9 @@
 \providecommand*{\code}[1]{\texttt{#1}}
 \makeatother
 
+\counterwithin*{equation}{section}
+\counterwithin*{equation}{subsection}
+
 \theoremstyle{definition}\newtheorem{definition}{Definition}
 \hyphenation{counterfactual}
 \hyphenation{possible}
@@ -55,6 +58,90 @@
 \begin{abstract}
 In this thesis, I address the scarcity of online resources, showcasing counterfactual truth conditions in an intuitive and digestible manner. To this end I (i) formulate a semantic satisfiability game for counterfactual sentences; (ii) prove its correctness; (iii) prove that it always halts after a finite number of moves; (iv) develop a browserbased web-application, that makes the semantic game of counterfactuals playable.
 \end{abstract}
+\section{Lewis' counterfactual operators}
+With these introductory thoughts out of the way, let us talk in greater detail about the counterfactual operators themselves. Lewis introduces the counterfactual would $\boxright$ and counterfactual might $\Diamondright$ operators as binary modal operators. \cite{lewis_counterfactuals_1973} When we write $\varphi\boxright\psi$, we call the formula $\varphi$ the antecedent and the formula $\psi$ the consequent. We may informally rewrite one of our former examples as "I~did~not~forget~about~my~appointment~$\boxright$~I~was~punctual" and read it the following way. Read $\varphi\boxright\psi$ as "If it were the~case that $\varphi$, then it would be the case that $\psi$", and read $\varphi\Diamondright\psi$ as "If it were the case that~$\varphi$, then~it might be the case that $\psi$".\\
+\subsection{Lewis' system of spheres}
+The truth conditions of the counterfactual operators are stated with respect to a structure, called a \textit{system~of~spheres}. Lewis defines a system~of~spheres as follows.
+\begin{figure}[H]
+	Let $\$$ be an assignment to each possible world $i$ of a set $\$_i$ of sets of possible worlds. Then $\$$ is called a (centered) system of spheres, and the members of each $\$_i$ are called spheres around $i$, if and only if, for each world $i$, the following conditions hold.
+	\begin{itemize}
+	\item[(C)] $\$_i$ is centered on $i$; that is, the set $\{i\}$ having $i$ as its only member belongs to $\$_i$.
+	\item[(1)] $\$_i$ is nested; that is, whenever $S$ and $T$ belong to $\$_i$, either $S$ is included in $T$ or $T$ is included in $S$.
+	\item[(2)] $\$_i$ is closed under unions; that is, whenever $\mathscr{S}$ is a subset of $\$_i$ and $\bigcup\mathscr{S}$ is the set of all worlds $j$ such that $j$ belongs to some member of $\mathscr{S}$, $\bigcup\mathscr{S}$ belongs to $\$_i$.
+	\item[(3)] $\$_i$ is closed under (nonempty) intersections; that is, whenever $\mathscr{S}$ is a nonempty subset of $\$_i$ and $\bigcap\mathscr{S}$ is the set of all worlds $j$ such that $j$ belongs to every member of $\mathscr{S}$, $\bigcap\mathscr{S}$ belongs to $\$_i$.
+	\end{itemize}
+	\caption{Lewis' system of spheres}
+	\label{fig:system_of_spheres}
+\end{figure}
+\noindent Now let us first take a broad perspective upon this definition. Most generally a system of spheres is an assignment of a set of sets of possible worlds to each world. The assigned sets exhibit the four characteristics (C), (1), (2) and (3); and are called sets of spheres. In totality such a system of spheres serves to codify the relationships of accessibility and comparative~similarity between possible worlds. To this end each set of spheres describes an ordering of possible worlds with respect to similarity to the world it is assigned to. Meaning, that the set of spheres $\$_i$ describes the comparative~similarity to- and accessibility from $i$ for each world. This is briefly illustrated by the next example.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}[
+roundnode/.style={circle, draw=black!0, fill=black!100, very thick, minimum size=1pt},
+]
+\coordinate (O) at (0,0);
+\coordinate (V) at (45:1.5);
+\coordinate (W) at (0:2.25);
+\draw (O) circle (2.25);
+\draw (O) circle (1.5);
+\draw (O) circle (0.75);
+\node[scale=1mm, label={[label distance=-6mm]315:i}] at (O) {.};
+\node[scale=1mm, label={[label distance=-6mm]45:v}] at (V) {.};
+\node[scale=1mm, label={[label distance=-6mm]315:w}] at (W) {.};
+
+%\draw[black] (0,0) -- (1,0);
+\end{tikzpicture}
+\caption{A set of spheres $\$_i=\{\{ i\} ,\{ i,v\} ,\{ i,v,w\}\}$}
+\label{fig:set_of_spheres}
+\end{figure}
+
+\noindent In this example we look at the worlds $i$, $v$ and $w$; and consider the set of spheres $\$_i$. The spheres themselves are sets of possible worlds and are visualized through circles. A world inside or on the circumference of a circle is contained within the corresponding sphere. Crucially, the meaning of a sphere around $i$ is that each world contained in it is more similar to $i$ than each world not contained in it. For our example this means that $i$ is more similar to itself than any other world; $i$ and $v$ are more similar to $i$ than any other world; and that $i$, $v$ and $w$ are more similar to $i$ than any other world. Regarding accessibility, a world is said to be accessible from $i$, if it is contained in any sphere around $i$. So we can see that all $i$, $v$ and $w$ are accessible from $i$. With this in mind, we can motivate the properties (C), (1), (2) and (3).\\
+
+(C) It seems reasonable to assume that each world is most similar to itself and that there cannot be another world equally or more similar to it than itself. If that is the case, every sphere around a world $i$ needs to contain the set $\{ i\}$.\\
+\indent (1) Intuitively it may also make sense, that for each pair of spheres around the same world one should include the other. If we entertain the notion, that the spheres around a world are not nested, then one of those spheres cannot be a sphere. First, remember that a sphere around a world $i$ is a set of possible worlds, such that each world contained in it is more similar to $i$, than every world not contained in it. Then suppose the set of spheres $\$_i$ is not nested. In that case two worlds $v$ and $w$ and the spheres $S,T\in\$_i$ exist, such that $v\in S$, $w\notin S$, $v\notin T$ and $w\in T$. Through $S$ we know that that $v$ is more similar to $i$ than $w$. And through $T$ we know that that $w$ is more similar to $i$ than $v$. Which cannot both be the case at the same time.\\
+\indent (2) Suppose that for the union $\bigcup\mathscr{S}$ of a set of spheres $\mathscr{S}$ around $i$, there are two worlds $v,w$ such that $v\in\bigcup\mathscr{S}$ and $w\notin\bigcup\mathscr{S}$. Then that means, that $v$ is, and $w$ is not, contained in some sphere in $\mathscr{S}$. Hence $v$ is more similar to $i$ than $w$. Therefore $\bigcup\mathscr{S}$ is a set such that any world contained within it is more similar to $i$ than any world not contained in it. We call such a set a sphere around $i$.\\
+\indent (3) Suppose that for the intersection $\bigcap\mathscr{S}$ of a nonempty set of spheres $\mathscr{S}$ around $i$, there are two worlds $v,w$ such that $v\in\bigcap\mathscr{S}$ and $w\notin\bigcap\mathscr{S}$. Then that means, that $v$ is, and $w$ is not, contained in some sphere in $\mathscr{S}$. Hence $v$ is more similar to $i$ than $w$. Therefore $\bigcap\mathscr{S}$ is a set such that any world contained within it is more similar to $i$ than any world not contained in it. We call such a set a sphere around $i$.
+\subsection{Lewis' counterfactual truth conditions}
+Then let us take a look at Lewis' counterfactual truth conditions. Take the counterfactual operators as part of some logic, where formulas like $\varphi$ and $\psi$ are evaluated with respect to some world and a system of spheres. Lewis abbreviates a world, where the formula $\varphi$ holds as a $\varphi$-world. The truth conditions of Lewis' counterfactual would operator are these.
+\begin{figure}[H]
+	\centering
+	$\varphi\boxright\psi$ is true at a world i (according to a system of spheres \$) if and only if either
+	\begin{itemize}
+	\item[(1)] no $\varphi$-world belongs to any sphere $S$ in $\$_i$, or
+	\item[(2)] some sphere $S$ in $\$_i$ does contain at least one $\varphi$-world, and $\varphi\rightarrow\psi$ holds at every world in $S$.
+	\end{itemize}
+	\caption{Lewis' counterfactual would truth conditions}
+	\label{fig:counterfactual_would}
+\end{figure}
+\noindent The counterfactual would evaluates to true iff either (1) or (2) is true.\\
+\indent (1) We describe the first case as vacuous truth. Intuit this case the same way a material implication is true, when its antecedent is false. From wrong antecedents arbitrary consequents may be inferred. Keep in mind however, that the vacuous truth of the counterfactual would is much stricter. While the material conditional only requires the antecedent to be false at the world it is evaluated at, the counterfactual would requires the antecedent to be false at every accessible world.\\
+\indent (2) The non-vacuous case requires the existence of a sphere throughout which $\varphi\rightarrow\psi$ holds and that that sphere also contains a $\varphi$-world. The existence of such a sphere can roughly be understood as the existence of some accessibility restriction under which the strict conditional $\Box (\varphi\rightarrow\psi)$ comes out as non-vacuously true. Meaning that $\varphi\rightarrow\psi$ holds throughout all accessible worlds and that at least one accessible world is a $\varphi$-world. While the strict conditional is true, only if it is true in the broadest sense---meaning it is true at every accessible world---the counterfactual would conditional merely needs to be true in one of many senses. That is why Lewis' counterfactual operators are called variably strict conditionals. Each of these many senses are degrees of similarity to a world, that are described by spheres around that world. To motivate why overall similarity between worlds is used as an accessibility restriction consider this example.
+\begin{equation}
+\text{"If Kennedy had pressed the red button, there would have been nuclear war"}
+\end{equation}
+We consider this to be true. Without much trouble, one can make up many counterexamples to this counterfactual. Imagine for a moment the possibility that Kennedy had pressed the red button and the button malfunctioned. In that case Kennedy pressed the button, but there is no nuclear war. Obviously that is not meant. When we say something like "If~it~were~the~case that A, then it would be the case that B", we implicitly mean "If it were the case that~A and things were pretty much as they are otherwise, then it would be the case that~B". Our rebuttal therefore may be that there is at least one possible world where Kennedy pressed the red button and the red button did not malfunction that is more similar to the actual world than any possible world where Kennedy pressed the red button and the button did malfunction. If this is the case, we may claim that our example counterfactual is true, although there are certain senses in which it is not true. This is why a counterfactual would operator is true, if there is at least one sense, represented through a sphere of accessibility, in which it is true. Regarding the system of spheres it means that a counterfactual would operator is non-vacuously true, unless each sphere around the world it is evaluated at contains a refuting world that serves as a counterexample or no sphere around the world it is evaluated at contains a $\varphi$-world.\\
+The \textit{counterfactual~might} is defined analogously.
+
+\begin{figure}[H]
+	\centering
+	$\varphi\Diamondright\psi$ is true at a world i (according to a system of spheres \$) if and only if both
+	\begin{itemize}
+	\item[(1)] some $\varphi$-world belongs to some sphere $S$ in $\$_i$, and
+	\item[(2)] every sphere $S$ in $\$_i$ that contains at least one $\varphi$-world contains at least one world where $\varphi\wedge\psi$ holds.
+	\end{itemize}
+	\caption{Lewis' counterfactual might truth conditions}
+	\label{fig:counterfactual_might}
+\end{figure}
+
+\noindent Note the differences in quantification and truth conditions. The counterfactual would's existential quantifier for the existance of a sphere is replaced by a universal quantifier requiring every sphere containing a $\varphi$-world to also contain a $(\varphi\wedge\psi)$-world. While the counterfactual would requires each world of a sphere to fulfill its criteria, the counterfactual might requires one world of each sphere, that contains a $\varphi$-world, to fulfill its criteria. Notice also that the counterfactual might does not have two separate truth cases and is true in only one case. But since the counterfactual would and counterfactual might are interdefinable, we wont go into further detail here.
+\begin{equation}
+\varphi\boxright\psi = \neg (\varphi\Diamondright\neg\psi )
+\end{equation}
+\begin{equation}
+\varphi\Diamondright\psi = \neg (\varphi\boxright\neg\psi )
+\end{equation}
+
 \section{Counterfactual logic}
 This section is concerned with defining counterfactual logic. First it provides a brief definition of well-formed counterfactual formulas, then introduces the structure they are evaluated on and concludes by defining the truth conditions of counterfactual logic.
 
@@ -96,25 +183,24 @@ $S,w \vDash \varphi \boxright \psi$, iff either
 	\item[(2)] for every world $w''$, for which an $r''$ exists, such that $w\overset{r''}{\leadsto}w''$ and $S,w'' \vDash \varphi\wedge\neg\psi$ are true, a world $w^*$ and an $r^*$ exist, such that $r^* \leq r''$ and $w\overset{r^*}{\leadsto}w^*$ and $S,w^* \vDash \varphi\wedge\psi$.
 \end{itemize}
 \section{The semantic game of counterfactuals}
-This section offers an overview and introduction to the semantic~game~of~counterfactuals. The semantic~game~of~counterfactuals is a sequential two-player reachability game, wherein a \textit{defender} $d$ tries to prove a counterfactual formula and an \textit{attacker} $a$ tries to disprove it. The defender begins the game as the \textit{active~player}, with a counterfactual~formula at a possible~world. The active player is a role assigned to the player that can currently make moves and whose typical objective it is to prove the current formula through play. As the active player makes moves, the counterfactual formula is resolved progressively until a player resolves a $\top$ and wins; or cannot make any move and loses. Throughout the game, moves may also change the active player and current world.
+This section offers an overview and introduction to the semantic~game~of~counterfactuals. The semantic~game~of~counterfactuals is a sequential two-player reachability game, wherein a \textit{defender} $d$ tries to prove a counterfactual formula and an \textit{attacker} $a$ tries to disprove it. The defender begins the game as the \textit{active~player}, with a counterfactual~formula at a possible~world. The active player is a role assigned to the player that can currently make moves and whose typical objective it is to prove the current formula through play. As the active player makes moves, the counterfactual formula is resolved progressively until a player resolves a $\top$ and wins; or cannot make any move and loses. Throughout the game, moves may change the active player and current world.
 
-\subsection{Semantic game tuple}
+\subsection{Definition of the semantic game}
 The game is akin to a discussion where players make arguments and refute them. Weak arguments do not hold up to scrutiny, but strong ones do. The players' adversarial interplay allows the discovery and dismissal of arguments, such that the reason for truth or falsity of a claim is revealed. Of course, this is only possible when the players make the best possible moves. We shall call such play optimal play. We describe the game the following way.
 \begin{definition}[Semantic game of counterfactuals]
-The semantic game of counterfactuals is an ordered tuple $(I, E, L)$, where $I\in G$ is the initial game state; $E=\{(\top ,w)_p \mid w\in W, p\in\{ a,d\}\}$ is the set of winning game states; $L$ is a transition system for game states.
+The semantic game of counterfactuals $\mathfrak{S}[\varphi ,w,S]=(I, E, G, R)$ with respect to a formula $\varphi$, a world $w$ and a counterfactual kripke structure $S=(W,\leadsto ,F)$ is an ordered tuple consisting of
+\begin{itemize}
+\item an initial game state $I=(\varphi ,w)_d$
+\item a set of winning game states $E=\{(\top ,w)_p \mid w\in W\wedge p\in\{ a,d\}\}$
+\item a set of all game states $G$
+\item and a transition relation $R: G\times G$
+\end{itemize}
+The notation $\mathfrak{S}_p[\varphi ,w,S]$ means that the annotated player $p\in\{a,d\}$ begins the game; that is, $I=(\varphi ,w)_p$ instead of $I=(\varphi ,w)_d$.
 \end{definition}
+The initial game state $I$ varies from game to game. It contains the formula $\varphi$ that ought to be proven and the world $w$ it ought to be proven at. It is always indexed by the initial active player, that is the defender. The set of winning game states contains all game states in which the active player wins. When the active player wins, the respective other player loses. The set $E$ includes all game states where the formula is resolved to a $\top$-symbol. It is also possible for a player to win without reaching a winning game state. This is the case when the active player is unable to make a move and is stuck. When this happens, the active player loses and the active player's opponent i.e. the inactive player wins. $\mathfrak{S}[\varphi ,w,S]$ also contains the set of all game states $G$ and the set $R$ of transitions between game states which we call moves. In later sections we will define two such sets of moves. One general formulation $\rightarrow$ and one simplified formulation $\rightarrow_l$ employing the limit assumption. One may take either as $R$. In order to arrive at our definition for $\rightarrow$ and $\rightarrow_l$, let us first define game states and transitions.
 
-$G$ is the set of all game states. We will describe the structure of its elements in the upcoming subsections. The initial game state $I$ varies from game to game. It contains the formula that ought to be proven and the world it ought to be proven at. It is always indexed by the initial active player, that is the defender. The set of winning game states contain all game states in which a player wins. In each winning game state it is the currently active player that wins and the respective other player that loses. This set includes all game states where the formula is resolved to a $\top$-symbol. It is also possible for a player to win without reaching a winning game state. This is the case when the active player is unable to make a move and in other words stuck. When this happens, the active player loses and the active player's opponent i.e. the inactive player wins. Next we will define the transition system~$L$.
-
-\subsection{The transition system}
-The moves that can be played in a given game state are determined by a transition system~$L$.
-\begin{definition}[Transition system]
-A transition system is a tuple $(G,R)$, where $G$ is the set of all game states and $R: G\times G$ is a transition relation.
-\end{definition}
-It contains the set of all game states $G$ and the set $R$ of transitions between game states which we call moves. In later sections we will define two such sets of moves. One general formulation $\rightarrow$ and one simplified formulation $\rightarrow_l$ employing the limit assumption. One may take either as $R$. In order to arrive at our definition for $\rightarrow$ and $\rightarrow_l$, let us first define game states and transitions.
-
-\subsection{Game state}
-Game states form the backbone of the semantic game of counterfactuals by describing its game positions. Each game state describes the game at a discrete point in time in-between moves. We call the set of all game states $G$.
+\subsection{Game states}
+Game states form the backbone of the semantic game of counterfactuals by describing its game positions. Each game state describes the game at a discrete point in time in-between moves.
 \begin{definition}[Game state]
 A game state is a tuple that can take any one of the forms
 \begin{itemize}
@@ -124,7 +210,7 @@ A game state is a tuple that can take any one of the forms
 \end{itemize}
 where $\varphi\in\Phi$; $w,w'\in W$; $r\in\mathbb{R}$ and $p,e\in\{ a,d\}$.
 \end{definition}
-\noindent Of these types of game states (1) is the most common. It carries a counterfactual formula, the current world and is indexed with the active player. It is employed to resolve atomic formulas $x,y,...$ and the propositional symbols $\top,\neg,\vee,\Diamond$; while also serving as an initial and final state type for other resolutions. (2) is a type of game state that represents a player temporarily becoming active and choosing a state transition. $e$ holds the previous active player, which will resume being active after the next state transition. Lastly game~state~type~(3) is an extension of~(1), describing a game state where a sphere~of~accessibility has been chosen. $w'$ is a \textit{sphere-delimiting~world}, lying exactly on the surface of said sphere~of~accessibility with radius $r$. We will look at this in further detail in the next subsection.\\
+\noindent Of these types of game states (1) is the most common. It carries a counterfactual formula, the current world and is indexed with the active player. It is employed to resolve atomic formulas $x,y,...$ and the propositional symbols $\top,\neg,\vee,\Diamond$; while also serving as an initial and final state type for other resolutions. (2) is a type of game state that represents a player temporarily becoming active and choosing a state transition. $e$ holds the previous active player, which will resume being active after the next state transition. Lastly, game~state~type~(3) is an extension of~(1), describing a game state where a sphere~of~accessibility has been chosen. $w'$ is a \textit{sphere-delimiting~world}, lying exactly on the surface of said sphere~of~accessibility with radius $r$. We will look at this in further detail in the next subsection.\\
 
 \subsection{Moves}
 When the active player transforms the current game state into another and progresses the game, we call that a move. Formally we represent this through a tuple of game states.
@@ -222,6 +308,7 @@ $\rightarrow_l$ is a set of moves, such that it contains exactly those tuples th
 \begin{figure}[H]
 	\centering
 	\begin{equation}
+		\label{eq:limit_ass_atom_move}
 		(x ,w)_{p}\xrightarrow{[x\in F(w)]} (\top ,w)_{p}
 	\end{equation}
 	\begin{equation}
