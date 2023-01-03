@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  30 DEC 2022 14:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  3 JAN 2023 14:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -878,66 +878,226 @@ Package: wasysym 2020/01/19 v2.4 Wasy-2 symbol support package
 LaTeX Font Info:    Overwriting symbol font `wasy' in version `bold'
 (Font)                  U/wasy/m/n --> U/wasy/b/n on input line 93.
 )
-\xrat@below=\box65
-\xrat@above=\box66
-\c@thm=\count329
-\c@definition=\count330
-LaTeX Font Info:    Trying to load font information for T1+pxr on input line 63
-.
+(c:/texlive/2022/texmf-dist/tex/latex/caption/subcaption.sty
+Package: subcaption 2022/01/07 v1.5 Sub-captions (AR)
+
+(c:/texlive/2022/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2022/03/01 v3.6b Customizing captions (AR)
+
+(c:/texlive/2022/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2022/03/17 v2.3b caption3 kernel (AR)
+\caption@tempdima=\dimen274
+\captionmargin=\dimen275
+\caption@leftmargin=\dimen276
+\caption@rightmargin=\dimen277
+\caption@width=\dimen278
+\caption@indent=\dimen279
+\caption@parindent=\dimen280
+\caption@hangindent=\dimen281
+Package caption Info: thesis document class detected.
+
+(c:/texlive/2022/texmf-dist/tex/latex/caption/caption-thesis.sto
+File: caption-thesis.sto 2020/08/22 v2.0 Adaption of the caption package to the
+ thesis document class (AR)
+))
+\c@caption@flags=\count329
+\c@continuedfloat=\count330
+Package caption Info: float package is loaded.
+Package caption Info: hyperref package is loaded.
+)
+\c@subfigure=\count331
+\c@subtable=\count332
+)
+(c:/texlive/2022/texmf-dist/tex/latex/mdframed/mdframed.sty
+Package: mdframed 2013/07/01 1.9b: mdframed
+
+(c:/texlive/2022/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+(c:/texlive/2022/texmf-dist/tex/latex/l3kernel/expl3.sty
+Package: expl3 2022-05-04 L3 programming layer (loader) 
+
+(c:/texlive/2022/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
+File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count333
+\l__pdf_internal_box=\box65
+))
+Package: xparse 2022-01-12 L3 Experimental document command parser
+)
+(c:/texlive/2022/texmf-dist/tex/latex/etoolbox/etoolbox.sty
+Package: etoolbox 2020/10/05 v2.5k e-TeX tools for LaTeX (JAW)
+\etb@tempcnta=\count334
+)
+(c:/texlive/2022/texmf-dist/tex/latex/zref/zref-abspage.sty
+Package: zref-abspage 2022-04-07 v2.34 Module abspage for zref (HO)
+
+(c:/texlive/2022/texmf-dist/tex/latex/zref/zref-base.sty
+Package: zref-base 2022-04-07 v2.34 Module base for zref (HO)
+Package zref Info: New property list: main on input line 767.
+Package zref Info: New property: default on input line 768.
+Package zref Info: New property: page on input line 769.
+)
+\c@abspage=\count335
+Package zref Info: New property: abspage on input line 65.
+)
+\mdf@templength=\skip61
+\c@mdf@globalstyle@cnt=\count336
+\mdf@skipabove@length=\skip62
+\mdf@skipbelow@length=\skip63
+\mdf@leftmargin@length=\skip64
+\mdf@rightmargin@length=\skip65
+\mdf@innerleftmargin@length=\skip66
+\mdf@innerrightmargin@length=\skip67
+\mdf@innertopmargin@length=\skip68
+\mdf@innerbottommargin@length=\skip69
+\mdf@splittopskip@length=\skip70
+\mdf@splitbottomskip@length=\skip71
+\mdf@outermargin@length=\skip72
+\mdf@innermargin@length=\skip73
+\mdf@linewidth@length=\skip74
+\mdf@innerlinewidth@length=\skip75
+\mdf@middlelinewidth@length=\skip76
+\mdf@outerlinewidth@length=\skip77
+\mdf@roundcorner@length=\skip78
+\mdf@footenotedistance@length=\skip79
+\mdf@userdefinedwidth@length=\skip80
+\mdf@needspace@length=\skip81
+\mdf@frametitleaboveskip@length=\skip82
+\mdf@frametitlebelowskip@length=\skip83
+\mdf@frametitlerulewidth@length=\skip84
+\mdf@frametitleleftmargin@length=\skip85
+\mdf@frametitlerightmargin@length=\skip86
+\mdf@shadowsize@length=\skip87
+\mdf@extratopheight@length=\skip88
+\mdf@subtitleabovelinewidth@length=\skip89
+\mdf@subtitlebelowlinewidth@length=\skip90
+\mdf@subtitleaboveskip@length=\skip91
+\mdf@subtitlebelowskip@length=\skip92
+\mdf@subtitleinneraboveskip@length=\skip93
+\mdf@subtitleinnerbelowskip@length=\skip94
+\mdf@subsubtitleabovelinewidth@length=\skip95
+\mdf@subsubtitlebelowlinewidth@length=\skip96
+\mdf@subsubtitleaboveskip@length=\skip97
+\mdf@subsubtitlebelowskip@length=\skip98
+\mdf@subsubtitleinneraboveskip@length=\skip99
+\mdf@subsubtitleinnerbelowskip@length=\skip100
+
+(c:/texlive/2022/texmf-dist/tex/latex/mdframed/md-frame-0.mdf
+File: md-frame-0.mdf 2013/07/01\ 1.9b: md-frame-0
+)
+\mdf@frametitlebox=\box66
+\mdf@footnotebox=\box67
+\mdf@splitbox@one=\box68
+\mdf@splitbox@two=\box69
+\mdf@splitbox@save=\box70
+\mdfsplitboxwidth=\skip101
+\mdfsplitboxtotalwidth=\skip102
+\mdfsplitboxheight=\skip103
+\mdfsplitboxdepth=\skip104
+\mdfsplitboxtotalheight=\skip105
+\mdfframetitleboxwidth=\skip106
+\mdfframetitleboxtotalwidth=\skip107
+\mdfframetitleboxheight=\skip108
+\mdfframetitleboxdepth=\skip109
+\mdfframetitleboxtotalheight=\skip110
+\mdffootnoteboxwidth=\skip111
+\mdffootnoteboxtotalwidth=\skip112
+\mdffootnoteboxheight=\skip113
+\mdffootnoteboxdepth=\skip114
+\mdffootnoteboxtotalheight=\skip115
+\mdftotallinewidth=\skip116
+\mdfboundingboxwidth=\skip117
+\mdfboundingboxtotalwidth=\skip118
+\mdfboundingboxheight=\skip119
+\mdfboundingboxdepth=\skip120
+\mdfboundingboxtotalheight=\skip121
+\mdf@freevspace@length=\skip122
+\mdf@horizontalwidthofbox@length=\skip123
+\mdf@verticalmarginwhole@length=\skip124
+\mdf@horizontalspaceofbox=\skip125
+\mdfsubtitleheight=\skip126
+\mdfsubsubtitleheight=\skip127
+\c@mdfcountframes=\count337
+
+****** mdframed patching \endmdf@trivlist
+
+****** -- success******
+
+\mdf@envdepth=\count338
+\c@mdf@env@i=\count339
+\c@mdf@env@ii=\count340
+\c@mdf@zref@counter=\count341
+Package zref Info: New property: mdf@pagevalue on input line 895.
+)
+(c:/texlive/2022/texmf-dist/tex/latex/lipsum/lipsum.sty
+(c:/texlive/2022/texmf-dist/tex/latex/l3packages/l3keys2e/l3keys2e.sty
+Package: l3keys2e 2022-01-12 LaTeX2e option processing using LaTeX3 keys
+)
+Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
+\g__lipsum_par_int=\count342
+\l__lipsum_a_int=\count343
+\l__lipsum_b_int=\count344
+
+(c:/texlive/2022/texmf-dist/tex/latex/lipsum/lipsum.ltd.tex))
+\xrat@below=\box71
+\xrat@above=\box72
+\xrat@below=\box73
+\xrat@above=\box74
+\xrat@below=\box75
+\xrat@above=\box76
+\xrat@below=\box77
+\xrat@above=\box78
+\c@thm=\count345
+\c@definition=\count346
+LaTeX Font Info:    Trying to load font information for T1+pxr on input line 12
+8.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxr.fd
 File: t1pxr.fd 2000/12/14 v1.0
-)
-(c:/texlive/2022/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2022-04-20 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count331
-\l__pdf_internal_box=\box67
-)
-(./thesis.aux)
+) (./thesis.aux)
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 63.
+LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 128.
 LaTeX Font Info:    Trying to load font information for OML+pxmi on input line 
-63.
- (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omlpxmi.fd
+128.
+
+(c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omlpxmi.fd
 File: omlpxmi.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 128.
 LaTeX Font Info:    Trying to load font information for OMS+pxsy on input line 
-63.
+128.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omspxsy.fd
 File: omspxsy.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 63.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 128.
 LaTeX Font Info:    Trying to load font information for OMX+pxex on input line 
-63.
+128.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omxpxex.fd
 File: omxpxex.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 63.
-LaTeX Font Info:    Trying to load font information for U+pxexa on input line 6
-3.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 128.
+LaTeX Font Info:    Trying to load font information for U+pxexa on input line 1
+28.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxexa.fd
 File: upxexa.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 63.
-LaTeX Font Info:    ... okay on input line 63.
-Package hyperref Info: Link coloring OFF on input line 63.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 128.
+Package hyperref Info: Link coloring OFF on input line 128.
 
 (c:/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -948,11 +1108,11 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 (c:/texlive/2022/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count332
+\c@section@level=\count347
 )
-LaTeX Info: Redefining \ref on input line 63.
-LaTeX Info: Redefining \pageref on input line 63.
-LaTeX Info: Redefining \nameref on input line 63.
+LaTeX Info: Redefining \ref on input line 128.
+LaTeX Info: Redefining \pageref on input line 128.
+LaTeX Info: Redefining \nameref on input line 128.
 
 (./thesis.out) (./thesis.out)
 \@outlinefile=\write4
@@ -961,16 +1121,16 @@ LaTeX Info: Redefining \nameref on input line 63.
 
 (c:/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count333
-\scratchdimen=\dimen274
-\scratchbox=\box68
-\nofMPsegments=\count334
-\nofMParguments=\count335
+\scratchcounter=\count348
+\scratchdimen=\dimen282
+\scratchbox=\box79
+\nofMPsegments=\count349
+\nofMParguments=\count350
 \everyMPshowfont=\toks48
-\MPscratchCnt=\count336
-\MPscratchDim=\dimen275
-\MPnumerator=\count337
-\makeMPintoPDFobject=\count338
+\MPscratchCnt=\count351
+\MPscratchDim=\dimen283
+\MPnumerator=\count352
+\makeMPintoPDFobject=\count353
 \everyMPtoPDFconversion=\toks49
 ) (c:/texlive/2022/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
@@ -1015,189 +1175,245 @@ e
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Font Info:    Trying to load font information for T1+pxss on input line 8
-0.
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: End \AtBeginDocument code.
+LaTeX Font Info:    Trying to load font information for T1+pxss on input line 1
+45.
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxss.fd
 File: t1pxss.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 80.
-LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 8
-0.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 145.
+LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 1
+45.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/ot1pxr.fd
 File: ot1pxr.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxmia on input line 8
-0.
+LaTeX Font Info:    Trying to load font information for U+pxmia on input line 1
+45.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxmia.fd
 File: upxmia.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsya on input line 8
-0.
+LaTeX Font Info:    Trying to load font information for U+pxsya on input line 1
+45.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsya.fd
 File: upxsya.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 8
-0.
+LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 1
+45.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyb.fd
 File: utxsyb.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 8
-0.
+LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 1
+45.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyc.fd
 File: upxsyc.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+wasy on input line 80
-.
+LaTeX Font Info:    Trying to load font information for U+wasy on input line 14
+5.
 
 (c:/texlive/2022/texmf-dist/tex/latex/wasysym/uwasy.fd
 File: uwasy.fd 2020/01/19 v2.4 Wasy-2 symbol font definitions
 )
-LaTeX Font Info:    Trying to load font information for T1+pxtt on input line 8
-0.
+LaTeX Font Info:    Trying to load font information for T1+pxtt on input line 1
+45.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxtt.fd
 File: t1pxtt.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <10> not available
-(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 80.
+(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 145.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <9> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 81.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 146.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 84.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 149.
  [1
 
 
 {c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 106--107
+Underfull \hbox (badness 10000) in paragraph at lines 171--172
 
  []
 
-LaTeX Font Info:    Trying to load font information for U+eus on input line 114
+LaTeX Font Info:    Trying to load font information for U+eus on input line 179
 .
 (c:/texlive/2022/texmf-dist/tex/latex/amsfonts/ueus.fd
 File: ueus.fd 2013/01/14 v3.01 Euler Script
 ) [2]
-Underfull \hbox (badness 10000) in paragraph at lines 143--144
+Underfull \hbox (badness 10000) in paragraph at lines 208--209
 
  []
 
-[3
-pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.145 (
-       C) It seems reasonable to assume that each world is most similar to i...
-
-pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.145 (
-       C) It seems reasonable to assume that each world is most similar to i...
-] [4
-pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.164 \begin{equation}
-                      ] [5
-pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.191 
-      ] [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 262--263
+[3] [4] [5] [6] [7]
+Underfull \hbox (badness 10000) in paragraph at lines 327--328
 
  []
 
 [8] [9]
-Overfull \hbox (7.91713pt too wide) in paragraph at lines 335--345
+Overfull \hbox (7.91713pt too wide) in paragraph at lines 400--410
 []\T1/pxr/m/n/10 (15), (16), (17), (18), (19) In a sim-i-lar vein to the con-ju
 nc-tion and ne-ces-sity, the counterfactual
  []
 
-[10
-pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.345 \subsection
-                 {Limit Assumption}] [11] [12] [13] [14
-pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) ha
-s been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.427 \section
-              {Playing the game}] [15] [16] [17]
-Underfull \hbox (badness 10000) in paragraph at lines 473--475
+[10] [11] [12] [13] [14] [15] [16]
+Underfull \hbox (badness 10000) in paragraph at lines 531--541
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 477--478
+Underfull \hbox (badness 10000) in paragraph at lines 547--557
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 479--480
+Underfull \hbox (badness 10000) in paragraph at lines 560--572
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 575--589
+
+ []
+
+[17]
+Underfull \hbox (badness 10000) in paragraph at lines 592--602
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 605--617
 
  []
 
 [18]
-Underfull \hbox (badness 10000) in paragraph at lines 481--482
+Underfull \hbox (badness 10000) in paragraph at lines 620--646
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 485--487
+Underfull \hbox (badness 10000) in paragraph at lines 649--674
+
+ []
+
+[19] [20] [21]
+Underfull \hbox (badness 10000) in paragraph at lines 711--713
+
+ []
+
+[22]
+Underfull \hbox (badness 10000) in paragraph at lines 715--716
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 488--489
-
- []
-
-[19]
-Underfull \hbox (badness 10000) in paragraph at lines 490--491
+Underfull \hbox (badness 10000) in paragraph at lines 717--718
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 492--493
+Underfull \hbox (badness 10000) in paragraph at lines 719--720
 
  []
 
-[20]
-Overfull \hbox (7.13623pt too wide) in paragraph at lines 526--527
-\T1/pxr/m/n/10 the se-man-tic game of coun-ter-fac-tu-als monotonously de-creas
-es the height of the counterfactual
+
+Underfull \hbox (badness 10000) in paragraph at lines 723--725
+
  []
 
-LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <10> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 541.
+[23]
+Underfull \hbox (badness 10000) in paragraph at lines 726--727
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 728--729
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 730--731
+
+ []
+
+[24] [25]
+<./images//UI_Layout.png, id=336, 1264.725pt x 694.84593pt>
+File: ./images//UI_Layout.png Graphic file (type png)
+<use ./images//UI_Layout.png>
+Package pdftex.def Info: ./images//UI_Layout.png  used on input line 747.
+(pdftex.def)             Requested size: 398.3386pt x 218.84581pt.
+<./images//Tank_Empty.png, id=337, 60.225pt x 60.225pt>
+File: ./images//Tank_Empty.png Graphic file (type png)
+<use ./images//Tank_Empty.png>
+Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 769.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//Flag.png, id=339, 60.225pt x 60.225pt>
+File: ./images//Flag.png Graphic file (type png)
+<use ./images//Flag.png>
+Package pdftex.def Info: ./images//Flag.png  used on input line 770.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//Atom.png, id=340, 60.225pt x 60.225pt>
+File: ./images//Atom.png Graphic file (type png)
+<use ./images//Atom.png>
+Package pdftex.def Info: ./images//Atom.png  used on input line 771.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//OR_Wide.png, id=341, 60.225pt x 60.225pt>
+File: ./images//OR_Wide.png Graphic file (type png)
+<use ./images//OR_Wide.png>
+Package pdftex.def Info: ./images//OR_Wide.png  used on input line 772.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//AND_Wide.png, id=342, 60.225pt x 60.225pt>
+File: ./images//AND_Wide.png Graphic file (type png)
+<use ./images//AND_Wide.png>
+Package pdftex.def Info: ./images//AND_Wide.png  used on input line 773.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//Possibility.png, id=343, 60.225pt x 60.225pt>
+File: ./images//Possibility.png Graphic file (type png)
+<use ./images//Possibility.png>
+Package pdftex.def Info: ./images//Possibility.png  used on input line 774.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//Necessity.png, id=344, 60.225pt x 60.225pt>
+File: ./images//Necessity.png Graphic file (type png)
+<use ./images//Necessity.png>
+Package pdftex.def Info: ./images//Necessity.png  used on input line 775.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//Cf_Might.png, id=345, 60.225pt x 60.225pt>
+File: ./images//Cf_Might.png Graphic file (type png)
+<use ./images//Cf_Might.png>
+Package pdftex.def Info: ./images//Cf_Might.png  used on input line 776.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//Cf_Would.png, id=346, 60.225pt x 60.225pt>
+File: ./images//Cf_Would.png Graphic file (type png)
+<use ./images//Cf_Would.png>
+Package pdftex.def Info: ./images//Cf_Would.png  used on input line 777.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+ [26 <./images//UI_Layout.png (PNG copy)>]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 549.
-[21] (./thesis.bbl) [22] (./thesis.aux)
+put line 792.
+ [27 <./images//Tank_Empty.png> <./images//Flag.png> <./images//Atom.png> <./im
+ages//OR_Wide.png> <./images//AND_Wide.png> <./images//Possibility.png> <./imag
+es//Necessity.png> <./images//Cf_Might.png> <./images//Cf_Would.png>]
+Overfull \hbox (63.5319pt too wide) detected at line 837
+[][]\OML/pxmi/m/it/10 sc\OT1/pxr/m/n/10 (\OML/pxmi/m/it/10 s\OT1/pxr/m/n/10 ) =
+ []
+ []
+
+[28] (./thesis.bbl) [29] (./thesis.aux)
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 5140CD2374B41E68DF1F8A05D7459593;4155.
+(rerunfilecheck)             Checksum: 15AE8DAEB3A32F2F6BF32A771FD5A22B;4484.
  ) 
 Here is how much of TeX's memory you used:
- 25515 strings out of 478300
- 467162 string characters out of 5849124
- 749273 words of memory out of 5000000
- 43075 multiletter control sequences out of 15000+600000
- 532150 words of font info for 131 fonts, out of 8000000 for 9000
+ 28824 strings out of 478300
+ 532526 string characters out of 5849124
+ 916346 words of memory out of 5000000
+ 46304 multiletter control sequences out of 15000+600000
+ 540155 words of font info for 159 fonts, out of 8000000 for 9000
  1146 hyphenation exceptions out of 8191
- 100i,11n,104p,2400b,914s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,13n,131p,2502b,941s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
 f-dist/fonts/type1/public/amsfonts/euler/eusm10.pfb><c:/texlive/2022/texmf-dist
 /fonts/type1/public/pxfonts/pxex.pfb><c:/texlive/2022/texmf-dist/fonts/type1/pu
@@ -1216,11 +1432,11 @@ ive/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-
 dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type
 1/urw/palatino/uplri8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/wasy-
 type1/wasy10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/wasy-type1/wasy
-7.pfb>
-Output written on thesis.pdf (22 pages, 211775 bytes).
+7.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/wasy-type1/wasy9.pfb>
+Output written on thesis.pdf (29 pages, 641318 bytes).
 PDF statistics:
- 425 PDF objects out of 1000 (max. 8388607)
- 355 compressed objects within 4 object streams
- 111 named destinations out of 1000 (max. 500000)
- 205 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 502 PDF objects out of 1000 (max. 8388607)
+ 403 compressed objects within 5 object streams
+ 131 named destinations out of 1000 (max. 500000)
+ 271 words of extra memory for PDF output out of 10000 (max. 10000000)
 

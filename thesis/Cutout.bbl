@@ -1,4 +1,9 @@
-\begin{thebibliography}{Lew73}
+\begin{thebibliography}{Mor10}
+
+\bibitem[Byr16]{byrne_counterfactual_2016}
+Ruth~MJ Byrne.
+\newblock Counterfactual thought.
+\newblock {\em Annual review of psychology}, 67(1):135--157, 2016.
 
 \bibitem[Kri63]{kripke_modal_logic_1963}
 Saul~A. Kripke.
@@ -9,5 +14,10 @@ Saul~A. Kripke.
 David~K. Lewis.
 \newblock {\em Counterfactuals}.
 \newblock Basil Blackwell, Oxford, 1973.
+
+\bibitem[Mor10]{morreau_overall_similarity_2010}
+Michael Morreau.
+\newblock It simply does not add up: Trouble with overall similarity.
+\newblock {\em The journal of philosophy}, 107(9):469--490, 2010.
 
 \end{thebibliography}

@@ -235,6 +235,7 @@ worlds = [[], [atoms[1]], get(atoms, [0, 1]), [atoms[0]]];
 world_positions = [[0, 0], [-50, -150], [-100, 100], [200, 50]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 1], [0, 2, 2], [0, 3, 3]];
 text = "Unglücklicherweise ist es deinem Kopiloten gelungen deinen Sprunglimitierungsmechanismus gegen dich einzusetzen. Nun kannst du nur noch zu der von ihm ausgewählten oder näheren Welt springen.";
+text = "Your copilot managed to imitate your mechanism to limit the ship's jump range. You can only jump to the limit world or a closer one.";
 text_icon_keys = ["cf_would"];
 
 levellist.push(Level.create("Limiting Copilot"/* "Counterfactual 1" */, "Res", "A |_|-> B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
