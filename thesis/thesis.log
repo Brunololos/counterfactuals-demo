@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  3 JAN 2023 14:56
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  5 JAN 2023 17:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1047,57 +1047,57 @@ Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
 \xrat@above=\box78
 \c@thm=\count345
 \c@definition=\count346
-LaTeX Font Info:    Trying to load font information for T1+pxr on input line 12
-8.
+LaTeX Font Info:    Trying to load font information for T1+pxr on input line 13
+3.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxr.fd
 File: t1pxr.fd 2000/12/14 v1.0
 ) (./thesis.aux)
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 128.
+LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 133.
 LaTeX Font Info:    Trying to load font information for OML+pxmi on input line 
-128.
+133.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omlpxmi.fd
 File: omlpxmi.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 133.
+LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 133.
 LaTeX Font Info:    Trying to load font information for OMS+pxsy on input line 
-128.
+133.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omspxsy.fd
 File: omspxsy.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 133.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 133.
+LaTeX Font Info:    ... okay on input line 133.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 133.
+LaTeX Font Info:    ... okay on input line 133.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 133.
+LaTeX Font Info:    ... okay on input line 133.
+LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 133.
 LaTeX Font Info:    Trying to load font information for OMX+pxex on input line 
-128.
+133.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omxpxex.fd
 File: omxpxex.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 128.
+LaTeX Font Info:    ... okay on input line 133.
+LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 133.
 LaTeX Font Info:    Trying to load font information for U+pxexa on input line 1
-28.
+33.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxexa.fd
 File: upxexa.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 128.
-LaTeX Font Info:    ... okay on input line 128.
-Package hyperref Info: Link coloring OFF on input line 128.
+LaTeX Font Info:    ... okay on input line 133.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 133.
+LaTeX Font Info:    ... okay on input line 133.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 133.
+LaTeX Font Info:    ... okay on input line 133.
+Package hyperref Info: Link coloring OFF on input line 133.
 
 (c:/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -1110,9 +1110,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count347
 )
-LaTeX Info: Redefining \ref on input line 128.
-LaTeX Info: Redefining \pageref on input line 128.
-LaTeX Info: Redefining \nameref on input line 128.
+LaTeX Info: Redefining \ref on input line 133.
+LaTeX Info: Redefining \pageref on input line 133.
+LaTeX Info: Redefining \nameref on input line 133.
 
 (./thesis.out) (./thesis.out)
 \@outlinefile=\write4
@@ -1178,242 +1178,437 @@ e
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    Trying to load font information for T1+pxss on input line 1
-45.
+50.
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxss.fd
 File: t1pxss.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 145.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 150.
 LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 1
-45.
+50.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/ot1pxr.fd
 File: ot1pxr.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxmia on input line 1
-45.
+50.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxmia.fd
 File: upxmia.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsya on input line 1
-45.
+50.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsya.fd
 File: upxsya.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 1
-45.
+50.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyb.fd
 File: utxsyb.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 1
-45.
+50.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyc.fd
 File: upxsyc.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+wasy on input line 14
-5.
+LaTeX Font Info:    Trying to load font information for U+wasy on input line 15
+0.
 
 (c:/texlive/2022/texmf-dist/tex/latex/wasysym/uwasy.fd
 File: uwasy.fd 2020/01/19 v2.4 Wasy-2 symbol font definitions
 )
 LaTeX Font Info:    Trying to load font information for T1+pxtt on input line 1
-45.
+50.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxtt.fd
 File: t1pxtt.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <10> not available
-(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 145.
+(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 150.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <9> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 146.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 151.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 149.
- [1
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 154.
 
-
-{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 171--172
+Underfull \hbox (badness 10000) in paragraph at lines 155--156
 
  []
 
-LaTeX Font Info:    Trying to load font information for U+eus on input line 179
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 157--170
+
+ []
+
+[1
+
+
+{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
+Underfull \hbox (badness 10000) in paragraph at lines 182--183
+
+ []
+
+LaTeX Font Info:    Trying to load font information for U+eus on input line 190
 .
 (c:/texlive/2022/texmf-dist/tex/latex/amsfonts/ueus.fd
 File: ueus.fd 2013/01/14 v3.01 Euler Script
-) [2]
-Underfull \hbox (badness 10000) in paragraph at lines 208--209
+) [3]
+Underfull \hbox (badness 10000) in paragraph at lines 218--219
 
  []
 
-[3] [4] [5] [6] [7]
-Underfull \hbox (badness 10000) in paragraph at lines 327--328
+[4] [5] [6] [7] [8]
+Underfull \hbox (badness 10000) in paragraph at lines 337--338
 
  []
 
-[8] [9]
-Overfull \hbox (7.91713pt too wide) in paragraph at lines 400--410
+[9]
+Overfull \hbox (7.91713pt too wide) in paragraph at lines 414--424
 []\T1/pxr/m/n/10 (15), (16), (17), (18), (19) In a sim-i-lar vein to the con-ju
 nc-tion and ne-ces-sity, the counterfactual
  []
 
-[10] [11] [12] [13] [14] [15] [16]
-Underfull \hbox (badness 10000) in paragraph at lines 531--541
+[10] [11] [12]
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 431.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 436.
+ [13] [14] [15]
+Underfull \hbox (badness 10000) in paragraph at lines 519--529
+
+ []
+
+[16]
+Underfull \hbox (badness 10000) in paragraph at lines 535--545
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 547--557
+Underfull \hbox (badness 10000) in paragraph at lines 548--560
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 560--572
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 575--589
+Underfull \hbox (badness 10000) in paragraph at lines 563--577
 
  []
 
 [17]
-Underfull \hbox (badness 10000) in paragraph at lines 592--602
+Underfull \hbox (badness 10000) in paragraph at lines 580--590
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 605--617
+Underfull \hbox (badness 10000) in paragraph at lines 593--605
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 608--634
 
  []
 
 [18]
-Underfull \hbox (badness 10000) in paragraph at lines 620--646
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 649--674
+Underfull \hbox (badness 10000) in paragraph at lines 637--662
 
  []
 
 [19] [20] [21]
-Underfull \hbox (badness 10000) in paragraph at lines 711--713
+Underfull \hbox (badness 10000) in paragraph at lines 699--701
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 703--704
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 705--706
 
  []
 
 [22]
-Underfull \hbox (badness 10000) in paragraph at lines 715--716
+Underfull \hbox (badness 10000) in paragraph at lines 707--708
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 717--718
+Underfull \hbox (badness 10000) in paragraph at lines 711--713
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 719--720
+Underfull \hbox (badness 10000) in paragraph at lines 714--715
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 723--725
+Underfull \hbox (badness 10000) in paragraph at lines 716--717
 
  []
 
 [23]
-Underfull \hbox (badness 10000) in paragraph at lines 726--727
+Underfull \hbox (badness 10000) in paragraph at lines 718--719
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 728--729
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 730--731
-
- []
-
-[24] [25]
-<./images//UI_Layout.png, id=336, 1264.725pt x 694.84593pt>
+[24]
+<./images//UI_Layout.png, id=328, 1264.725pt x 694.84593pt>
 File: ./images//UI_Layout.png Graphic file (type png)
 <use ./images//UI_Layout.png>
-Package pdftex.def Info: ./images//UI_Layout.png  used on input line 747.
+Package pdftex.def Info: ./images//UI_Layout.png  used on input line 734.
 (pdftex.def)             Requested size: 398.3386pt x 218.84581pt.
-<./images//Tank_Empty.png, id=337, 60.225pt x 60.225pt>
+ [25]
+<./images//Tank_Empty.png, id=335, 60.225pt x 60.225pt>
 File: ./images//Tank_Empty.png Graphic file (type png)
 <use ./images//Tank_Empty.png>
-Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 769.
+Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 746.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Flag.png, id=339, 60.225pt x 60.225pt>
+<./images//Flag.png, id=337, 60.225pt x 60.225pt>
 File: ./images//Flag.png Graphic file (type png)
 <use ./images//Flag.png>
-Package pdftex.def Info: ./images//Flag.png  used on input line 770.
+Package pdftex.def Info: ./images//Flag.png  used on input line 747.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Atom.png, id=340, 60.225pt x 60.225pt>
+<./images//Atom.png, id=338, 60.225pt x 60.225pt>
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 771.
+Package pdftex.def Info: ./images//Atom.png  used on input line 748.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//OR_Wide.png, id=341, 60.225pt x 60.225pt>
+<./images//Negation.png, id=339, 60.225pt x 60.225pt>
+File: ./images//Negation.png Graphic file (type png)
+<use ./images//Negation.png>
+Package pdftex.def Info: ./images//Negation.png  used on input line 749.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//OR_Wide.png, id=340, 60.225pt x 60.225pt>
 File: ./images//OR_Wide.png Graphic file (type png)
 <use ./images//OR_Wide.png>
-Package pdftex.def Info: ./images//OR_Wide.png  used on input line 772.
+Package pdftex.def Info: ./images//OR_Wide.png  used on input line 750.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//AND_Wide.png, id=342, 60.225pt x 60.225pt>
+<./images//AND_Wide.png, id=341, 60.225pt x 60.225pt>
 File: ./images//AND_Wide.png Graphic file (type png)
 <use ./images//AND_Wide.png>
-Package pdftex.def Info: ./images//AND_Wide.png  used on input line 773.
+Package pdftex.def Info: ./images//AND_Wide.png  used on input line 751.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Possibility.png, id=343, 60.225pt x 60.225pt>
+<./images//Possibility.png, id=342, 60.225pt x 60.225pt>
 File: ./images//Possibility.png Graphic file (type png)
 <use ./images//Possibility.png>
-Package pdftex.def Info: ./images//Possibility.png  used on input line 774.
+Package pdftex.def Info: ./images//Possibility.png  used on input line 752.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Necessity.png, id=344, 60.225pt x 60.225pt>
+<./images//Necessity.png, id=343, 60.225pt x 60.225pt>
 File: ./images//Necessity.png Graphic file (type png)
 <use ./images//Necessity.png>
-Package pdftex.def Info: ./images//Necessity.png  used on input line 775.
+Package pdftex.def Info: ./images//Necessity.png  used on input line 753.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Cf_Might.png, id=345, 60.225pt x 60.225pt>
+<./images//Cf_Might.png, id=344, 60.225pt x 60.225pt>
 File: ./images//Cf_Might.png Graphic file (type png)
 <use ./images//Cf_Might.png>
-Package pdftex.def Info: ./images//Cf_Might.png  used on input line 776.
+Package pdftex.def Info: ./images//Cf_Might.png  used on input line 754.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Cf_Would.png, id=346, 60.225pt x 60.225pt>
+<./images//Cf_Would.png, id=345, 60.225pt x 60.225pt>
 File: ./images//Cf_Would.png Graphic file (type png)
 <use ./images//Cf_Would.png>
-Package pdftex.def Info: ./images//Cf_Would.png  used on input line 777.
+Package pdftex.def Info: ./images//Cf_Would.png  used on input line 755.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
  [26 <./images//UI_Layout.png (PNG copy)>]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 792.
+File: ./images//Tank_Empty.png Graphic file (type png)
+<use ./images//Tank_Empty.png>
+Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 770.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//OR.png, id=353, 30.1125pt x 60.225pt>
+File: ./images//OR.png Graphic file (type png)
+<use ./images//OR.png>
+Package pdftex.def Info: ./images//OR.png  used on input line 770.
+(pdftex.def)             Requested size: 30.11241pt x 60.22484pt.
+File: ./images//Atom.png Graphic file (type png)
+<use ./images//Atom.png>
+Package pdftex.def Info: ./images//Atom.png  used on input line 770.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+File: ./images//Atom.png Graphic file (type png)
+<use ./images//Atom.png>
+Package pdftex.def Info: ./images//Atom.png  used on input line 777.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//AND.png, id=354, 30.1125pt x 60.225pt>
+File: ./images//AND.png Graphic file (type png)
+<use ./images//AND.png>
+Package pdftex.def Info: ./images//AND.png  used on input line 777.
+(pdftex.def)             Requested size: 30.11241pt x 60.22484pt.
+File: ./images//Possibility.png Graphic file (type png)
+<use ./images//Possibility.png>
+Package pdftex.def Info: ./images//Possibility.png  used on input line 777.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+File: ./images//Flag.png Graphic file (type png)
+<use ./images//Flag.png>
+Package pdftex.def Info: ./images//Flag.png  used on input line 777.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+File: ./images//Negation.png Graphic file (type png)
+<use ./images//Negation.png>
+Package pdftex.def Info: ./images//Negation.png  used on input line 788.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+File: ./images//Atom.png Graphic file (type png)
+<use ./images//Atom.png>
+Package pdftex.def Info: ./images//Atom.png  used on input line 788.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+File: ./images//Cf_Would.png Graphic file (type png)
+<use ./images//Cf_Would.png>
+Package pdftex.def Info: ./images//Cf_Would.png  used on input line 788.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//BO_Thin.png, id=355, 15.05624pt x 60.225pt>
+File: ./images//BO_Thin.png Graphic file (type png)
+<use ./images//BO_Thin.png>
+Package pdftex.def Info: ./images//BO_Thin.png  used on input line 788.
+(pdftex.def)             Requested size: 15.0562pt x 60.22484pt.
+File: ./images//Atom.png Graphic file (type png)
+<use ./images//Atom.png>
+Package pdftex.def Info: ./images//Atom.png  used on input line 788.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+File: ./images//OR.png Graphic file (type png)
+<use ./images//OR.png>
+Package pdftex.def Info: ./images//OR.png  used on input line 788.
+(pdftex.def)             Requested size: 30.11241pt x 60.22484pt.
+File: ./images//Tank_Empty.png Graphic file (type png)
+<use ./images//Tank_Empty.png>
+Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 788.
+(pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
+<./images//BC_Thin.png, id=356, 15.05624pt x 60.225pt>
+File: ./images//BC_Thin.png Graphic file (type png)
+<use ./images//BC_Thin.png>
+Package pdftex.def Info: ./images//BC_Thin.png  used on input line 788.
+(pdftex.def)             Requested size: 15.0562pt x 60.22484pt.
  [27 <./images//Tank_Empty.png> <./images//Flag.png> <./images//Atom.png> <./im
-ages//OR_Wide.png> <./images//AND_Wide.png> <./images//Possibility.png> <./imag
-es//Necessity.png> <./images//Cf_Might.png> <./images//Cf_Would.png>]
-Overfull \hbox (63.5319pt too wide) detected at line 837
-[][]\OML/pxmi/m/it/10 sc\OT1/pxr/m/n/10 (\OML/pxmi/m/it/10 s\OT1/pxr/m/n/10 ) =
- []
+ages//Negation.png> <./images//OR_Wide.png> <./images//AND_Wide.png> <./images/
+/Possibility.png> <./images//Necessity.png> <./images//Cf_Might.png> <./images/
+/Cf_Would.png> <./images//OR.png> <./images//AND.png> <./images//BO_Thin.png> <
+./images//BC_Thin.png>]
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 853.
+
+[28]
+Underfull \hbox (badness 10000) in paragraph at lines 892--894
+
  []
 
-[28] (./thesis.bbl) [29] (./thesis.aux)
+
+Underfull \hbox (badness 10000) in paragraph at lines 896--898
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 900--902
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 904--906
+
+ []
+
+[29] (./thesis.bbl) [30] (./thesis.aux)
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 15AE8DAEB3A32F2F6BF32A771FD5A22B;4484.
+(rerunfilecheck)             Checksum: 1ADCA96B6D3B1FE258F497E6F64165D7;4616.
  ) 
 Here is how much of TeX's memory you used:
- 28824 strings out of 478300
- 532526 string characters out of 5849124
- 916346 words of memory out of 5000000
- 46304 multiletter control sequences out of 15000+600000
- 540155 words of font info for 159 fonts, out of 8000000 for 9000
+ 28950 strings out of 478300
+ 534831 string characters out of 5849124
+ 917964 words of memory out of 5000000
+ 46427 multiletter control sequences out of 15000+600000
+ 546326 words of font info for 176 fonts, out of 8000000 for 9000
  1146 hyphenation exceptions out of 8191
- 100i,13n,131p,2502b,941s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,17n,131p,2502b,1214s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
 f-dist/fonts/type1/public/amsfonts/euler/eusm10.pfb><c:/texlive/2022/texmf-dist
 /fonts/type1/public/pxfonts/pxex.pfb><c:/texlive/2022/texmf-dist/fonts/type1/pu
@@ -1433,10 +1628,10 @@ dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type
 1/urw/palatino/uplri8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/wasy-
 type1/wasy10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/wasy-type1/wasy
 7.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/wasy-type1/wasy9.pfb>
-Output written on thesis.pdf (29 pages, 641318 bytes).
+Output written on thesis.pdf (30 pages, 657176 bytes).
 PDF statistics:
- 502 PDF objects out of 1000 (max. 8388607)
- 403 compressed objects within 5 object streams
- 131 named destinations out of 1000 (max. 500000)
- 271 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 523 PDF objects out of 1000 (max. 8388607)
+ 413 compressed objects within 5 object streams
+ 129 named destinations out of 1000 (max. 500000)
+ 296 words of extra memory for PDF output out of 10000 (max. 10000000)
 
