@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  5 JAN 2023 17:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  6 JAN 2023 19:50
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1230,385 +1230,217 @@ LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <10> not available
 (Font)              Font shape `T1/pxr/bx/n' tried instead on input line 150.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <9> not available
 (Font)              Font shape `T1/pxss/bx/n' tried instead on input line 151.
+ [1
+
+
+{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 154.
-
-Underfull \hbox (badness 10000) in paragraph at lines 155--156
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 157--170
-
- []
-
-[1
-
-
-{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
-Underfull \hbox (badness 10000) in paragraph at lines 182--183
-
- []
-
-LaTeX Font Info:    Trying to load font information for U+eus on input line 190
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 158.
+ (./thesis.toc)
+\tf@toc=\write5
+\openout5 = `thesis.toc'.
+
+ (./thesis.lof)
+\tf@lof=\write6
+\openout6 = `thesis.lof'.
+
+
+[2]
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 166.
+ [3] [4]
+LaTeX Font Info:    Trying to load font information for U+eus on input line 187
 .
-(c:/texlive/2022/texmf-dist/tex/latex/amsfonts/ueus.fd
+ (c:/texlive/2022/texmf-dist/tex/latex/amsfonts/ueus.fd
 File: ueus.fd 2013/01/14 v3.01 Euler Script
-) [3]
-Underfull \hbox (badness 10000) in paragraph at lines 218--219
-
- []
-
-[4] [5] [6] [7] [8]
-Underfull \hbox (badness 10000) in paragraph at lines 337--338
-
- []
-
-[9]
-Overfull \hbox (7.91713pt too wide) in paragraph at lines 414--424
-[]\T1/pxr/m/n/10 (15), (16), (17), (18), (19) In a sim-i-lar vein to the con-ju
-nc-tion and ne-ces-sity, the counterfactual
- []
-
-[10] [11] [12]
+) [5]
+[6] [7] [8] [9] [10] [11] [12] [13] [14] [15]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 431.
+(mdframed)              on input line 445.
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 436.
- [13] [14] [15]
-Underfull \hbox (badness 10000) in paragraph at lines 519--529
+(mdframed)              on input line 450.
+ [16] [17] [18]
+Underfull \hbox (badness 10000) in paragraph at lines 536--546
 
  []
 
-[16]
-Underfull \hbox (badness 10000) in paragraph at lines 535--545
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 548--560
+[19]
+Underfull \hbox (badness 10000) in paragraph at lines 553--563
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 563--577
-
- []
-
-[17]
-Underfull \hbox (badness 10000) in paragraph at lines 580--590
+Underfull \hbox (badness 10000) in paragraph at lines 566--578
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 593--605
+Underfull \hbox (badness 10000) in paragraph at lines 581--595
+
+ []
+
+[20]
+Underfull \hbox (badness 10000) in paragraph at lines 598--608
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 608--634
-
- []
-
-[18]
-Underfull \hbox (badness 10000) in paragraph at lines 637--662
-
- []
-
-[19] [20] [21]
-Underfull \hbox (badness 10000) in paragraph at lines 699--701
+Underfull \hbox (badness 10000) in paragraph at lines 611--623
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 703--704
+Underfull \hbox (badness 10000) in paragraph at lines 626--652
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 705--706
-
- []
-
-[22]
-Underfull \hbox (badness 10000) in paragraph at lines 707--708
+[21]
+Underfull \hbox (badness 10000) in paragraph at lines 657--682
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 711--713
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 714--715
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 716--717
-
- []
-
-[23]
-Underfull \hbox (badness 10000) in paragraph at lines 718--719
-
- []
-
-[24]
-<./images//UI_Layout.png, id=328, 1264.725pt x 694.84593pt>
+[22] [23] [24] [25] [26] [27]
+<./images//UI_Layout.png, id=401, 1264.725pt x 694.84593pt>
 File: ./images//UI_Layout.png Graphic file (type png)
 <use ./images//UI_Layout.png>
-Package pdftex.def Info: ./images//UI_Layout.png  used on input line 734.
+Package pdftex.def Info: ./images//UI_Layout.png  used on input line 755.
 (pdftex.def)             Requested size: 398.3386pt x 218.84581pt.
- [25]
-<./images//Tank_Empty.png, id=335, 60.225pt x 60.225pt>
+ [28 <./images//UI_Layout.png (PNG copy)>]
+<./images//Tank_Empty.png, id=407, 60.225pt x 60.225pt>
 File: ./images//Tank_Empty.png Graphic file (type png)
 <use ./images//Tank_Empty.png>
-Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 746.
+Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 767.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Flag.png, id=337, 60.225pt x 60.225pt>
+<./images//Flag.png, id=409, 60.225pt x 60.225pt>
 File: ./images//Flag.png Graphic file (type png)
 <use ./images//Flag.png>
-Package pdftex.def Info: ./images//Flag.png  used on input line 747.
+Package pdftex.def Info: ./images//Flag.png  used on input line 768.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Atom.png, id=338, 60.225pt x 60.225pt>
+<./images//Atom.png, id=410, 60.225pt x 60.225pt>
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 748.
+Package pdftex.def Info: ./images//Atom.png  used on input line 769.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Negation.png, id=339, 60.225pt x 60.225pt>
+<./images//Negation.png, id=411, 60.225pt x 60.225pt>
 File: ./images//Negation.png Graphic file (type png)
 <use ./images//Negation.png>
-Package pdftex.def Info: ./images//Negation.png  used on input line 749.
+Package pdftex.def Info: ./images//Negation.png  used on input line 770.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//OR_Wide.png, id=340, 60.225pt x 60.225pt>
+<./images//OR_Wide.png, id=412, 60.225pt x 60.225pt>
 File: ./images//OR_Wide.png Graphic file (type png)
 <use ./images//OR_Wide.png>
-Package pdftex.def Info: ./images//OR_Wide.png  used on input line 750.
+Package pdftex.def Info: ./images//OR_Wide.png  used on input line 771.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//AND_Wide.png, id=341, 60.225pt x 60.225pt>
+<./images//AND_Wide.png, id=413, 60.225pt x 60.225pt>
 File: ./images//AND_Wide.png Graphic file (type png)
 <use ./images//AND_Wide.png>
-Package pdftex.def Info: ./images//AND_Wide.png  used on input line 751.
+Package pdftex.def Info: ./images//AND_Wide.png  used on input line 772.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Possibility.png, id=342, 60.225pt x 60.225pt>
+<./images//Possibility.png, id=414, 60.225pt x 60.225pt>
 File: ./images//Possibility.png Graphic file (type png)
 <use ./images//Possibility.png>
-Package pdftex.def Info: ./images//Possibility.png  used on input line 752.
+Package pdftex.def Info: ./images//Possibility.png  used on input line 773.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Necessity.png, id=343, 60.225pt x 60.225pt>
+<./images//Necessity.png, id=415, 60.225pt x 60.225pt>
 File: ./images//Necessity.png Graphic file (type png)
 <use ./images//Necessity.png>
-Package pdftex.def Info: ./images//Necessity.png  used on input line 753.
+Package pdftex.def Info: ./images//Necessity.png  used on input line 774.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Cf_Might.png, id=344, 60.225pt x 60.225pt>
+<./images//Cf_Might.png, id=416, 60.225pt x 60.225pt>
 File: ./images//Cf_Might.png Graphic file (type png)
 <use ./images//Cf_Might.png>
-Package pdftex.def Info: ./images//Cf_Might.png  used on input line 754.
+Package pdftex.def Info: ./images//Cf_Might.png  used on input line 775.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Cf_Would.png, id=345, 60.225pt x 60.225pt>
+<./images//Cf_Would.png, id=417, 60.225pt x 60.225pt>
 File: ./images//Cf_Would.png Graphic file (type png)
 <use ./images//Cf_Would.png>
-Package pdftex.def Info: ./images//Cf_Would.png  used on input line 755.
+Package pdftex.def Info: ./images//Cf_Would.png  used on input line 776.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
- [26 <./images//UI_Layout.png (PNG copy)>]
+
+[29 <./images//Tank_Empty.png> <./images//Flag.png> <./images//Atom.png> <./ima
+ges//Negation.png> <./images//OR_Wide.png> <./images//AND_Wide.png> <./images//
+Possibility.png> <./images//Necessity.png> <./images//Cf_Might.png> <./images//
+Cf_Would.png>]
 File: ./images//Tank_Empty.png Graphic file (type png)
 <use ./images//Tank_Empty.png>
-Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 770.
+Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 791.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//OR.png, id=353, 30.1125pt x 60.225pt>
+<./images//OR.png, id=434, 30.1125pt x 60.225pt>
 File: ./images//OR.png Graphic file (type png)
 <use ./images//OR.png>
-Package pdftex.def Info: ./images//OR.png  used on input line 770.
+Package pdftex.def Info: ./images//OR.png  used on input line 791.
 (pdftex.def)             Requested size: 30.11241pt x 60.22484pt.
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 770.
+Package pdftex.def Info: ./images//Atom.png  used on input line 791.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 777.
+Package pdftex.def Info: ./images//Atom.png  used on input line 798.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//AND.png, id=354, 30.1125pt x 60.225pt>
+<./images//AND.png, id=435, 30.1125pt x 60.225pt>
 File: ./images//AND.png Graphic file (type png)
 <use ./images//AND.png>
-Package pdftex.def Info: ./images//AND.png  used on input line 777.
+Package pdftex.def Info: ./images//AND.png  used on input line 798.
 (pdftex.def)             Requested size: 30.11241pt x 60.22484pt.
 File: ./images//Possibility.png Graphic file (type png)
 <use ./images//Possibility.png>
-Package pdftex.def Info: ./images//Possibility.png  used on input line 777.
+Package pdftex.def Info: ./images//Possibility.png  used on input line 798.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//Flag.png Graphic file (type png)
 <use ./images//Flag.png>
-Package pdftex.def Info: ./images//Flag.png  used on input line 777.
+Package pdftex.def Info: ./images//Flag.png  used on input line 798.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//Negation.png Graphic file (type png)
 <use ./images//Negation.png>
-Package pdftex.def Info: ./images//Negation.png  used on input line 788.
+Package pdftex.def Info: ./images//Negation.png  used on input line 809.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 788.
+Package pdftex.def Info: ./images//Atom.png  used on input line 809.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//Cf_Would.png Graphic file (type png)
 <use ./images//Cf_Would.png>
-Package pdftex.def Info: ./images//Cf_Would.png  used on input line 788.
+Package pdftex.def Info: ./images//Cf_Would.png  used on input line 809.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//BO_Thin.png, id=355, 15.05624pt x 60.225pt>
+<./images//BO_Thin.png, id=436, 15.05624pt x 60.225pt>
 File: ./images//BO_Thin.png Graphic file (type png)
 <use ./images//BO_Thin.png>
-Package pdftex.def Info: ./images//BO_Thin.png  used on input line 788.
+Package pdftex.def Info: ./images//BO_Thin.png  used on input line 809.
 (pdftex.def)             Requested size: 15.0562pt x 60.22484pt.
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 788.
+Package pdftex.def Info: ./images//Atom.png  used on input line 809.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//OR.png Graphic file (type png)
 <use ./images//OR.png>
-Package pdftex.def Info: ./images//OR.png  used on input line 788.
+Package pdftex.def Info: ./images//OR.png  used on input line 809.
 (pdftex.def)             Requested size: 30.11241pt x 60.22484pt.
 File: ./images//Tank_Empty.png Graphic file (type png)
 <use ./images//Tank_Empty.png>
-Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 788.
+Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 809.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//BC_Thin.png, id=356, 15.05624pt x 60.225pt>
+<./images//BC_Thin.png, id=437, 15.05624pt x 60.225pt>
 File: ./images//BC_Thin.png Graphic file (type png)
 <use ./images//BC_Thin.png>
-Package pdftex.def Info: ./images//BC_Thin.png  used on input line 788.
+Package pdftex.def Info: ./images//BC_Thin.png  used on input line 809.
 (pdftex.def)             Requested size: 15.0562pt x 60.22484pt.
- [27 <./images//Tank_Empty.png> <./images//Flag.png> <./images//Atom.png> <./im
-ages//Negation.png> <./images//OR_Wide.png> <./images//AND_Wide.png> <./images/
-/Possibility.png> <./images//Necessity.png> <./images//Cf_Might.png> <./images/
-/Cf_Would.png> <./images//OR.png> <./images//AND.png> <./images//BO_Thin.png> <
-./images//BC_Thin.png>]
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 853.
-
-[28]
-Underfull \hbox (badness 10000) in paragraph at lines 892--894
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 896--898
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 900--902
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 904--906
-
- []
-
-[29] (./thesis.bbl) [30] (./thesis.aux)
+ [30 <./images//OR.png> <./images//AND.png> <./images//BO_Thin.png> <./images//
+BC_Thin.png>] [31] (./thesis.bbl) [32] (./thesis.aux)
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 1ADCA96B6D3B1FE258F497E6F64165D7;4616.
+(rerunfilecheck)             Checksum: 4BBEA8C2DA497C52CFE1D27F666EF80F;4463.
  ) 
 Here is how much of TeX's memory you used:
- 28950 strings out of 478300
- 534831 string characters out of 5849124
- 917964 words of memory out of 5000000
- 46427 multiletter control sequences out of 15000+600000
- 546326 words of font info for 176 fonts, out of 8000000 for 9000
+ 28914 strings out of 478300
+ 534233 string characters out of 5849124
+ 908429 words of memory out of 5000000
+ 46388 multiletter control sequences out of 15000+600000
+ 539586 words of font info for 170 fonts, out of 8000000 for 9000
  1146 hyphenation exceptions out of 8191
- 100i,17n,131p,2502b,1214s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 100i,17n,131p,2520b,1214s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
 f-dist/fonts/type1/public/amsfonts/euler/eusm10.pfb><c:/texlive/2022/texmf-dist
 /fonts/type1/public/pxfonts/pxex.pfb><c:/texlive/2022/texmf-dist/fonts/type1/pu
@@ -1617,21 +1449,20 @@ xsy.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/pxsya.pfb><c:/te
 xlive/2022/texmf-dist/fonts/type1/public/pxfonts/pxsyb.pfb><c:/texlive/2022/tex
 mf-dist/fonts/type1/public/pxfonts/pxsyc.pfb><c:/texlive/2022/texmf-dist/fonts/
 type1/public/pxfonts/rpxb.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/px
-fonts/rpxi.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxmi.pfb
-><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxr.pfb><c:/texlive/20
-22/texmf-dist/fonts/type1/public/pxfonts/rpxsc.pfb><c:/texlive/2022/texmf-dist/
-fonts/type1/public/txfonts/t1xtt.pfb><c:/texlive/2022/texmf-dist/fonts/type1/ur
-w/helvetic/uhvb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr
-8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texl
-ive/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texlive/2022/texmf-
-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type
-1/urw/palatino/uplri8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/wasy-
-type1/wasy10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/wasy-type1/wasy
-7.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/wasy-type1/wasy9.pfb>
-Output written on thesis.pdf (30 pages, 657176 bytes).
+fonts/rpxmi.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxr.pfb
+><c:/texlive/2022/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb><c:/texlive/2
+022/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2022/texmf-dist/
+fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw
+/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplb8
+a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texli
+ve/2022/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb><c:/texlive/2022/texmf-
+dist/fonts/type1/public/wasy-type1/wasy10.pfb><c:/texlive/2022/texmf-dist/fonts
+/type1/public/wasy-type1/wasy7.pfb><c:/texlive/2022/texmf-dist/fonts/type1/publ
+ic/wasy-type1/wasy9.pfb>
+Output written on thesis.pdf (32 pages, 649869 bytes).
 PDF statistics:
- 523 PDF objects out of 1000 (max. 8388607)
- 413 compressed objects within 5 object streams
- 129 named destinations out of 1000 (max. 500000)
- 296 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 573 PDF objects out of 1000 (max. 8388607)
+ 465 compressed objects within 5 object streams
+ 128 named destinations out of 1000 (max. 500000)
+ 288 words of extra memory for PDF output out of 10000 (max. 10000000)
 
