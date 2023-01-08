@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  6 JAN 2023 19:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.5.9)  8 JAN 2023 17:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1047,7 +1047,7 @@ Package: lipsum 2021-09-20 v2.7 150 paragraphs of Lorem Ipsum dummy text
 \xrat@above=\box78
 \c@thm=\count345
 \c@definition=\count346
-LaTeX Font Info:    Trying to load font information for T1+pxr on input line 13
+LaTeX Font Info:    Trying to load font information for T1+pxr on input line 16
 3.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxr.fd
@@ -1055,49 +1055,49 @@ File: t1pxr.fd 2000/12/14 v1.0
 ) (./thesis.aux)
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 133.
+LaTeX Font Info:    Checking defaults for OML/pxmi/m/it on input line 163.
 LaTeX Font Info:    Trying to load font information for OML+pxmi on input line 
-133.
+163.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omlpxmi.fd
 File: omlpxmi.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 133.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for OMS/pxsy/m/n on input line 163.
 LaTeX Font Info:    Trying to load font information for OMS+pxsy on input line 
-133.
+163.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omspxsy.fd
 File: omspxsy.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 133.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for OMX/pxex/m/n on input line 163.
 LaTeX Font Info:    Trying to load font information for OMX+pxex on input line 
-133.
+163.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/omxpxex.fd
 File: omxpxex.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 133.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for U/pxexa/m/n on input line 163.
 LaTeX Font Info:    Trying to load font information for U+pxexa on input line 1
-33.
+63.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxexa.fd
 File: upxexa.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 133.
-LaTeX Font Info:    ... okay on input line 133.
-Package hyperref Info: Link coloring OFF on input line 133.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 163.
+LaTeX Font Info:    ... okay on input line 163.
+Package hyperref Info: Link coloring OFF on input line 163.
 
 (c:/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -1110,9 +1110,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count347
 )
-LaTeX Info: Redefining \ref on input line 133.
-LaTeX Info: Redefining \pageref on input line 133.
-LaTeX Info: Redefining \nameref on input line 133.
+LaTeX Info: Redefining \ref on input line 163.
+LaTeX Info: Redefining \pageref on input line 163.
+LaTeX Info: Redefining \nameref on input line 163.
 
 (./thesis.out) (./thesis.out)
 \@outlinefile=\write4
@@ -1177,268 +1177,293 @@ e
 
 Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for T1+pxss on input line 1
-50.
-(c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxss.fd
-File: t1pxss.fd 2000/12/14 v1.0
-)
-LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 150.
-LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 1
-50.
+<./images//TU-Berlin-01.png, id=107, 513.92pt x 513.92pt>
+File: ./images//TU-Berlin-01.png Graphic file (type png)
+<use ./images//TU-Berlin-01.png>
+Package pdftex.def Info: ./images//TU-Berlin-01.png  used on input line 180.
+(pdftex.def)             Requested size: 113.81102pt x 113.80771pt.
+LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <12> not available
+(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 182.
+LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <17.28> not available
+(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 190.
+[1
 
-(c:/texlive/2022/texmf-dist/tex/latex/pxfonts/ot1pxr.fd
+{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./images//TU-Be
+rlin-01.png>]
+LaTeX Font Info:    Trying to load font information for OT1+pxr on input line 2
+27.
+ (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/ot1pxr.fd
 File: ot1pxr.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxmia on input line 1
-50.
+LaTeX Font Info:    Trying to load font information for U+pxmia on input line 2
+27.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxmia.fd
 File: upxmia.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsya on input line 1
-50.
+LaTeX Font Info:    Trying to load font information for U+pxsya on input line 2
+27.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsya.fd
 File: upxsya.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 1
-50.
+LaTeX Font Info:    Trying to load font information for U+pxsyb on input line 2
+27.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyb.fd
 File: utxsyb.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 1
-50.
+LaTeX Font Info:    Trying to load font information for U+pxsyc on input line 2
+27.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/upxsyc.fd
 File: upxsyc.fd 2000/12/14 v1.0
 )
-LaTeX Font Info:    Trying to load font information for U+wasy on input line 15
-0.
+LaTeX Font Info:    Trying to load font information for U+wasy on input line 22
+7.
 
 (c:/texlive/2022/texmf-dist/tex/latex/wasysym/uwasy.fd
 File: uwasy.fd 2020/01/19 v2.4 Wasy-2 symbol font definitions
 )
-LaTeX Font Info:    Trying to load font information for T1+pxtt on input line 1
-50.
+Underfull \hbox (badness 10000) in paragraph at lines 222--232
+
+ []
+
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.232 \newpage
+               [1]
+LaTeX Font Info:    Trying to load font information for T1+pxss on input line 2
+35.
+ (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxss.fd
+File: t1pxss.fd 2000/12/14 v1.0
+)
+LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <17.28> not available
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 235.
+LaTeX Font Info:    Trying to load font information for T1+pxtt on input line 2
+35.
 
 (c:/texlive/2022/texmf-dist/tex/latex/pxfonts/t1pxtt.fd
 File: t1pxtt.fd 2000/12/14 v1.0
 )
 LaTeX Font Info:    Font shape `T1/pxr/b/n' in size <10> not available
-(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 150.
+(Font)              Font shape `T1/pxr/bx/n' tried instead on input line 235.
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <9> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 151.
- [1
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 235.
+ [2
 
-
-{c:/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
+]
 LaTeX Font Info:    Font shape `T1/pxss/b/n' in size <12> not available
-(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 158.
+(Font)              Font shape `T1/pxss/bx/n' tried instead on input line 242.
  (./thesis.toc)
 \tf@toc=\write5
 \openout5 = `thesis.toc'.
 
- (./thesis.lof)
+
+(./thesis.lof)
 \tf@lof=\write6
 \openout6 = `thesis.lof'.
 
-
-[2]
+ [3]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 166.
- [3] [4]
-LaTeX Font Info:    Trying to load font information for U+eus on input line 187
+(mdframed)              on input line 250.
+ [4]
+LaTeX Font Info:    Trying to load font information for U+eus on input line 272
 .
  (c:/texlive/2022/texmf-dist/tex/latex/amsfonts/ueus.fd
 File: ueus.fd 2013/01/14 v3.01 Euler Script
-) [5]
-[6] [7] [8] [9] [10] [11] [12] [13] [14] [15]
+)
+[5] [6]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 445.
+(mdframed)              on input line 329.
+ [7] [8] [9] [10] [11] [12] [13] [14] [15]
 Package mdframed Info: mdframed detected package amsthm 
  changed the theorem header of amsthm
-(mdframed)              on input line 450.
- [16] [17] [18]
-Underfull \hbox (badness 10000) in paragraph at lines 536--546
-
- []
-
-[19]
-Underfull \hbox (badness 10000) in paragraph at lines 553--563
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 566--578
+(mdframed)              on input line 540.
+Package mdframed Info: mdframed detected package amsthm 
+ changed the theorem header of amsthm
+(mdframed)              on input line 545.
+ [16] [17] [18] [19]
+Underfull \hbox (badness 10000) in paragraph at lines 640--650
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 581--595
+Underfull \hbox (badness 10000) in paragraph at lines 657--667
 
  []
 
 [20]
-Underfull \hbox (badness 10000) in paragraph at lines 598--608
+Underfull \hbox (badness 10000) in paragraph at lines 670--682
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 611--623
+Underfull \hbox (badness 10000) in paragraph at lines 685--699
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 626--652
+Underfull \hbox (badness 10000) in paragraph at lines 702--712
 
  []
 
 [21]
-Underfull \hbox (badness 10000) in paragraph at lines 657--682
+Underfull \hbox (badness 10000) in paragraph at lines 715--727
 
  []
 
-[22] [23] [24] [25] [26] [27]
-<./images//UI_Layout.png, id=401, 1264.725pt x 694.84593pt>
+
+Underfull \hbox (badness 10000) in paragraph at lines 730--756
+
+ []
+
+[22]
+Underfull \hbox (badness 10000) in paragraph at lines 761--786
+
+ []
+
+[23] [24] [25] [26] [27] [28]
+<./images//UI_Layout.png, id=423, 1264.725pt x 694.84593pt>
 File: ./images//UI_Layout.png Graphic file (type png)
 <use ./images//UI_Layout.png>
-Package pdftex.def Info: ./images//UI_Layout.png  used on input line 755.
+Package pdftex.def Info: ./images//UI_Layout.png  used on input line 863.
 (pdftex.def)             Requested size: 398.3386pt x 218.84581pt.
- [28 <./images//UI_Layout.png (PNG copy)>]
-<./images//Tank_Empty.png, id=407, 60.225pt x 60.225pt>
+<./images//Tank_Empty.png, id=425, 60.225pt x 60.225pt>
 File: ./images//Tank_Empty.png Graphic file (type png)
 <use ./images//Tank_Empty.png>
-Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 767.
+Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 875.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Flag.png, id=409, 60.225pt x 60.225pt>
+<./images//Flag.png, id=426, 60.225pt x 60.225pt>
 File: ./images//Flag.png Graphic file (type png)
 <use ./images//Flag.png>
-Package pdftex.def Info: ./images//Flag.png  used on input line 768.
+Package pdftex.def Info: ./images//Flag.png  used on input line 876.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Atom.png, id=410, 60.225pt x 60.225pt>
+<./images//Atom.png, id=427, 60.225pt x 60.225pt>
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 769.
+Package pdftex.def Info: ./images//Atom.png  used on input line 877.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Negation.png, id=411, 60.225pt x 60.225pt>
+<./images//Negation.png, id=428, 60.225pt x 60.225pt>
 File: ./images//Negation.png Graphic file (type png)
 <use ./images//Negation.png>
-Package pdftex.def Info: ./images//Negation.png  used on input line 770.
+Package pdftex.def Info: ./images//Negation.png  used on input line 878.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//OR_Wide.png, id=412, 60.225pt x 60.225pt>
+<./images//OR_Wide.png, id=429, 60.225pt x 60.225pt>
 File: ./images//OR_Wide.png Graphic file (type png)
 <use ./images//OR_Wide.png>
-Package pdftex.def Info: ./images//OR_Wide.png  used on input line 771.
+Package pdftex.def Info: ./images//OR_Wide.png  used on input line 879.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//AND_Wide.png, id=413, 60.225pt x 60.225pt>
+<./images//AND_Wide.png, id=430, 60.225pt x 60.225pt>
 File: ./images//AND_Wide.png Graphic file (type png)
 <use ./images//AND_Wide.png>
-Package pdftex.def Info: ./images//AND_Wide.png  used on input line 772.
+Package pdftex.def Info: ./images//AND_Wide.png  used on input line 880.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Possibility.png, id=414, 60.225pt x 60.225pt>
+<./images//Possibility.png, id=431, 60.225pt x 60.225pt>
 File: ./images//Possibility.png Graphic file (type png)
 <use ./images//Possibility.png>
-Package pdftex.def Info: ./images//Possibility.png  used on input line 773.
+Package pdftex.def Info: ./images//Possibility.png  used on input line 881.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Necessity.png, id=415, 60.225pt x 60.225pt>
+<./images//Necessity.png, id=432, 60.225pt x 60.225pt>
 File: ./images//Necessity.png Graphic file (type png)
 <use ./images//Necessity.png>
-Package pdftex.def Info: ./images//Necessity.png  used on input line 774.
+Package pdftex.def Info: ./images//Necessity.png  used on input line 882.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Cf_Might.png, id=416, 60.225pt x 60.225pt>
+<./images//Cf_Might.png, id=433, 60.225pt x 60.225pt>
 File: ./images//Cf_Might.png Graphic file (type png)
 <use ./images//Cf_Might.png>
-Package pdftex.def Info: ./images//Cf_Might.png  used on input line 775.
+Package pdftex.def Info: ./images//Cf_Might.png  used on input line 883.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//Cf_Would.png, id=417, 60.225pt x 60.225pt>
+<./images//Cf_Would.png, id=434, 60.225pt x 60.225pt>
 File: ./images//Cf_Would.png Graphic file (type png)
 <use ./images//Cf_Would.png>
-Package pdftex.def Info: ./images//Cf_Would.png  used on input line 776.
+Package pdftex.def Info: ./images//Cf_Would.png  used on input line 884.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-
-[29 <./images//Tank_Empty.png> <./images//Flag.png> <./images//Atom.png> <./ima
-ges//Negation.png> <./images//OR_Wide.png> <./images//AND_Wide.png> <./images//
-Possibility.png> <./images//Necessity.png> <./images//Cf_Might.png> <./images//
-Cf_Would.png>]
+ [29 <./images//UI_Layout.png (PNG copy)>]
 File: ./images//Tank_Empty.png Graphic file (type png)
 <use ./images//Tank_Empty.png>
-Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 791.
+Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 899.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//OR.png, id=434, 30.1125pt x 60.225pt>
+<./images//OR.png, id=440, 30.1125pt x 60.225pt>
 File: ./images//OR.png Graphic file (type png)
 <use ./images//OR.png>
-Package pdftex.def Info: ./images//OR.png  used on input line 791.
+Package pdftex.def Info: ./images//OR.png  used on input line 899.
 (pdftex.def)             Requested size: 30.11241pt x 60.22484pt.
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 791.
+Package pdftex.def Info: ./images//Atom.png  used on input line 899.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 798.
+Package pdftex.def Info: ./images//Atom.png  used on input line 906.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//AND.png, id=435, 30.1125pt x 60.225pt>
+<./images//AND.png, id=441, 30.1125pt x 60.225pt>
 File: ./images//AND.png Graphic file (type png)
 <use ./images//AND.png>
-Package pdftex.def Info: ./images//AND.png  used on input line 798.
+Package pdftex.def Info: ./images//AND.png  used on input line 906.
 (pdftex.def)             Requested size: 30.11241pt x 60.22484pt.
 File: ./images//Possibility.png Graphic file (type png)
 <use ./images//Possibility.png>
-Package pdftex.def Info: ./images//Possibility.png  used on input line 798.
+Package pdftex.def Info: ./images//Possibility.png  used on input line 906.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//Flag.png Graphic file (type png)
 <use ./images//Flag.png>
-Package pdftex.def Info: ./images//Flag.png  used on input line 798.
+Package pdftex.def Info: ./images//Flag.png  used on input line 906.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//Negation.png Graphic file (type png)
 <use ./images//Negation.png>
-Package pdftex.def Info: ./images//Negation.png  used on input line 809.
+Package pdftex.def Info: ./images//Negation.png  used on input line 917.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 809.
+Package pdftex.def Info: ./images//Atom.png  used on input line 917.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//Cf_Would.png Graphic file (type png)
 <use ./images//Cf_Would.png>
-Package pdftex.def Info: ./images//Cf_Would.png  used on input line 809.
+Package pdftex.def Info: ./images//Cf_Would.png  used on input line 917.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//BO_Thin.png, id=436, 15.05624pt x 60.225pt>
+<./images//BO_Thin.png, id=442, 15.05624pt x 60.225pt>
 File: ./images//BO_Thin.png Graphic file (type png)
 <use ./images//BO_Thin.png>
-Package pdftex.def Info: ./images//BO_Thin.png  used on input line 809.
+Package pdftex.def Info: ./images//BO_Thin.png  used on input line 917.
 (pdftex.def)             Requested size: 15.0562pt x 60.22484pt.
 File: ./images//Atom.png Graphic file (type png)
 <use ./images//Atom.png>
-Package pdftex.def Info: ./images//Atom.png  used on input line 809.
+Package pdftex.def Info: ./images//Atom.png  used on input line 917.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
 File: ./images//OR.png Graphic file (type png)
 <use ./images//OR.png>
-Package pdftex.def Info: ./images//OR.png  used on input line 809.
+Package pdftex.def Info: ./images//OR.png  used on input line 917.
 (pdftex.def)             Requested size: 30.11241pt x 60.22484pt.
 File: ./images//Tank_Empty.png Graphic file (type png)
 <use ./images//Tank_Empty.png>
-Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 809.
+Package pdftex.def Info: ./images//Tank_Empty.png  used on input line 917.
 (pdftex.def)             Requested size: 60.22484pt x 60.22484pt.
-<./images//BC_Thin.png, id=437, 15.05624pt x 60.225pt>
+<./images//BC_Thin.png, id=443, 15.05624pt x 60.225pt>
 File: ./images//BC_Thin.png Graphic file (type png)
 <use ./images//BC_Thin.png>
-Package pdftex.def Info: ./images//BC_Thin.png  used on input line 809.
+Package pdftex.def Info: ./images//BC_Thin.png  used on input line 917.
 (pdftex.def)             Requested size: 15.0562pt x 60.22484pt.
- [30 <./images//OR.png> <./images//AND.png> <./images//BO_Thin.png> <./images//
-BC_Thin.png>] [31] (./thesis.bbl) [32] (./thesis.aux)
+
+[30 <./images//Tank_Empty.png> <./images//Flag.png> <./images//Atom.png> <./ima
+ges//Negation.png> <./images//OR_Wide.png> <./images//AND_Wide.png> <./images//
+Possibility.png> <./images//Necessity.png> <./images//Cf_Might.png> <./images//
+Cf_Would.png> <./images//OR.png> <./images//AND.png> <./images//BO_Thin.png> <.
+/images//BC_Thin.png>] [31] (./thesis.bbl) [32] (./thesis.aux)
 Package rerunfilecheck Info: File `thesis.out' has not changed.
 (rerunfilecheck)             Checksum: 4BBEA8C2DA497C52CFE1D27F666EF80F;4463.
  ) 
 Here is how much of TeX's memory you used:
- 28914 strings out of 478300
- 534233 string characters out of 5849124
- 908429 words of memory out of 5000000
- 46388 multiletter control sequences out of 15000+600000
- 539586 words of font info for 170 fonts, out of 8000000 for 9000
+ 28991 strings out of 478300
+ 535314 string characters out of 5849124
+ 909756 words of memory out of 5000000
+ 46453 multiletter control sequences out of 15000+600000
+ 545112 words of font info for 181 fonts, out of 8000000 for 9000
  1146 hyphenation exceptions out of 8191
  100i,17n,131p,2520b,1214s stack positions out of 10000i,1000n,20000p,200000b,200000s
 {c:/texlive/2022/texmf-dist/fonts/enc/dvips/base/8r.enc}<c:/texlive/2022/texm
@@ -1451,18 +1476,19 @@ mf-dist/fonts/type1/public/pxfonts/pxsyc.pfb><c:/texlive/2022/texmf-dist/fonts/
 type1/public/pxfonts/rpxb.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/px
 fonts/rpxmi.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/pxfonts/rpxr.pfb
 ><c:/texlive/2022/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb><c:/texlive/2
-022/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2022/texmf-dist/
-fonts/type1/urw/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw
-/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplb8
-a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texli
-ve/2022/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb><c:/texlive/2022/texmf-
-dist/fonts/type1/public/wasy-type1/wasy10.pfb><c:/texlive/2022/texmf-dist/fonts
-/type1/public/wasy-type1/wasy7.pfb><c:/texlive/2022/texmf-dist/fonts/type1/publ
-ic/wasy-type1/wasy9.pfb>
-Output written on thesis.pdf (32 pages, 649869 bytes).
+022/texmf-dist/fonts/type1/public/txfonts/t1xtt.pfb><c:/texlive/2022/texmf-dist
+/fonts/type1/urw/helvetic/uhvb8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/ur
+w/helvetic/uhvr8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/helvetic/uhvr
+8a.pfb><c:/texlive/2022/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/texl
+ive/2022/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/texlive/2022/texmf-
+dist/fonts/type1/urw/palatino/uplri8a.pfb><c:/texlive/2022/texmf-dist/fonts/typ
+e1/public/wasy-type1/wasy10.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/
+wasy-type1/wasy7.pfb><c:/texlive/2022/texmf-dist/fonts/type1/public/wasy-type1/
+wasy9.pfb>
+Output written on thesis.pdf (33 pages, 669374 bytes).
 PDF statistics:
- 573 PDF objects out of 1000 (max. 8388607)
- 465 compressed objects within 5 object streams
- 128 named destinations out of 1000 (max. 500000)
- 288 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 594 PDF objects out of 1000 (max. 8388607)
+ 481 compressed objects within 5 object streams
+ 131 named destinations out of 1000 (max. 500000)
+ 293 words of extra memory for PDF output out of 10000 (max. 10000000)
 

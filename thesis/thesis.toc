@@ -1,11 +1,11 @@
 \babel@toc {american}{}\relax 
-\contentsline {section}{\numberline {1}Introduction}{3}{section.1}%
-\contentsline {section}{\numberline {2}Counterfactuals}{3}{section.2}%
+\contentsline {section}{\numberline {1}Introduction}{4}{section.1}%
+\contentsline {section}{\numberline {2}Counterfactuals}{4}{section.2}%
 \contentsline {section}{\numberline {3}Lewis' counterfactual operators}{5}{section.3}%
 \contentsline {subsection}{\numberline {3.1}Lewis' system of spheres}{5}{subsection.3.1}%
 \contentsline {subsection}{\numberline {3.2}Lewis' counterfactual truth conditions}{7}{subsection.3.2}%
-\contentsline {section}{\numberline {4}Counterfactual logic}{9}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Counterfactual formulas}{9}{subsection.4.1}%
+\contentsline {section}{\numberline {4}Counterfactual logic}{8}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Counterfactual formulas}{8}{subsection.4.1}%
 \contentsline {subsection}{\numberline {4.2}Counterfactual~Kripke~structure}{9}{subsection.4.2}%
 \contentsline {subsection}{\numberline {4.3}Truth conditions of counterfactual logic}{10}{subsection.4.3}%
 \contentsline {section}{\numberline {5}The semantic game of counterfactuals}{10}{section.5}%
@@ -18,9 +18,9 @@
 \contentsline {section}{\numberline {6}Termination and correctness}{19}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Termination proof}{19}{subsection.6.1}%
 \contentsline {subsection}{\numberline {6.2}Correctness proof}{23}{subsection.6.2}%
-\contentsline {section}{\numberline {7}The interactive demonstration}{27}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Game metaphor}{27}{subsection.7.1}%
-\contentsline {subsection}{\numberline {7.2}User interface and interaction}{28}{subsection.7.2}%
-\contentsline {subsection}{\numberline {7.3}Representing counterfactual formulas}{29}{subsection.7.3}%
+\contentsline {section}{\numberline {7}The interactive demonstration}{28}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Game metaphor}{28}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}User interface and interaction}{29}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Representing counterfactual formulas}{30}{subsection.7.3}%
 \contentsline {subsection}{\numberline {7.4}Employment of the limit assumption}{31}{subsection.7.4}%
 \contentsline {section}{\numberline {8}Conclusion}{32}{section.8}%

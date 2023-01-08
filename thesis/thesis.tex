@@ -27,9 +27,25 @@
 \usepackage{lipsum} % For dummy text
 \usepackage{xcolor}
 \usepackage{xparse} % Add support for \NewDocumentEnvironment
+\usepackage{hyperref}
 
 \graphicspath{ {./images/} }
 \date{\today}
+
+% z.B. (Diplom/Studien/Haus)arbeit, Praktikumsbericht, Studie, Beleg, 
+% (Pro/Haupt/Ober)seminar, Seminar usw.
+\newcommand{\dctitle}{An educational computer game about counterfactual truth conditions}
+
+\newcommand{\authorlastname}{Lönne}
+\newcommand{\authorfirstname}{Andreas Paul Bruno}
+\newcommand{\authoremail}{loenne@campus.tu-berlin.de} 
+
+\newcommand{\place}{Berlin}
+\newcommand{\uni}{Technische Universität \place}
+\newcommand{\depart}{Fakultät IV -- Elektrotechnik und Informatik}
+
+\newcommand{\dcpruefer}{}% Prüfer der Arbeit
+\newcommand{\dcadvisor}{}% Betreuer der Arbeit
 
 % >-> Overset Arrow
 \makeatletter
@@ -91,7 +107,21 @@
 \providecommand*{\code}[1]{\texttt{#1}}
 \makeatother
 
+\newenvironment{localsize}[1]
+{%
+  \clearpage
+  \let\orignewcommand\newcommand
+  \let\newcommand\renewcommand
+  \makeatletter
+  \input{bk#1.clo}%
+  \makeatother
+  \let\newcommand\orignewcommand
+}
+
 \newtheorem{thm}{Theorem}
+\theoremstyle{definition}\newtheorem{lemma}[thm]{Lemma}
+\theoremstyle{definition}\newtheorem{proposition}[thm]{Proposition}
+\theoremstyle{definition}\newtheorem{corollary}[thm]{Corollary}
 
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}
 \renewcommand{\algorithmicensure}{\textbf{Output:}}
@@ -124,17 +154,16 @@
 {\end{leftrule}}
 
 % Consideration environment
-\NewDocumentEnvironment{consider}{O{\textbf{Consider:}}} % Define consideration environment
-{\begin{leftrule}\noindent\textcolor{graylight}{#1}\par}
+\NewDocumentEnvironment{consider}{O{\textbf{}}} % Define consideration environment
+{\begin{leftrule}\noindent\textcolor{graylight}{#1}}
 {\end{leftrule}}
 
 
 
 \begin{document}
+\title{\dctitle}
 
-\title{An interactive demonstration of counterfactual truth conditions}
-
-\subtitle{Bachelor Thesis}
+\subtitle{Bachelor's Thesis}
 
 \author{%
 	Andreas Paul Bruno Lönne\\
@@ -146,8 +175,63 @@
 	Degree program: Bachelor Informatik / Computer Science
 }
 
-\maketitle
+\begin{titlepage}
+ \begin{center}
+  \includegraphics[width=4cm]{TU-Berlin-01}\\
+  \large
+  \textbf{\uni}\\
+  \depart\\
+  Modelle und Theorie verteilter Systeme\\
+  \vspace{2.5cm}
+  
+  \Large BACHELOR'S THESIS\\
+  \small Informatik / Computer Science\\
+  \vspace{0.5cm}
+  \LARGE \textbf{\dctitle}\\
+  \vspace{0.6cm}
+  
+  \large \authorfirstname~\authorlastname\\
+  Student~ID: 402214\\
+  %\vspace{2.5cm}
+  \vspace*{\fill}
+  
+  \small Thesis advisor\\
+  \large Benjamin Bisping\\
+  \vspace{0.5cm}
+  \small Thesis supervisors\\
+  \large Prof. Dr. Uwe Nestmann\\
+  Prof. Dr. Stephan Kreutzer\\
+  \vspace{1.5cm}
 
+  \normalsize  
+  \place\\
+  January~2023
+  
+  %\normalsize
+	%vorgelegt von:  \quad \author\\
+	%Matrikelnummer: \quad (402214)\\
+	%Erstgutachter:  \quad Nestmann\\
+	%Zweitgutachter: \quad Mister\\
+	%eingereicht in: \quad \place, den \today
+
+ \end{center}	
+\end{titlepage}
+\newpage
+\vspace*{\fill}
+\large
+\noindent Hiermit erkläre ich, dass ich die vorliegende Arbeit selbstständig und eigenhändig sowie ohne unerlaubte fremde Hilfe und ausschließlich unter Verwendung der aufgeführten Quellen und Hilfsmittel angefertigt habe.
+\vspace{0.5cm}\\
+\noindent \place, den\\\\
+\normalsize
+\vspace{0.25cm}\\
+\begin{tabular}{c}
+\dotfill\\
+Unterschrift\\
+\hphantom{\hspace{10cm}}
+\end{tabular}
+\newpage
+
+\maketitle
 \begin{abstract}
 In this thesis, I address the scarcity of online resources showcasing Lewis' counterfactual truth conditions in an intuitive and digestible manner. To this end, I (i) formulate a semantic reachability game for counterfactual sentences; (ii) prove that it always halts after a finite number of moves; (iii)~prove its correctness and (iv) develop a browser-based web-application to showcase the semantic game of counterfactuals.
 \end{abstract}
@@ -159,24 +243,25 @@ Diese Arbeit geht auf die Knappheit von Online-Ressourcen ein, welche Lewis' Wah
 \listoffigures
 \newpage
 \section{Introduction}
-Counterfactuals are a contentious subject of ongoing philosophical and mathematical discourse and are notoriously difficult to explain. Their prominence within speech and thought makes them desirable to understand, but so far no definitive interpretation has been found. The insufficiencies of truth-functional treatments of counterfactuals sparked numerous models like \cite{kripke_modal_logic_1963}, \cite{stalnaker_theory_1968}, \cite{lewis_counterfactuals_1973} giving alternate accounts of counterfactual truth conditions. One of the more well known attempts to do so is David~K.~Lewis' formulation of the counterfactual operators $\boxright$ and $\Diamondright$ \cite{lewis_counterfactuals_1973}. Yet still few educational resources exist to introduce Lewis' interpretation of counterfactuals as variably strict conditionals. For this reason, we set out to create an interactive demonstration of Lewis' counterfactual truth conditions that can be played under TODO.... This thesis begins with a general introduction to the notion of counterfactuals in section \ref{sec:counterfactuals} and then more closely explains Lewis' interpretation of them in section \ref{sec:lew_cf_ops}. In the sections \ref{sec:cf_logic} and \ref{sec:semantic_game}, we define a counterfactual logic and a semantic game that proves and disproves the truth of counterfactual formulas. Then we show termination and correctness of that game in section \ref{sec:proofs}, briefly explain the interactive demonstration's features in section \ref{sec:demo} and finally give our conclusion in section \ref{sec:end}.
+Counterfactuals are a contentious subject of ongoing philosophical and mathematical discourse and are notoriously difficult to explain. Their prominence within speech and thought makes them desirable to understand, but so far no definitive interpretation has been found. The insufficiencies of truth-functional treatments of counterfactuals sparked numerous models like \cite{kripke_modal_logic_1963}, \cite{stalnaker_theory_1968}, \cite{lewis_counterfactuals_1973} giving alternate accounts of counterfactual truth conditions. One of the more well known attempts to do so is David~K.~Lewis' formulation of the counterfactual operators $\boxright$ and $\Diamondright$ \cite{lewis_counterfactuals_1973}. Yet still few educational resources exist that introduce Lewis' interpretation of counterfactuals as variably strict conditionals. For this reason, we set out to create an interactive demonstration of Lewis' counterfactual truth conditions that can be played under \url{https://brunololos.github.io/counterfactuals-demo/}. This thesis begins with a general introduction to the notion of counterfactuals in section \ref{sec:counterfactuals} and then more closely explains Lewis' interpretation of them in section \ref{sec:lew_cf_ops}. In the sections \ref{sec:cf_logic} and \ref{sec:semantic_game}, we define a counterfactual logic and a semantic game that proves and disproves the truth of counterfactual formulas. Then we show termination and correctness of that game in section \ref{sec:proofs}, briefly explain the interactive demonstration's features in section \ref{sec:demo} and finally give our conclusion in section \ref{sec:end}.
 \section{Counterfactuals}\label{sec:counterfactuals}
-\textit{Counterfactuals} are statements about what might or would have been the case, if things took place differently than they did. One may think to themselves "If I had not forgotten about my appointment, I would have been punctual". Or one may wonder "If Alexander the Great had not died at the age of 32 and attacked Europe, would the Romans have defeated him?". Such \textit{counterfactual~thought}---that is the thought of alternate outcomes---is essential for reasoning, deduction and cognitive function. \cite{byrne_counterfactual_2016} Due to its abundance in human thought, the ability to imagine alternate realities seems trivial to most. But making rigorous statements or claims about them is difficult. This is because communicating a complete and consistent account of the state of affairs of an alternate reality---similar in complexity to ours--- is difficult, if not impossible. One may attempt to circumvent this issue by giving the state of affairs of an alternate reality as a deviation from the state of affairs of reality. But consider this.
+\textit{Counterfactuals} are statements about what might or would have been the case, if things took place differently than they did. One may think to themselves "If I had not forgotten about my appointment, I would have been punctual". Or one may wonder "If kangaroos had no tails, would they topple over?". Such \textit{counterfactual~thought}---that is the thought of alternate outcomes---is essential for reasoning, deduction and cognitive function. \cite{byrne_counterfactual_2016} Due to its abundance in human thought, the ability to imagine alternate realities seems trivial to most. But making rigorous statements or claims about them is difficult. This is because communicating a complete and consistent account of the state of affairs of an alternate reality---similar in complexity to ours--- is difficult, if not impossible. One may attempt to circumvent this issue by giving the state of affairs of an alternate reality as a deviation from the state of affairs of reality. But consider this.
 \begin{examplef}
-Take our previous example about Alexander the Great and assume that the imagined alternate reality is identical to our reality, except that Alexander the Great did not die at the age of 32 and attacked Europe. Now suppose we know about reality, that Alexanders troops remained outside of Europe. Then this should also be the case in the alternate reality we attempted to describe. If we are to assume that an army cannot be in two places at the same time and Alexander could not have attacked Europe without his army, then Alexanders troops could not have remained outside of Europe and attacked Europe at the same time.
+Take our previous example about kangaroos and assume that the imagined alternate reality is identical to our reality, except that kangaroos have no tails. Now suppose we know about reality, that kangaroos' tails leave trails in the sand they walk on. Then this should also be the case in the alternate reality we attempted to describe. If we are to assume that there is no other reason or mechanism that creates the same trails in the sand kangaroos walk on, which we have good reason to believe, then kangaroos cannot create such trails in the sand they walk on and not have tails.
 \end{examplef}
-We find, that simply deviating from our own reality in a few concrete ways may produce internally inconsistent alternate realities, which cannot be alternate realities, because they are not ways the world could have been.
+We find, that simply deviating from our own reality in a few concrete ways may produce internally inconsistent alternate realities, which cannot be alternate realities, because they are not ways the world could have been. One deviation from our reality thus may necessitate a cascade of other deviations to to create an internally consistent alternate reality.
 
-To avoid this problem we forgo describing alternate realities all-together. We call a complete and consistent way the world is or could have been, a possible world. And agree that we refer to a possible world, most similar to ours, where our stipulation is true. So our example is to be read as "In a world most similar to our own, where Alexander the Great did not die at the age of 32 and attacked Europe, the Romans would have defeated him". In this way---although we may not know the state of affairs of a possible world---we are able to assign definite truth values to our counterfactual sentence for any possible state of affairs at that world. However we need to note, that this approach assumes the notion of comparative similarity between possible worlds. Which means that given any 3 worlds $w,v_1,v_2$, with respect to their overall similarity from the standpoint of $w$, either
+To avoid this problem we forgo describing alternate realities all-together. We call a complete and consistent way the world is or could have been, a possible world. And agree that we refer to a possible world, most similar to ours, where our stipulation is true. So our example is to be read as "In a world most similar to our own, where kangaroos have no tails, they would topple over". In this way---although we may not know the state of affairs of a possible world---we are able to assign definite truth values to our counterfactual sentence for any possible state of affairs at that world. However we need to note, that this approach assumes that it is possible to compare possible worlds with regard to their overall similarity to another world. We call this notion \textit{comparative similarity} between possible worlds. Which means that given any 3 worlds $w,v_1,v_2$, with respect to their overall similarity from the standpoint of $w$, either
 \begin{itemize}
 \item $w$ is more similar to $v_1$, than to $v_2$,
 \item $w$ is more similar to $v_2$, than to $v_1$,
 \item or $w$ is equally similar to $v_1$ and $v_2$.
 \end{itemize}
-While the notion of an aggregate overall similarity between possible worlds appears justified at first glance, it has been subject of contention. \cite{morreau_overall_similarity_2010}
-\newpage
+While the notion of an aggregate overall similarity between possible worlds appears reasonable at first glance, it has been subject of contention and may not be justified at all.~\cite{morreau_overall_similarity_2010}
+
 \section{Lewis' counterfactual operators}\label{sec:lew_cf_ops}
 With these introductory thoughts out of the way, let us talk in greater detail about the counterfactual operators themselves. Lewis introduces the\textit{ counterfactual would} $\boxright$ and \textit{counterfactual might} $\Diamondright$ operators as binary modal operators. \cite{lewis_counterfactuals_1973} When we write $\varphi\boxright\psi$, we call the formula $\varphi$ the antecedent and the formula $\psi$ the consequent. We may informally rewrite one of our former examples as "I~did~not~forget~about~my~appointment~$\boxright$~I~was~punctual" and read it the following way. Read $\varphi\boxright\psi$ as "If it were the~case that $\varphi$, then it would be the case that $\psi$", and read $\varphi\Diamondright\psi$ as "If it were the case that~$\varphi$, then~it might be the case that $\psi$". We further dedicate the remainder of this section to summarizing and explaining Lewis' truth conditions for $\boxright$ and $\Diamondright$.
+
 \subsection{Lewis' system of spheres}
 The truth conditions of the counterfactual operators are stated with respect to a structure, called a \textit{system~of~spheres}. Lewis defines a system~of~spheres as follows.
 \begin{definition}[Lewis' system of spheres]
@@ -197,22 +282,25 @@ Let $\$$ be an assignment to each possible world $i$ of a set $\$_i$ of sets of 
 roundnode/.style={circle, draw=black!0, fill=black!100, very thick, minimum size=1pt},
 ]
 \coordinate (O) at (0,0);
-\coordinate (V) at (45:1.5);
-\coordinate (W) at (0:2.25);
+\coordinate (V) at (45:0.75);
+\coordinate (W) at (0:1.5);
+\coordinate (U1) at (135:2.25);
+\coordinate (U2) at (200:2.25);
 \draw (O) circle (2.25);
 \draw (O) circle (1.5);
 \draw (O) circle (0.75);
 \node[scale=1mm, label={[label distance=-6mm]315:$i$}] at (O) {.};
 \node[scale=1mm, label={[label distance=-6mm]45:$v$}] at (V) {.};
 \node[scale=1mm, label={[label distance=-6mm]315:$w$}] at (W) {.};
-
+\node[scale=1mm, label={[label distance=-6mm]315:$u_1$}] at (U1) {.};
+\node[scale=1mm, label={[label distance=-6mm]45:$u_2$}] at (U2) {.};
 %\draw[black] (0,0) -- (1,0);
 \end{tikzpicture}
-\caption{A set of spheres $\$_i=\{\{ i\} ,\{ i,v\} ,\{ i,v,w\}\}$}
+\caption{A set of spheres $\$_i=\{\{ i\} ,\{ i,v\} ,\{ i,v,w\}, \{ i,v,w, u_1, u_2\}\}$}
 \label{fig:set_of_spheres}
 \end{figure}
 
-\noindent In this example we look at the worlds $i$, $v$ and $w$; and consider the set of spheres $\$_i$. The spheres themselves are sets of possible worlds and are visualized through circles. A world inside or on the circumference of a circle is contained within the corresponding sphere. Crucially, the meaning of a sphere around $i$ is that each world contained in it is more similar to $i$ than each world not contained in it. For our example this means that $i$ is more similar to itself than any other world; $i$ and $v$ are more similar to $i$ than any other world; and that $i$, $v$ and $w$ are more similar to $i$ than any other world. Regarding accessibility, a world is said to be accessible from $i$, if it is contained in any sphere around $i$. So we can see that all $i$, $v$ and $w$ are accessible from $i$. With this in mind, we can motivate the properties (C), (1), (2) and (3).
+\noindent In this example we look at the worlds $i$, $v$, $w$, $u_1$ and $u_2$; and consider the set of spheres~$\$_i$. The~spheres themselves are sets of possible worlds and are visualized through circles. A~world inside or on the circumference of a circle is contained within the corresponding sphere. Crucially, the meaning of a sphere around $i$ is that each world contained in it is more similar to $i$ than each world not contained in it. For our example this means that $i$ is more similar to itself than any other world; $i$ and $v$ are more similar to $i$ than any other world; $i$,~$v$~and~$w$ are more similar to $i$ than any other world; and that $i$, $v$, $w$, $u_1$ and $u_2$ are more similar to $i$ than any other world. Regarding accessibility, a world is said to be accessible from $i$, if it is contained in any sphere around $i$. So we can see that all $i$, $v$, $w$, $u_1$ and $u_2$ are accessible from $i$. With this in mind, we can motivate the properties (C),~(1),~(2)~and~(3).
 
 (C) It seems reasonable to assume that each world is most similar to itself and that there cannot be another world equally or more similar to it than itself. If that is the case, every sphere around a world $i$ needs to contain the set $\{ i\}$.
 
@@ -237,9 +325,9 @@ Then let us take a look at Lewis' counterfactual truth conditions. Take the coun
 (1) We describe the first case as vacuous truth. Intuit this case the same way a material implication is true, when its antecedent is false. From wrong antecedents arbitrary consequents may be inferred. Keep in mind however, that the vacuous truth of the counterfactual would is much stricter. While the material conditional only requires the antecedent to be false at the world it is evaluated at, the counterfactual would requires the antecedent to be false at every accessible world.
 
 (2) The non-vacuous case requires the existence of a sphere throughout which $\varphi\rightarrow\psi$ holds and that that sphere also contains a $\varphi$-world. The existence of such a sphere can roughly be understood as the existence of some accessibility restriction under which the strict conditional $\Box (\varphi\rightarrow\psi)$ comes out as non-vacuously true. Meaning that $\varphi\rightarrow\psi$ holds throughout all accessible worlds and that at least one accessible world is a $\varphi$-world. While the strict conditional is true, only if it is true in the broadest sense---meaning it is true at every accessible world---the counterfactual would conditional merely needs to be true in one of many senses. That is why Lewis' counterfactual operators are called variably strict conditionals. Each of these many senses are degrees of similarity to a world, that are described by spheres around that world. To motivate why overall similarity between worlds is used as an accessibility restriction consider this example.
-\begin{equation}
+\begin{examplef}
 \text{"If Kennedy had pressed the red button, there would have been nuclear war"}
-\end{equation}
+\end{examplef}
 We consider this to be true. Without much trouble, one can make up many counterexamples to this counterfactual. Imagine for a moment the possibility that Kennedy had pressed the red button and the button malfunctioned. In that case Kennedy pressed the button, but there is no nuclear war. Obviously that is not meant. When we say something like "If~it~were~the~case that A, then it would be the case that B", we implicitly mean "If it were the case that~A and things were pretty much as they are otherwise, then it would be the case that~B". Our rebuttal therefore may be that there is at least one possible world where Kennedy pressed the red button and the red button did not malfunction that is more similar to the actual world than any possible world where Kennedy pressed the red button and the button did malfunction. If this is the case, we may claim that our example counterfactual is true, although there are certain senses in which it is not true. This is why a counterfactual would operator is true, if there is at least one sense, represented through a sphere of accessibility, in which it is true. Regarding the system of spheres it means that a counterfactual would operator is non-vacuously true, unless each sphere around the world it is evaluated at contains a refuting world that serves as a counterexample or no sphere around the world it is evaluated at contains a $\varphi$-world.
 
 The \textit{counterfactual~might} is defined analogously.
@@ -262,7 +350,7 @@ The \textit{counterfactual~might} is defined analogously.
 \label{eq:might_interdef}
 \varphi\Diamondright\psi =^{def} \neg (\varphi\boxright\neg\psi )
 \end{equation}
-\newpage
+
 \section{Counterfactual logic}\label{sec:cf_logic}
 This section is concerned with defining counterfactual logic. First it provides a brief definition of well-formed counterfactual formulas, then introduces the structure they are evaluated on and concludes by defining the truth conditions of counterfactual logic.
 
@@ -274,7 +362,7 @@ Given an infinite set of atomic formula symbols $Atoms = \{ x, y, ...\}$ and an 
 \varphi, \psi ::= \bot \mid \top \mid x \mid \neg \varphi \mid \varphi \vee \psi \mid \varphi \wedge \psi \mid \Diamond \varphi \mid \Box \varphi \mid \varphi \boxright \psi \mid \varphi \Diamondright \psi
 \end{equation}
 \end{definition}
-
+\newpage
 \subsection{Counterfactual~Kripke~structure}
 In order to evaluate the non-truth-functional connectives of counterfactual~logic, we define a variation of the Kripke~structure in \cite{kripke_modal_logic_1963}. To evaluate Lewis' counterfactual truth conditions \cite{lewis_counterfactuals_1973}, we also introduce a notion of similarity between possible worlds to the accessibility relation.
 \begin{definition}[counterfactual Kripke structure]
@@ -288,8 +376,10 @@ To describe common accessiblity relationships between possible worlds more succi
 \end{definition}
 \noindent Let us explain further the members of our counterfactual~Kripke~structure.
 
-The set of all possible~worlds $W$ represents all complete and self-consistent ways reality could have been. $F$ in turn, describes the state of affairs at each world. It assigns to each world a set of atomic propositions, that are the case at it. The similarity relations purpose is twofold. It serves as an accessibility relation, restricting accessibility between worlds and also carries information about comparative similarity between worlds. In particular this means for any two worlds $w$ and $v$, that iff $\smash{w\overset{r}{\leadsto}v}$, then $v$ is called accessible from $w$. $\smash{w\overset{r}{\leadsto}v}$ also means, that $r$ is a measure of similarity between $w$ and $v$, from the standpoint of $w$. We can suppose another world $v'$, with $\smash{w\overset{r'}{\leadsto}v'}$ and compare $r$ and $r'$. If $r < r'$, we can conclude, that $v$ is more similar to $w$ than $v'$, from the standpoint of $w$. Additionally we note, that for our purposes $\leadsto$ will contain a tuple $(w, 0, w)$ for each world $w\in W$. This is because we assume analogously to Kripke, that worlds are self-similar and are accessible from themselves.
-%\newpage
+The set of all possible~worlds $W$ represents all complete and self-consistent ways reality could have been. $F$ in turn, describes the state of affairs at each world. It assigns to each world a set of atomic propositions, that are the case at it. The similarity relation's purpose is twofold. It serves as an accessibility relation, restricting accessibility between worlds and also carries information about comparative similarity between worlds. In particular this means for any two worlds $w$ and $v$, that iff $\smash{w\overset{r}{\leadsto}v}$, then $v$ is called accessible from $w$. $\smash{w\overset{r}{\leadsto}v}$ also means, that $r$ is a measure of similarity between $w$ and $v$, from the standpoint of $w$. We can suppose another world $v'$ with $\smash{w\overset{r'}{\leadsto}v'}$ and compare $r$ and $r'$. If $r < r'$, we can conclude, that $v$ is more similar to $w$ than $v'$, from the standpoint of $w$. Additionally we note, that for our purposes $\leadsto$ will contain a tuple $(w, 0, w)$ for each world $w\in W$. This is because we assume analogously to Kripke, that worlds are self-similar and are accessible from themselves.
+
+Thus we can briefly explain how the \textit{counterfactual~Kripke~structure} relates to Lewis' \textit{system~of~spheres}. Since each world accessible from a world $w$ has a similarity value associated with that accessibility, we can use those similarity values to order the worlds accessible from $w$ and thus codify the notion of \textit{comparative similarity}. We can give a sphere of accessibility around $w$ by giving a world that is a most dissimilar world to $w$ still contained within that sphere. We call such a world a \textit{sphere-delimiting} world. And the sphere around $w$ that a \textit{sphere-delimiting} world $w'$ with $\smash{w\overset{r}{\leadsto}w'}$ describes is simply~$W_{w,r}^\leq$.
+\newpage
 \subsection{Truth conditions of counterfactual logic}
 Given a counterfactual~Kripke~structure $S = (W, \leadsto ,F)$ and a world $w$,\\
 $S,w\nvDash\bot$.\\
@@ -315,6 +405,7 @@ This section offers an overview and introduction to the semantic~game~of~counter
 
 \subsection{Definition of the semantic game}
 The game itself is akin to a discussion where players make arguments and refute them. Weak arguments do not hold up to scrutiny, but strong ones do. The players' adversarial interplay allows the discovery and dismissal of arguments, such that the reason for truth or falsity of a claim is revealed. Let us begin by giving the definition of the semantic game and subsequently introduce its members.
+\newpage
 \begin{definition}[Semantic game of counterfactuals]
 The two formulations of the semantic game of counterfactuals $\mathfrak{T}[\varphi ,w,S]=(I, E, G, \rightarrowsingletail{})$ and $\mathfrak{G}[\varphi ,w,S]=(I, E, G, \rightarrowdoubletail{})$ with respect to a formula $\varphi\in\Phi$, a world $w\in W$ and a counterfactual Kripke structure $S=(W,\leadsto ,F)$ are ordered tuples, consisting of
 \begin{itemize}
@@ -334,7 +425,7 @@ A game state $g\in G$ is a tuple that can take any one of the forms
 \begin{itemize}
 	\item[(1)] $(\varphi ,w)_p$
 	\item[(2)] $(\varphi ,w, e)_p$
-	\item[(3)] $(\varphi ,w,w',r)_p$
+	\item[(3)] $(\varphi ,w,w'\!,r)_p$
 \end{itemize}
 where $\varphi\in\Phi$; $w,w'\in W$; $r\in [0,\infty [$ and $p,e\in\{ a,d\}$.
 \end{definition}
@@ -352,66 +443,70 @@ $\rightarrowsingletail{}$ is a set of moves, such that it contains exactly those
 	\centering
 	\begin{equation}
 		\label{eq:atom_move}
-		(x ,w)_{p}\xrightarrowsingletail{[x\in F(w)]} (\top ,w)_{p}
+		\smash{(x ,w)_{p}\xrightarrowsingletail{[x\in F(w)]} (\top ,w)_{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\neg\varphi ,w)_{p}\rightarrowsingletail{} (\varphi ,w)_{\overline{p}}
+		\smash{(\neg\varphi ,w)_{p}\rightarrowsingletail{} (\varphi ,w)_{\overline{p}}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\vee\psi ,w)_{p}\rightarrowsingletail{} (\varphi ,w)_{p}
+		\smash{(\varphi\vee\psi ,w)_{p}\rightarrowsingletail{} (\varphi ,w)_{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\vee\psi ,w)_{p}\rightarrowsingletail{} (\psi ,w)_{p}
+		\smash{(\varphi\vee\psi ,w)_{p}\rightarrowsingletail{} (\psi ,w)_{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\wedge\psi ,w)_{p}\rightarrowsingletail{} (\varphi\wedge\psi ,w,p)_{\overline{p}}
+		\smash{(\varphi\wedge\psi ,w)_{p}\rightarrowsingletail{} (\varphi\wedge\psi ,w,p)_{\overline{p}}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\wedge\psi ,w,e)_{p}\rightarrowsingletail{} (\varphi ,w)_{e}
+		\smash{(\varphi\wedge\psi ,w,e)_{p}\rightarrowsingletail{} (\varphi ,w)_{e}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\wedge\psi ,w,e)_{p}\rightarrowsingletail{} (\psi ,w)_{e}
+		\smash{(\varphi\wedge\psi ,w,e)_{p}\rightarrowsingletail{} (\psi ,w)_{e}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
 		\label{eq:poss_move}
-		(\Diamond\varphi ,w)_{p}\xrightarrowsingletail{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{p}
+		\smash{(\Diamond\varphi ,w)_{p}\xrightarrowsingletail{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
 		\label{eq:neccsw_move}
-		(\Box\varphi ,w)_{p}\rightarrowsingletail{} (\Box\varphi ,w,p)_{\overline{p}}
+		\smash{(\Box\varphi ,w)_{p}\rightarrowsingletail{} (\Box\varphi ,w,p)_{\overline{p}}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
 		\label{eq:necc_move}
-		(\Box\varphi ,w,e)_{p}\xrightarrowsingletail{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{e}
+		\smash{(\Box\varphi ,w,e)_{p}\xrightarrowsingletail{[w\overset{r}{\leadsto}w']} (\varphi ,w')_{e}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
+	\end{equation}
+	\caption{Moves of the semantic game of counterfactuals 1}
+\end{figure}
+\begin{figure}[H]
+	\centering
+	\begin{equation}
+		(\varphi\boxright\psi ,w)_p\rightarrowsingletail{} (\Box\neg\varphi ,w)_{p}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\boxright\psi ,w)_p\rightarrowsingletail{} (\Box\neg\varphi ,w)_{p}
+		(\varphi\boxright\psi ,w)_p\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}(\varphi\boxright\psi ,w,w'\!,r)_{\overline{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\boxright\psi ,w)_p\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}(\varphi\boxright\psi ,w,w',r)_{\overline{p}}
+		(\varphi\boxright\psi ,w,w'\!,r)_p\rightarrowsingletail{} (\varphi ,w')_{\overline{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\boxright\psi ,w,w',r)_p\rightarrowsingletail{} (\varphi ,w')_{\overline{p}}
+		(\varphi\boxright\psi ,w,w'\!,r)_p\xrightarrowsingletail{[w\overset{r^*}{\leadsto}w^*\!,r^*\leq r]}(\neg\varphi\vee\psi ,w^*)_{\overline{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\boxright\psi ,w,w',r)_p\xrightarrowsingletail{[w\overset{r^*}{\leadsto}w^*,r^*\leq r]}(\neg\varphi\vee\psi ,w^*)_{\overline{p}}
+		(\varphi\Diamondright\psi ,w)_p\rightarrowsingletail{} (\varphi\Diamondright\psi ,w,p)_{\overline{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\Diamondright\psi ,w)_p\rightarrowsingletail{} (\varphi\Diamondright\psi ,w,p)_{\overline{p}}
+		(\varphi\Diamondright\psi ,w,e)_{p}\rightarrowsingletail{} (\Box\neg\varphi ,w)_{p}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\Diamondright\psi ,w,e)_{p}\rightarrowsingletail{} (\Box\neg\varphi ,w)_{p}
+		(\varphi\Diamondright\psi ,w,e)_p\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}(\varphi\Diamondright\psi ,w,w'\!,r)_{e}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\Diamondright\psi ,w,e)_p\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}(\varphi\Diamondright\psi ,w,w',r)_{e}
+		(\varphi\Diamondright\psi ,w,w'\!,r)_p\rightarrowsingletail{} (\varphi ,w')_{\overline{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
-		(\varphi\Diamondright\psi ,w,w',r)_p\rightarrowsingletail{} (\varphi ,w')_{\overline{p}}
+		(\varphi\Diamondright\psi ,w,w'\!,r)_p\xrightarrowsingletail{[w\overset{r^*}{\leadsto}w^*\!,r^*\leq r]}(\varphi\wedge\psi ,w^*)_{p}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
-	\begin{equation}
-		(\varphi\Diamondright\psi ,w,w',r)_p\xrightarrowsingletail{[w\overset{r^*}{\leadsto}w^*,r^*\leq r]}(\varphi\wedge\psi ,w^*)_{p}
-	\end{equation}
-	\caption{Moves of the semantic game of counterfactuals}
+	\caption{Moves of the semantic game of counterfactuals 2}
 	\label{fig:moves}
 \end{figure}
 \end{definition}
@@ -459,31 +554,31 @@ $\rightarrowdoubletail{}$ is a set of moves, such that it contains exactly those
 	\centering
 	\begin{equation}
 		\label{eq:limit_ass_mightsp_move}
-		(\varphi\Diamondright\psi ,w)_{p}\xrightarrowdoubletail{[w\overset{r}{\leadsto}w']} (\varphi\Diamondright\psi ,w,w',r)_{\overline{p}}
+		(\varphi\Diamondright\psi ,w)_{p}\xrightarrowdoubletail{[w\overset{r}{\leadsto}w']} (\varphi\Diamondright\psi ,w,w'\!,r)_{\overline{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
 		\label{eq:limit_ass_mightde_move}
-		(\varphi\Diamondright\psi ,w,w',r)_{p}\rightarrowdoubletail{} (\varphi\wedge\psi ,w')_{\overline{p}}
+		(\varphi\Diamondright\psi ,w,w'\!,r)_{p}\rightarrowdoubletail{} (\varphi\wedge\psi ,w')_{\overline{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
 		\label{eq:limit_ass_mightcl_move}
-		(\varphi\Diamondright\psi ,w,w',r)_{p}\xrightarrowdoubletail{[w\overset{r^*}{\leadsto}w^*, r^*<r]} (\neg\varphi ,w^*)_{\overline{p}}
+		(\varphi\Diamondright\psi ,w,w'\!,r)_{p}\xrightarrowdoubletail{[w\overset{r^*}{\leadsto}w^*\!, r^*<r]} (\neg\varphi ,w^*)_{\overline{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
 		\label{eq:limit_ass_wouldsw_move}
-		(\varphi\boxright\psi ,w)_{p}\rightarrowdoubletail{} (\varphi\boxright\psi ,w,p)_{\overline{p}}
+		(\varphi\boxright\psi ,w)_{p}\rightarrowdoubletail{} (\varphi\boxright\psi ,w,p)_{\overline{p}}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
 		\label{eq:limit_ass_wouldsp_move}
-		(\varphi\boxright\psi ,w,e)_{p}\xrightarrowdoubletail{[w\overset{r}{\leadsto}w']} (\varphi\boxright\psi ,w,w',r)_{e}
+		(\varphi\boxright\psi ,w,e)_{p}\xrightarrowdoubletail{[w\overset{r}{\leadsto}w']} (\varphi\boxright\psi ,w,w'\!,r)_{e}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
 		\label{eq:limit_ass_wouldde_move}
-		(\varphi\boxright\psi ,w,w',r)_{p}\rightarrowdoubletail{} (\neg\varphi\vee\psi ,w')_{p}
+		(\varphi\boxright\psi ,w,w'\!,r)_{p}\rightarrowdoubletail{} (\neg\varphi\vee\psi ,w')_{p}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\begin{equation}
 		\label{eq:limit_ass_wouldcl_move}
-		(\varphi\boxright\psi ,w,w',r)_{p}\xrightarrowdoubletail{[w\overset{r^*}{\leadsto}w^*, r^*<r]} (\varphi ,w^*)_{p}
+		(\varphi\boxright\psi ,w,w'\!,r)_{p}\xrightarrowdoubletail{[w\overset{r^*}{\leadsto}w^*\!, r^*<r]} (\varphi ,w^*)_{p}\vphantom{\xrightarrowsingletail{[w\overset{r}{\leadsto}w']}}
 	\end{equation}
 	\caption{Moves employing the limit assumption}
 	\label{fig:limit_ass_moves}
@@ -503,13 +598,21 @@ Given a semantic game of counterfactuals $(I, E, G, R)$, a path of game states $
 	\item[(W)] $P$ is winning for a player $p$; that is, (3) is true and it either holds that $p_n\in E$ and $p$ is the active player at $p_n$ or that $(\{p_n\}\times G)\cap R = \emptyset$ and p is not the active player at $p_n$.
 \end{itemize}
 \end{definition}
-Plays are paths of game states and describe the order in which game positions are reached in an instance of play of the semantic game of counterfactuals. A play can thus be thought of as a history of game states that is dependent on the decisions of players and the concrete semantic game that is played. We know that there are many differing instances of the semantic game, varying in the initial formula, initial world and counterfactual Kripke structure the game is played on. Thus a play is a play with respect to a certain semantic game. It has to fit the constraints imposed by a game's rules to be called a play of that game. It may well be the case that a play is a play with regard to one instance of the semantic game, but not another. To be called a play with respect to a semantic game of counterfactuals, a path of game states has to (1) begin at the initial game state of that game, (2) only make transitions between game states that are moves of the game and (3) end with a game state where one player wins. If (3) is not true, but (1) and (2) are, we call $P$ an unfinished or partial play. Additionally, we call a play winning for a player, if that player reaches the $\top$-symbol at the end of the play or is not the stuck player at the end of the play. (W) We also define the notion of strategies.
+Plays are paths of game states and describe the order in which game positions are reached in an instance of play of the semantic game of counterfactuals. A play can thus be thought of as a history of game states that is dependent on the decisions of players and the concrete semantic game that is played. We know that there are many differing instances of the semantic game, varying in the initial formula, initial world and \textit{counterfactual~Kripke~structure} the game is played on. Thus a play is a play with respect to a certain semantic game. It has to fit the constraints imposed by a game's rules to be called a play of that game. It may well be the case that a play is a play with regard to one instance of the semantic game, but not another. To be called a play with respect to a semantic game of counterfactuals, a path of game states has to (1) begin at the initial game state of that game, (2) only make transitions between game states that are moves of the game and (3) end with a game state where one player wins. If (3) is not true, but (1) and (2) are, we call $P$ an unfinished or partial play. Additionally, we call a play winning for a player, if that player reaches the $\top$-symbol at the end of the play or is not the stuck player at the end of the play. (W) We also define the notion of strategies.
 
 \begin{definition}[Strategies]
 Given a semantic game of counterfactuals $(I, E, G, R)$ a positional strategy $T\subseteq\{(g_1,(g_1,g_2))\mid g_1,g_2\in G\wedge (g_1,g_2)\in R\}$ is a partial mapping from game states to moves. A strategy $T_p$ of a player $p$ is called consistent with a play $P$, iff for every subpath $p_ip_{i+1}$ of $P$ where the player $p$ is the active player at $p_i$, $T_p$ maps $p_i$ to $(p_i,p_{i+1})$. We call a strategy $T_p$ of a player $p$ winning, iff each play that $T_p$ is consistent with is a winning play for player $p$. A player that has a winning strategy for a semantic game is said to win that semantic game.
 \end{definition}
-One can intuit the meaning of a strategy to be a declaration of intent of which moves a player will plays in which game position. We codify a strategy as a partial mapping from game states to moves and call it a positional strategy, because it is state-based and does not take into account any previous game history i.e. a partial play. Since the semantic game's win conditions are independent from previous play, it suffices to define strategies this way. Additionally, the previously mentioned partial mapping also underlies the constraint that a game state $g$ has to be mapped to a move with $g$ as its initial game state. This way a strategy can only map a game state to moves that are possible at it. Furthermore we introduced the notion of consistency with a play. Given a player $p$ and their strategy $T_p$, that strategy is called consistent with a play $P$, iff at each game state $g$ of $P$ where $p$ made a move, that move is the same as $T_p(g)$. Colloquially we might say "The player $p$ followed the strategy $T_p$ in the play $P$". Thus we can say that following a strategy~$T_p$ means that the set of plays that can occur is restricted to the set of plays $T_p$ is consistent with. If and only if each of those plays is a winning play for player $p$, then the strategy $T_p$ is winning, because the opponent of the player $p$ is unable to make moves such that $p$ loses. Note that it is clearly impossible for both players to have a winning strategy with respect to the same game at the same time. If one player has a winning strategy, their opponent does not.
+One can intuit the meaning of a strategy to be a declaration of intent of which moves a player will plays in which game position. We codify a strategy as a partial mapping from game states to moves and call it a positional strategy, because it is state-based and does not take into account any previous game history i.e. a partial play. Since the semantic game's win conditions are independent from previous play, it suffices to define strategies this way. Additionally, the previously mentioned partial mapping also underlies the constraint that a game state $g$ has to be mapped to a move with $g$ as its initial game state. This way a strategy can only map a game state to moves that are possible at it. Furthermore we introduced the notion of consistency with a play. Given a player $p$ and their strategy $T_p$, that strategy is called consistent with a play $P$, iff at each game state $g$ of $P$ where $p$ made a move, that move is the same as $T_p(g)$.
+Colloquially we might say "The player $p$ followed the strategy $T_p$ in the play $P$". Thus we can say that following a strategy~$T_p$ means that the set of plays that can occur is restricted to the set of plays $T_p$ is consistent with. If and only if each of those plays is a winning play for player $p$, then the strategy $T_p$ is winning, because the opponent of the player $p$ is unable to make moves such that $p$ loses. Note that it is clearly impossible for both players to have a winning strategy with respect to the same game at the same time. If a player has a winning strategy, their opponent does not.
+\begin{corollary}
+At most one player has a winning strategy with respect to a semantic game of counterfactuals.
+\end{corollary}
+\begin{proposition}\label{thm:strategy_combination}
+If a winning strategy $T_p$ with respect to a game $\mathfrak{S}[\varphi,w,S]$ exists and a winning strategy $T'_p$ with respect to a game $\mathfrak{S}[\varphi',w',S]$ exists, then a winning strategy $T''_p$ with respect to both the games $\mathfrak{S}[\varphi,w,S]$ and $\mathfrak{S}[\varphi',w',S]$ exists.
+\end{proposition}
 \section{Termination and correctness}\label{sec:proofs}
+In this section we offer proofs that the semantic game of counterfactuals $\mathfrak{S}[\varphi,w,S]$ halts and correctly decides the truth of counterfactual formulas.
 \subsection{Termination proof}
 Let us show that the semantic game of counterfactuals $\mathfrak{S}[\varphi,w,S]=((\varphi ,w)_p, E, G, \rightarrowdoubletail{})$ ends. Whenever a player cannot make a move and is stuck, that player loses and the game ends. We show that at some point either a player becomes stuck or a player reaches a winning game state. We begin by showing that all games with a current counterfactual formula with formula height 1 end. And we follow up by showing that every resolution sequence for every operator reduces the formula height or ends the game. We define the height function for counterfactual formulas.
 \begin{definition}[Height function]
@@ -525,6 +628,7 @@ x,\text{ for }x\geq y\\
 y,\text{ for }x<y
 \end{cases}\]
 \end{definition}
+\newpage
 \begin{proof} We show that the games with formulas with formula height 1 end.
 \begin{itemize}
 \item Base Case $((\top,w)_p, E, G, \rightarrowdoubletail{})$:
@@ -562,7 +666,7 @@ We show that the formula height is reduced by all other resolution sequences.
 	\label{fig:neg_seq}
 \end{figure}
 $\rightarrowdoubletail{}$ contains a single move $((\neg\varphi',w)_p,(\varphi',w)_{\overline{p}})$ with $(\neg\varphi',w)_p$ as its first game state. The player $p$ cannot play any other move and reduces the formula height by 1, because $h(\neg\varphi') = h(\varphi') + 1$.
-
+\newpage
 \item Case $((\varphi'\vee\psi',w)_p, E, G, \rightarrowdoubletail{})$:\\
 \begin{figure}[H]
 	\centering
@@ -607,7 +711,7 @@ $\rightarrowdoubletail{}$ contains a single move $((\varphi'\wedge\psi',w)_p,(\v
 	\label{fig:poss_seq}
 \end{figure}
 $\rightarrowdoubletail{}$ contains a move of the form $((\Diamond\varphi',w)_p,(\varphi',w')_{p})$ with $(\Diamond\varphi',w)_p$ as its first game state for each world $w'\in W_w$. The player $p$ can choose to play one of those moves and reduces the formula height by 1, because $h(\Diamond\varphi') = h(\varphi') + 1$.
-
+\newpage
 \item Case $((\Box\varphi',w)_p, E, G, \rightarrowdoubletail{})$:\\
 \begin{figure}[H]
 	\centering
@@ -628,11 +732,11 @@ $\rightarrowdoubletail{}$ contains a single move $((\Box\varphi',w)_p,(\Box\varp
 	\centering
 	\begin{tikzpicture}[main/.style]
 	\node[main] (1) {$(\varphi'\Diamondright\psi',w)_p$};
-	\node[main] (2) [below=0.5cm of 1] {$(\varphi'\Diamondright\psi',w, w', r)_{\overline{p}}$};
+	\node[main] (2) [below=0.5cm of 1] {$(\varphi'\Diamondright\psi',w, w'\!, r)_{\overline{p}}$};
 	\node[main] (3) [below left=0.5cm and -1.5cm of 2] {$(\varphi'\wedge\psi', w')_{p}$};
 	\node[main] (4) [below right=0.5cm and -1.5cm of 2] {$(\neg\varphi', w^*)_{p}$};
 	
-	\node[main] (5) [below=0.5cm of 3] {$(\varphi'\wedge\psi', w', p)_{\overline{p}}$};
+	\node[main] (5) [below=0.5cm of 3] {$(\varphi'\wedge\psi', w'\!, p)_{\overline{p}}$};
 	\node[main] (6) [below left=0.5cm and -0.5cm of 5] {$(\varphi', w')_{p}$};
 	\node[main] (7) [below right=0.5cm and -0.5cm of 5] {$(\psi', w')_{p}$};
 	
@@ -640,7 +744,7 @@ $\rightarrowdoubletail{}$ contains a single move $((\Box\varphi',w)_p,(\Box\varp
 	
 	\draw[>>->] (1) -- (2) node[midway,sloped,right,rotate=90,scale=0.85] {\hspace{0.125cm}$[\smash{w\overset{r}{\leadsto}w'}]$};
 	\draw[>>->] (2) -- (3);
-	\draw[>>->] (2) -- (4) node[midway,right,scale=0.85] {\hspace{0.25cm}$[\smash{w\overset{r^*}{\leadsto}w^*,r^*<r}]$};
+	\draw[>>->] (2) -- (4) node[midway,right,scale=0.85] {\hspace{0.25cm}$[\smash{w\overset{r^*}{\leadsto}w^*\!,r^*<r}]$};
 	\draw[>>->] (3) -- (5);
 	\draw[>>->] (5) -- (6);
 	\draw[>>->] (5) -- (7);
@@ -650,17 +754,17 @@ $\rightarrowdoubletail{}$ contains a single move $((\Box\varphi',w)_p,(\Box\varp
 	\caption{Resolution of the counterfactual might}
 	\label{fig:might_seq}
 \end{figure}
-$\rightarrowdoubletail{}$ contains a move of the form $((\varphi'\Diamondright\psi',w)_p,(\varphi'\Diamondright\psi',w,w',r)_{\overline{p}})$ with the game state $(\varphi'\Diamondright\psi',w)_p$ as its first member for each world $w'\in W_w$, $r\in [0,\infty [$ and $\smash{w\overset{r}{\leadsto}w'}$. The player $p$ chooses to play one of those moves. Then $\rightarrowdoubletail{}$ contains a move of the form $((\varphi'\Diamondright\psi',w,w',r)_{\overline{p}},(\neg\varphi',w^*)_{p})$ with the game state $((\varphi'\Diamondright\psi',w,w',r)_{\overline{p}}$ as its first member for each $w^*\in W_{w,r}$ and also contains $((\varphi'\Diamondright\psi',w,w',r)_{\overline{p}},(\varphi'\wedge\psi',w')_{p})$.
+$\rightarrowdoubletail{}$ contains a move of the form $((\varphi'\Diamondright\psi',w)_p,(\varphi'\Diamondright\psi',w,w'\!,r)_{\overline{p}})$ with the game state $(\varphi'\Diamondright\psi',w)_p$ as its first member for each world $w'\in W_w$, $r\in [0,\infty [$ and $\smash{w\overset{r}{\leadsto}w'}$. The player $p$ chooses to play one of those moves. Then $\rightarrowdoubletail{}$ contains a move of the form $((\varphi'\Diamondright\psi',w,w'\!,r)_{\overline{p}},(\neg\varphi',w^*)_{p})$ with the game state $((\varphi'\Diamondright\psi',w,w'\!,r)_{\overline{p}}$ as its first member for each $w^*\in W_{w,r}$ and also contains $((\varphi'\Diamondright\psi',w,w'\!,r)_{\overline{p}},(\varphi'\wedge\psi',w')_{p})$.
 
 If the player $\overline{p}$ chooses and plays one of the former moves, the formula height is reduced by 1, since $h(\varphi'\Diamondright\psi') = max(h(\varphi'),h(\psi')) + 1$. If the player $\overline{p}$ chooses and plays the latter and the player $p$ either plays resolves the resulting conjunction afterwards, then the formula height is reduced by 1, because $h(\varphi'\Diamondright\psi') = max(h(\varphi'),h(\psi')) + 1$.
-
+\newpage
 \item Case $((\varphi'\boxright\psi',w)_p, E, G, \rightarrowdoubletail{})$:\\
 \begin{figure}[H]
 	\centering
 	\begin{tikzpicture}[main/.style]
 	\node[main] (0) {$(\varphi'\boxright\psi',w)_p$};
 	\node[main] (1) [below=0.5cm of 0] {$(\varphi'\boxright\psi',w, p)_{\overline{p}}$};
-	\node[main] (2) [below=0.5cm of 1] {$(\varphi'\boxright\psi',w, w', r)_{p}$};
+	\node[main] (2) [below=0.5cm of 1] {$(\varphi'\boxright\psi',w, w'\!, r)_{p}$};
 	\node[main] (3) [below left=0.5cm and -1.5cm of 2] {$(\neg\varphi'\vee\psi', w')_{p}$};
 	\node[main] (4) [below right=0.5cm and -1.5cm of 2] {$(\varphi', w^*)_{p}$};
 	
@@ -671,7 +775,7 @@ If the player $\overline{p}$ chooses and plays one of the former moves, the form
 	\draw[>>->] (0) -- (1);
 	\draw[>>->] (1) -- (2) node[midway,sloped,right,rotate=90,scale=0.85] {\hspace{0.125cm}$[\smash{w\overset{r}{\leadsto}w'}]$};
 	\draw[>>->] (2) -- (3);
-	\draw[>>->] (2) -- (4) node[midway,right,scale=0.85] {\hspace{0.25cm}$[\smash{w\overset{r^*}{\leadsto}w^*,r^*<r}]$};
+	\draw[>>->] (2) -- (4) node[midway,right,scale=0.85] {\hspace{0.25cm}$[\smash{w\overset{r^*}{\leadsto}w^*\!,r^*<r}]$};
 	\draw[>>->] (3) -- (5);
 	\draw[>>->] (3) -- (6);
 	\draw[>>->] (5) -- (7);	
@@ -680,11 +784,14 @@ If the player $\overline{p}$ chooses and plays one of the former moves, the form
 	\caption{Resolution of the counterfactual would}
 	\label{fig:would_seq}
 \end{figure}
-$\rightarrowdoubletail{}$ contains a single move $((\varphi'\boxright\psi',w)_p,(\varphi'\boxright\psi',w,p)_{\overline{p}})$ with $(\varphi'\boxright\psi',w)_p$ as its first game state. The player $p$ cannot play any other move and does so. $\rightarrowdoubletail{}$ contains a move of the form $((\varphi'\boxright\psi',w,p)_{\overline{p}},(\varphi'\boxright\psi',w,w',r)_{p})$ with the game state $(\varphi'\boxright\psi',w,p)_{\overline{p}}$ as its first member for each world $w'\in W_w$, $r\in [0,\infty [$ and $\smash{w\overset{r}{\leadsto}w'}$. The player $\overline{p}$ chooses to play one of those moves. Then $\rightarrowdoubletail{}$ contains a move of the form $((\varphi'\boxright\psi',w,w',r)_{p},(\varphi',w^*)_{p})$ with the game state $((\varphi'\boxright\psi',w,w',r)_{p}$ as its first member for each $w^*\in W_{w,r}$ and contains the move $((\varphi'\boxright\psi',w,w',r)_{p},(\neg\varphi'\vee\psi',w')_{p})$. If the player $p$ chooses and plays one of the former moves, the formula height is reduced by 1, since $h(\varphi'\boxright\psi') = max(h(\varphi'),h(\psi')) + 1$. If the player $\overline{p}$ chooses and plays the latter and subsequently resolves the resulting disjunction, then the formula height of the formula is reduced by 1, because $h(\varphi'\boxright\psi') = max(h(\varphi'),h(\psi')) + 1$.
+$\rightarrowdoubletail{}$ contains a single move $((\varphi'\boxright\psi',w)_p,(\varphi'\boxright\psi',w,p)_{\overline{p}})$ with $(\varphi'\boxright\psi',w)_p$ as its first game state. The player $p$ cannot play any other move and does so. $\rightarrowdoubletail{}$ contains a move of the form $((\varphi'\boxright\psi',w,p)_{\overline{p}},(\varphi'\boxright\psi',w,w'\!,r)_{p})$ with the game state $(\varphi'\boxright\psi',w,p)_{\overline{p}}$ as its first member for each world $w'\in W_w$, $r\in [0,\infty [$ and $\smash{w\overset{r}{\leadsto}w'}$. The player $\overline{p}$ chooses to play one of those moves. Then $\rightarrowdoubletail{}$ contains a move of the form $((\varphi'\boxright\psi',w,w'\!,r)_{p},(\varphi',w^*)_{p})$ with the game state $((\varphi'\boxright\psi',w,w'\!,r)_{p}$ as its first member for each $w^*\in W_{w,r}$ and contains the move $((\varphi'\boxright\psi',w,w'\!,r)_{p},(\neg\varphi'\vee\psi',w')_{p})$. If the player $p$ chooses and plays one of the former moves, the formula height is reduced by 1, since $h(\varphi'\boxright\psi') = max(h(\varphi'),h(\psi')) + 1$. If the player $\overline{p}$ chooses and plays the latter and subsequently resolves the resulting disjunction, then the formula height of the formula is reduced by 1, because $h(\varphi'\boxright\psi') = max(h(\varphi'),h(\psi')) + 1$.
 \end{itemize}
 Considering that all games with a counterfactual formula of formula height 1 end, every counterfactual formula has a formula height greater than 0 and every resolution sequence of a counterfactual operator reduces the height of the current formula of a game by 1, all semantic games end.
 \end{proof}
-Since a semantic game can only result in a victory for for either the defender or attacker, the semantic game of counterfactuals is decided. If every game ends and the game results in the victory of one player, then every game is won by one player.
+Since the semantic game results in a victory for for either the defender or~attacker and every semantic game of counterfactuals $\mathfrak{S}[\varphi,w,S]$ ends, every game is won by one player. This means that the semantic game of counterfactuals under the limit assumption is decided.
+\begin{lemma}
+Every game of counterfactuals $\mathfrak{S}[\varphi,w,S]$ is won by exactly one player.
+\end{lemma}
 
 \subsection{Correctness proof}
 We will show through induction that the semantic game of counterfactuals is correct. More precisely, we will show that for each formula $\varphi$, world $w$ and counterfactual Kripke structure $S=(W,\leadsto ,F)$, the defending player has a winning strategy in the corresponding semantic game $\mathfrak{S}[\varphi ,w,S]$, if and only if $S,w\vDash\varphi$. Because the defender always begins a game $\mathfrak{S}[\varphi ,w,S]$ as the active player we will show that the player $p$ wins the game $\mathfrak{S}_p[\varphi ,w,S]$, iff $S,w\vDash\varphi$.
@@ -714,33 +821,33 @@ $S,w\vDash\varphi'\vee\psi'$ is true, iff $(S,w\vDash\varphi'$ or $S,w\vDash\psi
 $S,w\vDash\varphi'\wedge\psi'$ is true, iff $(S,w\vDash\varphi'$ and $S,w\vDash\psi')$. And the corresponding game is $\mathfrak{S}_p[\varphi'\wedge\psi',w,S]=((\varphi'\wedge\psi' ,w)_p, E, G, \rightarrowdoubletail{})$. Every play of $\mathfrak{S}_p[\varphi'\wedge\psi',w,S]$ begins with either one of the following partial plays $(\varphi'\wedge\psi' ,w)_p(\varphi'\wedge\psi' ,w,p)_{\overline{p}}(\varphi' ,w)_p$ and $(\varphi'\wedge\psi' ,w)_p(\varphi'\wedge\psi' ,w,p)_{\overline{p}}(\varphi' ,w)_p$. Given the induction hypothesis, the player $p$ has a winning strategy for the game $\mathfrak{S}_{p}[\varphi' ,w,S]$, iff $S,w\vDash\varphi'$; and further has a winning strategy for the game $\mathfrak{S}_{p}[\psi' ,w,S]$, iff $S,w\vDash\psi'$. Suppose $S,w\nvDash\varphi'$, then the player $p$ loses the game $\mathfrak{S}_{p}[\varphi' ,w,S]$. In that case, any strategy that maps $(\varphi'\wedge\psi',w,p)_{\overline{p}}$ to $((\varphi'\wedge\psi' ,w,p)_{\overline{p}},(\varphi' ,w)_p)$ is a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\wedge\psi',w,S]$. Analogously suppose $S,w\nvDash\psi'$, then the player $p$ loses the game $\mathfrak{S}_{p}[\psi' ,w,S]$. In that case, any strategy that maps $(\varphi'\wedge\psi',w,p)_{\overline{p}}$ to $((\varphi'\wedge\psi' ,w,p)_{\overline{p}},(\psi' ,w)_p)$ is a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\wedge\psi',w,S]$. Lastly suppose $S,w\vDash\varphi'$ and $S,w\vDash\psi'$, then a winning strategy exists for the player $p$ and each of the games $\mathfrak{S}_{p}[\varphi' ,w,S]$ and $\mathfrak{S}_{p}[\psi' ,w,S]$. Because the player $\overline{p}$ cannot make any move that does not transition into one of those two games, no winning strategy exists for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\wedge\psi',w,S]$.
 
 \item Induction Step $\varphi=\Diamond\varphi'$:\\
-$S,w\vDash\Diamond\varphi'$ is true, iff a world $w'\in W_w$ exists, such that $S,w\vDash\varphi'$. And the semantic game is $\mathfrak{S}_p[\Diamond\varphi',w,S]=((\Diamond\varphi' ,w)_p, E, G, \rightarrowdoubletail{})$. Every play of $\mathfrak{S}_p[\Diamond\varphi',w,S]$ begins with a partial play of the form $(\Diamond\varphi' ,w)_p(\varphi' ,w')_p$ where $w'\in W_w$ ranges over the set of worlds $W_w$ that are accessible from $w$ (see definition \ref{def:limit_ass_set_moves} and figure \ref{fig:moves} move \ref{eq:poss_move}). Suppose there is an accessible world $w'\in W_w$, such that $S,w'\vDash\varphi'$. Then given the induction hypothesis, it is the case that the player~$p$ has a winning strategy for the corresponding game $\mathfrak{S}_{p}[\varphi' ,w',S]$. And if that strategy maps $(\Diamond\varphi' ,w)_p$ to $((\Diamond\varphi' ,w)_p,(\varphi' ,w')_p)$, it is also a winning strategy for the player $p$ and game $\mathfrak{S}_p[\Diamond\varphi',w,S]$. Conversely suppose there is no accessible world $w'\in W_w$, such that $S,w'\vDash\varphi'$. Then given the induction hypothesis, the player~$p$ does not have a winning strategy for any game of the form $\mathfrak{S}_{p}[\varphi' ,w',S]$ where $w'\in W_w$. But because every play of the game $\mathfrak{S}_p[\Diamond\varphi',w,S]$ begins with a partial play that transitions into a game of the form $\mathfrak{S}_{p}[\varphi' ,w',S]$ where $w'\in W_w$, the player $p$ loses the game $\mathfrak{S}_p[\Diamond\varphi',w,S]$.
+$S,w\vDash\Diamond\varphi'$ is true, iff a world $w'\in W_w$ exists, such that $S,w\vDash\varphi'$. And the semantic game is $\mathfrak{S}_p[\Diamond\varphi',w,S]=((\Diamond\varphi' ,w)_p, E, G, \rightarrowdoubletail{})$. Every play of $\mathfrak{S}_p[\Diamond\varphi',w,S]$ begins with a partial play of the form $(\Diamond\varphi' ,w)_p(\varphi' ,w')_p$ where $w'\in W_w$ ranges over the set of worlds $W_w$ that are accessible from $w$ (see definition \ref{def:limit_ass_set_moves} and figure \ref{fig:moves} move \ref{eq:poss_move}). Suppose there is an accessible world $w'\in W_w$, such that $S,w'\vDash\varphi'$. Then given the induction hypothesis, it is the case that the player~$p$ has a winning strategy for the corresponding game $\mathfrak{S}_{p}[\varphi' ,w'\!,S]$. And if that strategy maps $(\Diamond\varphi' ,w)_p$ to $((\Diamond\varphi' ,w)_p,(\varphi' ,w')_p)$, it is also a winning strategy for the player $p$ and game $\mathfrak{S}_p[\Diamond\varphi',w,S]$. Conversely suppose there is no accessible world $w'\in W_w$, such that $S,w'\vDash\varphi'$. Then given the induction hypothesis, the player~$p$ does not have a winning strategy for any game of the form $\mathfrak{S}_{p}[\varphi' ,w'\!,S]$ where $w'\in W_w$. But because every play of the game $\mathfrak{S}_p[\Diamond\varphi',w,S]$ begins with a partial play that transitions into a game of the form $\mathfrak{S}_{p}[\varphi' ,w'\!,S]$ where $w'\in W_w$, the player $p$ loses the game $\mathfrak{S}_p[\Diamond\varphi',w,S]$.
 
 \item Induction Step $\varphi=\Box\varphi'$:\\
-$S,w\vDash\Box\varphi'$ is true, iff for every world $w'\in W_w$, it is true that $S,w\vDash\varphi'$. And the semantic game is $\mathfrak{S}_p[\Box\varphi',w,S]=((\Box\varphi' ,w)_p, E, G, \rightarrowdoubletail{})$. Every play of $\mathfrak{S}_p[\Box\varphi',w,S]$ begins with a partial play of the form $(\Box\varphi' ,w)_p(\Box\varphi' ,w,p)_{\overline{p}}(\varphi' ,w')_p$ where $w'\in W_w$ ranges over the set of worlds $W_w$ that are accessible from $w$ (see fig.\ref{fig:moves} moves \ref{eq:neccsw_move},\ref{eq:necc_move}). Suppose that there is an accessible world $w'\in W_w$, such that $S,w'\nvDash\varphi'$. Then given the induction hypothesis, the player $\overline{p}$ has a winning strategy for the game $\mathfrak{S}_p[\varphi',w',S]$. And if that strategy maps $(\Box\varphi' ,w,p)_{\overline{p}}$ to $((\Box\varphi' ,w,p)_{\overline{p}},(\varphi' ,w')_p)$, it is also a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\Box\varphi',w,S]$. Conversely suppose that there is no accessible world $w'\in W_w$, such that $S,w'\nvDash\varphi'$. Then given the induction hypothesis, the player~$\overline{p}$ does not have a winning strategy for any game of the form $\mathfrak{S}_{p}[\varphi' ,w',S]$ where $w'\in W_w$. But because every play of the game $\mathfrak{S}_p[\Box\varphi',w,S]$ begins with a partial play that transitions into a game of the form $\mathfrak{S}_{p}[\varphi' ,w',S]$ where $w'\in W_w$, the player $\overline{p}$ loses the game $\mathfrak{S}_p[\Box\varphi',w,S]$ and $p$ wins.
+$S,w\vDash\Box\varphi'$ is true, iff for every world $w'\in W_w$, it is true that $S,w\vDash\varphi'$. And the semantic game is $\mathfrak{S}_p[\Box\varphi',w,S]=((\Box\varphi' ,w)_p, E, G, \rightarrowdoubletail{})$. Every play of $\mathfrak{S}_p[\Box\varphi',w,S]$ begins with a partial play of the form $(\Box\varphi' ,w)_p(\Box\varphi' ,w,p)_{\overline{p}}(\varphi' ,w')_p$ where $w'\in W_w$ ranges over the set of worlds $W_w$ that are accessible from $w$ (see fig.\ref{fig:moves} moves \ref{eq:neccsw_move},\ref{eq:necc_move}). Suppose that there is an accessible world $w'\in W_w$, such that $S,w'\nvDash\varphi'$. Then given the induction hypothesis, the player $\overline{p}$ has a winning strategy for the game $\mathfrak{S}_p[\varphi',w'\!,S]$. And if that strategy maps $(\Box\varphi' ,w,p)_{\overline{p}}$ to $((\Box\varphi' ,w,p)_{\overline{p}},(\varphi' ,w')_p)$, it is also a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\Box\varphi',w,S]$. Conversely suppose that there is no accessible world $w'\in W_w$, such that $S,w'\nvDash\varphi'$. Then given the induction hypothesis, the player~$\overline{p}$ does not have a winning strategy for any game of the form $\mathfrak{S}_{p}[\varphi' ,w'\!,S]$ where $w'\in W_w$. But because every play of the game $\mathfrak{S}_p[\Box\varphi',w,S]$ begins with a partial play that transitions into a game of the form $\mathfrak{S}_{p}[\varphi' ,w'\!,S]$ where $w'\in W_w$, the player $\overline{p}$ loses the game $\mathfrak{S}_p[\Box\varphi',w,S]$ and $p$ wins.
 
 \item Induction Step $\varphi=\varphi'\Diamondright\psi'$:\\
-$S,w\vDash\varphi'\Diamondright\psi'$ is true, iff both a world $w'\in W_w$ with $S,w'\vDash\varphi'$ exists and for every world $w''$ and $r''$ for which $\smash{w\overset{r''}{\leadsto}w''}$ and $S,w'' \vDash \varphi\wedge\neg\psi$ are true, a world $w^*\in W_{w,r''}^\leq$ with $S,w^* \vDash \varphi\wedge\psi$ exists. And the corresponding semantic game is $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]=((\varphi'\Diamondright\psi' ,w)_p, E, G, \rightarrowdoubletail{})$. Every play of the game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$ begins with one of the two forms of partial plays $(\varphi'\Diamondright\psi' ,w)_p(\varphi'\Diamondright\psi' ,w,w',r)_{\overline{p}}(\varphi'\wedge\psi' ,w')_p$ and $(\varphi'\Diamondright\psi' ,w)_p(\varphi'\Diamondright\psi' ,w,w',r)_{\overline{p}}(\neg\varphi' ,w^*)_p$ where $w'\in W$; $w^*\in W_{w,r}^<$; $r\in [0,\infty [$ and $\smash{w\overset{r}{\leadsto}w'}$ (see figure \ref{fig:limit_ass_moves} moves \ref{eq:limit_ass_mightsp_move},\ref{eq:limit_ass_mightde_move},\ref{eq:limit_ass_mightcl_move}).
+$S,w\vDash\varphi'\Diamondright\psi'$ is true, iff both a world $w'\in W_w$ with $S,w'\vDash\varphi'$ exists and for every world $w''$ and $r''$ for which $\smash{w\overset{r''}{\leadsto}w''}$ and $S,w'' \vDash \varphi\wedge\neg\psi$ are true, a world $w^*\in W_{w,r''}^\leq$ with $S,w^* \vDash \varphi\wedge\psi$ exists. And the corresponding semantic game is $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]=((\varphi'\Diamondright\psi' ,w)_p, E, G, \rightarrowdoubletail{})$. Every play of the game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$ begins with one of the two forms of partial plays $(\varphi'\Diamondright\psi' ,w)_p(\varphi'\Diamondright\psi' ,w,w'\!,r)_{\overline{p}}(\varphi'\wedge\psi' ,w')_p$ and $(\varphi'\Diamondright\psi' ,w)_p(\varphi'\Diamondright\psi' ,w,w'\!,r)_{\overline{p}}(\neg\varphi' ,w^*)_p$ where $w'\in W$; $w^*\in W_{w,r}^<$; $r\in [0,\infty [$ and $\smash{w\overset{r}{\leadsto}w'}$ (see figure \ref{fig:limit_ass_moves} moves \ref{eq:limit_ass_mightsp_move},\ref{eq:limit_ass_mightde_move},\ref{eq:limit_ass_mightcl_move}).
 
-Suppose no $\varphi'$-world is accessible from $w$. Then $S,w'\nvDash\varphi'$ for each world $w'\in W_w$. And given the induction hypothesis, the player $\overline{p}$ has a winning strategy for the game $\mathfrak{S}_p[\varphi',w',S]$. That strategy is also a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$, if it maps $(\varphi'\Diamondright\psi' ,w,w',r)_{\overline{p}}$ to $((\varphi'\Diamondright\psi' ,w,w',r)_{\overline{p}}, (\varphi'\wedge\psi' ,w')_p)$ and it maps $(\varphi'\wedge\psi' ,w,p)_{\overline{p}}$ to $((\varphi'\wedge\psi' ,w,p)_{\overline{p}}, (\varphi' ,w')_p)$. It follows that the player $\overline{p}$ wins the game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$.
+Suppose no $\varphi'$-world is accessible from $w$. Then $S,w'\nvDash\varphi'$ for each world $w'\in W_w$. And given the induction hypothesis, the player $\overline{p}$ has a winning strategy for the game $\mathfrak{S}_p[\varphi',w'\!,S]$. That strategy is also a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$, if it maps $(\varphi'\Diamondright\psi' ,w,w'\!,r)_{\overline{p}}$ to $((\varphi'\Diamondright\psi' ,w,w'\!,r)_{\overline{p}}, (\varphi'\wedge\psi' ,w')_p)$ and it maps $(\varphi'\wedge\psi' ,w,p)_{\overline{p}}$ to $((\varphi'\wedge\psi' ,w,p)_{\overline{p}}, (\varphi' ,w')_p)$. It follows that the player $\overline{p}$ wins the game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$.
 
 Now instead suppose that there exists at least one $\varphi'$-world that is accessible from~$w$. Applying the limit assumption, it follows that a $\varphi'$-world accessible from $w$ exists, such that no other $\varphi'$-world accessible from $w$ is more similar to $w$ than it. And if and only if such a world $w'\in W_w$ and an $r\in [0,\infty [$ with $\smash{w\overset{r}{\leadsto}w'}$ and $S,w'\vDash\varphi'\wedge\psi'$~exist, such that no world $w^*\in W_{w,r}^<$ with $S,w^*\vDash\varphi'$ exists, then $w'$ is a world, such that for every world $w''\in W_w$ and $r''\in [0,\infty [$ with $\smash{w\overset{r''}{\leadsto}w''}$ and $S,w''\vDash\varphi'\wedge\neg\psi'$, it holds that $r\leq r''$ and $\smash{w\overset{r}{\leadsto}w'}$ and $S,w'\vDash\varphi'\wedge\psi'$. Which means that whenever a ($\varphi'\wedge\psi'$)-world $w'$ accessible from $w$ exists, such that there is no $\varphi'$-world $w''$ accessible from $w$ that is more similar to the world $w$ than $w'$, it is true that $S,w\vDash\varphi'\Diamondright\psi'$. We thus show that the player $p$ wins the game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$ whenever there is a ($\varphi'\wedge\psi'$)-world accessible from $w$, such that there is no $\varphi'$-world accessible from $w$ that is more similar to $w$ than it.
 
-Suppose that a world $w'\in W$ and an $r\in [0,\infty [$ with $\smash{w\overset{r}{\leadsto}w'}$ and $S,w'\vDash\varphi'\wedge\psi'$~exist, such that no world $w^*\in W_{w,r}^<$ with $S,w^*\vDash\varphi'$ exists. Given the induction hypothesis, the player $p$ has a winning strategy for the game $\mathfrak{S}_p[\varphi'\wedge\psi',w',S]$. And since there is no $\varphi'$-world that is more similar to $w$ than $w'$, the player $p$ also has a winning strategy for every game of the form $\mathfrak{S}_p[\neg\varphi',w^*,S]$ where $w^*\in W_{w,r}^<$. We can define a strategy in such a way---picking and choosing the mappings from the previously mentioned winning strategies---that it is a winning strategy for the player $p$ for both of the aforementioned forms of games. If that strategy also maps $(\varphi'\Diamondright\psi' ,w)_{p}$ to $((\varphi'\Diamondright\psi' ,w)_{p}, (\varphi'\Diamondright\psi' ,w,w',r)_{\overline{p}})$, then it is a winning strategy for the player $p$ and game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$.
+Suppose that a world $w'\in W$ and an $r\in [0,\infty [$ with $\smash{w\overset{r}{\leadsto}w'}$ and $S,w'\vDash\varphi'\wedge\psi'$~exist, such that no world $w^*\in W_{w,r}^<$ with $S,w^*\vDash\varphi'$ exists. Given the induction hypothesis, the player $p$ has a winning strategy for the game $\mathfrak{S}_p[\varphi'\wedge\psi',w'\!,S]$. And since there is no $\varphi'$-world that is more similar to $w$ than $w'$, the player $p$ also has a winning strategy for every game of the form $\mathfrak{S}_p[\neg\varphi',w^*\!,S]$ where $w^*\in W_{w,r}^<$. We can define a strategy in such a way---picking and choosing the mappings from the previously mentioned winning strategies---that it is a winning strategy for the player $p$ for both of the aforementioned forms of games (see proposition \ref{thm:strategy_combination}). If that strategy also maps $(\varphi'\Diamondright\psi' ,w)_{p}$ to $((\varphi'\Diamondright\psi' ,w)_{p}, (\varphi'\Diamondright\psi' ,w,w'\!,r)_{\overline{p}})$, then it is a winning strategy for the player $p$ and game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$.
 
-Finally suppose that a world $w^*\in W$ and $r^*\in [0,\infty [$ with $\smash{w\overset{r^*}{\leadsto}w^*}$ and $S,w^*\vDash\varphi'$ exist, such that no world $w'\in W_{w,r^*}^\leq$ with $S,w'\vDash\varphi'\wedge\psi'$ exists. Then, given the induction hypothesis, it holds for each world $w'\in W_w$ and $r\in [0,\infty [$ with $\smash{w\overset{r}{\leadsto}w'}$ that the player~$\overline{p}$ has a winning strategy for either the game $\mathfrak{S}_p[\varphi'\wedge\psi',w',S]$ or $\mathfrak{S}_p[\neg\varphi',w^*,S]$. Again we can construct a strategy by combining all of those winning strategies' essential mappings, such that the constructed strategy is a winning strategy with respect to each game that one of the aforementioned strategies is a winning strategy of. If that strategy then maps $(\varphi'\Diamondright\psi', w, w', r)_{\overline{p}}$ to $((\varphi'\Diamondright\psi', w, w', r)_{\overline{p}}, (\varphi'\wedge\psi', w')_p)$ iff the constructed strategy contains a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\wedge\psi',w',S]$; and otherwise maps $(\varphi'\Diamondright\psi', w, w', r)_{\overline{p}}$ to $((\varphi'\Diamondright\psi', w, w', r)_{\overline{p}}, (\neg\varphi', w^*)_p)$ for each $w'$, then it is also a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$.
-
+Finally suppose that a world $w^*\in W$ and $r^*\in [0,\infty [$ with $\smash{w\overset{r^*}{\leadsto}w^*}$ and $S,w^*\vDash\varphi'$ exist, such that no world $w'\in W_{w,r^*}^\leq$ with $S,w'\vDash\varphi'\wedge\psi'$ exists. Then, given the induction hypothesis, it holds for each world $w'\in W_w$ and $r\in [0,\infty [$ with $\smash{w\overset{r}{\leadsto}w'}$ that the player~$\overline{p}$ has a winning strategy for either the game $\mathfrak{S}_p[\varphi'\wedge\psi',w'\!,S]$ or $\mathfrak{S}_p[\neg\varphi',w^*\!,S]$. Again we can construct a strategy by combining all of those winning strategies' essential mappings, such that the constructed strategy is a winning strategy with respect to each game that one of the aforementioned strategies is a winning strategy of (see proposition \ref{thm:strategy_combination}). If that strategy then maps the game state $(\varphi'\Diamondright\psi', w, w'\!, r)_{\overline{p}}$ to $((\varphi'\Diamondright\psi', w, w'\!, r)_{\overline{p}}, (\varphi'\wedge\psi', w')_p)$ iff the constructed strategy contains a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\wedge\psi',w'\!,S]$; and otherwise maps the game state $(\varphi'\Diamondright\psi', w, w'\!, r)_{\overline{p}}$ to $((\varphi'\Diamondright\psi', w, w'\!, r)_{\overline{p}}, (\neg\varphi', w^*)_p)$ for each $w'$, then it is also a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\Diamondright\psi',w,S]$.
+\newpage
 \item Induction Step $\varphi=\varphi'\boxright\psi'$:\\
-$S,w\vDash\varphi'\boxright\psi'$, iff either no world $w'\in W_w$ with $S,w'\vDash\varphi'$ exists or a world~$w'$ and an $r$ exist, such that $\smash{w\overset{r}{\leadsto} w'}$ and $S,w'\vDash\varphi'$ and for each world $w^*\in W_{w,r}^\leq$ it holds that $S,w^*\vDash\neg\varphi'\vee\psi'$. And the game is $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]=((\varphi'\boxright\psi' ,w)_p, E, G, \rightarrowdoubletail{})$. Every play of the semantic game $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]$ begins with one of the two forms of partial plays $(\varphi'\boxright\psi' ,w)_p(\varphi'\boxright\psi' ,w,p)_{\overline{p}}(\varphi'\boxright\psi' ,w,w',r)_{p}(\neg\varphi'\vee\psi' ,w')_p$ and $(\varphi'\boxright\psi' ,w)_p(\varphi'\boxright\psi' ,w,p)_{\overline{p}}(\varphi'\boxright\psi' ,w,w',r)_{p}(\varphi' ,w^*)_p$ where $w'\in W$; $w^*\in W_{w,r}^<$; $r\in [0,\infty [$ and $\smash{w\overset{r}{\leadsto}w'}$ (see figure \ref{fig:limit_ass_moves} moves \ref{eq:limit_ass_wouldsw_move},\ref{eq:limit_ass_wouldsp_move},\ref{eq:limit_ass_wouldde_move},\ref{eq:limit_ass_wouldcl_move}).
+$S,w\vDash\varphi'\boxright\psi'$, iff either no world $w'\in W_w$ with $S,w'\vDash\varphi'$ exists or a world~$w'$ and an $r$ exist, such that $\smash{w\overset{r}{\leadsto} w'}$ and $S,w'\vDash\varphi'$ and for each world $w^*\in W_{w,r}^\leq$ it holds that $S,w^*\vDash\neg\varphi'\vee\psi'$. And the game is $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]=((\varphi'\boxright\psi' ,w)_p, E, G, \rightarrowdoubletail{})$. Every play of the semantic game $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]$ begins with one of the two forms of partial plays $(\varphi'\boxright\psi' ,w)_p(\varphi'\boxright\psi' ,w,p)_{\overline{p}}(\varphi'\boxright\psi' ,w,w'\!,r)_{p}(\neg\varphi'\vee\psi' ,w')_p$ and $(\varphi'\boxright\psi' ,w)_p(\varphi'\boxright\psi' ,w,p)_{\overline{p}}(\varphi'\boxright\psi' ,w,w'\!,r)_{p}(\varphi' ,w^*)_p$ where $w'\in W$; $w^*\in W_{w,r}^<$; $r\in [0,\infty [$ and $\smash{w\overset{r}{\leadsto}w'}$ (see figure \ref{fig:limit_ass_moves} moves \ref{eq:limit_ass_wouldsw_move},\ref{eq:limit_ass_wouldsp_move},\ref{eq:limit_ass_wouldde_move},\ref{eq:limit_ass_wouldcl_move}).
 
-Suppose no $\varphi'$-world is accessible from $w$. Then $S,w'\nvDash\varphi'$ for each world $w'\in W_w$. And given the induction hypothesis, the player $p$ has a winning strategy each game $\mathfrak{S}_{\overline{p}}[\varphi',w',S]$ with $w'\in W_w$. It follows that the player $p$ also has a winning strategy for each game $\mathfrak{S}_{p}[\neg\varphi',w',S]$ with $w'\in W_w$ and moreover has a winning strategy for each game $\mathfrak{S}_{p}[\neg\varphi'\vee\psi',w',S]$ with $w'\in W_w$. Those strategies can in turn be combined into one strategy that is a winning strategy for the player $p$ and every game of the form $\mathfrak{S}_{p}[\neg\varphi'\vee\psi',w',S]$ with $w'\in W_w$. If that strategy also maps every game state of the form $(\varphi'\boxright\psi' ,w,w',r)_{p}$ with $w'\in W_w$; $r\in [0,\infty [$ and $\smash{w\overset{r}{\leadsto}w'}$ to $((\varphi'\boxright\psi' ,w,w',r)_{p},(\neg\varphi'\vee\psi' ,w')_p)$, then it also a winning strategy for the player $p$ and game $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]$.
+Suppose no $\varphi'$-world is accessible from $w$. Then $S,w'\nvDash\varphi'$ for each world $w'\in W_w$. And given the induction hypothesis, the player $p$ has a winning strategy each game $\mathfrak{S}_{\overline{p}}[\varphi',w'\!,S]$ with $w'\in W_w$. It follows that the player $p$ also has a winning strategy for each game $\mathfrak{S}_{p}[\neg\varphi',w'\!,S]$ with $w'\in W_w$ and moreover has a winning strategy for each game $\mathfrak{S}_{p}[\neg\varphi'\vee\psi',w'\!,S]$ with $w'\in W_w$. Those strategies can in turn be combined into one strategy that is a winning strategy for the player $p$ and every game of the form $\mathfrak{S}_{p}[\neg\varphi'\vee\psi',w'\!,S]$ with $w'\in W_w$ (see proposition \ref{thm:strategy_combination}). If that strategy also maps every game state of the form $(\varphi'\boxright\psi' ,w,w'\!,r)_{p}$ with $w'\in W_w$; $r\in [0,\infty [$ and $\smash{w\overset{r}{\leadsto}w'}$ to $((\varphi'\boxright\psi' ,w,w'\!,r)_{p},(\neg\varphi'\vee\psi' ,w')_p)$, then it also a winning strategy for the player $p$ and game $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]$.
 
 Now instead suppose that there exists at least one $\varphi'$-world that is accessible from~$w$. Applying the limit assumption, it follows that a $\varphi'$-world accessible from $w$ exists, such that no other $\varphi'$-world accessible from $w$ is more similar to $w$ than it. And if and only if it is the case that a $w'\in W$ and an $r\in [0,\infty [$ with $\smash{w\overset{r}{\leadsto}w'}$ and $S,w'\vDash\varphi'\wedge\neg\psi'$~exist, such that no world $w^*\in W_{w,r}^<$ with $S,w^*\vDash\varphi'\wedge\psi'$ exists, then it holds that no world $w''\in W_w$ and $r''\in [0,\infty [$ with $\smash{w\overset{r''}{\leadsto} w''}$ and $S,w''\vDash\varphi'$ exist, such that for each world $w^*\in W_{w,r}^\leq$ it holds that $S,w^*\vDash\neg\varphi'\vee\psi'$. Which means that whenever a ($\varphi'\wedge\neg\psi'$)-world $w'$ accessible from $w$ exists, such that there is no $\varphi'$-world $w^*$ accessible from $w$ that is more similar to the world $w$ than $w'$, it is true that $S,w\nvDash\varphi'\boxright\psi'$. We thus show that the player $p$ wins the game $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]$ whenever there is no ($\varphi'\wedge\neg\psi'$)-world accessible from $w$, such that there is no $\varphi'$-world accessible from $w$ that is more similar to $w$ than it.
 
-Suppose that a world $w^*\in W_w$ and an $r^*\in [0,\infty [$ with $\smash{w\overset{r^*}{\leadsto}w^*}$ and $S,w^*\vDash\varphi'$ exist, such that no world $w'\in W_{w,r^*}^\leq$ with $S,w'\vDash\varphi'\wedge\neg\psi'$ exists. Then $w^*\vDash\varphi'\wedge\psi'$ and each world at least as similar to $w$ as $w^*$ is also a $(\neg\varphi'\vee\psi')$-world. Given the induction hypothesis, the player $p$ has a winning strategy for the game $\mathfrak{S}_p[\varphi'\wedge\psi',w^*,S]$. It follows that the player $p$ also has a winning strategy for the game $\mathfrak{S}_{p}[\psi',w^*,S]$ and moreover has a winning strategy for $\mathfrak{S}_{p}[\neg\varphi'\vee\psi',w^*,S]$. Given the induction hypothesis, it also holds that the player $p$ has a winning strategy for the game $\mathfrak{S}_p[\varphi',w^*,S]$. We can combine the latter two strategies into one strategy that is a winning strategy with respect to both the games $\mathfrak{S}_{p}[\neg\varphi'\vee\psi',w^*,S]$ and $\mathfrak{S}_p[\varphi',w^*,S]$. If that strategy also maps every game state of the form $(\varphi'\boxright\psi',w,w',r)_{p}$ with $w'\in W\setminus{}\{w^*\}$; $r\in [0, \infty [$ and $\smash{w\overset{r}{\leadsto}w'}$ to $((\varphi'\boxright\psi',w,w',r)_{p}, (\varphi',w^*)_{p})$; and maps the game state $(\varphi'\boxright\psi',w,w^*,r^*)_{p}$ to $((\varphi'\boxright\psi',w,w^*,r^*)_{p},(\neg\varphi'\vee\psi',w^*)_{p})$, it is a winning strategy for the player $p$ and game $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]$.
+Suppose that a world $w^*\in W_w$ and an $r^*\in [0,\infty [$ with $\smash{w\overset{r^*}{\leadsto}w^*}$ and $S,w^*\vDash\varphi'$ exist, such that no world $w'\in W_{w,r^*}^\leq$ with $S,w'\vDash\varphi'\wedge\neg\psi'$ exists. Then $w^*\vDash\varphi'\wedge\psi'$ and each world at least as similar to $w$ as $w^*$ is also a $(\neg\varphi'\vee\psi')$-world. Given the induction hypothesis, the player $p$ has a winning strategy for the game $\mathfrak{S}_p[\varphi'\wedge\psi',w^*\!,S]$. It follows that the player $p$ also has a winning strategy for the game $\mathfrak{S}_{p}[\psi',w^*\!,S]$ and moreover has a winning strategy for $\mathfrak{S}_{p}[\neg\varphi'\vee\psi',w^*\!,S]$. Given the induction hypothesis, it also holds that the player $p$ has a winning strategy for the game $\mathfrak{S}_p[\varphi',w^*\!,S]$. We can combine the latter two strategies into one strategy that is a winning strategy with respect to both the games $\mathfrak{S}_{p}[\neg\varphi'\vee\psi',w^*\!,S]$ and $\mathfrak{S}_p[\varphi',w^*\!,S]$ (see proposition \ref{thm:strategy_combination}). If that strategy also maps every game state of the form $(\varphi'\boxright\psi',w,w'\!,r)_{p}$ with $w'\in W\setminus{}\{w^*\}$; $r\in [0, \infty [$ and $\smash{w\overset{r}{\leadsto}w'}$ to $((\varphi'\boxright\psi',w,w'\!,r)_{p}, (\varphi',w^*)_{p})$; and maps the game state $(\varphi'\boxright\psi',w,w^*\!,r^*)_{p}$ to $((\varphi'\boxright\psi',w,w^*\!,r^*)_{p},(\neg\varphi'\vee\psi',w^*)_{p})$, it is a winning strategy for the player $p$ and game $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]$.
 
-Suppose that a world $w'$ and an $r$ with $\smash{w\overset{r}{\leadsto}w'}$ and $S,w'\vDash\varphi'\wedge\neg\psi'$~exist, such that no world $w^*\in W_{w,r}^<$ with $S,w^*\vDash\varphi'$~exists. Then given the induction hypothesis, the player~$\overline{p}$ has a winning strategy for each game of the form $\mathfrak{S}_p[\varphi',w^*,S]$ where $w^*\in W_{w,r}^<$ and also has a winning strategy for the game $\mathfrak{S}_p[\neg\varphi'\vee\psi',w',S]$. Again we can construct a strategy that is a winning strategy for the player $\overline{p}$ with respect to each game of the form $\mathfrak{S}_p[\varphi',w^*,S]$ where $w^*\in W_{w,r}^<$ and also is a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\neg\varphi'\vee\psi',w',S]$.
-And if that strategy maps $(\varphi'\boxright\psi',w,p)_{\overline{p}}$ to $((\varphi'\boxright\psi',w,p)_{\overline{p}}, (\varphi'\boxright\psi',w,w',r)_{p})$, it is a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]$.
+Suppose that a world $w'$ and an $r$ with $\smash{w\overset{r}{\leadsto}w'}$ and $S,w'\vDash\varphi'\wedge\neg\psi'$~exist, such that no world $w^*\in W_{w,r}^<$ with $S,w^*\vDash\varphi'$~exists. Then given the induction hypothesis, the player~$\overline{p}$ has a winning strategy for each game of the form $\mathfrak{S}_p[\varphi',w^*\!,S]$ where $w^*\in W_{w,r}^<$ and also has a winning strategy for the game $\mathfrak{S}_p[\neg\varphi'\vee\psi',w'\!,S]$. Again we can construct a strategy that is a winning strategy for the player $\overline{p}$ with respect to each game of the form $\mathfrak{S}_p[\varphi',w^*\!,S]$ where $w^*\in W_{w,r}^<$ and also is a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\neg\varphi'\vee\psi',w'\!,S]$ (see proposition \ref{thm:strategy_combination}).
+And if that strategy maps $(\varphi'\boxright\psi',w,p)_{\overline{p}}$ to $((\varphi'\boxright\psi',w,p)_{\overline{p}}, (\varphi'\boxright\psi',w,w'\!,r)_{p})$, it is a winning strategy for the player $\overline{p}$ and game $\mathfrak{S}_p[\varphi'\boxright\psi',w,S]$.
 \end{itemize}
 \end{proof}
 
@@ -748,6 +855,7 @@ And if that strategy maps $(\varphi'\boxright\psi',w,p)_{\overline{p}}$ to $((\v
 This section introduces the interactive demonstration of the semantic game of counter\-factuals and explores its presentation and correspondence to the semantic game. We will begin by explaining the game metaphor and offering an overview of the user interface and interaction in the subsections \ref{sec:metaphor} and \ref{sec:interface}. Subsection \ref{sec:demo_formulas} shows off the web demonstration's visual presentation of counterfactual formulas. And finally, we discuss the employment of the limit assumption in subsection~\ref{sec:limit_ass_just}.
 \subsection{Game metaphor}\label{sec:metaphor}
 The semantic game's demonstration employs an embellishing metaphor for the course of the game in an effort to veil the complexity of the semantic game of counterfactuals and more succinctly convey its notions. The metaphor's most general sense is that the players are pilots of a spaceship that are tasked with traveling between possible worlds in order to reach a second earth. This interpretation lets Lewis' notion of the realism of possible worlds become palpable and provides an intuitive explanation for both players having the same current world, because they travel together. In order to discern the players, the metaphor uses the term pilot to describe the defender and copilot to describe the attacker, which also has a drawback. As most people tend to view the relationship between a pilot and copilot as one of collaboration and teamwork, it is not immediately obvious that the relationship between the pilot and copilot is adversarial in this case. The metaphor explains the adversity of the pilots by both of them wanting to be the first human to land on the second earth and figuratively make a small step for a man, but a giant leap for mankind. The act of landing is thus a metaphor for reaching the $\top$-symbol and winning the reachability game. The loss condition that a player that is stuck in turn is explained by that player being dismissed from their position as pilot for stranding the spaceship. Returning to our general metaphor we can explain the general makeup of a game state $(\varphi, w)_p$. The formula $\varphi$ is a schedule that the pilots have to strictly abide by. This schedule was precalculated by the boardcomputer, such that it is definitely possible to reach a habitable world by adhering to it. The world $w$ is merely the world the pilots' spaceship is currently at. And the active player $p$ is the pilot whose shift it currently is. The pilots work in shifts determined by the schedules shift switches that are metaphors for negations. Since different atomic formulas are true at different possible worlds, we call atomic formulas habitability tests. A world can only be landed on, if a habitability test was successfully conducted there. The possibility and necessity operators are simply jumps of the spaceship to another reachable world. And the \textit{counterfactual might} and \textit{counterfactual would} are explained as the opposing pilot's meddling with the board computer in order to temporarily limit the spaceships jump range.
+\newpage
 \subsection{User interface and interaction}\label{sec:interface}
 The game screen of the interactive demonstration appears as follows.
 \begin{figure}[H]
@@ -810,7 +918,7 @@ As discussed earlier, the $\bot$ icon is meant to symbolize stranding the spaces
 \caption{Representations of counterfactual formulas}
 \label{fig:icon_formulas}
 \end{figure}
-\newpage%TODO: remove
+\newpage
 \subsection{Employment of the limit assumption}\label{sec:limit_ass_just}
 We formulated two semantic games of counterfactuals $\mathfrak{T}[\varphi ,w,S]$ and $\mathfrak{G}[\varphi ,w,S]$. While the former is the canonical formulation, playtesting revealed that it has a number of drawbacks that make it less suitable for the application in an educational game. If we compare the resolution of the counterfactual operators with respect to the two sets of moves $\rightarrowsingletail{}$~and~$\rightarrowdoubletail{}$, it becomes clear that the resolution sequences of the counterfactual operators are considerably more complex in the canonical formulation. Let us give the \textit{counterfactual would's} resolution sequences as an example.
 \begin{figure}[H]
@@ -819,7 +927,7 @@ We formulated two semantic games of counterfactuals $\mathfrak{T}[\varphi ,w,S]$
 \subfloat[With $\rightarrowsingletail{}$]{
 \begin{tikzpicture}[main/.style]
 	\node[main] (0) {$(\varphi\boxright\psi,w)_p$};
-	\node[main] (1) [below left=0.5cm and -1cm of 0] {$(\varphi\boxright\psi,w, w', r)_{\overline{p}}$};
+	\node[main] (1) [below left=0.5cm and -1cm of 0] {$(\varphi\boxright\psi,w, w'\!, r)_{\overline{p}}$};
 	\node[main] (2) [below right=0.5cm and -1cm of 0] {$(\Box\neg\varphi,w)_{p}$};
 	\node[main] (3) [below left=0.5cm and -1.5cm of 1] {$(\neg\varphi\vee\psi, w^*)_{p}$};
 	\node[main] (4) [below right=0.5cm and -1.5cm of 1] {$(\varphi, w')_{p}$};
@@ -832,7 +940,7 @@ We formulated two semantic games of counterfactuals $\mathfrak{T}[\varphi ,w,S]$
 	
 	\draw[>->] (0) -- (1) node[midway,left,scale=0.85] {$[\smash{w\overset{r}{\leadsto}w'}]$\hspace{0.35cm} };
 	\draw[>->] (0) -- (2);
-	\draw[>->] (1) -- (3) node[midway,left,scale=0.85] {$[\smash{w\overset{r^*}{\leadsto}w^*,r^*<r}]$\hspace{0.25cm} };
+	\draw[>->] (1) -- (3) node[midway,left,scale=0.85] {$[\smash{w\overset{r^*}{\leadsto}w^*\!,r^*<r}]$\hspace{0.25cm} };
 	\draw[>->] (1) -- (4);
 	\draw[>->] (2) -- (5);
 	\draw[>->] (3) -- (6);
@@ -846,7 +954,7 @@ We formulated two semantic games of counterfactuals $\mathfrak{T}[\varphi ,w,S]$
 \begin{tikzpicture}[main/.style]
 	\node[main] (0) {$(\varphi\boxright\psi,w)_p$};
 	\node[main] (1) [below=0.5cm of 0] {$(\varphi\boxright\psi,w, p)_{\overline{p}}$};
-	\node[main] (2) [below=0.5cm of 1] {$(\varphi\boxright\psi,w, w', r)_{p}$};
+	\node[main] (2) [below=0.5cm of 1] {$(\varphi\boxright\psi,w, w'\!, r)_{p}$};
 	\node[main] (3) [below left=0.5cm and -1.5cm of 2] {$(\neg\varphi\vee\psi, w')_{p}$};
 	\node[main] (4) [below right=0.5cm and -1.5cm of 2] {$(\varphi, w^*)_{p}$};
 	
@@ -857,7 +965,7 @@ We formulated two semantic games of counterfactuals $\mathfrak{T}[\varphi ,w,S]$
 	\draw[>>->] (0) -- (1);
 	\draw[>>->] (1) -- (2) node[midway,sloped,right,rotate=90,scale=0.85] {\hspace{0.125cm}$[\smash{w\overset{r}{\leadsto}w'}]$};
 	\draw[>>->] (2) -- (3);
-	\draw[>>->] (2) -- (4) node[midway,right,scale=0.85] {\hspace{0.25cm}$[\smash{w\overset{r^*}{\leadsto}w^*,r^*<r}]$};
+	\draw[>>->] (2) -- (4) node[midway,right,scale=0.85] {\hspace{0.25cm}$[\smash{w\overset{r^*}{\leadsto}w^*\!,r^*<r}]$};
 	\draw[>>->] (3) -- (5);
 	\draw[>>->] (3) -- (6);
 	\draw[>>->] (5) -- (7);	
@@ -869,8 +977,7 @@ We formulated two semantic games of counterfactuals $\mathfrak{T}[\varphi ,w,S]$
 We see that the players have to make more choices and consider more leaf states in~(a). For this reason, it becomes more difficult to introduce $\boxright$ and $\Diamondright$ in a digestible and understandable manner and convey them in simple terms. Since the user needs to understand the operators well in advance of play, this results in users being unable to take in the necessary information of a long-winded explanation. Furthermore, the structure of the \textit{counterfactual would's} resolution under the canonical formulation of the semantic game requires a new dedicated paradigm of user interaction for claiming vacuous or non-vacuous truth that the users have to learn and understand as well. Such are the reasons that the interactive demonstration of counterfactuals adopts the game $\mathfrak{G}[\varphi ,w,S]$\footnote{As an improvement of user feedback the interactive demonstration differs from $\mathfrak{G}[\varphi ,w,S]$ in that players that are stuck transition to a game state with a $\bot$ formula and lose subsequently, and the attacker transitions to a $\top$ formula and switches the player when reaching a game state with the $\bot$ formula.}.
 \newpage
 \section{Conclusion}\label{sec:end}
-In order to discover new approaches to a satisfactory theory of subjunctive conditionals, it will prove useful to introduce and make accessible the existing models' to a wider group of people. With the aim of creating an interactive demonstration of counterfactual truth conditions, this thesis formulates a counterfactual logic that is an extension of the modal logic in \cite{kripke_modal_logic_1963} by including Lewis' counterfactual operators, the possiblity operator and several operators of propositional logic. It further proposes a semantic reachability game that proves or disproves the formulas of counterfactual logic. We offer proofs that the semantic game of counterfactuals employing the limit assumption halts, is decided and is correct. This thesis produced an interactive demonstration that conveys Lewis' counterfactual truth conditions, but does not provide any insight into the reasoning behind them. As such, the interactive demonstration can only be a supplemental resource to engage with Lewis' theory of counterfactuals and cannot be relied upon as a comprehensive guide to it. It might be useful to build learning resources that not only show off a certain formulation, but explain it as well. After all, the correspondence between the semantic game of counterfactuals and Lewis' theory of counterfactuals may not be obvious.
-Furthermore, it seems an interesting prospect to create additional demonstrations for other interpretations of counterfactuals or the more general version of the semantic game of counterfactuals.
+In order to discover new approaches to a satisfactory theory of subjunctive conditionals, it is an important endeavour to introduce and make accessible the existing models of counterfactuals to a wider group of people. With the aim of creating an interactive demonstration of counterfactual truth conditions, this thesis formulates a counterfactual logic that is an extension of the modal logic in \cite{kripke_modal_logic_1963} by including Lewis' counterfactual operators, the possibility operator and several operators of propositional logic. It further proposes a semantic reachability game that decides the truth of formulas of counterfactual logic. We offer proofs that the semantic game of counterfactuals employing the limit assumption halts, is decided and is correct. This thesis produced an interactive demonstration that conveys Lewis' counterfactual truth conditions, but does not provide any insight into the reasoning behind them. As such, the interactive demonstration is a supplemental learning resource for Lewis' theory of counterfactuals, but cannot be relied upon as a comprehensive guide to it. As a subject of further work it remains possible to build learning resources that not only show off Lewis' counterfactual truth conditions, but explain them as well. After all, the correspondence between the semantic game of counterfactuals and Lewis' theory of counterfactuals may not become clear through the interactive demonstration. Furthermore, it seems an interesting prospect to create additional demonstrations for other interpretations of counterfactuals or the more general version of the semantic game of counterfactuals.
 \bibliographystyle{alphaurl}
 \nocite{*}
 \bibliography{thesis}

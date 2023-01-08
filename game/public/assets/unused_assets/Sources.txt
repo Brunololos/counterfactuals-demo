@@ -1,7 +1,1 @@
-Rocket_Icon: https://pixabay.com/vectors/rocket-icon-symbol-gui-internet-1976107/
-Space: https://www.pinterest.de/pin/621426448568551573/
-ShotaroSky: https://unsplash.com/photos/8FU_MZ2r0EQ
 NASAGalaxy: https://www.flickr.com/photos/nasamarshall/52272268884/sizes/h/
-SajShafiqueRoof: https://unsplash.com/photos/A6iKktKiiLk
-Rocket_Launch: https://pixabay.com/illustrations/rocket-launch-rocket-launch-space-4370928/
-Landing/Landing_Small: https://www.freepik.com/premium-vector/astronauts-outer-space-flat-concept-icons-set_27619539.htm#page=2&query=astronaut%20landing%20icon&position=9&from_view=keyword

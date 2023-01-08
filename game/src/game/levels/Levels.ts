@@ -32,8 +32,23 @@ text = "Du und dein Kopilot seid mit der wichtigen Mission betraut eine zweite E
      + "Natürlich solltet ihr bei eurem Wetteifer acht geben\n"
      + "nicht mit eurem Raumschiff ohne Treibstoff zu stranden,\n"
      + "denn Piloten unter deren Aufsicht ein Schiff stranded droht die Entlassung.";
+text = "You (the green figurine) and your copilot (the red figurine) have been entrusted with the important mission to search for a second Earth. "
+     + "To this end, your spaceship is equipped with a revolutionary parallel-worlds drive that allows you to travel to other versions of Earth. "
+
+     + "Because this technology is still novel and dangerous, the board computer has calculated a sequence of instructions with which it is possible to safely reach a second Earth. "
+     + "In order to not unneccesarily endanger yourselves, you have to strictly abide by these instructions. The current instructions are displayed in the panel at the bottom of the screen. "
+
+     + "Additionally, the board computer displays a description of the current task and active player in the prompt line above the current instructions. "
+     + "Off course, you and your copilot both want to be the one the first person to set foot on a new Earth. "
+     + "This is symbolized through the green flag symbol and whoever reaches it gets to win the game. "
+
+     + "Such is the reason that your copilot started conducting themselves very adversarial towards you. "
+
+     + "And keep in mind that a pilot that strands the spaceship is dismissed from their position. They lose the game. "
+     + "This is represented through the red empty battery icon."
 
 text_icon_keys = ["pilots_icon", "", "", "true", "false"];
+text_icon_keys = ["pilots_icon", "", "", "", "true", "false"];
 
 levellist.push(Level.create(/* "Top & Bottom" */"Reaching new Earth", "Res", "¯|¯ v _|_", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
@@ -55,6 +70,13 @@ text = "Da die meisten Welten unbewohnbar sind,\n"
      + "Erfüllte Eigenschaften werden um die Welten herum dargestellt.\n"
 
      + "Um also die Bewohnbarkeit einer Welt nachzuweisen gilt es den richtigen Bewohnbarkeitstest aus dem Handlungsplan auszuwählen."
+text = "Since most worlds are not inhabitable, "
+     + "it is necessary to check if a world is life-friendly before landing on it. "
+     
+     + "Luckily, your spaceship's scanners are capable of detecting the properties of worlds in advance. "
+     + "Properties are displayed as colored squares around worlds and correspond to habitability tests in the board computer's instruction sequence. "
+     + "You thus simply need to choose the right habitability test to show habitability of a world and subsequently land on it."
+
      text_icon_keys = ["", "atom_0", "atom_0"];
 
 levellist.push(Level.create(/* "Atoms" */"Habitability", "Res", "A v B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
@@ -70,6 +92,7 @@ worlds = [get(atoms, [0, 3, 4])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
 text = "In bestimmten Situationen sind sogar mehr als 2 Bewohnbarkeitstests durchführbar.";
+text = "In certain cases you even have to choose between 3 or more habitability tests.";
 text_icon_keys = [];
 
 levellist.push(Level.create(/* "Nested Disjunction" */"Nested Habitability", "Res", "C v B v A", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
@@ -89,6 +112,11 @@ text = "Von Zeit zu Zeit plant der Boardcomputer auch Schichtwechsel für dich u
      + "Bist du zu diesem Zeitpunkt der aktive Pilot, so ended deine Schicht und dein Kopilot übernimmt\n"
      + "die Kontrolle bis zum nächsten Schichtwechsel.\n"
      + "Selbstredend hat der momentan aktive Pilot immer zuerst die Möglichkeit auf einem Planeten zu landen.";
+text = "The board computer schedules shift switches from time to time. "
+     + "Such shift switches where the active pilot changes are symbolized through the symbol with the two pilots and arrows pointing at each other. "
+     + "If you are the active pilot you become inactive and the other way around. "
+     + "Off course, it is the active player who first gets a chance to land on a second Earth, if one is encountered.";
+
 text_icon_keys = ["negation"];
 
 levellist.push(Level.create(/* "Negation" */"Shift Switch", "Res", "~¯|¯ v ~A", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
@@ -119,6 +147,7 @@ worlds = [get(atoms, [0, 1, 2, 4])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
 text = "Achtung! Der Kopilot hat eine backdoor im Boardcomputer gefunden, mit der er die Kontrolle übernimmt und eine deiner Wahlmöglichkeiten überschreibt.";
+text = "Watch out! Your copilot managed to hack into the board computer and overwrite your choice whenever an AND is encountered in the board computer's instruction sequence.";
 text_icon_keys = ["conjunction"];
 
 levellist.push(Level.create("Foul Play", "Res", "(D ^ C) v A"/* "~(~D v ~C) v A" */, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
@@ -152,6 +181,8 @@ world_positions = [[0, 0], [50, -150], [-100, 100], [150, 75]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
 text = "Endlich ist es an der Zeit für den ersten Parallelwelten-Sprung!\n"
      + "Wähle eine Welt aus, zu der du springen möchtest.";
+text = "Finally it is time for your first parallel-worlds jump!\n"
+     + "Click on the world you want to jump to.";
 text_icon_keys = ["possibility"];
 
 levellist.push(Level.create("First Flight"/* "Possibility" */, "Res", "<>B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
@@ -180,6 +211,7 @@ worlds = [[], get(atoms, [1, 2]), get(atoms, [0, 2]), get(atoms, [3]), get(atoms
 world_positions = [[0, 0], [125, 50], [-50, 135], [25, -150], [-150, -75]];
 edges = [ [0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 0], [0, 3, 0], [0, 4, 0], [1, 2, 0], [2, 0, 0], [4, 2, 0], [4, 3, 0]];
 text = "Behalte im Hinterkopf, dass du mit deinem Raumschiff auch an Welten springen kannst, an denen du dich bereits befindest.";
+text = "Remain cognisant, that the parallel-worlds drive allows jumps to worlds that your spaceship is already at.";
 text_icon_keys = [];
 
 levellist.push(Level.create("Jumps & Hacks"/* "Dis-, Conjunction & Possibility" */, "Res", "<><>(B ^ C) v <>A", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
@@ -194,6 +226,7 @@ worlds = [get(atoms, [3]), get(atoms, [2]), get(atoms, [0, 2]), get(atoms, [3]),
 world_positions = [[0, 0], [175, 0], [-50, 135], [75, -100], [-50, -150]];
 edges = [ [0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [0, 4, 0], [1, 2, 0], [2, 4, 0], [3, 1, 0], [3, 4, 0]];
 text = "Durch eine Sicherheitslücke ist es deinem Kopiloten gelungen bei Parallelweltensprüngen die Zielwelt zu überschreiben.";
+text = "Your copilot found another security vulnerability and is now able to overwrite the jump destination when encountering a jump icon with a lightning on it.";
 text_icon_keys = ["necessity"];
 
 levellist.push(Level.create("Jump Override"/* "Necessity" */, "Res", "[_](D v C) v <>B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
@@ -213,6 +246,12 @@ text = "Um den Schaden der aufgedeckten Sicherheitslücke einzudämmen hast du e
      + "Mit seinen erweiterten Zugriffsfähigkeiten kann dein Kopilot in der Folge entweder zu der durch dich ausgewählten Zielwelt springen\n"
      + "oder zu einer näheren Welt springen und einen Schichtwechsel in den Boardcomputer eintragen. "
      + "Die Abänderung des Handlungsplans wird an den erreichbaren Welten angezeigt";
+text = "To minimize the damage that your copilot can cause with the \"jump-override\"-vulnerability, you wrote a protocol "
+     + "that allows you to minimize the spaceship's jump range in advance of jumping. "
+     + "You choose a target world and your copilot can only jump to that world or a closer world. "
+     + "The energy it takes to jump to a world i.e. distance is displayed next to the jump corridors. "
+     + "However this procedure has it's drawbacks. By going against the board computers instruction sequence, the following instruction sequences become jumbled. "
+     + "Hover over a world to see the resulting instruction sequences for each world that your copilot can jump to.";
 text_icon_keys = ["cf_might"];
 
 levellist.push(Level.create("Jump Scramble"/* "Cf_Might" */, "Res", "A ⩽⩾-> C", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
@@ -272,7 +311,7 @@ text = "";
 text_icon_keys = [];
 
 /* "~¯|¯" "~(A |_|-> (A |_|-> B))" *//* "~((~A v (B v ~C)) ^ ~A)" *//* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */
-levellist.push(Level.create("Test", "Res", "~((~A v C) ^ ~~B)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+//levellist.push(Level.create("Test", "Res", "~((~A v C) ^ ~~B)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 export let levels = levellist;
 
