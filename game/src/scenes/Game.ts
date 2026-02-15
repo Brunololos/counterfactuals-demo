@@ -137,6 +137,13 @@ export default class Game_Scene extends Base_Scene {
     this.game_over = false;
   }
 
+  reload_level() {
+
+    this.game_controller.reload(this.starting_state);
+    this.graphics_controller.reload(this, this.starting_state, levels[this.level].graph.world_positions);
+    this.game_over = false;
+  }
+
   on_resize(): void {
     this.graphics_controller.resize_graphics();
   }

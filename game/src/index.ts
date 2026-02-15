@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import Phaser from 'phaser/dist/phaser.js';
 import config from './config';
 import Game_Scene from './scenes/Game';
 import Level_Select_Scene from './scenes/Level_Select';

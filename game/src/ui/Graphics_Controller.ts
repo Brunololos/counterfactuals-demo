@@ -27,6 +27,7 @@ export class Graphics_Controller {
     private stars: Phaser.GameObjects.Container;
     private back;
     private help;
+    private restart;
     private rules_column: Rules_Column;
     private text_box;
     private sup_panel;
@@ -60,6 +61,7 @@ export class Graphics_Controller {
         this.rules_column = new Rules_Column(scene, w-180, 0, state.get_formula().to_string());
         this.text_box = new Text_Box_Controller(scene, w/2, h-250, 500, 55, levels[level].description, levels[level].icon_keys);
         this.help = this.create_help(scene, w-35, 30, this.rules_column, this.text_box);
+        this.restart = this.create_restart(scene, w-75, 30);
 
         this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms());
         this.choice = new Choice(scene, state);
@@ -110,6 +112,19 @@ export class Graphics_Controller {
                                                             + "Zu diesem Zweck wurde euer Raumschiff mit einem bahnbrechenden Parallelwelten-antrieb ausgerüstet,\n", text_style);
         icon_text.add_to_container(c);
         scene.add.existing(c); */
+    }
+
+    reload(scene: Base_Scene, state: Game_State, world_positions: [number, number][]) {
+        this.idle_since = Date.now();
+        this.idle_time = 2000;
+        this.text_box.reload(levels[(this.scene as Game_Scene).get_level()].description);
+        this.formula.set_formula(state.get_formula());
+        // TODO: reset supposition panel active player indicator
+        this.sup_panel.reload();
+        this.graph_graphics.reload(this.scene, state, state.get_current_world().index, world_positions, state.get_graph().get_edge_list(), this);
+        this.rules_column.set_visible(false);
+        this.set_mode(Game_Graphics_Mode.Formula);
+        this.choice.set_visible(false);
     }
 
     update(time: number) {
@@ -445,6 +460,46 @@ export class Graphics_Controller {
         return buttons;
     }
 
+    private create_restart(scene: Base_Scene, x, y) {
+        var button = scene.rexUI.add.label({
+            width: 60,
+            height: 60,
+
+            orientation: 0,
+
+            icon: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "restart_icon").setDisplaySize(40, 40).setAlpha(0.6)),
+
+            space: {
+                icon: 10,
+                left: 15,
+                right: 0,
+                top: 0,
+                bottom: 0,
+            }
+        }).layout();
+
+        var buttons = scene.rexUI.add.buttons({
+            x: x,
+            y: y,
+            buttons: [],
+        })
+        .addButton(button)
+        .layout();
+
+        buttons.on('button.over', function(button, index, pointer, event) {
+            button.getElement('icon').setAlpha(1);
+        })
+        buttons.on('button.out', function(button, index, pointer, event) {
+            button.getElement('icon').setAlpha(0.6);
+        })
+        buttons.on('button.click', function(button, index, pointer, event) {
+            // scene.scene.restart({level: scene.level});
+            scene.reload_level();
+        })
+
+        return buttons;
+    }
+
     private create_help(scene: Base_Scene, x, y, rules_column: Rules_Column, text_box: Text_Box_Controller) {
         var button = scene.rexUI.add.label({
             width: 60,
@@ -594,6 +649,7 @@ export class Graphics_Controller {
         scene.load.image("chunk_hover", "assets/Small_Chunk_Hover.png");
 
         scene.load.image("help_icon", "assets/Help_Icon.png");
+        scene.load.image("restart_icon", "assets/Retry_Icon.png");
     }
 
     static configure_sprites(scene: Phaser.Scene) {

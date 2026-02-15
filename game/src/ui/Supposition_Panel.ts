@@ -100,6 +100,17 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
             timeline.play();
         }) */
     }
+    
+    reload() {
+        this.clear_tint();
+        if (this.animation != undefined) { this.animation.stop(); }
+        this.animation = undefined;
+        this.set_caption("Reach a habitable world");
+        // TODO: put this changing of player colors in a function and
+        // define the colors somewhere rather than hardcoding.
+        this.player_ind1.setTint(0x00dd00);
+        this.player_ind2.setTint(0x00dd00);
+    }
 
     /**
      * Discard the contents of the panel
@@ -192,6 +203,13 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         let children = this.getAll();
         for(let i=0; i<children.length; i++) {
             (children[i] as Phaser.GameObjects.Sprite).setTint(color);
+        }
+    }
+
+    clear_tint() {
+        let children = this.getAll();
+        for(let i=0; i<children.length; i++) {
+            (children[i] as Phaser.GameObjects.Sprite).clearTint();
         }
     }
 

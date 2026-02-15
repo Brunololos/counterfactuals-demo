@@ -16,6 +16,14 @@ export class Text_Box_Controller {
         this.text_box.getElement('action').getElement('text').text = (this.text_box.pageIndex+1)+"/"+this.text_box.pageCount;
     }
 
+    reload(text: string) {
+        this.text_box.stop();
+        this.text_box.start(text, 50);
+        if(text == "") { this.text_box.setVisible(false); this.set_active(false);
+        } else { this.text_box.setVisible(true); this.set_active(true); }
+        this.text_box.getElement('action').getElement('text').text = (this.text_box.pageIndex+1)+"/"+this.text_box.pageCount;
+    }
+
     add_to_container(container: Phaser.GameObjects.Container) {
         container.add(this.text_box);
     }

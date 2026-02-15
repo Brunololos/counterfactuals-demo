@@ -108,6 +108,25 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         this.set_sphere(current_world); //TODO: INIT?
     }
 
+    reload(scene: Base_Scene, state: Game_State, current_world: integer, world_positions: [number, number][], edges: [integer, integer, integer][]) {
+        this.game_state = state;
+        this.graph = this.game_state.get_graph();
+        this.current_world = current_world;
+
+        // reset worlds
+        let n = this.graph.get_V();
+        if(world_positions.length != n) { throw new Error("Passed too many or too few positions!"); }
+        for(let i=0; i<this.worlds.length; i++) {
+            this.worlds[i].reset();
+        }
+
+        this.delim_world = -1;
+        this.mode = Graph_Graphics_Mode.Display;
+        this.chosen_world = -1;
+        this.choice_made = false;
+        this.set_sphere(current_world);
+    }
+
     set_mode(mode: Graph_Graphics_Mode) {
         switch(mode) {
             case Graph_Graphics_Mode.Display:
@@ -402,6 +421,12 @@ export class World_Controller {
         this.graph_graphics = graph_graphics;
     }
 
+    reset() {
+        this.set_active(false);
+        this.clear_animation();
+        this.clear_hint();
+    }
+
     set_active(active: boolean) {
         this.world.setAlpha(active ? WORLD_ALPHA : 0.8/* INACTIVE_WORLD_ALPHA */);
         this.world.setTint(active ? 0xffffff : 0xbbbbbb);
@@ -426,6 +451,8 @@ export class World_Controller {
     }
 
     clear_animation() {
+        // TODO: in some cases the animation isn't cleared
+        if(this.animation != undefined) { this.animation.stop(); }
         this.animation = undefined;
     }
     

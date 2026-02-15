@@ -1,0 +1,119 @@
+- Mode that shows the canonical cf formula icons?
+- expose start menu scroll bar better & show level numbers.
+- next level after level won
+- only introduce evil copilot when introducing negation/shift switch
+- Problem: What to do to help show when stuff is happening at the worlds or at the formula.
+
+# Some nitpicky stuff
+- Have multiple world icons for variance?
+- Remove main menu with one button?
+
+# Farben überladen: angreifer rot, wir blau
+# Ausrüstung metapher für Atome?
+# Atome als Aussteigen.
+# Metapher: Raumschiff hat 2 Steuereinheiten und eine ist dominant?
+#           Zerbrechendes Raumschiff & wählen auf welcher Seite mit welcher Ausrüstung man bleibt.
+#           Fluchtkapseln?
+#           Idee: Verschiedene Konsolen wo man volle Kontrolle
+
+
+
+
+# Ben / Bruno: Counterfactual game demo
+
+Meetings:
+
+- 2026-02-12 10:30–11:30 in https://tu-berlin.zoom-x.de/j/8278623098?pwd=dE9hLzhnMkx2aUZOaFErSHI0S2R4Zz09
+- 2026-02-26 10:30–12:00 Klarheit über Metapher, etwas in Codebase anfangen
+
+## Situationen
+
+- Bruno: An TU fast fertig, CG Masterarbeit, demnächst Anmeldung
+  - https://brunololos.github.io/cgs-intrinsic-simplification
+- Ben: Projekt zu Cybersecurity beim Institut Polytechnique de Paris
+
+## Spiel-Anpassungen
+
+- Ziel: Das Interface sollte weitgehend selbsterklärend sein
+- Issues:
+  - Nutzer:innen-Führung 
+  - Metapher ?
+    - „Copilot“ / Antagonist wirklich darstellen (anstelle von Farbkodierung des Displays) oder “Murphy's space ship” ?
+    - Atomare Formeln über Raumanzüge für Ausstieg oder Fluchtkapseln? oder Factions, bei denen man unterkommen will?
+    - Auseinanderbrechendes Raumschiff als Formel / Konsolen für Kontrolle
+  - Rückprojektion auf klassische Modale Darstellung
+- Gemeinsam in Codebase arbeiten?
+- https://github.com/Brunololos/counterfactuals-demo
+
+## Writeup
+
+- Erklärung, wie das Ding funktioniert
+- Pitch: Science-Communication-Bits
+- CfP: https://teal.cs.brown.edu/floc2026/
+- Deadline: 2026-04-29
+- Notification: 2026-05-27
+
+## Workshop
+
+- Reise für Vorstellung? (vllt. bei MTV fragen?) hat, vs wo der Gegner eingreifen kann.
+
+# Max feedback
+- Explanation englisch zu formal?
+- Atome=habitability tests schwierig zu verstehen.
+- Geht über zu guessen bei shift switch level.
+- Immer wenn rot kommt, dann denkt Max es sei ein Fehler.
+- Man erkennt nicht gut, wenn ein jump passiert, vor allem reflexive jumps.
+- limit world term nicht klar für counterfactual would/could.
+- How to show formula hierarchy better?
+- Copilot stranden lassen = gewinnen war nicht klar. => mehr emphasis im intro text in level 1.
+- Next level button nachdem ein level geschafft wurde. Evtll mit Abschlusstext?
+- Copilot immer in der selben Farbe schreiben, wenn genannt als color coding.
+- Stop when agency-less operation happens the first time (+ with small expl) & continue on click.
+- Graphisch absolut nice.
+
+Key Goals:
+ - UI/QoL:
+    => Restart level button.
+    => Victory Popup bei richtiger Lösung.
+    => nummeriertes Hauptmenü + scrollbar
+    => remove Startmenü?
+    => Etwas um Operator Präzedenz besser zu erklären?
+    => Hilfe popup mit victory conditions?
+    => Bessere Visualisierung der Limit world? & Formeln über Welten?
+
+ - Learning & Introduction:
+    => Rewrite explanation texts
+    => Andere Metapher für Atome
+    => Ausrüstung statt Habilitätstests?
+ - Zeigen wer aktiv ist: Pilot/Copilot
+    => Große sprite Einblendung von der Seite?
+    => Oder Pilot/Copilot icons in Beschreibungsbar und Umrahmung der Entscheidungsfläche je nachdem wer am Zug ist.
+ - Color coding/Disambiguation:
+    => Andere Farbe für Pilot/Copilot. (Reservieren von rot/grün für victory/defeat.)
+    => Color coding von pilot/copilot wörtern in text.
+ - Content:
+    => Ein paar neue Levels (vllt so 5-6?) mit Aussagenlogik & den neuen Operatoren.
+
+Metaphor:
+ - Schwierigkeit: Warum ist es für den Piloten von Vorteil, wenn dem Copiloten etwas Schlechtes passiert, bzw. z.B. beide gemeinsam keine bewohnbare Welt finden?
+ - Zerbrechendes Raumschiff Metapher:
+    - Wie visualisiert man das gut? Würde es nicht ein rewrite der Formelvisualisierung nach sich ziehen? Das wäre vermutlich viel Aufwand.
+    - Die Nachteile an der aktuellen Metapher sehe ich eher bei der Siegbedingung, dass der Copilot verliert sowie, dass Atome als Habilitätstests zu bezeichnen
+      nicht gut greifbar ist.
+    - Ich denke die Formel als gescheduleten Ablaufplan zu beschreiben ist vllt nicht ideal, aber wahrscheinlich ein hinnehmbares device.
+      Denn ich bezweifle, dass es eine perfekte passende und einfache Metapher dafür gibt, dass man sich genau an die Formeln halten muss.
+
+ IDEA:
+ You and your copilot have been entrusted with the important task of finding habitable parallel worlds.
+
+ Earth high command gave you notice that the pilot that finds more habitable worlds will be promoted.
+ Cognisant of the incentive structure placed before you, you notice that in addition to finding as
+ many habitable worlds as possible, you need to prevent your copilot from finding as many as possible.
+
+ You and your copilot made a bet who will find more habitable worlds. You notice, that to win this bet
+ you not only need to find as many habitable worlds yourself, but also need to prevent your copilot from
+ finding as many habitable worlds as possible.
+  => So you win each mission if either:
+      - you can land on a habitable world.
+      - or your copilot fails to land on a habitable world on their shift.
+

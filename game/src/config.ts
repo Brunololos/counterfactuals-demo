@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import Phaser from 'phaser/dist/phaser.js';
 import GlowFilterPostFx from 'phaser3-rex-plugins/plugins/glowfilterpipeline.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 import GlowFilterPipelinePlugin from 'phaser3-rex-plugins/plugins/glowfilterpipeline-plugin.js';

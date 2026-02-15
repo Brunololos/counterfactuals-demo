@@ -332,10 +332,10 @@ export let level14 = levels[13];
 
 /// EXTRA
 atoms = [
-    "Milch ist ein Gift",
-    "Erdöl ist ein Gift",
-    "Laktose-intolerante Menschen können Milch nicht verdauen",
-    "Milch kann zu Bioplastik verarbeitet werden"
+    "A day has 86400 seconds",
+    "The cosmic microwave background is the same everywhere",
+    "Pluto is a planet",
+    "Some dinosaurs eat stones to help digestion"
   ];
 
   let show_att = "~~~(A v B)";

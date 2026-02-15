@@ -14,6 +14,11 @@ export class Game_Controller {
         console.log("Setup Game with Formula: "+this.state.get_formula().to_string());
     }
 
+    reload(state: Game_State) {
+        this.state = state;
+        console.log("Reloaded Game with Formula: "+this.state.get_formula().to_string());
+    }
+
     determine_next_moves(): [Game_Turn_Type, Rule[], integer?] {
         let def_moves = this.rules_controller.defender_moves(this.state);
         let att_moves = this.rules_controller.attacker_moves(this.state);

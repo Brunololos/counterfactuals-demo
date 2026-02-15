@@ -1,4 +1,4 @@
-import Phaser, { Game } from 'phaser';
+import Phaser from 'phaser/dist/phaser.js';
 import RexUIPlugin from 'phaser3-rex-plugins/templates/ui/ui-plugin.js';
 
 export default abstract class Base_Scene extends Phaser.Scene {
