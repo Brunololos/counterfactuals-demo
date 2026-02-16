@@ -60,8 +60,8 @@ export class Graphics_Controller {
 
         this.rules_column = new Rules_Column(scene, w-180, 0, state.get_formula().to_string());
         this.text_box = new Text_Box_Controller(scene, w/2, h-250, 500, 55, levels[level].description, levels[level].icon_keys);
-        this.help = this.create_help(scene, w-35, 30, this.rules_column, this.text_box);
         this.restart = this.create_restart(scene, w-75, 30);
+        this.help = this.create_help(scene, w-35, 30, this.rules_column, this.text_box, this.restart);
 
         this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms());
         this.choice = new Choice(scene, state);
@@ -112,6 +112,7 @@ export class Graphics_Controller {
                                                             + "Zu diesem Zweck wurde euer Raumschiff mit einem bahnbrechenden Parallelwelten-antrieb ausgerüstet,\n", text_style);
         icon_text.add_to_container(c);
         scene.add.existing(c); */
+        this.set_camera_ignores();
     }
 
     reload(scene: Base_Scene, state: Game_State, world_positions: [number, number][]) {
@@ -375,6 +376,7 @@ export class Graphics_Controller {
     resize_graphics() {
         this.background.setDisplaySize(this.scene.get_width(), this.scene.get_height());
         this.background.setPosition(this.scene.get_width()/2, this.scene.get_height()/2);
+        this.text_box.resize();
         this.sup_panel.resize();
         this.choice.resize();
         this.graph_graphics.resize();
@@ -500,7 +502,7 @@ export class Graphics_Controller {
         return buttons;
     }
 
-    private create_help(scene: Base_Scene, x, y, rules_column: Rules_Column, text_box: Text_Box_Controller) {
+    private create_help(scene: Base_Scene, x, y, rules_column: Rules_Column, text_box: Text_Box_Controller, restart) {
         var button = scene.rexUI.add.label({
             width: 60,
             height: 60,
@@ -530,11 +532,13 @@ export class Graphics_Controller {
             button.getElement('icon').setAlpha(1);
             //text_box.deactivate();
             rules_column.set_visible(true);
+            restart.getElement('buttons')[0].getElement('icon').setAlpha(0.2);
         })
         buttons.on('button.out', function(button, index, pointer, event) {
             button.getElement('icon').setAlpha(0.6);
             //text_box.activate();
             rules_column.set_visible(false);
+            restart.getElement('buttons')[0].getElement('icon').setAlpha(0.6);
         })
 
         return buttons;
@@ -620,6 +624,23 @@ export class Graphics_Controller {
         })
 
         return button;
+    }
+
+    private set_camera_ignores() {
+        let main_camera = (this.scene as Game_Scene).main_camera;
+        let background_camera = (this.scene as Game_Scene).background_camera;
+        main_camera.ignore(this.background);
+        main_camera.ignore(this.stars);
+        background_camera.ignore(this.back);
+        background_camera.ignore(this.rules_column);
+        background_camera.ignore(this.text_box);
+        background_camera.ignore(this.restart);
+        background_camera.ignore(this.help);
+        background_camera.ignore(this.formula);
+        background_camera.ignore(this.choice);
+        background_camera.ignore(this.sup_panel);
+        background_camera.ignore(this.graph_graphics);
+        background_camera.ignore(this.vacuous);
     }
 
     static load_sprites(scene: Phaser.Scene) {

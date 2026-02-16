@@ -19,6 +19,9 @@ export default class Game_Scene extends Base_Scene {
   private starting_state!: Game_State;
   private game_over = false;
 
+  private main_camera!;
+  private background_camera!;
+
   constructor() {
     super('Game_Scene');
   }
@@ -33,6 +36,11 @@ export default class Game_Scene extends Base_Scene {
   }
 
   create() {
+    this.main_camera = this.cameras.add(0, 0, this.scale.width, this.scale.height);
+    this.background_camera = this.cameras.main;
+    this.main_camera.roundPixels = true;
+    this.background_camera.roundPixels = false;
+
     Graphics_Controller.configure_sprites(this);
     this.load_level(levels[this.level]);
 

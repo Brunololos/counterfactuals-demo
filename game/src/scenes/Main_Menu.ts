@@ -30,6 +30,7 @@ export default class Main_Menu_Scene extends Base_Scene {
             this.on_resize();
         }
         window.addEventListener("resize", resize, false);
+        this.cameras.main.roundPixels = true;
     }
 
     update(time: number, delta: number) {

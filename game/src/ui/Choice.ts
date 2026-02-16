@@ -214,23 +214,29 @@ export class Choice {
 
     resize() {
         // TODO: resets choice-option position in World_Choice Mode
-        let w = (this.scene as Base_Scene).get_width();
-        let h = (this.scene as Base_Scene).get_height();
+        let w = (this.scene as GameScene).get_width();
+        let h = (this.scene as GameScene).get_height();
         let w1 = this.option1.get_width();
         let w2 = this.option2.get_width();
 
+        this.x = w/2;
+        this.y = h - 105;
+
         this.or.setX(w/2);
         this.option1.setX(w/2 - OR_WIDTH/2 - w1/2);
-        this.option1_box.setX(w/2 - OR_WIDTH/2 - w1/2);
+        // this.option1_box.setX(w/2 - OR_WIDTH/2 - w1/2);
+        this.option1_box.setX(w/2 - 225);
         this.option2.setX(w/2 + OR_WIDTH/2 + w2/2);
-        this.option2_box.setX(w/2 + OR_WIDTH/2 + w2/2);
+        this.option2_box.setX(w/2 + 225);
 
-        this.or.setY(h-100);
-        this.option1.setY(h-100);
-        this.option1_box.setY(h-100);
-        this.option2.setY(h-100);
-        this.option2_box.setY(h-100);
+        this.or.setY(h-95);
+        this.option1.setY(h-95);
+        this.option1_box.setY(h-95);
+        this.option2.setY(h-95);
+        this.option2_box.setY(h-95);
 
+        // this.option1_sprite.setX(this.option1_box.x);
+        // this.option2_sprite.setX(this.option2_box.x);
         // TODO: Resize issues
     }
 

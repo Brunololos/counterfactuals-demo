@@ -10,6 +10,7 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
     private contents: Phaser.GameObjects.GameObject[] = [];
     private panel: Phaser.GameObjects.Sprite;
     private knob: Phaser.GameObjects.Sprite;
+    private mask;
 
     private caption: Phaser.GameObjects.Text;
     private caption_animation_timeline: Phaser.Tweens.Timeline;
@@ -40,10 +41,11 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         this.add(this.player_ind2);
 
         let mask = create_shape_geometry_mask(scene, x, y + 5, 900, 200, banner_mask_path);
-        for(let i=0; content != undefined && i<content.length; i++) {
-            (content[i] as Phaser.GameObjects.Container || Phaser.GameObjects.Sprite || Phaser.GameObjects.Rectangle).setMask(mask);
-        }
-        this.knob.setMask(mask);
+        // TODO: I temporarily removed the mask
+        // for(let i=0; content != undefined && i<content.length; i++) {
+        //     (content[i] as Phaser.GameObjects.Container || Phaser.GameObjects.Sprite || Phaser.GameObjects.Rectangle).setMask(mask);
+        // }
+        // this.knob.setMask(mask);
 
         this.tween_dummy = new Phaser.GameObjects.Sprite(scene, 0, 0, "dot").setVisible(false);
 

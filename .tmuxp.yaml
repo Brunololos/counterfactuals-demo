@@ -1,0 +1,20 @@
+session_name: counterfactuals
+windows:
+- focus: 'true'
+  layout: 77ed,238x62,0,0{120x62,0,0[120x30,0,0,6,120x31,0,31,9],117x62,121,0[117x30,121,0,7,117x31,121,31,8]}
+  options: {}
+  panes:
+  - nvim .
+  - nvim .
+  - nvim .
+  - focus: 'true'
+    shell_command:
+  start_directory: /mnt/frontier/GIT/counterfactuals-demo
+  window_name: bash
+- layout: 5ddf,238x62,0,0,10
+  options: {}
+  panes:
+  - focus: 'true'
+    shell_command: nvim
+  start_directory: /mnt/frontier/GIT/counterfactuals-demo
+  window_name: nvim

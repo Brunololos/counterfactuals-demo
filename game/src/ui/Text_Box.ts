@@ -16,6 +16,13 @@ export class Text_Box_Controller {
         this.text_box.getElement('action').getElement('text').text = (this.text_box.pageIndex+1)+"/"+this.text_box.pageCount;
     }
 
+    resize() {
+        let w = (this.text_box.scene as Base_Scene).get_width();
+        let h = (this.text_box.scene as Base_Scene).get_height();
+        this.text_box.setX(w/2);
+        this.text_box.setY(h-250);
+    }
+
     reload(text: string) {
         this.text_box.stop();
         this.text_box.start(text, 50);
