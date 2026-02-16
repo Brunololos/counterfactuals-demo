@@ -10,7 +10,7 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
     private contents: Phaser.GameObjects.GameObject[] = [];
     private panel: Phaser.GameObjects.Sprite;
     private knob: Phaser.GameObjects.Sprite;
-    private mask;
+    private submask: Phaser.Display.Masks.GeometryMask;
 
     private caption: Phaser.GameObjects.Text;
     private caption_animation_timeline: Phaser.Tweens.Timeline;
@@ -40,12 +40,11 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         this.add(this.player_ind1);
         this.add(this.player_ind2);
 
-        let mask = create_shape_geometry_mask(scene, x, y + 5, 900, 200, banner_mask_path);
-        // TODO: I temporarily removed the mask
-        // for(let i=0; content != undefined && i<content.length; i++) {
-        //     (content[i] as Phaser.GameObjects.Container || Phaser.GameObjects.Sprite || Phaser.GameObjects.Rectangle).setMask(mask);
-        // }
-        // this.knob.setMask(mask);
+        this.submask = create_shape_geometry_mask(scene, x, y + 5, 900, 200, banner_mask_path);
+        for(let i=0; content != undefined && i<content.length; i++) {
+            (content[i] as Phaser.GameObjects.Container || Phaser.GameObjects.Sprite || Phaser.GameObjects.Rectangle).setMask(this.submask);
+        }
+        this.knob.setMask(this.submask);
 
         this.tween_dummy = new Phaser.GameObjects.Sprite(scene, 0, 0, "dot").setVisible(false);
 
@@ -130,10 +129,17 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
     }
 
     resize() {
-        let w = (this.scene as Base_Scene).get_width();
-        let h = (this.scene as Base_Scene).get_height();
+        let w = (this.scene as GameScene).get_width();
+        let h = (this.scene as GameScene).get_height();
         this.setX(w/2);
         this.setY(h-100);
+
+        // rebuild mask
+        this.submask = create_shape_geometry_mask(this.scene, w/2, h-95, 900, 200, banner_mask_path);
+        for(let i=0; this.contents != undefined && i<this.contents.length; i++) {
+            (this.contents[i] as Phaser.GameObjects.Container || Phaser.GameObjects.Sprite || Phaser.GameObjects.Rectangle).setMask(this.submask);
+        }
+        this.knob.setMask(this.submask);
     }
 
     animate(move: Rule) {

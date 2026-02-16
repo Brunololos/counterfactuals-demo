@@ -97,12 +97,6 @@ Key Goals:
  - Maybe:
     => Window rescaling ist noch ein Problem.
 
-Done:
- - sharpened text
- - dimmed restart icon, while hovering help icon
- - Set text_box position when rescaling window size (rescaling still has many problems)
- - Fixed a choice issue, when rescaling (there are still more)
-
 Metaphor:
  - Schwierigkeit: Warum ist es für den Piloten von Vorteil, wenn dem Copiloten etwas Schlechtes passiert, bzw. z.B. beide gemeinsam keine bewohnbare Welt finden?
  - Zerbrechendes Raumschiff Metapher:
