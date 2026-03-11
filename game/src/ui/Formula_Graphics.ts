@@ -32,17 +32,21 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         if(scene.textures.getTextureKeys().includes("false")) { return; }
         scene.load.image("loss", "assets/False.png");
         scene.load.image("false", "assets/Tank_Empty.png");
+        // scene.load.image("false", "assets/Bottom_From_Logic.png");
         scene.load.image("win", "assets/True.png");
         scene.load.image("true", "assets/Flag.png");
+        // scene.load.image("true", "assets/Top_From_Logic.png");
         scene.load.image("atom", "assets/Atom.png");
         scene.load.image("glow", "assets/Glow.png");
         scene.load.image("negation", "assets/Negation.png");
+        // scene.load.image("negation", "assets/Negation_From_Logic.png");
         scene.load.image("possibility", "assets/Possibility_Basic.png");
         scene.load.image("necessity", "assets/Necessity_Basic.png");
         
-        //scene.load.image("disjunction", "assets/Disjunction.png");
-        scene.load.image("disjunction", "assets/OR.png");
+        scene.load.image("disjunction", "assets/Disjunction.png");
+        // scene.load.image("disjunction", "assets/OR.png");
         scene.load.image("conjunction", "assets/AND.png");
+        // scene.load.image("conjunction", "assets/Conjunction_From_Logic.png");
         scene.load.image("cf_would", "assets/Cf_Would.png");
         scene.load.image("cf_might", "assets/Cf_Might.png");
 

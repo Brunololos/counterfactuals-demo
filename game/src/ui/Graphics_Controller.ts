@@ -9,6 +9,7 @@ import { create_cosmic_nebula_texture, describe_move, dye_texture, Game_Graphics
 import { Graph_Graphics } from "./Graph_Graphics";
 import Base_Scene from "../util/Base_Scene";
 import { Formula_Graphics, ICON_WIDTH } from "./Formula_Graphics";
+// import { Space_Station_Graphics, ROOM_IMG_WIDTH } from "./Space_Station_Graphics";
 import { Star } from "../graphics/Star";
 import Game_Scene from "../scenes/Game";
 import { Text_Animation } from "./animations/Text_Animations";
@@ -33,6 +34,7 @@ export class Graphics_Controller {
     private sup_panel;
     private graph_graphics: Graph_Graphics;
     private formula: Formula_Graphics;
+    // private space_station: Space_Station_Graphics;
     private choice: Choice;
     private vacuous;
 
@@ -60,10 +62,11 @@ export class Graphics_Controller {
 
         this.rules_column = new Rules_Column(scene, w-180, 0, state.get_formula().to_string());
         this.text_box = new Text_Box_Controller(scene, w/2, h-250, 500, 55, levels[level].description, levels[level].icon_keys);
-        this.restart = this.create_restart(scene, w-75, 30);
-        this.help = this.create_help(scene, w-35, 30, this.rules_column, this.text_box, this.restart);
+        this.restart = this.create_restart(scene, w-60, 30);
+        this.help = this.create_help(scene, w-20, 30, this.rules_column, this.text_box, this.restart);
 
         this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms());
+        // this.space_station = new Space_Station_Graphics(scene, 0.75*w, h/2, state.get_formula(), state.get_atoms());
         this.choice = new Choice(scene, state);
         this.sup_panel = new Supposition_Panel(scene, w/2, h - 110, [this.formula, this.choice.get_option_graphic(0), this.choice.get_option_graphic(1), this.choice.get_option_boxes()[0], this.choice.get_option_boxes()[1]]);
 
@@ -82,6 +85,7 @@ export class Graphics_Controller {
 
         scene.children.add(this.sup_panel);
         scene.children.add(this.formula);
+        // scene.children.add(this.space_station);
         this.choice.add_to_scene();
 
         this.rules_column.set_visible(false);
@@ -473,7 +477,7 @@ export class Graphics_Controller {
 
             space: {
                 icon: 10,
-                left: 15,
+                left: 0,
                 right: 0,
                 top: 0,
                 bottom: 0,
@@ -513,7 +517,7 @@ export class Graphics_Controller {
 
             space: {
                 icon: 10,
-                left: 15,
+                left: 0,
                 right: 0,
                 top: 0,
                 bottom: 0,
@@ -646,6 +650,7 @@ export class Graphics_Controller {
     static load_sprites(scene: Phaser.Scene) {
         Graph_Graphics.load_sprites(scene);
         Formula_Graphics.load_sprites(scene);
+        // Space_Station_Graphics.load_sprites(scene);
         Rules_Column.load_sprites(scene);
         Text_Box_Controller.load_sprites(scene);
         Choice.load_sprites(scene);

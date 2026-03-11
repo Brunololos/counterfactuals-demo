@@ -73,13 +73,14 @@ Meetings:
 
 Key Goals:
  - UI/QoL:
-    => Restart level button.
+    [DONE] => Restart level button.
     => Victory Popup bei richtiger Lösung.
     => nummeriertes Hauptmenü + scrollbar
     => remove Startmenü?
     => Etwas um Operator Präzedenz besser zu erklären?
     => Hilfe popup mit victory conditions?
     => Bessere Visualisierung der Limit world? & Formeln über Welten?
+    => Scroll effect fürs Fliegen? (Ben?)
 
  - Learning & Introduction:
     => Rewrite explanation texts
@@ -106,6 +107,11 @@ Metaphor:
     - Ich denke die Formel als gescheduleten Ablaufplan zu beschreiben ist vllt nicht ideal, aber wahrscheinlich ein hinnehmbares device.
       Denn ich bezweifle, dass es eine perfekte passende und einfache Metapher dafür gibt, dass man sich genau an die Formeln halten muss.
 
+ - Counterfactuals:
+    - Sprünge mit Sprungabbruchkomponente. (Jumping to closer world als Sprungverkürzung/vom geplanten Wegabsteeren.)
+    - 2 binäre Entscheidungen in Dreifachverzweigung auflösen.
+
+
  IDEA:
  You and your copilot have been entrusted with the important task of finding habitable parallel worlds.
 
@@ -120,3 +126,41 @@ Metaphor:
       - you can land on a habitable world.
       - or your copilot fails to land on a habitable world on their shift.
 
+
+SpaceShip metaphor:
+ - both players start in same room at the beginning.
+ - as the first game step both enter their respective adjacent room (attackers/defenders side)
+ - then in each time step both players advance to an adjacent room, performing the actions they encounter.
+   (I thought that one could maybe say that a fire broke out in the first room, spreading one tile
+   with each timestep. Thus forcing the players to move forward.)
+
+
+To simplify victory conditions for each possible landing, a safe room should be available.
+OR: If we don't want to have to do this safe-room business, we can omit the fire breakout from the metaphor,
+    if we find a solution to make it believable that the monster fails to win if it fails to land.
+ => Victory condition metaphors:
+     - [VICT] Defender lands (Monster in safe room): Defender can use exit capsule signal to warn civilization of Monster on spacestation.
+     - [LOSS] Defender can't land (Monster in safe room): Defender dies, but monster survives.
+     - [LOSS] Monster lands (Defender in safe room): Monster escaped while defender is stuck on spacestation.
+     - [VICT] Monster can't land (Defender in safe room): Monster dies, but defender survives.
+
+     Without saferoom guarantee:
+     - [VICT] Defender lands (Monster burns): Defender survives, but monster doesn't.
+     - [LOSS] Defender can't land (Monster burns): Defender dies, monster too.
+     - [LOSS] Monster lands (Defender burns): Monster survives, but defender doesn't.
+     - [VICT] Monster can't land (Defender burns): Monster dies, defender too.
+
+     Without fire:
+     - [VICT] Defender lands: Defender can use exit capsule signal to warn civilization of Monster on spacestation.
+     - [LOSS] Defender can't land: Defender is stuck on spacestation with monster.
+     - [LOSS] Monster lands: Monster escaped while defender is stuck on spacestation.
+     - [VICT] Monster can't land: THIS IS A METAPHOR PROBLEM! FOR THIS REASON I INTRODUCED THE FIRE.
+
+BUT, one last Problem:
+ => We have limited space in the 2d grid I described. The space grows quadratically with manhattan distance,
+    while the number of spaces needed for a formula grows exponentially with formula depth in the worst case.
+    Still for our use case we won't be using very deeply nested or highly branched formulas, but might need
+    to introduce empty rooms on both sides of the spacestation in order to create space. But I believe this
+    should be manageable for examples as small as the puzzle formulas.
+
+So the main question is how important is the direct correspondance to the cf logic operators to us?
