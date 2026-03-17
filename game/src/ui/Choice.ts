@@ -5,7 +5,7 @@ import Base_Scene from "../util/Base_Scene";
 import { Formula, Negation } from "../game/Cf_Logic";
 import { Game_Graphics_Mode, text_style } from "../util/UI_Utils";
 import { Choice_Animations } from "./animations/Choice_Animations";
-import { CONJ_WIDTH, DISJ_WIDTH, Formula_Graphics, Formula_Graphics_Element } from "./Formula_Graphics";
+import { Formula_Graphics, Formula_Graphics_Element } from "./Formula_Graphics";
 
 export const OR_WIDTH = 60;
 export const OPTION_BOX_HOVER = 60/255;//130/255;
@@ -33,10 +33,11 @@ export class Choice {
     private choice!: integer; // TODO: maybe find better way of suppressing initiaization compiler error
     private cf_choice: boolean = false;
 
-    constructor(scene: Phaser.Scene, state?: Game_State, option1?: Rule, option2?: Rule, embedding_depth: integer = 0) {
+    constructor(scene: Phaser.Scene, metaphor_mode: string, state?: Game_State, option1?: Rule, option2?: Rule, embedding_depth: integer = 0) {
         this.scene = scene;
         this.x = (scene as GameScene).get_width()/2;
         this.y = (scene as GameScene).get_height() - 105;
+        let DISJ_WIDTH = Formula_Graphics.get_disj_width(metaphor_mode);
 
         let x = this.x;
         let y = this.y;
@@ -55,8 +56,8 @@ export class Choice {
         }
 
         this.or = new Phaser.GameObjects.Text(scene, x, y, "OR", text_style);
-        this.option1 = new Formula_Graphics(scene as Base_Scene, x, y, formula1, atoms, embedding_depth).setDepth(1);
-        this.option2 = new Formula_Graphics(scene as Base_Scene, x, y, formula2, atoms, embedding_depth).setDepth(1);
+        this.option1 = new Formula_Graphics(scene as Base_Scene, x, y, formula1, atoms, metaphor_mode, embedding_depth).setDepth(1);
+        this.option2 = new Formula_Graphics(scene as Base_Scene, x, y, formula2, atoms, metaphor_mode, embedding_depth).setDepth(1);
         this.option1.setX(this.option1.x - DISJ_WIDTH/2 - this.option1.get_width()/2);
         this.option2.setX(this.option2.x + DISJ_WIDTH/2 + this.option2.get_width()/2);
 
@@ -123,14 +124,17 @@ export class Choice {
         let atoms = state.get_atoms();
         this.option1.set_atoms(atoms);
         this.option2.set_atoms(atoms);
-        this.option1.set_embedding_depth(embedding_depth +  1);
+        this.option1.set_embedding_depth(embedding_depth + 1);
         this.option2.set_embedding_depth(embedding_depth + 1);
         this.option1.set_formula(option1.apply(this.state).get_formula());
         this.option2.set_formula(option2.apply(this.state).get_formula());
 
         let w1 = this.option1.get_width();
         let w2 = this.option2.get_width();
-        let op_width = (state.get_formula() instanceof Negation) ? CONJ_WIDTH : DISJ_WIDTH;
+        let DISJ_WIDTH = Formula_Graphics.get_disj_width(this.option1.get_metaphor_mode());
+        // let NEG_WIDTH = Formula_Graphics.get_neg_width(this.option1.get_metaphor_mode());
+        // let op_width = (state.get_formula() instanceof Negation) ? NEG_WIDTH : DISJ_WIDTH;
+        let op_width = DISJ_WIDTH;
         this.option1.setX(this.x - op_width/2 - w1/2);
         this.option2.setX(this.x + op_width/2 + w2/2);
 
@@ -238,6 +242,18 @@ export class Choice {
         // this.option1_sprite.setX(this.option1_box.x);
         // this.option2_sprite.setX(this.option2_box.x);
         // TODO: Resize issues
+    }
+
+    set_metaphor_mode(metaphor_mode: string) {
+
+        this.option1.set_metaphor_mode(metaphor_mode);
+        this.option2.set_metaphor_mode(metaphor_mode);
+        let w = (this.scene as GameScene).get_width();
+        let w1 = this.option1.get_width();
+        let w2 = this.option2.get_width();
+
+        this.option1.setX(w/2 - OR_WIDTH/2 - w1/2);
+        this.option2.setX(w/2 + OR_WIDTH/2 + w2/2);
     }
 
     set_visible(visible: boolean) {

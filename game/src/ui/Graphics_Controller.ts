@@ -29,6 +29,7 @@ export class Graphics_Controller {
     private back;
     private help;
     private restart;
+    private metaphor_toggle;
     private rules_column: Rules_Column;
     private text_box;
     private sup_panel;
@@ -51,6 +52,8 @@ export class Graphics_Controller {
     private idle_since: number = Date.now();
     private idle_time: number = 2000;
 
+    private metaphor_mode: string = "metaphor"; // modes: "metaphor", "logic"
+
     constructor(scene: Base_Scene, state: Game_State, world_positions: [number, number][]) {
         this.scene = scene;
         let w = scene.get_width();
@@ -61,16 +64,18 @@ export class Graphics_Controller {
         this.back = this.create_back(scene, 25, 30);
 
         this.rules_column = new Rules_Column(scene, w-180, 0, state.get_formula().to_string());
-        this.text_box = new Text_Box_Controller(scene, w/2, h-250, 500, 55, levels[level].description, levels[level].icon_keys);
+        this.text_box = new Text_Box_Controller(scene, w/2, h-250, 500, 55, levels[level].description, levels[level].icon_keys, this.metaphor_mode);
+
+        this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms(), this.metaphor_mode);
+        // this.space_station = new Space_Station_Graphics(scene, 0.75*w, h/2, state.get_formula(), state.get_atoms());
+        this.choice = new Choice(scene, this.metaphor_mode, state);
+        this.sup_panel = new Supposition_Panel(scene, w/2, h - 110, [this.formula, this.choice.get_option_graphic(0), this.choice.get_option_graphic(1), this.choice.get_option_boxes()[0], this.choice.get_option_boxes()[1]]);
+        this.graph_graphics = new Graph_Graphics(scene, w/2, (h - 200)/2, state, state.get_current_world().index, world_positions, state.get_graph().get_edge_list(), this);
+
+        // TODO: why - an additional 5 when compared to dist of restart from help button?
+        this.metaphor_toggle = this.create_metaphor_toggle(scene, w-105, 30, this.rules_column, this.text_box, this.formula, this.choice, this.graph_graphics, this.metaphor_mode);
         this.restart = this.create_restart(scene, w-60, 30);
         this.help = this.create_help(scene, w-20, 30, this.rules_column, this.text_box, this.restart);
-
-        this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms());
-        // this.space_station = new Space_Station_Graphics(scene, 0.75*w, h/2, state.get_formula(), state.get_atoms());
-        this.choice = new Choice(scene, state);
-        this.sup_panel = new Supposition_Panel(scene, w/2, h - 110, [this.formula, this.choice.get_option_graphic(0), this.choice.get_option_graphic(1), this.choice.get_option_boxes()[0], this.choice.get_option_boxes()[1]]);
-
-        this.graph_graphics = new Graph_Graphics(scene, w/2, (h - 200)/2, state, state.get_current_world().index, world_positions, state.get_graph().get_edge_list(), this);
 
         this.vacuous = this.create_vacuous(this.scene, "", w/2, h-235).setAlpha(0);
 
@@ -466,6 +471,57 @@ export class Graphics_Controller {
         return buttons;
     }
 
+    private create_metaphor_toggle(scene: Base_Scene, x, y, rules_column: Rules_Column, text_box: Text_Box_Controller, formula: Formula_Graphics, choice: Choice, graph_graphics: Graph_Graphics, metaphor_mode: string) {
+        var button = scene.rexUI.add.label({
+            width: 60,
+            height: 60,
+
+            orientation: 0,
+
+            icon: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "metaphor_toggle_icon").setDisplaySize(40, 40).setAlpha(0.6)),
+
+            space: {
+                icon: 10,
+                left: 0,
+                right: 0,
+                top: 0,
+                bottom: 0,
+            }
+        }).layout();
+
+        var buttons = scene.rexUI.add.buttons({
+            x: x,
+            y: y,
+            buttons: [],
+        })
+        .addButton(button)
+        .layout();
+
+        buttons.on('button.over', function(button, index, pointer, event) {
+            button.getElement('icon').setAlpha(1);
+        })
+        buttons.on('button.out', function(button, index, pointer, event) {
+            button.getElement('icon').setAlpha(0.6);
+        })
+        buttons.on('button.click', function(button, index, pointer, event) {
+            if (metaphor_mode == "metaphor") {
+                metaphor_mode = "logic";
+                console.log("Set metaphor mode to 'logic'");
+            } else if (metaphor_mode == "logic") {
+                metaphor_mode = "metaphor";
+                console.log("Set metaphor mode to 'metaphor'");
+            }
+            // TODO: set correct widths of imgs in Formula_Graphics
+            rules_column.set_metaphor_mode(metaphor_mode);
+            text_box.set_metaphor_mode(metaphor_mode);
+            formula.set_metaphor_mode(metaphor_mode);
+            choice.set_metaphor_mode(metaphor_mode);
+            graph_graphics.set_metaphor_mode(metaphor_mode);
+        })
+
+        return buttons;
+    }
+
     private create_restart(scene: Base_Scene, x, y) {
         var button = scene.rexUI.add.label({
             width: 60,
@@ -499,7 +555,6 @@ export class Graphics_Controller {
             button.getElement('icon').setAlpha(0.6);
         })
         buttons.on('button.click', function(button, index, pointer, event) {
-            // scene.scene.restart({level: scene.level});
             scene.reload_level();
         })
 
@@ -676,6 +731,7 @@ export class Graphics_Controller {
 
         scene.load.image("help_icon", "assets/Help_Icon.png");
         scene.load.image("restart_icon", "assets/Retry_Icon.png");
+        scene.load.image("metaphor_toggle_icon", "assets/Metaphor_Toggle_Icon.png");
     }
 
     static configure_sprites(scene: Phaser.Scene) {

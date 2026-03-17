@@ -100,6 +100,12 @@ export class Rules_Column {
         }
     }
 
+    set_metaphor_mode(metaphor_mode: string) {
+        for (var rule of this.rules) {
+            rule.set_metaphor_mode(metaphor_mode);
+        }
+    }
+
     static load_sprites(scene: Phaser.Scene) {
         scene.load.image("rule_column", "assets/Corner_Free_Column.png");
         scene.load.image("rule_column_top", "assets/Corner_Free_Column_Top.png");

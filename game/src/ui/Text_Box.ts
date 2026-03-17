@@ -4,12 +4,13 @@ export class Text_Box_Controller {
     private text_box;
     private active = true;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, width: number, height: number, text: string, icon_keys: string[]) {
+    constructor(scene: Phaser.Scene, x: number, y: number, width: number, height: number, text: string, icon_keys: string[], metaphor_mode: string) {
         this.text_box = createTextBox(scene, x, y, this, {
             wrapWidth: width,
             fixedWidth: width,
             fixedHeight: height,
-            icon_keys: icon_keys
+            icon_keys: icon_keys,
+            metaphor_mode: metaphor_mode
         })
         .start(text, 50);
         if(text == "") { this.text_box.setVisible(false); this.set_active(false); }
@@ -53,11 +54,16 @@ export class Text_Box_Controller {
         this.active = active;
     }
 
+    set_metaphor_mode(metaphor_mode: string) {
+        // TODO: how to change/update textbox icons depending on metaphor state, while keeping typing state?
+    }
+
     static load_sprites(scene: Phaser.Scene) {
         if(scene.textures.getTextureKeys().includes("long_chunk")) { return; }
 
         scene.load.image("long_chunk", "assets/Long_Chunk.png");
-        scene.load.image("pilots_icon", "assets/Pilots.png");
+        scene.load.image("pilots_icon_metaphor", "assets/Pilots.png");
+        scene.load.image("pilots_icon_logic", "assets/Pilots.png");
         scene.load.image("slim_empty_icon", "assets/Empty_Slim_Icon.png");
     }
 }
@@ -68,6 +74,7 @@ var createTextBox = function (scene, x, y, text_box_controller, config) {
     var fixedWidth = GetValue(config, 'fixedWidth', 0);
     var fixedHeight = GetValue(config, 'fixedHeight', 0);
     var icon_keys = GetValue(config, 'icon_keys', [""]);
+    var metaphor_mode = GetValue(config, 'metaphor_mode', [""]);
     var tween;
     var textBox = scene.rexUI.add.textBox({
         x: x,
@@ -75,7 +82,7 @@ var createTextBox = function (scene, x, y, text_box_controller, config) {
 
         background: scene.add.image(0, 0, "long_chunk"),
 
-        icon: ((icon_keys.length <= 0 || icon_keys[0] == "") ? scene.add.image(0, 0, 'slim_empty_icon') : scene.add.image(0, 0, icon_keys[0])),
+        icon: ((icon_keys.length <= 0 || icon_keys[0] == "") ? scene.add.image(0, 0, 'slim_empty_icon') : scene.add.image(0, 0, icon_keys[0] + "_" + metaphor_mode)),
 
         text: getBuiltInText(scene, wrapWidth, fixedWidth, fixedHeight),
 
@@ -126,7 +133,7 @@ var createTextBox = function (scene, x, y, text_box_controller, config) {
                     this.typeNextPage();
                     this.getElement('action').getElement('text').text = (textBox.pageIndex+1)+"/"+textBox.pageCount;
                     if(icon_keys.length > 0 && icon_keys[0] != "") {
-                        this.getElement('icon').setTexture(icon_keys[0]);
+                        this.getElement('icon').setTexture(icon_keys[0] + "_" + metaphor_mode);
                         this.getElement('icon').setVisible(true);
                         icon_keys = icon_keys.slice(1, icon_keys.length);
                     } else if(icon_keys.length > 0 && icon_keys[0] == "") {

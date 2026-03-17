@@ -89,6 +89,7 @@ Key Goals:
  - Zeigen wer aktiv ist: Pilot/Copilot
     => Große sprite Einblendung von der Seite?
     => Oder Pilot/Copilot icons in Beschreibungsbar und Umrahmung der Entscheidungsfläche je nachdem wer am Zug ist.
+    => Hinterlegung der Formeloperatoren mit color coded outline glow?
  - Color coding/Disambiguation:
     => Andere Farbe für Pilot/Copilot. (Reservieren von rot/grün für victory/defeat.)
     => Color coding von pilot/copilot wörtern in text.
@@ -110,6 +111,48 @@ Metaphor:
  - Counterfactuals:
     - Sprünge mit Sprungabbruchkomponente. (Jumping to closer world als Sprungverkürzung/vom geplanten Wegabsteeren.)
     - 2 binäre Entscheidungen in Dreifachverzweigung auflösen.
+
+Concrete:
+ + Create metaphor swap icon & set it.
+ - Fix help panel overlaying new buttons. (restart & toggle metaphor)
+ + swap out Formula graphics sprites depending on metaphor
+ - swap out icons in text box depending on metaphor
+ + respect metaphor_mode state inside Choice.ts (probably done)
+ + make Formula_Graphics & integrations work with differing operator widths (disj, conj, neg)
+ + finish adding all logic operators as symbols: necessity, possibilities, cfs, top, bottom
+ + Conjunction is not faded out in animation to AND. This wasnt visible in previous metaphor version.
+   Update: It seems more like animations don't work properly when metaphor switching during them.
+ + update rules panel with current icons after metaphor switch.
+ - reduce negation symbol margin on right & increase on left.
+ + rebuild counterfactual hint formulas on metaphor toggle.
+ - Reduce logic disj/conj/cfs strokeweights & narrow cfs & scale down necc, poss & cfs.
+ - Create Atom visualizaton as Letters: A, B, C, etc
+ - Hint boxes are too small now for metaphor symbols for some reason (maybe I don't have to fix them
+   if I remove them anyways.)
+ + When swapping metaphors on a bottom or top formula sometimes the last atom appears.
+ + When perma swapping metaphors in double shift switch level the metaphor version seems to lag behind
+   & doesnt seem to correctly animate.
+ BUG:
+  + swapping metaphors in win/loss screen shows Atom instead of Top/Bottom symbol.
+    (It happens because instead of having defender/attacker victory/loss as part
+     of the logic I only replace the texture in the corresponding animation at the end.)
+  + When toggling the metaphor the top to win and bottom to lose rule graphics aren't updated correctly.
+  + There seems to be a small window during the animation where changing the metaphor reverts
+    to the last formula not the next.
+ Visual: 
+  + scale down possibility/necessity & the corresponding regions of the cf symbols
+  - fix animations that don't work exactly with new icon sizes.
+  + Some Rule Graphics become too long for the help panel in logic version.
+  - Make disjunction/conjunction slighty thinner.
+  - There are still some Textbox visualization icon keys that aren't found.
+  - On some Rule_Graphics explanations the help panel arrows get too close to
+    the formulas which doesn't look good. (esp. the counterfactual rules)
+
+
+ - Implement cf choice in sup panel instead of having overlay hints over the worlds.
+ - Implement graphics effect to sell the player that they have to interact with the map instead of
+   the panel at the bottom.
+ - Add numbering to Level Selection menu
 
 
  IDEA:

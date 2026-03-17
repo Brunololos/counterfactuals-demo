@@ -52,6 +52,13 @@ export class Rule_Graphics {
         this.arrow_sprites.setVisible(visible);
     }
 
+    set_metaphor_mode(metaphor_mode: string) {
+        this.preformula_graphics.set_metaphor_mode(metaphor_mode);
+        for (var formula of this.postformula_graphics) {
+            formula.set_metaphor_mode(metaphor_mode);
+        }
+    }
+
     get_preformula(): Formula_Graphics {
         return this.preformula_graphics;
     }

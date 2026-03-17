@@ -75,8 +75,8 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
                 let frac = j/vertex_atoms.length;
                 let rad = frac * 2 * Math.PI;
                 //this.add(new Phaser.GameObjects.Ellipse(scene, x+Math.cos(rad)*r, y+Math.sin(rad)*r, 10, 10, vertex_colors[state.get_atoms().findIndex((value) => value == vertex_atoms[j])]));
-                let glow = new Phaser.GameObjects.Sprite(scene, x+Math.cos(rad)*r, y+Math.sin(rad)*r, "glow").setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
-                let atom = new Phaser.GameObjects.Sprite(scene, x+Math.cos(rad)*r, y+Math.sin(rad)*r, "atom_" + state.get_atoms().findIndex((curr) => curr == vertex_atoms[j])).setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
+                let glow = new Phaser.GameObjects.Sprite(scene, x+Math.cos(rad)*r, y+Math.sin(rad)*r, "glow_metaphor").setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
+                let atom = new Phaser.GameObjects.Sprite(scene, x+Math.cos(rad)*r, y+Math.sin(rad)*r, "atom_" + state.get_atoms().findIndex((curr) => curr == vertex_atoms[j]) + "_metaphor").setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
                 this.worlds[i].add_atom_sprite(glow);
                 this.worlds[i].add_atom_sprite(atom);
                 this.add(glow);
@@ -291,6 +291,12 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         this.worlds[delim_world].set_hint("(~("+left+")) v ("+right+")", atoms);
     }
 
+    set_metaphor_mode(metaphor_mode: string) {
+        for (var world of this.worlds) {
+            world.set_metaphor_mode(metaphor_mode);
+        }
+    }
+
     clear_hover_ellipse_alphas() {
         for(let i=0; i<this.worlds.length; i++) {
             this.worlds[i].get_hover_ellipse().setAlpha(WORLD_BASE_HIGHLIGHT_ALPHA);
@@ -461,10 +467,11 @@ export class World_Controller {
     }
 
     set_hint(formula: string, atoms: string[]) {
+        let metaphor_mode = this.hint.get_metaphor_mode();
         this.hint.destroy(); // TODO: Need to destroy old speech bubbles?
         //this.speech_bubble.forEach((value) => value.destroy());
         //this.speech_bubble.forEach((value) => (value.parentContainer != undefined) ? value.destroy() : 1 == 1);
-        this.hint = new Formula_Graphics(this.scene, this.x, this.y+WORLD_WIDTH/4 + 1, Formula.parse(formula, atoms), atoms);
+        this.hint = new Formula_Graphics(this.scene, this.x, this.y+WORLD_WIDTH/4 + 1, Formula.parse(formula, atoms), atoms, metaphor_mode);
         this.hint.get_formula().scale_recursive(0.5);
 
 
@@ -485,6 +492,11 @@ export class World_Controller {
     clear_hint() {
         this.speech_bubble.forEach((value) => value.setVisible(false));
         this.hint.setVisible(false);
+    }
+
+    set_metaphor_mode(metaphor_mode: string) {
+        this.hint.set_metaphor_mode(metaphor_mode);
+        this.hint.get_formula().scale_recursive(0.5);
     }
 
     add_edge(edge: Edge) {

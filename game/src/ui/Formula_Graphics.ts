@@ -5,8 +5,16 @@ import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode } from
 import { Formula_Animations } from "./animations/Formula_Animations";
 import { cloneDeep } from "lodash";
 
-export const DISJ_WIDTH = 30;
-export const CONJ_WIDTH = 30;
+// export const NEG_WIDTH = 30; // 60; // TODO: if logic symbols: 30;
+// export const DISJ_WIDTH = 30; // TODO: if logic symbols: 60;
+
+export const NEG_META_WIDTH = 60;
+export const NEG_LOGIC_WIDTH = 30;
+export const DISJ_META_WIDTH = 30;
+export const DISJ_LOGIC_WIDTH = 30; // 60;
+export const CF_META_WIDTH = 60;
+export const CF_LOGIC_WIDTH = 90;
+
 export const ICON_WIDTH = 60;
 export const BRACKET_WIDTH = 10;
 
@@ -17,39 +25,57 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     private atoms: string[];
     private embedding_depth: integer = 0;
 
+    private metaphor_mode: string;
+    private curr_formula: Formula;
     private next_formula?: Formula;
 
-    constructor(scene: Base_Scene, x: number, y: number, formula: Formula, atoms: string[], embedding_depth: integer = 0) {
+    // reference to animation to access & recreate when swapping out sprites for metaphor toggle
+    private animation_timeline?: Phaser.Tweens.Timeline;
+    private animated_transition?: [Game_Graphics_Mode, Game_Graphics_Mode];
+    private animated_move?: Rules;
+
+    constructor(scene: Base_Scene, x: number, y: number, formula: Formula, atoms: string[], metaphor_mode: string, embedding_depth: integer = 0) {
         super(scene, x, y);
 
+        this.metaphor_mode = metaphor_mode;
+        this.curr_formula = formula;
         this.atoms = cloneDeep(atoms);
         this.embedding_depth = embedding_depth;
-        this.formula = Formula_Graphics_Element.parse(scene, formula, 0, 0, this.atoms);
+        this.formula = Formula_Graphics_Element.parse(scene, formula, 0, 0, this.atoms, metaphor_mode);
         this.formula.add_to_container(this);
     }
 
     static load_sprites(scene: Phaser.Scene) {
         if(scene.textures.getTextureKeys().includes("false")) { return; }
+        // METAPHOR SYMBOLS
         scene.load.image("loss", "assets/False.png");
-        scene.load.image("false", "assets/Tank_Empty.png");
-        // scene.load.image("false", "assets/Bottom_From_Logic.png");
+        scene.load.image("false_metaphor", "assets/Tank_Empty.png");
         scene.load.image("win", "assets/True.png");
-        scene.load.image("true", "assets/Flag.png");
-        // scene.load.image("true", "assets/Top_From_Logic.png");
-        scene.load.image("atom", "assets/Atom.png");
-        scene.load.image("glow", "assets/Glow.png");
-        scene.load.image("negation", "assets/Negation.png");
-        // scene.load.image("negation", "assets/Negation_From_Logic.png");
-        scene.load.image("possibility", "assets/Possibility_Basic.png");
-        scene.load.image("necessity", "assets/Necessity_Basic.png");
-        
-        scene.load.image("disjunction", "assets/Disjunction.png");
-        // scene.load.image("disjunction", "assets/OR.png");
-        scene.load.image("conjunction", "assets/AND.png");
-        // scene.load.image("conjunction", "assets/Conjunction_From_Logic.png");
-        scene.load.image("cf_would", "assets/Cf_Would.png");
-        scene.load.image("cf_might", "assets/Cf_Might.png");
+        scene.load.image("true_metaphor", "assets/Flag.png");
 
+        scene.load.image("atom_metaphor", "assets/Atom.png");
+        scene.load.image("glow_metaphor", "assets/Glow.png");
+        scene.load.image("negation_metaphor", "assets/Negation.png");
+        scene.load.image("possibility_metaphor", "assets/Possibility_Basic.png");
+        scene.load.image("necessity_metaphor", "assets/Necessity_Basic.png");
+        
+        scene.load.image("disjunction_metaphor", "assets/OR.png");
+        scene.load.image("conjunction_metaphor", "assets/AND.png");
+        scene.load.image("cf_would_metaphor", "assets/Cf_Would.png");
+        scene.load.image("cf_might_metaphor", "assets/Cf_Might.png");
+
+        // LOGIC SYMBOLS
+        scene.load.image("false_logic", "assets/Bottom_From_Logic.png");
+        scene.load.image("true_logic", "assets/Top_From_Logic.png");
+        scene.load.image("negation_logic", "assets/Negation_From_Logic.png");
+        scene.load.image("disjunction_logic", "assets/Disjunction_From_Logic.png");
+        scene.load.image("conjunction_logic", "assets/Conjunction_From_Logic.png");
+        scene.load.image("possibility_logic", "assets/Possibility_From_Logic.png");
+        scene.load.image("necessity_logic", "assets/Necessity_From_Logic.png");
+        scene.load.image("cf_would_logic", "assets/Cf_Would_From_Logic.png");
+        scene.load.image("cf_might_logic", "assets/Cf_Might_From_Logic.png");
+
+        // BRACKETS
         /* scene.load.image("fill_open", "assets/Fill_Open.png");
         scene.load.image("fill_connect", "assets/Fill_Connect.png");
         scene.load.image("fill_closed", "assets/Fill_Closed.png"); */
@@ -69,32 +95,45 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
             duplicate_texture(scene, "fill_connect", "fill_connect_"+(i).toString());
             duplicate_texture(scene, "fill_closed", "fill_closed_"+(i).toString());
 
-            duplicate_texture(scene, "atom", "atom_"+(i).toString());
-            dye_texture(scene, "atom_"+(i).toString(), atom_colors[i]);
+            duplicate_texture(scene, "atom_metaphor", "atom_"+(i).toString()+"_metaphor");
+            dye_texture(scene, "atom_"+(i).toString()+"_metaphor", atom_colors[i]);
+
+            // TODO: migrate to logic sprites
+            duplicate_texture(scene, "atom_metaphor", "atom_"+(i).toString()+"_logic");
+            dye_texture(scene, "atom_"+(i).toString()+"_logic", atom_colors[i]);
         }
         /* duplicate_texture(scene, "possibility", "necessity")
         dye_texture(scene, "necessity", 0xdd3d3d) */
     }
 
-    animate_transition(transition: [Game_Graphics_Mode, Game_Graphics_Mode]): number {
+
+    animate_transition(transition: [Game_Graphics_Mode, Game_Graphics_Mode], start_from: number=0): number {
         let timeline = this.scene.tweens.createTimeline();
         let anim_time = Formula_Animations.fill_transition_animation_timeline(timeline, transition, this);
-        timeline.play();
+        timeline.time = start_from;
+        timeline.play(false);
+
+        this.animation_timeline = timeline;
+        this.animated_transition = transition;
         return anim_time;
     }
 
-    animate(formula: Formula, rule: Rules): number {
-        this.next_formula = formula;
+    animate(formula: Formula, rule: Rules, start_from: number=0): number {
+        this.next_formula = formula; 
         if(rule == Rules.Defender_Victory || rule == Rules.Attacker_Victory) { this.next_formula = undefined; }
         //if([Rules.Negated_Left_OR, Rules.Negated_Right_OR, Rules.Attacker_Vacuous_Truth_Claim].includes(rule)) { this.embedding_depth++; } // TODO: doesn't matter rn fix later
-        return this.start_animation(rule);
+        return this.start_animation(rule, start_from);
     }
 
     end_animation() {
         if(this.next_formula != undefined) {
+            this.animation_timeline = undefined;
+            this.animated_move = undefined;
             this.removeAll(true);
-            this.formula = Formula_Graphics_Element.parse((this.scene as Base_Scene), this.next_formula, 0, 0, this.atoms, this.embedding_depth);
+            this.formula = Formula_Graphics_Element.parse((this.scene as Base_Scene), this.next_formula, 0, 0, this.atoms, this.metaphor_mode, this.embedding_depth);
             this.formula.add_to_container(this);
+            this.curr_formula = this.next_formula;
+            this.next_formula = undefined;
         }
     }
 
@@ -103,7 +142,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
      * @returns temporarily added Formula_Graphics_Element
      */
     add_temporary_formula(formula: string): Formula_Graphics_Element {
-        let temporary = Formula_Graphics_Element.parse((this.scene as Base_Scene), Formula.parse(formula), 0, 0, this.atoms, this.embedding_depth);
+        let temporary = Formula_Graphics_Element.parse((this.scene as Base_Scene), Formula.parse(formula), 0, 0, this.atoms, this.metaphor_mode, this.embedding_depth);
         temporary.add_to_container(this);
         return temporary;
     }
@@ -115,7 +154,8 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     set_formula(formula: Formula) {
         this.removeAll(true);
         this.next_formula = undefined;
-        this.formula = Formula_Graphics_Element.parse((this.scene as Base_Scene), formula, 0, 0, this.atoms, this.embedding_depth);
+        this.curr_formula = formula;
+        this.formula = Formula_Graphics_Element.parse((this.scene as Base_Scene), formula, 0, 0, this.atoms, this.metaphor_mode, this.embedding_depth);
         this.formula.add_to_container(this);
     }
 
@@ -123,10 +163,14 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         this.embedding_depth = depth;
     }
 
-    start_animation(rule: Rules): number {
+    start_animation(rule: Rules, start_from: number = 0): number {
         let timeline = this.scene.tweens.createTimeline();
         let anim_time = Formula_Animations.fill_animation_timeline(timeline, rule, this);
-        timeline.play();
+        timeline.time = start_from;
+        timeline.play(false);
+
+        this.animation_timeline = timeline;
+        this.animated_move = rule;
         return anim_time;
     }
 
@@ -134,6 +178,35 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         let children = this.getAll();
         for(let i=0; i<children.length; i++) {
             (children[i] as Phaser.GameObjects.Sprite).setTint(color);
+        }
+    }
+
+    set_metaphor_mode(metaphor_mode: string) {
+        this.metaphor_mode = metaphor_mode;
+        // NOTE: this is a bit hacky, but we check, whether a win or loss formula element is
+        // present and if so we don't update the visualization because it's the same. This has
+        // to be done bc win & loss are only added as temporary formulas into the container without
+        // any reference to them.
+        for (var formula_element of this.list) {
+            if (formula_element.texture.key == "win"
+            ||  formula_element.texture.key == "loss") { return; }
+        }
+        let scale = this.formula.scaleX;
+
+        this.removeAll(true);
+        this.formula = Formula_Graphics_Element.parse(this.scene, this.curr_formula, 0, 0, this.atoms, metaphor_mode);
+        this.formula.scale_recursive(scale);
+        this.formula.add_to_container(this);
+
+        // Handle animation
+        if (this.animation_timeline === undefined) { return; }
+        let current_time = this.animation_timeline.progress * this.animation_timeline.duration;
+        this.animation_timeline.stop();
+        this.animation_timeline.destroy();
+        if (this.animated_move !== undefined) {
+            this.animate(this.next_formula, this.animated_move, current_time);
+        } else if (this.animated_transition !== undefined) {
+            this.animate_transition(this.animated_transition, current_time);
         }
     }
 
@@ -150,7 +223,23 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     }
 
     get_width(): number {
-        return this.formula.get_width();
+        return this.formula.get_width(this.metaphor_mode);
+    }
+
+    get_metaphor_mode(): string {
+        return this.metaphor_mode;
+    }
+
+    static get_neg_width(metaphor_mode: string): number {
+        return ((metaphor_mode == "metaphor") ? NEG_META_WIDTH : NEG_LOGIC_WIDTH);
+    }
+
+    static get_disj_width(metaphor_mode: string): number {
+        return ((metaphor_mode == "metaphor") ? DISJ_META_WIDTH : DISJ_LOGIC_WIDTH);
+    }
+
+    static get_cf_width(metaphor_mode: string): number {
+        return ((metaphor_mode == "metaphor") ? CF_META_WIDTH : CF_LOGIC_WIDTH);
     }
 }
 
@@ -167,49 +256,52 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
      * @param to_parse A Formula to be represented by graphics
      * @returns The root object of a tree of formula graphics element objects
      */
-    static parse(scene: Base_Scene, to_parse: Formula, x: number, y: number, atoms: string[]=[], embedded: number=0): Formula_Graphics_Element {
+    static parse(scene: Base_Scene, to_parse: Formula, x: number, y: number, atoms: string[]=[], metaphor_mode: string="metaphor", embedded: number=0): Formula_Graphics_Element {
         let antecedent; let consequent; let subject1; let subject2; let subject;
+        let DISJ_WIDTH = Formula_Graphics.get_disj_width(metaphor_mode);
+        let CF_WIDTH = Formula_Graphics.get_cf_width(metaphor_mode);
         switch(true) {
             case to_parse instanceof Cf_Might:
-                antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
-                consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
-                antecedent.offset(- ICON_WIDTH/2 - consequent.get_width()/2);
-                consequent.offset(+ ICON_WIDTH/2 + antecedent.get_width()/2);
-                return new Cf_Might_Graphics(scene, x + (antecedent.get_width() - consequent.get_width())/2, y, antecedent, consequent, embedded);
+                antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, metaphor_mode, embedded+1);
+                consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, metaphor_mode, embedded+1);
+                antecedent.offset(- CF_WIDTH/2 - consequent.get_width(metaphor_mode)/2);
+                consequent.offset(+ CF_WIDTH/2 + antecedent.get_width(metaphor_mode)/2);
+                return new Cf_Might_Graphics(scene, x + (antecedent.get_width(metaphor_mode) - consequent.get_width(metaphor_mode))/2, y, antecedent, consequent, metaphor_mode, embedded);
             case to_parse instanceof Cf_Would:
-                antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
-                consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
-                antecedent.offset(- ICON_WIDTH/2 - consequent.get_width()/2);
-                consequent.offset(+ ICON_WIDTH/2 + antecedent.get_width()/2);
-                return new Cf_Would_Graphics(scene, x + (antecedent.get_width() - consequent.get_width())/2, y, antecedent, consequent, embedded);
+                antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, metaphor_mode, embedded+1);
+                consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, metaphor_mode, embedded+1);
+                antecedent.offset(- CF_WIDTH/2 - consequent.get_width(metaphor_mode)/2);
+                consequent.offset(+ CF_WIDTH/2 + antecedent.get_width(metaphor_mode)/2);
+                return new Cf_Would_Graphics(scene, x + (antecedent.get_width(metaphor_mode) - consequent.get_width(metaphor_mode))/2, y, antecedent, consequent, metaphor_mode, embedded);
             case to_parse instanceof Disjunction:
-                subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
-                subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
-                subject1.offset(- DISJ_WIDTH/2 - subject2.get_width()/2);
-                subject2.offset(+ DISJ_WIDTH/2 + subject1.get_width()/2);
-                return new Disjunction_Graphics(scene, x + (subject1.get_width() - subject2.get_width())/2, y, subject1, subject2, embedded);
+                subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, metaphor_mode, embedded+1);
+                subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, metaphor_mode, embedded+1);
+                subject1.offset(- DISJ_WIDTH/2 - subject2.get_width(metaphor_mode)/2);
+                subject2.offset(+ DISJ_WIDTH/2 + subject1.get_width(metaphor_mode)/2);
+                return new Disjunction_Graphics(scene, x + (subject1.get_width(metaphor_mode) - subject2.get_width(metaphor_mode))/2, y, subject1, subject2, metaphor_mode, embedded);
             case to_parse instanceof Conjunction:
-                subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, embedded+1);
-                subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, embedded+1);
-                subject1.offset(- CONJ_WIDTH/2 - subject2.get_width()/2);
-                subject2.offset(+ CONJ_WIDTH/2 + subject1.get_width()/2);
-                return new Conjunction_Graphics(scene, x + (subject1.get_width() - subject2.get_width())/2, y, subject1, subject2, embedded);
+                subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, metaphor_mode, embedded+1);
+                subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, metaphor_mode, embedded+1);
+                subject1.offset(- DISJ_WIDTH/2 - subject2.get_width(metaphor_mode)/2);
+                subject2.offset(+ DISJ_WIDTH/2 + subject1.get_width(metaphor_mode)/2);
+                return new Conjunction_Graphics(scene, x + (subject1.get_width(metaphor_mode) - subject2.get_width(metaphor_mode))/2, y, subject1, subject2, metaphor_mode, embedded);
             case to_parse instanceof Possibility:
-                subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
-                return new Possibility_Graphics(scene, x - subject.get_width()/2, y, subject);
+                subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, metaphor_mode, embedded);
+                return new Possibility_Graphics(scene, x - subject.get_width(metaphor_mode)/2, y, subject, metaphor_mode);
             case to_parse instanceof Necessity:
-                subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
-                return new Necessity_Graphics(scene, x - subject.get_width()/2, y, subject);
+                subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, metaphor_mode, embedded);
+                return new Necessity_Graphics(scene, x - subject.get_width(metaphor_mode)/2, y, subject, metaphor_mode);
             case to_parse instanceof Negation:
-                subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, embedded);
-                return new Negation_Graphics(scene, x - subject.get_width()/2 + ((subject instanceof Conjunction_Graphics || subject instanceof  Disjunction_Graphics || subject instanceof Cf_Might_Graphics || subject instanceof  Cf_Would_Graphics) ? + BRACKET_WIDTH/2 : 0), y, subject);
+                let NEG_WIDTH = Formula_Graphics.get_neg_width(metaphor_mode);
+                subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + NEG_WIDTH/2, y, atoms, metaphor_mode, embedded);
+                return new Negation_Graphics(scene, x - subject.get_width(metaphor_mode)/2 + ((subject instanceof Conjunction_Graphics || subject instanceof Disjunction_Graphics || subject instanceof Cf_Might_Graphics || subject instanceof Cf_Would_Graphics) ? + BRACKET_WIDTH/2 : 0), y, subject, metaphor_mode);
                 // TODO: Fix random Bracket Offset for binary operators //In ..._Would_Target_Evaluation Animation set correct negation offset // rm offset in Formula creation
             case to_parse instanceof Atom:
-                return new Atom_Graphics(scene, x, y, (to_parse as Atom).value,  atoms);
+                return new Atom_Graphics(scene, x, y, (to_parse as Atom).value, atoms, metaphor_mode);
             case to_parse instanceof Bottom:
-                return new Bottom_Graphics(scene, x, y);
+                return new Bottom_Graphics(scene, x, y, metaphor_mode);
             case to_parse instanceof Top:
-                return new Top_Graphics(scene, x, y);
+                return new Top_Graphics(scene, x, y, metaphor_mode);
             default:
                 throw new Error("Cannot parse invalid formula");
         }
@@ -221,7 +313,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
 
     abstract set_depth(d: number): void;
 
-    abstract get_width(): number;
+    abstract get_width(metaphor_mode: string): number;
 
     abstract get_atoms(atoms: string[]): Formula_Graphics_Element[];
 
@@ -249,21 +341,23 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
      * @param antedecent Formula
      * @param consequent Formula
      */
-    constructor(scene: Base_Scene, x: number, y: number, antedecent: Formula_Graphics_Element, consequent: Formula_Graphics_Element, embedded: integer) {
-        super(scene, x, y, "cf_might");
+    constructor(scene: Base_Scene, x: number, y: number, antedecent: Formula_Graphics_Element, consequent: Formula_Graphics_Element, metaphor_mode: string, embedded: integer) {
+        super(scene, x, y, "cf_might_"+metaphor_mode);
         this.antecedent = antedecent;
         this.consequent = consequent;
 
-        let w1 = this.antecedent.get_width();
-        let w2 = this.consequent.get_width();
+        let w1 = this.antecedent.get_width(metaphor_mode);
+        let w2 = this.consequent.get_width(metaphor_mode);
+        let CF_WIDTH = Formula_Graphics.get_cf_width(metaphor_mode);
 
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 - BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 30 - CF_WIDTH/2 - BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            // NOTE: this inner computation is not correct anymore after adding + 30 - CF_WIDTH/2
             this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));//.setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 + BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 30 + CF_WIDTH/2 + BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
         }
-        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
+        this.setDisplaySize(CF_WIDTH, ICON_WIDTH);
     }
 
     get_child(path: string): Formula_Graphics_Element {
@@ -305,8 +399,9 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         this.consequent.set_depth(d);
     }
 
-    get_width(): number {
-        return ICON_WIDTH*this.scaleX + this.antecedent.get_width() + this.consequent.get_width() + 2*BRACKET_WIDTH*this.scaleX;
+    get_width(metaphor_mode: string): number {
+        let CF_WIDTH = Formula_Graphics.get_cf_width(metaphor_mode);
+        return CF_WIDTH*this.scaleX + this.antecedent.get_width(metaphor_mode) + this.consequent.get_width(metaphor_mode) + 2*BRACKET_WIDTH*this.scaleX;
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -344,21 +439,23 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
      * @param antedecent Formula
      * @param consequent Formula
      */
-    constructor(scene: Base_Scene, x: number, y: number, antedecent: Formula_Graphics_Element, consequent: Formula_Graphics_Element, embedded: integer) {
-        super(scene, x, y, "cf_would");
+    constructor(scene: Base_Scene, x: number, y: number, antedecent: Formula_Graphics_Element, consequent: Formula_Graphics_Element, metaphor_mode: string, embedded: integer) {
+        super(scene, x, y, "cf_would_"+metaphor_mode);
         this.antecedent = antedecent;
         this.consequent = consequent;
 
-        let w1 = this.antecedent.get_width();
-        let w2 = this.consequent.get_width();
+        let w1 = this.antecedent.get_width(metaphor_mode);
+        let w2 = this.consequent.get_width(metaphor_mode);
+        let CF_WIDTH = Formula_Graphics.get_cf_width(metaphor_mode);
 
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 - BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 30 - CF_WIDTH/2 - BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            // NOTE: this inner computation is not correct anymore after adding + 30 - CF_WIDTH/2
             this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));//.setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 + BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 30 + CF_WIDTH/2 + BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
         }
-        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
+        this.setDisplaySize(CF_WIDTH, ICON_WIDTH);
     }
 
     get_child(path: string): Formula_Graphics_Element {
@@ -400,8 +497,9 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         this.consequent.set_depth(d);
     }
 
-    get_width(): number {
-        return ICON_WIDTH*this.scaleX + this.antecedent.get_width() + this.consequent.get_width() + 2*BRACKET_WIDTH*this.scaleX;
+    get_width(metaphor_mode: string): number {
+        let CF_WIDTH = Formula_Graphics.get_cf_width(metaphor_mode);
+        return CF_WIDTH*this.scaleX + this.antecedent.get_width(metaphor_mode) + this.consequent.get_width(metaphor_mode) + 2*BRACKET_WIDTH*this.scaleX;
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -439,20 +537,22 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
      * @param subject1 Formula to be disjunct
      * @param subject2 Formula to be disjunct
      */
-    constructor(scene: Base_Scene, x: number, y: number, subject1: Formula_Graphics_Element, subject2: Formula_Graphics_Element, embedded: integer) {
-        super(scene, x, y, "disjunction");
+    constructor(scene: Base_Scene, x: number, y: number, subject1: Formula_Graphics_Element, subject2: Formula_Graphics_Element, metaphor_mode: string, embedded: integer) {
+        super(scene, x, y, "disjunction_"+metaphor_mode);
         this.subject1 = subject1;
         this.subject2 = subject2;
 
-        let w1 = this.subject1.get_width();
-        let w2 = this.subject2.get_width();
+        let w1 = this.subject1.get_width(metaphor_mode);
+        let w2 = this.subject2.get_width(metaphor_mode);
+        let DISJ_WIDTH = Formula_Graphics.get_disj_width(metaphor_mode);
 
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
             suff = ""; // TODO: quick fix to stop using bracket recolors
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x - w1 - BRACKET_WIDTH */
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 15 - DISJ_WIDTH/2 + BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x - w1 - BRACKET_WIDTH */
+            /* TODO: this is not right anymore for DISJ_WIDTH = 60 after introducing + 15 - DISJ_WIDTH. */
             this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x + w2 + BRACKET_WIDTH */
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 15 + DISJ_WIDTH/2 - BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x + w2 + BRACKET_WIDTH */
         }
         this.setDisplaySize(DISJ_WIDTH, ICON_WIDTH);
     }
@@ -496,8 +596,9 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         this.subject2.set_depth(d);
     }
 
-    get_width(): number {
-        return DISJ_WIDTH*this.scaleX + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH*this.scaleX;
+    get_width(metaphor_mode: string): number {
+        let DISJ_WIDTH = Formula_Graphics.get_disj_width(metaphor_mode);
+        return DISJ_WIDTH*this.scaleX + this.subject1.get_width(metaphor_mode) + this.subject2.get_width(metaphor_mode) + 2*BRACKET_WIDTH*this.scaleX;
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -534,23 +635,25 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
      * @param subject1 Formula to be conjunct
      * @param subject2 Formula to be conjunct
      */
-    constructor(scene: Base_Scene, x: number, y: number, subject1: Formula_Graphics_Element, subject2: Formula_Graphics_Element, embedded: integer) {
-        super(scene, x, y, "conjunction");
+    constructor(scene: Base_Scene, x: number, y: number, subject1: Formula_Graphics_Element, subject2: Formula_Graphics_Element, metaphor_mode: string, embedded: integer) {
+        super(scene, x, y, "conjunction_"+metaphor_mode);
         this.subject1 = subject1;
         this.subject2 = subject2;
 
-        let w1 = this.subject1.get_width();
-        let w2 = this.subject2.get_width();
+        let w1 = this.subject1.get_width(metaphor_mode);
+        let w2 = this.subject2.get_width(metaphor_mode);
+        let DISJ_WIDTH = Formula_Graphics.get_disj_width(metaphor_mode);
 
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
             suff = ""; // TODO: quick fix to stop using bracket recolors
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x - w1 - BRACKET_WIDTH */
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 15 - DISJ_WIDTH/2 + BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x - w1 - BRACKET_WIDTH */
+            /* TODO: this is not right anymore for DISJ_WIDTH = 60 after introducing + 15 - DISJ_WIDTH. */
             this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x + w2 + BRACKET_WIDTH */
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 15 + DISJ_WIDTH/2 - BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x + w2 + BRACKET_WIDTH */
         }
         this.setDisplaySize(DISJ_WIDTH, ICON_WIDTH);
-        //this.setTint(0xdd0000); // TODO: just red tint doesnt look great
+        // this.setTint(0xdd0000); // TODO: just red tint doesnt look great
     }
 
     get_child(path: string): Formula_Graphics_Element {
@@ -592,8 +695,9 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         this.subject2.set_depth(d);
     }
 
-    get_width(): number {
-        return CONJ_WIDTH*this.scaleX + this.subject1.get_width() + this.subject2.get_width() + 2*BRACKET_WIDTH*this.scaleX;
+    get_width(metaphor_mode: string): number {
+        let DISJ_WIDTH = Formula_Graphics.get_disj_width(metaphor_mode);
+        return DISJ_WIDTH*this.scaleX + this.subject1.get_width(metaphor_mode) + this.subject2.get_width(metaphor_mode) + 2*BRACKET_WIDTH*this.scaleX;
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -628,8 +732,8 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
      * Visualize the possibility formula
      * @param subject Formula graphics for possibility to be applied to
      */
-    constructor(scene: Base_Scene, x: number, y: number, subject: Formula_Graphics_Element) {
-        super(scene, x, y, "possibility");
+    constructor(scene: Base_Scene, x: number, y: number, subject: Formula_Graphics_Element, metaphor_mode: string) {
+        super(scene, x, y, "possibility_"+metaphor_mode);
         this.subject = subject;
         this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
@@ -660,8 +764,8 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         this.subject.set_depth(d);
     }
 
-    get_width(): number {
-        return ICON_WIDTH*this.scaleX + this.subject.get_width();
+    get_width(metaphor_mode: string): number {
+        return ICON_WIDTH*this.scaleX + this.subject.get_width(metaphor_mode);
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -691,8 +795,8 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
      * Visualize the necessity formula
      * @param subject Formula graphics for necessity to be applied to
      */
-    constructor(scene: Base_Scene, x: number, y: number, subject: Formula_Graphics_Element) {
-        super(scene, x, y, "necessity");
+    constructor(scene: Base_Scene, x: number, y: number, subject: Formula_Graphics_Element, metaphor_mode: string) {
+        super(scene, x, y, "necessity_"+metaphor_mode);
         this.subject = subject;
         this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
@@ -723,8 +827,8 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         this.subject.set_depth(d);
     }
 
-    get_width(): number {
-        return ICON_WIDTH*this.scaleX + this.subject.get_width();
+    get_width(metaphor_mode: string): number {
+        return ICON_WIDTH*this.scaleX + this.subject.get_width(metaphor_mode);
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -755,10 +859,11 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
      * Visualize the negation of a formula
      * @param subject Formula graphics to be negated
      */
-    constructor(scene: Base_Scene, x: number, y: number, subject: Formula_Graphics_Element) {
-        super(scene, x, y, "negation");
+    constructor(scene: Base_Scene, x: number, y: number, subject: Formula_Graphics_Element, metaphor_mode: string) {
+        super(scene, x, y, "negation_"+metaphor_mode);
         this.subject = subject;
-        this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
+        let NEG_WIDTH = Formula_Graphics.get_neg_width(metaphor_mode);
+        this.setDisplaySize(NEG_WIDTH, ICON_WIDTH);
     }
 
     get_child(path: string): Formula_Graphics_Element {
@@ -787,8 +892,9 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         this.subject.set_depth(d);
     }
 
-    get_width(): number {
-        return ICON_WIDTH*this.scaleX + this.subject.get_width();
+    get_width(metaphor_mode: string): number {
+        let NEG_WIDTH = Formula_Graphics.get_neg_width(metaphor_mode);
+        return NEG_WIDTH*this.scaleX + this.subject.get_width(metaphor_mode);
     }
 
     get_atoms(atoms: string[]): Formula_Graphics_Element[] {
@@ -819,9 +925,9 @@ export class Atom_Graphics extends Formula_Graphics_Element {
      * Visualize an atomic statement
      * @param value a linguistic description of the atomic statement
      */
-    constructor(scene: Base_Scene, x: number, y: number, value: string, atoms: string[]) {
+    constructor(scene: Base_Scene, x: number, y: number, value: string, atoms: string[], metaphor_mode: string) {
         let index = atoms.findIndex((curr) => curr == value);
-        super(scene, x, y, (index != -1) ? "atom_" + index : "atom");
+        super(scene, x, y, ((index != -1) ? "atom_" + index : "atom") + "_" + metaphor_mode);
         this.value = value;
         this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
@@ -844,7 +950,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
         this.setDepth(d);
     }
 
-    get_width(): number {
+    get_width(metaphor_mode: string): number {
         return ICON_WIDTH*this.scaleX;
     }
 
@@ -873,8 +979,8 @@ export class Atom_Graphics extends Formula_Graphics_Element {
     /**
      * Create a bottom symbol
      */
-    constructor(scene: Base_Scene, x: number, y: number) {
-        super(scene, x, y, "false");
+    constructor(scene: Base_Scene, x: number, y: number, metaphor_mode: string) {
+        super(scene, x, y, "false_"+metaphor_mode);
         this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
 
@@ -896,7 +1002,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
         this.setDepth(d);
     }
 
-    get_width(): number {
+    get_width(metaphor_mode: string): number {
         return ICON_WIDTH*this.scaleX;
     }
 
@@ -925,8 +1031,8 @@ export class Atom_Graphics extends Formula_Graphics_Element {
     /**
      * Create a top symbol
      */
-    constructor(scene: Base_Scene, x: number, y: number) {
-        super(scene, x, y, "true");
+    constructor(scene: Base_Scene, x: number, y: number, metaphor_mode: string) {
+        super(scene, x, y, "true_"+metaphor_mode);
         this.setDisplaySize(ICON_WIDTH, ICON_WIDTH);
     }
 
@@ -948,7 +1054,7 @@ export class Atom_Graphics extends Formula_Graphics_Element {
         this.setDepth(d);
     }
 
-    get_width(): number {
+    get_width(metaphor_mode: string): number {
         return ICON_WIDTH*this.scaleX;
     }
 

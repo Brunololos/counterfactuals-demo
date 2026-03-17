@@ -1,6 +1,6 @@
 import { Game_Graphics_Mode } from "../../util/UI_Utils";
 import { Choice, OPTION_BOX_OUT, OR_WIDTH } from "../Choice";
-import { DISJ_WIDTH, ICON_WIDTH } from "../Formula_Graphics";
+import { ICON_WIDTH, Formula_Graphics } from "../Formula_Graphics";
 
 export class Choice_Animations {
     static fill_transition_animation_timeline(timeline: Phaser.Tweens.Timeline, transition: [Game_Graphics_Mode, Game_Graphics_Mode], c: Choice): number {
@@ -117,6 +117,7 @@ export class Choice_Animations {
     }
 
     static fill_popup_animation_timeline(timeline: Phaser.Tweens.Timeline, c: Choice): number {
+        let DISJ_WIDTH = Formula_Graphics.get_disj_width(c.get_option_graphic(0).get_metaphor_mode());
         timeline.add({ /* MOVE LEFT OPTION */
             targets: [c.get_option_graphic(0)],
             x: "-="+((OR_WIDTH - DISJ_WIDTH)/2).toString(),
