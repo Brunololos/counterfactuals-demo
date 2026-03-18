@@ -1,7 +1,7 @@
 import { Rules } from "../game/Game_Rules";
 import Base_Scene from "../util/Base_Scene";
 import { Atom, Bottom, Cf_Might, Cf_Would, Conjunction, Disjunction, Formula, Necessity, Negation, Possibility, Top } from "../game/Cf_Logic";
-import { duplicate_texture, dye_texture, fill_texture, Game_Graphics_Mode } from "../util/UI_Utils";
+import { duplicate_texture, dye_texture, overlay_texture, fill_texture, Game_Graphics_Mode } from "../util/UI_Utils";
 import { Formula_Animations } from "./animations/Formula_Animations";
 import { cloneDeep } from "lodash";
 
@@ -70,7 +70,7 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("negation_logic", "assets/Negation_From_Logic.png");
         scene.load.image("disjunction_logic", "assets/Disjunction_From_Logic.png");
         scene.load.image("conjunction_logic", "assets/Conjunction_From_Logic.png");
-        scene.load.image("possibility_logic", "assets/Possibility_From_Logic.png");
+        // scene.load.image("possibility_logic", "assets/Possibility_From_Logic.png");
         scene.load.image("necessity_logic", "assets/Necessity_From_Logic.png");
         scene.load.image("cf_would_logic", "assets/Cf_Would_From_Logic.png");
         scene.load.image("cf_might_logic", "assets/Cf_Might_From_Logic.png");
@@ -102,8 +102,13 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
             duplicate_texture(scene, "atom_metaphor", "atom_"+(i).toString()+"_logic");
             dye_texture(scene, "atom_"+(i).toString()+"_logic", atom_colors[i]);
         }
+        duplicate_texture(scene, "possibility_metaphor", "possibility_logic");
+        overlay_texture(scene, "possibility_logic", "false_logic");
         /* duplicate_texture(scene, "possibility", "necessity")
         dye_texture(scene, "necessity", 0xdd3d3d) */
+
+        // duplicate_texture(scene, "atom_metaphor", "atom_overlay");
+        // overlay_texture(scene, "atom_overlay", "necessity_logic");
     }
 
 

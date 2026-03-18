@@ -86,6 +86,7 @@ export function interpolate_colors(color1: number, color2: number, frac: number)
   return r << 16 + g << 8 + b; */
 }
 
+// expects: texture_key: plain_texture => results in: new_texture_key: canvas_texture
 export function duplicate_texture(scene: Phaser.Scene, texture_key: string, new_texture_key: string) {
     let texture = scene.game.textures.get(texture_key);
     let texture_source = texture.getSourceImage(texture_key);
@@ -97,6 +98,7 @@ export function duplicate_texture(scene: Phaser.Scene, texture_key: string, new_
     (canvas_texture as Phaser.Textures.CanvasTexture).refresh();
 }
 
+// expects: texture_key: canvas_texture
 export function fill_texture(scene: Phaser.Scene, texture_key: string, color: number) {
     let texture = scene.game.textures.get(texture_key);
     let canvas = texture.getSourceImage(texture_key);
@@ -104,10 +106,10 @@ export function fill_texture(scene: Phaser.Scene, texture_key: string, color: nu
     let image_data = context!.getImageData(0, 0, canvas.width, canvas.height);
     let pixel_array = image_data.data;
 
+    let data = pixel_array;
     for (let i = 0; i < pixel_array.length / 4; i++) {
 
         let index = i * 4
-        let data = pixel_array;
 
         let r = ((color & 0xff0000) >> 16);
         let g = ((color & 0x00ff00) >> 8);
@@ -121,6 +123,7 @@ export function fill_texture(scene: Phaser.Scene, texture_key: string, color: nu
     (texture as Phaser.Textures.CanvasTexture).refresh();
 }
 
+// expects: texture_key: canvas_texture
 export function dye_texture(scene: Phaser.Scene, texture_key: string, color: number) {
     let texture = scene.game.textures.get(texture_key);
     let canvas = texture.getSourceImage(texture_key);
@@ -144,6 +147,81 @@ export function dye_texture(scene: Phaser.Scene, texture_key: string, color: num
         data[index] = ((rgb.color & 0xff0000) >> 16);
         data[index + 1] =  ((rgb.color & 0x00ff00) >> 8);
         data[index + 2] = (rgb.color & 0x0000ff);
+    }
+    context!.putImageData(image_data, 0, 0);
+    (texture as Phaser.Textures.CanvasTexture).refresh();
+}
+
+// expects: texture_key: canvas_texture, overlay_texture_key: plain_texture (only used as alpha mask)
+export function mask_texture(scene: Phaser.Scene, texture_key: string, alpha_mask_key: string) {
+    let texture = scene.game.textures.get(texture_key);
+    let canvas = texture.getSourceImage(texture_key);
+    let context = (canvas as HTMLCanvasElement).getContext("2d");
+
+    let alpha_mask_texture = scene.game.textures.get(alpha_mask_key);
+    let alpha_mask_source = alpha_mask_texture.getSourceImage(alpha_mask_key);
+
+    context!.globalCompositeOperation = 'destination-out';
+    context!.drawImage((alpha_mask_source as HTMLImageElement), 0, 0);
+    context!.globalCompositeOperation = 'source-over';
+    (texture as Phaser.Textures.CanvasTexture).refresh();
+}
+
+// expects: texture_key: canvas_texture, overlay_texture_key: plain_texture
+export function overlay_texture(scene: Phaser.Scene, texture_key: string, overlay_texture_key: string) {
+    let texture = scene.game.textures.get(texture_key);
+    let canvas = texture.getSourceImage(texture_key);
+    let context = (canvas as HTMLCanvasElement).getContext("2d");
+
+    let overlay_texture = scene.game.textures.get(overlay_texture_key);
+    let overlay_texture_source = overlay_texture.getSourceImage(overlay_texture_key);
+
+    context!.drawImage((overlay_texture_source as HTMLImageElement), 0, 0);
+    (texture as Phaser.Textures.CanvasTexture).refresh();
+}
+
+// expects: texture_key: canvas_texture
+export function invert_alpha_texture(scene: Phaser.Scene, texture_key: string) {
+    let texture = scene.game.textures.get(texture_key);
+    let canvas = texture.getSourceImage(texture_key);
+    let context = (canvas as HTMLCanvasElement).getContext('2d');
+    let image_data = context!.getImageData(0, 0, canvas.width, canvas.height);
+    let pixel_array = image_data.data;
+
+    let data = pixel_array;
+    for (let i = 0; i < pixel_array.length / 4; i++) {
+        let index = i * 4
+        data[index] = 255;
+        data[index + 1] = 255;
+        data[index + 2] = 255;
+        data[index + 3] = 255 - data[index + 3];
+    }
+    context!.putImageData(image_data, 0, 0);
+    (texture as Phaser.Textures.CanvasTexture).refresh();
+}
+
+// expects: texture_key: canvas_texture
+export function scale_alpha_of_texture(scene: Phaser.Scene, texture_key: string, factor: number) {
+    let texture = scene.game.textures.get(texture_key);
+    let canvas = texture.getSourceImage(texture_key);
+    let context = (canvas as HTMLCanvasElement).getContext('2d');
+    let image_data = context!.getImageData(0, 0, canvas.width, canvas.height);
+    let pixel_array = image_data.data;
+
+    let data = pixel_array;
+    for (let i = 0; i < pixel_array.length / 4; i++) {
+        let index = i * 4
+
+        const alpha = data[index + 3];
+        const next_alpha = Math.min(alpha * factor, 255);
+
+        if (alpha == 0) { continue; }
+        // if (next_alpha > 255) { next_alpha = 255; }
+
+        data[index    ] = ((data[index    ] * next_alpha) / alpha);
+        data[index + 1] = ((data[index + 1] * next_alpha) / alpha);
+        data[index + 2] = ((data[index + 2] * next_alpha) / alpha);
+        data[index + 3] = next_alpha;
     }
     context!.putImageData(image_data, 0, 0);
     (texture as Phaser.Textures.CanvasTexture).refresh();

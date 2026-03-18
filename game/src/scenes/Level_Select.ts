@@ -1,6 +1,7 @@
 import { levels } from "../game/levels/Levels";
 import Base_Scene from "../util/Base_Scene";
 import Game_Scene from "./Game";
+import { duplicate_texture, dye_texture, overlay_texture, mask_texture, fill_texture, invert_alpha_texture, scale_alpha_of_texture } from "../util/UI_Utils";
 
 export default class Level_Select_Scene extends Base_Scene {
     private rocket_launch;
@@ -15,9 +16,23 @@ export default class Level_Select_Scene extends Base_Scene {
         this.load.image("back", "assets/Slant.png");
         this.load.image("chunk_up", "assets/Chunk.png");
         this.load.image("back_icon", "assets/Back_Icon.png");
+        for (var i=0; i<21; i++) {
+            this.load.image("n"+i.toString(), "assets/numbers/N"+i.toString()+".png");
+            this.load.image("n"+i.toString()+"_glow", "assets/numbers/N"+i.toString()+"_glow.png");
+        }
     }
 
     create() {
+        // the if statement prevents a crash caused by creating new textures for a key that is already in use
+        if (!this.textures.exists("dot0")) {
+            for (var i=0; i<21; i++) {
+                duplicate_texture(this, "dot", "dot"+i.toString());
+                scale_alpha_of_texture(this, "dot"+i.toString(), 0.9);
+                mask_texture(this, "dot"+i.toString(), "n"+i.toString()+"_glow");
+                overlay_texture(this, "dot"+i.toString(), "n"+i.toString());
+            }
+        }
+
         let w = this.get_width();
         let h = this.get_height();
 
@@ -96,7 +111,7 @@ export default class Level_Select_Scene extends Base_Scene {
                     item = cell.item,
                     index = cell.index;
                 if (cellContainer === null) {
-                    cellContainer = scene.create_button(scene, levels[index]);
+                    cellContainer = scene.create_button(scene, levels[index], index);
                 }
 
                 let name = levels[item.id].name;
@@ -134,7 +149,7 @@ export default class Level_Select_Scene extends Base_Scene {
         return grid_table;
     }
 
-    create_button(scene, level) {
+    create_button(scene, level, index: number) {
         let wrapindex = level.name.indexOf(" ") + 1;
         if(wrapindex == 0) { wrapindex == 16; }
         var button = scene.rexUI.add.label({
@@ -144,7 +159,7 @@ export default class Level_Select_Scene extends Base_Scene {
             orientation: 0,
             background: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "chunk_down")),
 
-            icon: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "dot")),//scene.rexUI.add.roundRectangle(0, 0, 5, 5, 5, 0xffffff, 0x0),
+            icon: scene.add.existing(new Phaser.GameObjects.Sprite(scene, 0, 0, "dot"+(index+1)+"")),//scene.rexUI.add.roundRectangle(0, 0, 5, 5, 5, 0xffffff, 0x0),
             text: (level.name.length <= 16) ? scene.add.text(0, 0, level.name) : scene.add.text(0, 0, level.name.slice(0, wrapindex) + "\n" + level.name.slice(wrapindex)),
 
             space: {
@@ -213,5 +228,4 @@ export default class Level_Select_Scene extends Base_Scene {
 
         return buttons;
     }
-
 }
