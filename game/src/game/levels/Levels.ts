@@ -185,6 +185,9 @@ text = "Finally it is time for your first parallel-worlds jump!\n"
      + "Click on the world you want to jump to.";
 text_icon_keys = ["possibility"];
 
+// TODO: Negation + Hack Level
+// "~(~A ^ B)"
+
 levellist.push(Level.create("First Flight"/* "Possibility" */, "Res", "<>B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 atoms = [
@@ -200,6 +203,23 @@ text = "";
 text_icon_keys = [];
 
 levellist.push(Level.create("Successive Jumps"/* "Successive Possibility" */, "Res", "<><>D", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+
+atoms = [
+    "Die Mondlandung fand nie statt",
+    "Die Sonne hat einen Zwillingsstern",
+    "Der Neandertaler hat überlebt",
+    "Fluggesellschaften sind an der kommerziellen Raumfahrt beteiligt",
+    "E",
+    "F"
+];
+worlds = [get(atoms, [1, 2, 5]), get(atoms, [2]), get(atoms, [3]), get(atoms, [3]), get(atoms, [3, 5]), get(atoms, [0])];
+world_positions = [[0, 0], [50, 150], [-100, -100], [200, 85], [-150, 75], [150, -25]];
+edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [0, 1, 0], [0, 2, 0], [1, 3, 0], [1, 5, 0], [2, 4, 0]];
+text = "";
+text_icon_keys = [];
+
+// TODO: rename
+levellist.push(Level.create("Uncertain Destination", "Res", "(<>(<>A^<>D))", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 atoms = [
     "Die Mondlandung fand nie statt",
@@ -311,7 +331,7 @@ text = "";
 text_icon_keys = [];
 
 /* "~¯|¯" "~(A |_|-> (A |_|-> B))" *//* "~((~A v (B v ~C)) ^ ~A)" *//* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */
-//levellist.push(Level.create("Test", "Res", "~((~A v C) ^ ~~B)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+levellist.push(Level.create("Test", "Res", "~(A^B)"/*"~((~A v C) ^ ~~B)"*/, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 export let levels = levellist;
 
@@ -329,6 +349,7 @@ export let level11 = levels[10];
 export let level12 = levels[11];
 export let level13 = levels[12];
 export let level14 = levels[13];
+export let level15 = levels[14];
 
 /// EXTRA
 atoms = [

@@ -324,7 +324,7 @@ export class Choice {
     }
 
     static load_sprites(scene: Phaser.Scene) {
-        scene.load.image("option_box_left", "assets/Option_Box_Left.png");
-        scene.load.image("option_box_right", "assets/Option_Box_Right.png");
+        scene.load.image("option_box_left", "assets/Option_Box_Left_chambers.png");
+        scene.load.image("option_box_right", "assets/Option_Box_Right_chambers.png");
     }
 }

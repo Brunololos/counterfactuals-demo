@@ -23,7 +23,7 @@ export default class Level_Select_Scene extends Base_Scene {
     }
 
     create() {
-        // the if statement prevents a crash caused by creating new textures for a key that is already in use
+        // prevents crash due to creating new textures for a key that is already in use
         if (!this.textures.exists("dot0")) {
             for (var i=0; i<21; i++) {
                 duplicate_texture(this, "dot", "dot"+i.toString());

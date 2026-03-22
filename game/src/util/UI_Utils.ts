@@ -2,6 +2,12 @@ import Perlin from 'phaser3-rex-plugins/plugins/perlin.js';
 import { Rule, Rules } from '../game/Game_Rules';
 import Base_Scene from './Base_Scene';
 
+export let PLAYER_COLOR = 0x4C8CE4; // 0x549BFF; // 0x4F92F0; // 0x3B72C4; // 0x4C8CE4;
+export let COPILOT_COLOR = 0xC44A3A; // 0xE35C4B;
+
+export let VICTORY_COLOR = 0x00dd00;
+export let LOSS_COLOR = 0xdd0000;
+
 export let text_style = {
   fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif',
   wordWrap: {

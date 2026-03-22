@@ -73,8 +73,8 @@ export class Graphics_Controller {
         this.graph_graphics = new Graph_Graphics(scene, w/2, (h - 200)/2, state, state.get_current_world().index, world_positions, state.get_graph().get_edge_list(), this);
 
         // TODO: why - an additional 5 when compared to dist of restart from help button?
-        this.metaphor_toggle = this.create_metaphor_toggle(scene, w-105, 30, this.rules_column, this.text_box, this.formula, this.choice, this.graph_graphics, this.metaphor_mode);
-        this.restart = this.create_restart(scene, w-60, 30);
+        this.restart = this.create_restart(scene, w-105, 30);
+        this.metaphor_toggle = this.create_metaphor_toggle(scene, w-60, 30, this.rules_column, this.text_box, this.formula, this.choice, this.graph_graphics, this.metaphor_mode);
         this.help = this.create_help(scene, w-20, 30, this.rules_column, this.text_box, this.restart);
 
         this.vacuous = this.create_vacuous(this.scene, "", w/2, h-235).setAlpha(0);
@@ -736,6 +736,7 @@ export class Graphics_Controller {
 
     static configure_sprites(scene: Phaser.Scene) {
         Formula_Graphics.configure_sprites(scene);
+        Supposition_Panel.configure_sprites(scene);
         Graph_Graphics.configure_sprites(scene);
         Star.configure_sprites(scene);
     }
