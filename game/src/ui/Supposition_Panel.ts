@@ -10,15 +10,16 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
     private contents: Phaser.GameObjects.GameObject[] = [];
     private panel: Phaser.GameObjects.Sprite;
 
-    // TODO:
     private activity_overlay: Phaser.GameObjects.Sprite;
     private activity_indl: Phaser.GameObjects.Sprite;
     private activity_indr: Phaser.GameObjects.Sprite;
     private formula_section_glow: Phaser.GameObjects.Sprite;
     private chamber_glowl: Phaser.GameObjects.Sprite;
     private chamber_glowr: Phaser.GameObjects.Sprite;
-    private glow_animation_timeline: Phaser.Tweens.Timeline;
-    // end temp testing
+    private input_animation_timeline: Phaser.Tweens.Timeline;
+
+    private up_arrowl: Phaser.GameObjects.Sprite;
+    private up_arrowr: Phaser.GameObjects.Sprite;
 
     private knob: Phaser.GameObjects.Sprite;
     private submask: Phaser.Display.Masks.GeometryMask;
@@ -48,6 +49,9 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         this.chamber_glowl = new Phaser.GameObjects.Sprite(scene, 0, 5, "sup_panel_chamber_glow_left").setAlpha(0.75).setTint(PLAYER_COLOR);
         this.chamber_glowr = new Phaser.GameObjects.Sprite(scene, 0, 5, "sup_panel_chamber_glow_left").setFlipX(true).setAlpha(0.0).setTint(COPILOT_COLOR);
 
+        this.up_arrowl = new Phaser.GameObjects.Sprite(scene, -215, -61, "arrow_up").setAlpha(0.0);
+        this.up_arrowr = new Phaser.GameObjects.Sprite(scene,  215, -61, "arrow_up").setAlpha(0.0);
+
         this.knob = new Phaser.GameObjects.Sprite(scene, 0, 80, "sup_panel_knob"); /* 90 */
         this.caption = new Phaser.GameObjects.Text(scene, 0, -60, "Reach a habitable world", text_style);
         this.caption.setOrigin(0.5, 0.5);
@@ -62,6 +66,8 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
 
         // this.add(this.knob);
         this.add(this.caption);
+        this.add(this.up_arrowl);
+        this.add(this.up_arrowr);
 
         this.player_indl = new Phaser.GameObjects.Sprite(scene, -385, 3, "pilot_fill").setDisplaySize(40, 40).setAlpha(1.0);
         this.player_indr = new Phaser.GameObjects.Sprite(scene, 385, 3, "copilot_fill").setDisplaySize(40, 40).setAlpha(0.0);
@@ -214,16 +220,10 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         this.animation.play();
     }
 
-    enter_animate_awaiting_input() {
-        if(this.glow_animation_timeline != undefined) { this.glow_animation_timeline.stop(); }
-        this.glow_animation_timeline = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Enter_Player_Input);
-        this.glow_animation_timeline.play();
-    }
-
-    exit_animate_awaiting_input() {
-        if(this.glow_animation_timeline != undefined) { this.glow_animation_timeline.stop(); }
-        this.glow_animation_timeline = Supposition_Panel_Animations.create(this.scene, this, Supposition_Panel_Animation.Exit_Player_Input);
-        this.glow_animation_timeline.play();
+    animate_input(animation: Supposition_Panel_Animation) {
+        if(this.input_animation_timeline != undefined) { this.input_animation_timeline.stop(); }
+        this.input_animation_timeline = Supposition_Panel_Animations.create(this.scene, this, animation);
+        this.input_animation_timeline.play();
     }
 
     transition(player: Player) {
@@ -242,7 +242,7 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
             loop: -1,
             onUpdate: function() {
                 if(timeout != -1 && timeline.totalElapsed >= timeout) {
-                    console.log("stopping");
+                    // console.log("stopping");
                     timeline.stop();
                 }
             }
@@ -320,6 +320,14 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         return this.formula_section_glow;
     }
 
+    get_up_arrowl(): Phaser.GameObjects.Sprite {
+        return this.up_arrowl;
+    }
+
+    get_up_arrowr(): Phaser.GameObjects.Sprite {
+        return this.up_arrowr;
+    }
+
     get_dummy(): Phaser.GameObjects.Sprite {
         return this.tween_dummy;
     }
@@ -327,23 +335,11 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
     static load_sprites(scene: Phaser.Scene) {
         scene.load.image("sup_panel", "assets/Banner_with_activity_box.png");
 
-        // scene.load.image("sup_panel_highlight", "assets/Banner_highlight.png");
-        // scene.load.image("sup_panel_inline", "assets/Banner_inline.png");
-        // scene.load.image("sup_panel_glow", "assets/Banner_glow_inner_f.png");
-        // scene.load.image("sup_panel_glow_inactive", "assets/Banner_glow_inner_right_inactive.png");
-        // scene.load.image("sup_panel_glow_active", "assets/Banner_glow_inner_right_active.png");
-        // scene.load.image("sup_panel_activity_scale", "assets/Banner_activity_scale.png");
-        // scene.load.image("sup_panel_activity_scale_inactive", "assets/Banner_activity_scale_inactive.png");
-        // scene.load.image("sup_panel_activity_bar", "assets/Banner_activity_bar.png");
-        // scene.load.image("sup_panel_activity_bar", "assets/Banner_activity_indicator.png");
-        // scene.load.image("sup_panel_activity_bar_dashes", "assets/Banner_activity_bar_dashes.png");
-        // scene.load.image("sup_panel_bottom_dashes", "assets/Banner_bottom_dashes.png");
-        // scene.load.image("left_barrier", "assets/Banner_LeftBarrier.png");
-
         scene.load.image("sup_panel_activity_overlay", "assets/Banner_activity_overlay_chambers.png");
         scene.load.image("sup_panel_formula_section_glow_base", "assets/Banner_formula_glow_chambers_medium.png");
         scene.load.image("sup_panel_chamber_glow_left", "assets/Banner_Chamber_glow_left_medium.png");
         scene.load.image("triangle_indicator", "assets/Triangle_Indicator.png");
+        scene.load.image("arrow_up", "assets/Basic_Arrow_Up.png");
 
         scene.load.image("sup_panel_knob", "assets/Banner_Knob.png");
         scene.load.image("sup_panel_mask", "assets/Banner_Clip_Mask.png");

@@ -10,9 +10,9 @@ export class Formula_Animations {
         let NEG_WIDTH = Formula_Graphics.get_neg_width(metaphor_mode);
         let DISJ_WIDTH = Formula_Graphics.get_disj_width(metaphor_mode);
         let CF_WIDTH = Formula_Graphics.get_cf_width(metaphor_mode);
-        console.log("NEG_WIDTH: " + NEG_WIDTH);
-        console.log("DISJ_WIDTH: " + DISJ_WIDTH);
-        console.log("CF_WIDTH: " + CF_WIDTH);
+        // console.log("NEG_WIDTH: " + NEG_WIDTH);
+        // console.log("DISJ_WIDTH: " + DISJ_WIDTH);
+        // console.log("CF_WIDTH: " + CF_WIDTH);
         switch(move) {
             case Rules.Attacker_Victory:
                 bottom = formula.add_temporary_formula("_|_");

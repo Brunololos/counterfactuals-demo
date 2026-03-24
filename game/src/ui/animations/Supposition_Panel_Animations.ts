@@ -24,8 +24,10 @@ export enum Supposition_Panel_Animation {
     Defender_Vacuous_Would_Sphere_Selection,
 
     // INPUT HIGHLIGHTING
-    Enter_Player_Input,
-    Exit_Player_Input,
+    Enter_Formula_Choice,
+    Exit_Formula_Choice,
+    Enter_World_Choice,
+    Exit_World_Choice,
 }
 
 export class Supposition_Panel_Animations {
@@ -444,7 +446,7 @@ export class Supposition_Panel_Animations {
             //         }
             //     });
                 return;
-            case Supposition_Panel_Animation.Enter_Player_Input:
+            case Supposition_Panel_Animation.Enter_Formula_Choice:
                 sup_panel.get_formula_section_glow().setTint(PLAYER_COLOR);
                 timeline.loop = -1;
                 timeline.add({
@@ -466,12 +468,34 @@ export class Supposition_Panel_Animations {
                     offset: 1000,
                 });
                 return;
-            case Supposition_Panel_Animation.Exit_Player_Input:
+            case Supposition_Panel_Animation.Exit_Formula_Choice:
                 timeline.add({
                     targets: sup_panel.get_formula_section_glow(),
                     alpha: 0.0,
                     duration: 1500,
                     ease: 'Cubic.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0,
+                });
+                return;
+            case Supposition_Panel_Animation.Enter_World_Choice:
+                timeline.add({
+                    targets: [sup_panel.get_up_arrowl(), sup_panel.get_up_arrowr()],
+                    alpha: 1.0,
+                    duration: 1000,
+                    ease: 'Cubic.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0,
+                });
+                return;
+            case Supposition_Panel_Animation.Exit_World_Choice:
+                timeline.add({
+                    targets: [sup_panel.get_up_arrowl(), sup_panel.get_up_arrowr()],
+                    alpha: 0.0,
+                    duration: 1000,
+                    ease: 'Cubic.In',
                     yoyo: false,
                     repeat: 0,
                     offset: 0,

@@ -9,11 +9,7 @@ let edges: [number, number, number][];
 let text: string;
 let text_icon_keys: string[];
 
-atoms = [
-    "Es regnet jeden Montag",
-    "Menschen schwitzen nicht",
-    "Eis schmilzt nicht"
-];
+atoms = [ "A", "B", "C", "D", "E", "F", "G", "H" ];
 worlds = [[]];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
@@ -52,13 +48,6 @@ text_icon_keys = ["pilots_icon", "", "", "", "true", "false"];
 
 levellist.push(Level.create(/* "Top & Bottom" */"Reaching new Earth", "Res", "¯|¯ v _|_", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Es gibt Weltfrieden",
-    "Es gibt Ananas auf Pizza",
-    "Die Erde ist flach",
-    "Es gibt Insekten",
-    "Tempo-Taschentücher sind gelb"
-];
 worlds = [get(atoms, [1, 2, 4])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
@@ -81,13 +70,6 @@ text = "Since most worlds are not inhabitable, "
 
 levellist.push(Level.create(/* "Atoms" */"Habitability", "Res", "A v B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Es gibt Weltfrieden", // TODO: Come up with other atoms
-    "Es gibt Ananas auf Pizza",
-    "Die Erde ist flach",
-    "Es gibt Insekten",
-    "Tempo-Taschentücher sind gelb"
-];
 worlds = [get(atoms, [0, 3, 4])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
@@ -97,14 +79,6 @@ text_icon_keys = [];
 
 levellist.push(Level.create(/* "Nested Disjunction" */"Nested Habitability", "Res", "C v B v A", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Es gibt Weltfrieden", // TODO: Come up with other atoms
-    "Es gibt Ananas auf Pizza",
-    "Die Erde ist flach",
-    "Es gibt Insekten",
-    "Tempo-Taschentücher sind gelb",
-    "Ahorn Sirup ist salzig"
-];
 worlds = [get(atoms, [2, 4, 5])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
@@ -121,13 +95,6 @@ text_icon_keys = ["negation"];
 
 levellist.push(Level.create(/* "Negation" */"Shift Switch", "Res", "~¯|¯ v ~A", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Menschen leben unterirdisch",
-    "Eisen ist teurer als Gold",
-    "Kompasse funktionieren",
-    "Die Erde hat ein Magnetfeld",
-    "Die Produktion von Lippenstift ist verboten"
-];
 worlds = [get(atoms, [0, 1, 2, 4])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
@@ -136,13 +103,6 @@ text_icon_keys = [];
 
 levellist.push(Level.create(/* "Double Negation" */"Double Shift Switch", "Res", "~A v ~~C", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Menschen leben unterirdisch",
-    "Eisen ist teurer als Gold",
-    "Kompasse funktionieren",
-    "Die Erde hat ein Magnetfeld",
-    "Die Produktion von Lippenstift ist verboten"
-];
 worlds = [get(atoms, [0, 1, 2, 4])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
@@ -152,15 +112,6 @@ text_icon_keys = ["conjunction"];
 
 levellist.push(Level.create("Foul Play", "Res", "(D ^ C) v A"/* "~(~D v ~C) v A" */, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Käse ist ein pflanzliches Produkt",
-    "Kühe sind vom Aussterben bedroht",
-    "Milch ist ein Gift",
-    "Erdöl ist ein Gift",
-    "Die Zugspitze ist der höchste Berg der Welt",
-    "Milch kann zu einem Bioplastik verarbeitet werden",
-    "Laktose-intolerante Menschen können Milch verdauen",
-];
 worlds = [get(atoms, [0, 1, 2, 3, 4, 5])];
 world_positions = [[0, 0]];
 edges = [[0, 0, 0]];
@@ -169,17 +120,14 @@ text_icon_keys = [];
 
 levellist.push(Level.create("Double Hack"/* "Conjunction 2" */, "Res", "(C ^ D) v (G ^ F)"/* "~(~C v ~D) v ~(~G v ~F)" */, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-// TODO: Negation + Hack Level
+worlds = [get(atoms, [0, 2, 4, 5])];
+world_positions = [[0, 0]];
+edges = [[0, 0, 0]];
+text = "";
+text_icon_keys = [];
 
-levellist.push(Level.create("Hack Back"/* "Negated Conjunction" */, "Res", "~(~A ^ B)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+levellist.push(Level.create("Hack Back"/* "Negated Conjunction" */, "Res", "~(A ^ B)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Die Mondlandung fand nie statt",
-    "Die Sonne hat einen Zwillingsstern",
-    "Der Neandertaler hat überlebt",
-    "Sony und Microsoft sind fusioniert",
-    "Atlantis ist nie untergegangen"
-];
 worlds = [[], get(atoms, [0, 2]), get(atoms, [1, 4]), get(atoms, [0])];
 world_positions = [[0, 0], [50, -150], [-100, 100], [150, 75]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
@@ -192,12 +140,6 @@ text_icon_keys = ["possibility"];
 
 levellist.push(Level.create("First Flight"/* "Possibility" */, "Res", "<>B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Die Mondlandung fand nie statt",
-    "Die Sonne hat einen Zwillingsstern",
-    "Der Neandertaler hat überlebt",
-    "Fluggesellschaften sind an der kommerziellen Raumfahrt beteiligt"
-];
 worlds = [[], get(atoms, [0, 2]), get(atoms, [1, 2]), get(atoms, [1, 3]), get(atoms, [0, 1]), get(atoms, [0, 1]), get(atoms, [3])];
 world_positions = [[0, 0], [50, -150], [-100, 100], [150, 100], [30, 175], [175, -25], [-150, -50]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [6, 6, 0], [0, 1, 0], [0, 2, 0], [1, 5, 0], [2, 4, 0], [2, 6, 0], [5, 3, 0]];
@@ -206,14 +148,6 @@ text_icon_keys = [];
 
 levellist.push(Level.create("Successive Jumps"/* "Successive Possibility" */, "Res", "<><>D", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Die Mondlandung fand nie statt",
-    "Die Sonne hat einen Zwillingsstern",
-    "Der Neandertaler hat überlebt",
-    "Fluggesellschaften sind an der kommerziellen Raumfahrt beteiligt",
-    "E",
-    "F"
-];
 worlds = [get(atoms, [1, 2, 5]), get(atoms, [2]), get(atoms, [3]), get(atoms, [3]), get(atoms, [3, 5]), get(atoms, [0])];
 world_positions = [[0, 0], [50, 150], [-100, -100], [200, 85], [-150, 75], [150, -25]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [0, 1, 0], [0, 2, 0], [1, 3, 0], [1, 5, 0], [2, 4, 0]];
@@ -221,14 +155,8 @@ text = "";
 text_icon_keys = [];
 
 // TODO: rename
-levellist.push(Level.create("Uncertain Destination", "Res", "(<>(<>A^<>D))", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+levellist.push(Level.create("Worst-case Destination", "Res", "(<>(<>A^<>D))", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Die Mondlandung fand nie statt",
-    "Die Sonne hat einen Zwillingsstern",
-    "Der Neandertaler hat überlebt",
-    "Fluggesellschaften sind an der kommerziellen Raumfahrt beteiligt"
-];
 worlds = [[], get(atoms, [1, 2]), get(atoms, [0, 2]), get(atoms, [3]), get(atoms, [2, 3, 4])];
 world_positions = [[0, 0], [125, 50], [-50, 135], [25, -150], [-150, -75]];
 edges = [ [0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 0], [0, 3, 0], [0, 4, 0], [1, 2, 0], [2, 0, 0], [4, 2, 0], [4, 3, 0]];
@@ -238,12 +166,6 @@ text_icon_keys = [];
 
 levellist.push(Level.create("Jumps & Hacks"/* "Dis-, Conjunction & Possibility" */, "Res", "<><>(B ^ C) v <>A", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Die Mondlandung fand nie statt",
-    "Die Sonne hat einen Zwillingsstern",
-    "Der Neandertaler hat überlebt",
-    "Fluggesellschaften sind an der kommerziellen Raumfahrt beteiligt"
-];
 worlds = [get(atoms, [3]), get(atoms, [2]), get(atoms, [0, 2]), get(atoms, [3]), get(atoms, [2, 3, 4])];
 world_positions = [[0, 0], [175, 0], [-50, 135], [75, -100], [-50, -150]];
 edges = [ [0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0], [0, 4, 0], [1, 2, 0], [2, 4, 0], [3, 1, 0], [3, 4, 0]];
@@ -253,12 +175,6 @@ text_icon_keys = ["necessity"];
 
 levellist.push(Level.create("Jump Override"/* "Necessity" */, "Res", "[_](D v C) v <>B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Die Mondlandung fand nie statt",
-    "Die Sonne hat einen Zwillingsstern",
-    "Der Neandertaler hat überlebt",
-    "Fluggesellschaften sind an der kommerziellen Raumfahrt beteiligt"
-];
 worlds = [get(atoms, [3]), get(atoms, [2]), get(atoms, [0, 2]), get(atoms, [3]), get(atoms, [2, 3, 4])];
 world_positions = [[0, 0], [175, 0], [-50, 135], [75, -100], [-50, -150]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3]/* , [1, 2, 1], [2, 4, 3], [3, 1, 2], [3, 4, 1] */];
@@ -278,20 +194,12 @@ text_icon_keys = ["cf_might"];
 
 levellist.push(Level.create("Jump Scramble"/* "Cf_Might" */, "Res", "A ⩽⩾-> C", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-/*atoms = [
-    "Es gibt die Farbe Rot",
-    "Steinhauerei ist die verbreitetste Kunstform",
-];
-worlds = [[], [atoms[1]], get(atoms, [0, 1]), [atoms[0]]];
+/* worlds = [[], [atoms[1]], get(atoms, [0, 1]), [atoms[0]]];
 world_positions = [[0, 0], [-50, -150], [-100, 100], [200, 50]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 0], [0, 2, 0], [0, 3, 0]];
 
 levellist.push(Level.create("Necessity", "Res", "~[_]B", atoms, "d", 0, -1, worlds, world_positions, edges));*/
 
-atoms = [
-    "Es gibt den Weihnachtsmann",
-    "Jedes Kind wird beschenkt",
-];
 worlds = [[], [atoms[1]], get(atoms, [0, 1]), [atoms[0]]];
 world_positions = [[0, 0], [-50, -150], [-100, 100], [200, 50]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 1], [0, 2, 2], [0, 3, 3]];
@@ -301,30 +209,14 @@ text_icon_keys = ["cf_would"];
 
 levellist.push(Level.create("Limiting Copilot"/* "Counterfactual 1" */, "Res", "A |_|-> B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Alexander the Great died at the age of 32",
-    "Alexander the Great attacked europe",
-    "The romans defeated Alexander the Great",
-    "The romans built aqueducts",
-    "The greek gods became revered throughout europe",
-    "The toga became a fashion staple"
-];
 worlds = [[atoms[0], atoms[3], atoms[5]], [atoms[0], atoms[2]], [atoms[4]], [atoms[1], atoms[2], atoms[3]], [atoms[1], atoms[4]]];
-world_positions = [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150]];
+world_positions = [[0, 0], [-125, 75], [20, -150], [150, 50], [0, 150]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3]];
 text = "";
 text_icon_keys = [];
 
 levellist.push(Level.create("Complex Antecedent"/* "Counterfactual 2" */, "Res", "(~A ^ B) |_|-> C" /* "~(A v ~B) |_|-> C" */ , atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
-atoms = [
-    "Blah",
-    "Bleh",
-    "Bluh",
-    "Blih",
-    "Bloh",
-    "Blyh"
-];
 worlds = [[atoms[3], atoms[5]], [atoms[0], atoms[1], atoms[2]], [atoms[0], atoms[4]], [atoms[1], atoms[2], atoms[3]], [atoms[1], atoms[4], atoms[0]], atoms.slice(0, 5), []];
 world_positions = [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150], [300, -150], [237, 203]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [6, 6, 0], [0, 1, 2],

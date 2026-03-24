@@ -2,6 +2,7 @@ import { Game_Controller } from "../game/Game_Controller";
 import { Rule, Rules, Rules_Controller } from "../game/Game_Rules";
 import { Game_Turn_Type, Player, State_Mode } from "../util/Game_Utils";
 import { Supposition_Panel } from "./Supposition_Panel";
+import { Supposition_Panel_Animation } from "./animations/Supposition_Panel_Animations";
 import { Bottom, Cf_Would, Disjunction, Formula, Negation } from "../game/Cf_Logic";
 import { Game_State } from "../game/Game_State";
 import { Choice } from "./Choice";
@@ -273,18 +274,19 @@ export class Graphics_Controller {
         switch(true) {
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Formula_Choice:
                 console.log("> animating transition Formula -> Formula_Choice");
-                this.sup_panel.enter_animate_awaiting_input();
+                this.sup_panel.animate_input(Supposition_Panel_Animation.Enter_Formula_Choice);
                 this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
                 return;
             case old_mode == Game_Graphics_Mode.Formula_Choice && this.next_mode == Game_Graphics_Mode.Formula:
                 console.log("> animating transition Formula_Choice -> Formula");
-                this.sup_panel.exit_animate_awaiting_input();
+                this.sup_panel.animate_input(Supposition_Panel_Animation.Exit_Formula_Choice);
                 this.idle(this.choice.animate_transition([old_mode, this.next_mode]));
                 return;
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Sphere_Selection:
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Counterfactual_World_Choice:
                 console.log("> animating transition Formula -> "+Game_Graphics_Mode[this.next_mode]);
                 this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
+                this.sup_panel.animate_input(Supposition_Panel_Animation.Enter_World_Choice);
 
                 // TODO: Different vacuous button text for each mode
                 /* this.vacuous.setInteractive();
@@ -305,6 +307,7 @@ export class Graphics_Controller {
                 console.log("> animating transition Formula -> "+Game_Graphics_Mode[this.next_mode]);
                 this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
                 this.graph_graphics.animate(this.next_mode);
+                this.sup_panel.animate_input(Supposition_Panel_Animation.Enter_World_Choice);
                 this.sup_panel.transition(Player.Defender);
                 return;
             case old_mode == Game_Graphics_Mode.Sphere_Selection && this.next_mode == Game_Graphics_Mode.Formula:
@@ -312,6 +315,7 @@ export class Graphics_Controller {
                 console.log("> animating transition "+Game_Graphics_Mode[old_mode]+" -> Formula");
                 this.graph_graphics.stop_animation();
                 this.graph_graphics.clear_hover_ellipse_alphas();
+                this.sup_panel.animate_input(Supposition_Panel_Animation.Exit_World_Choice);
                 /* this.vacuous.disableInteractive();
                 this.scene.add.tween({
                     targets: this.vacuous,
@@ -329,12 +333,14 @@ export class Graphics_Controller {
                 console.log("> animating transition "+Game_Graphics_Mode[old_mode]+" -> Formula");
                 this.graph_graphics.stop_animation();
                 this.graph_graphics.clear_hover_ellipse_alphas();
+                this.sup_panel.animate_input(Supposition_Panel_Animation.Exit_World_Choice);
                 this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
                 break;
             case old_mode == Game_Graphics_Mode.Vacuous_World_Choice && this.next_mode == Game_Graphics_Mode.Formula:
                 console.log("> animating transition "+Game_Graphics_Mode[old_mode]+" -> Formula");
                 this.graph_graphics.stop_animation();
                 this.graph_graphics.clear_hover_ellipse_alphas();
+                this.sup_panel.animate_input(Supposition_Panel_Animation.Exit_World_Choice);
                 this.set_mode(this.next_mode);
                 break;
             default:

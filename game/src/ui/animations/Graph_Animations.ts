@@ -9,7 +9,7 @@ export const CURRENT_WORLD_HIGHLIGHT_COLOR = 0xFBC087;//0xFDD87C;
 export const WORLD_ALPHA: number = 0.85;
 export const INACTIVE_WORLD_ALPHA: number = 0.45;
 export const WORLD_BASE_HIGHLIGHT_ALPHA: number = 0.01;
-export const WORLD_HIGHLIGHT_ALPHA: number = 0.3;
+export const WORLD_HIGHLIGHT_ALPHA: number = 0.45; // 0.3;
 
 export const EDGE_ALPHA: number = 0.85;
 export const INACTIVE_EDGE_ALPHA: number = 0.4;

@@ -123,6 +123,8 @@ Concrete:
 - Update banner_mask_path so that formula is clipped correctly
 - swap out icons in text box depending on metaphor
 - Make Indicator arrows more legible
+- Add animations for becoming temporarily active during operator resolution.
+- Add go to next level popup on victory & try again on loss.
  + Create metaphor swap icon & set it.
  + swap out Formula graphics sprites depending on metaphor
  + respect metaphor_mode state inside Choice.ts (probably done)
@@ -144,7 +146,7 @@ Concrete:
  + Fix tint looking weird on dyed player icons in sup panel victory/defeat animations
     - Fixed it looking weird, but now introduced discontinuous jump bc setting of sprites in the beginning is visible.
  QoL:
-  - Carry metaphor_mode state across different levels and even if level is restarted or level is switched via
+  + Carry metaphor_mode state across different levels and even if level is restarted or level is switched via
     level selection.
   + Persistent scrollstate in level selection
  Code Quality:
