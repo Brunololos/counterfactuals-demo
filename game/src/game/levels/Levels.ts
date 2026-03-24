@@ -169,6 +169,10 @@ text_icon_keys = [];
 
 levellist.push(Level.create("Double Hack"/* "Conjunction 2" */, "Res", "(C ^ D) v (G ^ F)"/* "~(~C v ~D) v ~(~G v ~F)" */, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
+// TODO: Negation + Hack Level
+
+levellist.push(Level.create("Hack Back"/* "Negated Conjunction" */, "Res", "~(~A ^ B)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+
 atoms = [
     "Die Mondlandung fand nie statt",
     "Die Sonne hat einen Zwillingsstern",
@@ -185,8 +189,6 @@ text = "Finally it is time for your first parallel-worlds jump!\n"
      + "Click on the world you want to jump to.";
 text_icon_keys = ["possibility"];
 
-// TODO: Negation + Hack Level
-// "~(~A ^ B)"
 
 levellist.push(Level.create("First Flight"/* "Possibility" */, "Res", "<>B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
@@ -323,7 +325,7 @@ atoms = [
     "Bloh",
     "Blyh"
 ];
-worlds = [[atoms[3], atoms[5]], [atoms[0], atoms[1], atoms[2]], [atoms[0], atoms[4]], [atoms[1], atoms[2], atoms[3]], [atoms[1], atoms[4]], atoms.slice(0, 5), []];
+worlds = [[atoms[3], atoms[5]], [atoms[0], atoms[1], atoms[2]], [atoms[0], atoms[4]], [atoms[1], atoms[2], atoms[3]], [atoms[1], atoms[4], atoms[0]], atoms.slice(0, 5), []];
 world_positions = [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150], [300, -150], [237, 203]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [6, 6, 0], [0, 1, 2],
         [0, 2, 4], [0, 3, 5], [0, 4, 6], [0, 6, 6], [1, 2, 3], [2, 5, 1], [3, 5, 4], [4, 6, 5], [5, 0, 4], [6, 5, 2]];
@@ -331,7 +333,7 @@ text = "";
 text_icon_keys = [];
 
 /* "~¯|¯" "~(A |_|-> (A |_|-> B))" *//* "~((~A v (B v ~C)) ^ ~A)" *//* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */
-levellist.push(Level.create("Test", "Res", "~(A^B)"/*"~((~A v C) ^ ~~B)"*/, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+// levellist.push(Level.create("Test", "Res", "((A v C) |_|-> B)"/*"~~~~~(A^B)"*//*"~((~A v C) ^ ~~B)"*/, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 export let levels = levellist;
 
@@ -350,6 +352,7 @@ export let level12 = levels[11];
 export let level13 = levels[12];
 export let level14 = levels[13];
 export let level15 = levels[14];
+export let level16 = levels[15];
 
 /// EXTRA
 atoms = [

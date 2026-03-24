@@ -9,6 +9,10 @@ export class Formula_Animations {
         let metaphor_mode = formula.get_metaphor_mode();
         let NEG_WIDTH = Formula_Graphics.get_neg_width(metaphor_mode);
         let DISJ_WIDTH = Formula_Graphics.get_disj_width(metaphor_mode);
+        let CF_WIDTH = Formula_Graphics.get_cf_width(metaphor_mode);
+        console.log("NEG_WIDTH: " + NEG_WIDTH);
+        console.log("DISJ_WIDTH: " + DISJ_WIDTH);
+        console.log("CF_WIDTH: " + CF_WIDTH);
         switch(move) {
             case Rules.Attacker_Victory:
                 bottom = formula.add_temporary_formula("_|_");
@@ -24,8 +28,7 @@ export class Formula_Animations {
                     repeat: 0,
                     offset: 0
                 });
-                timeline.add({ /* FADE IN LOSS */
-                    targets: bottom,
+                timeline.add({ /* FADE IN LOSS */ targets: bottom,
                     alpha: 1,
                     duration: 1500,
                     ease: 'Quart.In',
@@ -170,7 +173,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT CHILD */
                     targets: left_child.get_children([left_child]),
-                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    x: '+='+((f.get_width(metaphor_mode) - left_child.get_width(metaphor_mode))/2 - BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -179,7 +182,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT CHILD EMBEDDINGS */
                     targets: left_child.get_embedding(true),
-                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    x: '+='+((f.get_width(metaphor_mode) - left_child.get_width(metaphor_mode))/2 - BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -210,7 +213,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT CHILD */
                     targets: right_child.get_children([right_child]),
-                    x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH).toString(),
+                    x: '+='+((-f.get_width(metaphor_mode) + right_child.get_width(metaphor_mode))/2 + BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -219,7 +222,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT CHILD EMBEDDINGS */
                     targets: right_child.get_embedding(true),
-                    x: '+='+((-f.get_width() + right_child.get_width())/2 + BRACKET_WIDTH).toString(),
+                    x: '+='+((-f.get_width(metaphor_mode) + right_child.get_width(metaphor_mode))/2 + BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -275,7 +278,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT CHILD */
                     targets: left_child.get_children([left_child]),
-                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    x: '+='+((f.get_width(metaphor_mode) - left_child.get_width(metaphor_mode))/2 - BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -284,7 +287,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT CHILD EMBEDDINGS */
                     targets: left_child.get_embedding(true),
-                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    x: '+='+((f.get_width(metaphor_mode) - left_child.get_width(metaphor_mode))/2 - BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -334,7 +337,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT CHILD */
                     targets: right_child.get_children([right_child]),
-                    x: '+='+((-f.get_width() + right_child.get_width())/2 + (left_child.get_width() - right_child.get_width())/2 + BRACKET_WIDTH).toString(),
+                    x: '+='+((-f.get_width(metaphor_mode) + right_child.get_width(metaphor_mode))/2 + (left_child.get_width(metaphor_mode) - right_child.get_width(metaphor_mode))/2 + BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -343,7 +346,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT CHILD EMBEDDINGS */
                     targets: right_child.get_embedding(true),
-                    x: '+='+((-f.get_width() + right_child.get_width())/2 + (left_child.get_width() - right_child.get_width())/2 + BRACKET_WIDTH).toString(),
+                    x: '+='+((-f.get_width(metaphor_mode) + right_child.get_width(metaphor_mode))/2 + (left_child.get_width(metaphor_mode) - right_child.get_width(metaphor_mode))/2 + BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -532,7 +535,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT */
                     targets: left.get_children([left]),
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -541,7 +544,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT EMBEDDINGS */
                     targets: left.get_embedding(true),
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -550,7 +553,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT */
                     targets: right.get_children([right]),
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -559,7 +562,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT EMBEDDINGS */
                     targets: right.get_embedding(true),
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -568,7 +571,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE CF_MIGHT LEFT EMBEDDING */
                     targets: f.get_embedding()[0],
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -577,7 +580,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE CF_MIGHT RIGHT EMBEDDING */
                     targets: f.get_embedding()[2],
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -600,7 +603,7 @@ export class Formula_Animations {
                 neg = formula.add_temporary_formula("_|_");
                 neg.setTexture("negation_"+metaphor_mode);
                 neg.setAlpha(0);
-                neg.setX(-f.get_child("l").get_width()/2);
+                neg.setX(-f.get_child("l").get_width(metaphor_mode)/2);
                 timeline.add({ /* FADE CF_MIGHT & RIGHT */
                     targets: right.get_children([f, right]),
                     alpha: 0,
@@ -621,7 +624,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT */
                     targets: left.get_children([left]),
-                    x: '+=' + ((right.get_width() + ICON_WIDTH)/2 + ICON_WIDTH/2).toString(),
+                    x: '+=' + ((right.get_width(metaphor_mode) + CF_WIDTH)/2 + NEG_WIDTH/2).toString(),
                     duration: 3000,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -630,7 +633,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT EMBEDDINGS */
                     targets: left.get_embedding(true),
-                    x: '+=' + ((right.get_width() + ICON_WIDTH)/2 + ICON_WIDTH/2).toString(),
+                    x: '+=' + ((right.get_width(metaphor_mode) + CF_WIDTH)/2 + NEG_WIDTH/2).toString(),
                     duration: 3000,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -700,7 +703,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT */
                     targets: left.get_children([left]),
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -709,7 +712,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT EMBEDDINGS */
                     targets: left.get_embedding(true),
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -718,7 +721,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT */
                     targets: right.get_children([right]),
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -727,7 +730,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT EMBEDDINGS */
                     targets: right.get_embedding(true),
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -736,7 +739,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE CF_MIGHT LEFT EMBEDDING */
                     targets: f.get_embedding()[0],
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -745,7 +748,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE CF_MIGHT RIGHT EMBEDDING */
                     targets: f.get_embedding()[2],
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -768,7 +771,7 @@ export class Formula_Animations {
                 neg = formula.add_temporary_formula("_|_");
                 neg.setTexture("negation_"+metaphor_mode);
                 neg.setAlpha(0);
-                neg.setX(-f.get_child("l").get_width()/2);
+                neg.setX(-f.get_child("l").get_width(metaphor_mode)/2);
                 timeline.add({ /* FADE CF_MIGHT & RIGHT */
                     targets: right.get_children([f, right]),
                     alpha: 0,
@@ -789,7 +792,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT */
                     targets: left.get_children([left]),
-                    x: '+=' + ((right.get_width() + ICON_WIDTH)/2 + ICON_WIDTH/2).toString(),
+                    x: '+=' + ((right.get_width(metaphor_mode) + CF_WIDTH)/2 + NEG_WIDTH/2).toString(),
                     duration: 3000,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -798,7 +801,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT EMBEDDINGS */
                     targets: left.get_embedding(true),
-                    x: '+=' + ((right.get_width() + ICON_WIDTH)/2 + ICON_WIDTH/2).toString(),
+                    x: '+=' + ((right.get_width(metaphor_mode) + CF_WIDTH)/2 + NEG_WIDTH/2).toString(),
                     duration: 3000,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -855,12 +858,11 @@ export class Formula_Animations {
                 disj = formula.add_temporary_formula("_|_");
                 disj.setTexture("disjunction_"+metaphor_mode);
                 disj.setAlpha(0);
-                disj.setX(left.get_width()/2 + ICON_WIDTH/2 - right.get_width()/2);
+                disj.setX(left.get_width(metaphor_mode)/2 + NEG_WIDTH/2 - right.get_width(metaphor_mode)/2);
                 neg = formula.add_temporary_formula("_|_");
                 neg.setTexture("negation_"+metaphor_mode);
                 neg.setAlpha(0);
-                neg.setX(-left.get_width()/2 + (ICON_WIDTH - DISJ_WIDTH)/2 - ICON_WIDTH/2 - right.get_width()/2 + BRACKET_WIDTH); // TODO:
-                console.log(- f.get_width()/2);
+                neg.setX(-left.get_width(metaphor_mode)/2 - DISJ_WIDTH/2 - right.get_width(metaphor_mode)/2 + BRACKET_WIDTH/2);
                 timeline.add({ /* FADE CF_MIGHT */
                     targets: f,
                     alpha: 0,
@@ -872,7 +874,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT */
                     targets: left.get_children([left]),
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2 + ICON_WIDTH/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2 + NEG_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -881,7 +883,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT EMBEDDINGS */
                     targets: left.get_embedding(true),
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2 + ICON_WIDTH/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2 + NEG_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -890,7 +892,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT */
                     targets: right.get_children([right]),
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2 - ICON_WIDTH/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2 - NEG_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -899,7 +901,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT EMBEDDINGS */
                     targets: right.get_embedding(true),
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2 - ICON_WIDTH/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2 - NEG_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -908,7 +910,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE CF_MIGHT LEFT EMBEDDING */
                     targets: f.get_embedding()[0],
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2 - ICON_WIDTH/2 + BRACKET_WIDTH/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2 - NEG_WIDTH/2 + BRACKET_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -917,7 +919,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE CF_MIGHT RIGHT EMBEDDING */
                     targets: f.get_embedding()[2],
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2 - ICON_WIDTH/2 + BRACKET_WIDTH/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2 - NEG_WIDTH/2 + BRACKET_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -966,7 +968,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT CHILD */
                     targets: left_child.get_children([left_child]),
-                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    x: '+='+((f.get_width(metaphor_mode) - left_child.get_width(metaphor_mode))/2 - BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -975,7 +977,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT CHILD EMBEDDINGS */
                     targets: left_child.get_embedding(true),
-                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    x: '+='+((f.get_width(metaphor_mode) - left_child.get_width(metaphor_mode))/2 - BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -1023,11 +1025,11 @@ export class Formula_Animations {
                 disj = formula.add_temporary_formula("_|_");
                 disj.setTexture("disjunction_"+metaphor_mode);
                 disj.setAlpha(0);
-                disj.setX(left.get_width()/2 + ICON_WIDTH/2 - right.get_width()/2);
+                disj.setX(left.get_width(metaphor_mode)/2 + NEG_WIDTH/2 - right.get_width(metaphor_mode)/2);
                 neg = formula.add_temporary_formula("_|_");
                 neg.setTexture("negation_"+metaphor_mode);
                 neg.setAlpha(0);
-                neg.setX(-left.get_width()/2 - DISJ_WIDTH/2 - right.get_width()/2);
+                neg.setX(-left.get_width(metaphor_mode)/2 - DISJ_WIDTH/2 - right.get_width(metaphor_mode)/2 + BRACKET_WIDTH/2);
                 timeline.add({ /* FADE CF_MIGHT */
                     targets: f,
                     alpha: 0,
@@ -1039,7 +1041,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT */
                     targets: left.get_children([left]),
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2 + ICON_WIDTH/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2 + NEG_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -1048,7 +1050,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT EMBEDDINGS */
                     targets: left.get_embedding(true),
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2 + ICON_WIDTH/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2 + NEG_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -1057,7 +1059,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT */
                     targets: right.get_children([right]),
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2 - ICON_WIDTH/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2 - NEG_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -1066,7 +1068,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE RIGHT EMBEDDINGS */
                     targets: right.get_embedding(true),
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2 - ICON_WIDTH/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2 - NEG_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -1075,7 +1077,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE CF_MIGHT LEFT EMBEDDING */
                     targets: f.get_embedding()[0],
-                    x: '+=' + ((ICON_WIDTH - DISJ_WIDTH)/2 - ICON_WIDTH/2 + BRACKET_WIDTH/2).toString(),
+                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2 - NEG_WIDTH/2 + BRACKET_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -1084,7 +1086,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE CF_MIGHT RIGHT EMBEDDING */
                     targets: f.get_embedding()[2],
-                    x: '-=' + ((ICON_WIDTH - DISJ_WIDTH)/2 - ICON_WIDTH/2 + BRACKET_WIDTH/2).toString(),
+                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2 - NEG_WIDTH/2 + BRACKET_WIDTH/2).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -1133,7 +1135,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT CHILD */
                     targets: left_child.get_children([left_child]),
-                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    x: '+='+((f.get_width(metaphor_mode) - left_child.get_width(metaphor_mode))/2 - BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,
@@ -1142,7 +1144,7 @@ export class Formula_Animations {
                 });
                 timeline.add({ /* MOVE LEFT CHILD EMBEDDINGS */
                     targets: left_child.get_embedding(true),
-                    x: '+='+((f.get_width() - left_child.get_width())/2 - BRACKET_WIDTH).toString(),
+                    x: '+='+((f.get_width(metaphor_mode) - left_child.get_width(metaphor_mode))/2 - BRACKET_WIDTH).toString(),
                     duration: 1500,
                     ease: 'Quart.Out',
                     yoyo: false,

@@ -110,13 +110,13 @@ export default class Level_Select_Scene extends Base_Scene {
                     height = cell.height,
                     item = cell.item,
                     index = cell.index;
-                if (cellContainer === null) {
-                    cellContainer = scene.create_button(scene, levels[index], index);
-                }
+                // NOTE: previously I had a check that cellContainer != undefined, but this lead to weird
+                // behaviour because of cellContainer reuse.
+                cellContainer = scene.create_button(scene, levels[index], index);
 
                 let name = levels[item.id].name;
                 let wrapindex = name.indexOf(" ") + 1;
-                if(wrapindex == 0) { wrapindex == 16; }
+                if(wrapindex == 0) { wrapindex == 18; }
 
                 // Set properties from item value
                 cellContainer!.setMinSize(240, 120); // Size might changed in this demo
@@ -142,8 +142,11 @@ export default class Level_Select_Scene extends Base_Scene {
                 cellContainer.getElement('background').setTexture("chunk_down");
             }, this)
             .on('cell.click', function (cellContainer, cellIndex, pointer) {
-                //this.scene.start('Game_Scene', { level: this.swap_xy(cellIndex, 2, Math.ceil(levels.length/2)) });
-                this.scene.start('Game_Scene', { level: cellIndex });
+                // this.scene.start('Game_Scene', { level: this.swap_xy(cellIndex, 2, Math.ceil(levels.length/2)) });
+                // this.scene.start('Game_Scene', { level: cellIndex });
+                scene.scene.get('Level_Select_Scene').scene.setVisible(false);
+                scene.scene.pause('Level_Select_Scene');
+                scene.scene.launch('Game_Scene', { level: cellIndex });
             
             }, this)
         return grid_table;
@@ -223,7 +226,9 @@ export default class Level_Select_Scene extends Base_Scene {
             button.getElement('icon').setAlpha(0.6);
         })
         buttons.on('button.click', function(button, index, pointer, event) {
-            scene.scene.start('Main_Menu_Scene');
+            scene.scene.get('Level_Select_Scene').scene.setVisible(false);
+            scene.scene.pause('Level_Select_Scene');
+            scene.scene.launch('Main_Menu_Scene');
         })
 
         return buttons;

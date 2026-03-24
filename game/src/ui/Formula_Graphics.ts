@@ -277,34 +277,45 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
                 consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, metaphor_mode, embedded+1);
                 antecedent.offset(- CF_WIDTH/2 - consequent.get_width(metaphor_mode)/2);
                 consequent.offset(+ CF_WIDTH/2 + antecedent.get_width(metaphor_mode)/2);
+                // console.log("cf_might_left_[" + to_parse.get_child("l").to_string() + "]_width: " + antecedent.get_width(metaphor_mode));
+                // console.log("cf_might_right_[" + to_parse.get_child("r").to_string() + "]_width: " + consequent.get_width(metaphor_mode));
                 return new Cf_Might_Graphics(scene, x + (antecedent.get_width(metaphor_mode) - consequent.get_width(metaphor_mode))/2, y, antecedent, consequent, metaphor_mode, embedded);
             case to_parse instanceof Cf_Would:
                 antecedent = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, metaphor_mode, embedded+1);
                 consequent = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, metaphor_mode, embedded+1);
                 antecedent.offset(- CF_WIDTH/2 - consequent.get_width(metaphor_mode)/2);
                 consequent.offset(+ CF_WIDTH/2 + antecedent.get_width(metaphor_mode)/2);
+                // console.log("cf_would_left_[" + to_parse.get_child("l").to_string() + "]_width: " + antecedent.get_width());
+                // console.log("cf_would_right_[" + to_parse.get_child("r").to_string() + "]_width: " + consequent.get_width());
                 return new Cf_Would_Graphics(scene, x + (antecedent.get_width(metaphor_mode) - consequent.get_width(metaphor_mode))/2, y, antecedent, consequent, metaphor_mode, embedded);
             case to_parse instanceof Disjunction:
                 subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, metaphor_mode, embedded+1);
                 subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, metaphor_mode, embedded+1);
                 subject1.offset(- DISJ_WIDTH/2 - subject2.get_width(metaphor_mode)/2);
                 subject2.offset(+ DISJ_WIDTH/2 + subject1.get_width(metaphor_mode)/2);
+                // console.log("disj_left_[" + to_parse.get_child("l").to_string() + "]_width: " + subject1.get_width(metaphor_mode));
+                // console.log("disj_right_[" + to_parse.get_child("r").to_string() + "]_width: " + subject2.get_width(metaphor_mode));
                 return new Disjunction_Graphics(scene, x + (subject1.get_width(metaphor_mode) - subject2.get_width(metaphor_mode))/2, y, subject1, subject2, metaphor_mode, embedded);
             case to_parse instanceof Conjunction:
                 subject1 = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x, y, atoms, metaphor_mode, embedded+1);
                 subject2 = Formula_Graphics_Element.parse(scene, to_parse.get_child("r"), x, y, atoms, metaphor_mode, embedded+1);
                 subject1.offset(- DISJ_WIDTH/2 - subject2.get_width(metaphor_mode)/2);
                 subject2.offset(+ DISJ_WIDTH/2 + subject1.get_width(metaphor_mode)/2);
+                // console.log("conj_left_[" + to_parse.get_child("l").to_string() + "]_width: " + subject1.get_width(metaphor_mode));
+                // console.log("conj_right_[" + to_parse.get_child("r").to_string() + "]_width: " + subject2.get_width(metaphor_mode));
                 return new Conjunction_Graphics(scene, x + (subject1.get_width(metaphor_mode) - subject2.get_width(metaphor_mode))/2, y, subject1, subject2, metaphor_mode, embedded);
             case to_parse instanceof Possibility:
                 subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, metaphor_mode, embedded);
+                // console.log("poss_subject_width: " + subject.get_width(metaphor_mode));
                 return new Possibility_Graphics(scene, x - subject.get_width(metaphor_mode)/2, y, subject, metaphor_mode);
             case to_parse instanceof Necessity:
                 subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + ICON_WIDTH/2, y, atoms, metaphor_mode, embedded);
+                // console.log("nec_subject_width: " + subject.get_width(metaphor_mode));
                 return new Necessity_Graphics(scene, x - subject.get_width(metaphor_mode)/2, y, subject, metaphor_mode);
             case to_parse instanceof Negation:
                 let NEG_WIDTH = Formula_Graphics.get_neg_width(metaphor_mode);
                 subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + NEG_WIDTH/2, y, atoms, metaphor_mode, embedded);
+                // console.log("neg_subject_width: " + subject.get_width(metaphor_mode));
                 return new Negation_Graphics(scene, x - subject.get_width(metaphor_mode)/2 + ((subject instanceof Conjunction_Graphics || subject instanceof Disjunction_Graphics || subject instanceof Cf_Might_Graphics || subject instanceof Cf_Would_Graphics) ? + BRACKET_WIDTH/2 : 0), y, subject, metaphor_mode);
                 // TODO: Fix random Bracket Offset for binary operators //In ..._Would_Target_Evaluation Animation set correct negation offset // rm offset in Formula creation
             case to_parse instanceof Atom:

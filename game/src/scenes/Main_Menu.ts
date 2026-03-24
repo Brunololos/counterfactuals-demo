@@ -84,7 +84,16 @@ export default class Main_Menu_Scene extends Base_Scene {
             button.getElement('background').setTexture("chunk_down");
         })
         buttons.on('button.click', function(button, index, pointer, event) {
-            scene.scene.start('Level_Select_Scene');
+            let level_select = scene.scene.get('Level_Select_Scene');
+            scene.scene.stop('Main_Menu_Scene');
+            if (level_select && level_select.sys.isPaused()) {
+                console.log("Resuming scene");
+                scene.scene.get('Level_Select_Scene').scene.setVisible(true);
+                scene.scene.resume('Level_Select_Scene');
+            } else {
+                console.log("Starting scene");
+                scene.scene.launch('Level_Select_Scene');
+            }
         })
 
         return button;

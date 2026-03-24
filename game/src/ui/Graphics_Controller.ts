@@ -272,10 +272,12 @@ export class Graphics_Controller {
         switch(true) {
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Formula_Choice:
                 console.log("> animating transition Formula -> Formula_Choice");
+                this.sup_panel.enter_animate_awaiting_input();
                 this.idle(this.formula.animate_transition([old_mode, this.next_mode]));
                 return;
             case old_mode == Game_Graphics_Mode.Formula_Choice && this.next_mode == Game_Graphics_Mode.Formula:
                 console.log("> animating transition Formula_Choice -> Formula");
+                this.sup_panel.exit_animate_awaiting_input();
                 this.idle(this.choice.animate_transition([old_mode, this.next_mode]));
                 return;
             case old_mode == Game_Graphics_Mode.Formula && this.next_mode == Game_Graphics_Mode.Sphere_Selection:
@@ -465,7 +467,9 @@ export class Graphics_Controller {
             button.getElement('icon').setAlpha(0.6);
         })
         buttons.on('button.click', function(button, index, pointer, event) {
-            scene.scene.start('Level_Select_Scene');
+            scene.scene.get('Level_Select_Scene').scene.setVisible(true);
+            scene.scene.resume('Level_Select_Scene');
+            scene.scene.stop('Game_Scene');
         })
 
         return buttons;
