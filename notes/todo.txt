@@ -146,7 +146,7 @@ Concrete:
  QoL:
   - Carry metaphor_mode state across different levels and even if level is restarted or level is switched via
     level selection.
-  - Persistent scrollstate in level selection
+  + Persistent scrollstate in level selection
  Code Quality:
   + Migrate from default looping Sup-panel animations to default non-looping & setting timeline to loop in
     Enter_Player_Input & other animations that might require it.

@@ -143,7 +143,6 @@ export default class Level_Select_Scene extends Base_Scene {
             }, this)
             .on('cell.click', function (cellContainer, cellIndex, pointer) {
                 // this.scene.start('Game_Scene', { level: this.swap_xy(cellIndex, 2, Math.ceil(levels.length/2)) });
-                // this.scene.start('Game_Scene', { level: cellIndex });
                 scene.scene.get('Level_Select_Scene').scene.setVisible(false);
                 scene.scene.pause('Level_Select_Scene');
                 scene.scene.launch('Game_Scene', { level: cellIndex });

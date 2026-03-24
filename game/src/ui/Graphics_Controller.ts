@@ -56,6 +56,7 @@ export class Graphics_Controller {
 
     constructor(scene: Base_Scene, state: Game_State, world_positions: [number, number][]) {
         this.scene = scene;
+        if (scene.registry.has("metaphor_mode")) { this.metaphor_mode = scene.registry.get("metaphor_mode"); }
         let w = scene.get_width();
         let h = scene.get_height();
         let level = (scene as Game_Scene).get_level();
@@ -515,6 +516,7 @@ export class Graphics_Controller {
                 metaphor_mode = "metaphor";
                 console.log("Set metaphor mode to 'metaphor'");
             }
+            scene.registry.set("metaphor_mode", metaphor_mode);
             // TODO: set correct widths of imgs in Formula_Graphics
             rules_column.set_metaphor_mode(metaphor_mode);
             text_box.set_metaphor_mode(metaphor_mode);
