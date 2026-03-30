@@ -176,7 +176,7 @@ text_icon_keys = ["necessity"];
 levellist.push(Level.create("Jump Override"/* "Necessity" */, "Res", "[_](D v C) v <>B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 worlds = [get(atoms, [3]), get(atoms, [2]), get(atoms, [0, 2]), get(atoms, [3]), get(atoms, [2, 3, 4])];
-world_positions = [[0, 0], [175, 0], [-50, 135], [75, -100], [-50, -150]];
+world_positions = [[0, 0], [125, 0], [-70, 150], [108, -125], [-100, -200]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3]/* , [1, 2, 1], [2, 4, 3], [3, 1, 2], [3, 4, 1] */];
 text = "Um den Schaden der aufgedeckten Sicherheitslücke einzudämmen hast du ein Protokoll geschrieben, "
      + "welches dir die Möglichkeit gibt\ndie Sprungreichweite des Parallelweltenantriebs vor Übernahme durch deinen Kopiloten auf die Distanz zu einer Zielwelt zu begrenzen.\n"
@@ -201,21 +201,21 @@ edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 0], [0, 2, 0], [0, 3
 levellist.push(Level.create("Necessity", "Res", "~[_]B", atoms, "d", 0, -1, worlds, world_positions, edges));*/
 
 worlds = [[], [atoms[1]], get(atoms, [0, 1]), [atoms[0]]];
-world_positions = [[0, 0], [-50, -150], [-100, 100], [200, 50]];
+world_positions = [[0, 0], [-40, -115], [-115, 115], [200, 50]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [0, 1, 1], [0, 2, 2], [0, 3, 3]];
 text = "Unglücklicherweise ist es deinem Kopiloten gelungen deinen Sprunglimitierungsmechanismus gegen dich einzusetzen. Nun kannst du nur noch zu der von ihm ausgewählten oder näheren Welt springen.";
 text = "Your copilot managed to imitate your mechanism to limit the ship's jump range. You can only jump to the limit world or a closer one.";
 text_icon_keys = ["cf_would"];
 
-levellist.push(Level.create("Limiting Copilot"/* "Counterfactual 1" */, "Res", "A |_|-> B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+levellist.push(Level.create("Limiting Copilot"/* "Counterfactual 1" */, "Res", "(A |_|-> B)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 worlds = [[atoms[0], atoms[3], atoms[5]], [atoms[0], atoms[2]], [atoms[4]], [atoms[1], atoms[2], atoms[3]], [atoms[1], atoms[4]]];
-world_positions = [[0, 0], [-125, 75], [20, -150], [150, 50], [0, 150]];
+world_positions = [[0, 0], [-115, -50], [40, -175], [163, 75], [50, 230]];
 edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 1], [0, 2, 2], [0, 3, 2], [0, 4, 3]];
 text = "";
 text_icon_keys = [];
 
-levellist.push(Level.create("Complex Antecedent"/* "Counterfactual 2" */, "Res", "(~A ^ B) |_|-> C" /* "~(A v ~B) |_|-> C" */ , atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+levellist.push(Level.create("Complex Antecedent"/* "Counterfactual 2" */, "Res", "((~A ^ B) |_|-> C)" /* "~(A v ~B) |_|-> C" */ , atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 worlds = [[atoms[3], atoms[5]], [atoms[0], atoms[1], atoms[2]], [atoms[0], atoms[4]], [atoms[1], atoms[2], atoms[3]], [atoms[1], atoms[4], atoms[0]], atoms.slice(0, 5), []];
 world_positions = [[0, 0], [-150, 0], [0, -150], [150, 0], [0, 150], [300, -150], [237, 203]];
@@ -225,7 +225,7 @@ text = "";
 text_icon_keys = [];
 
 /* "~¯|¯" "~(A |_|-> (A |_|-> B))" *//* "~((~A v (B v ~C)) ^ ~A)" *//* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */
-// levellist.push(Level.create("Test", "Res", "((A v C) |_|-> B)"/*"~~~~~(A^B)"*//*"~((~A v C) ^ ~~B)"*/, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+levellist.push(Level.create("Test", "Res", "((A v C) |_|-> (B ^ D))" /*"~~~~~(A^B)"*//*"~((~A v C) ^ ~~B)"*/, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 export let levels = levellist;
 
@@ -259,6 +259,7 @@ atoms = [
   let show_cf = "A |_|-> B";
   let show_att_cf = "~(A |_|-> B)";
   let show_atoms = "(A v B) |_|-> ~(C v ~D) v E";
+  let investigate_unary_vs_binary_op_bracket_offsets = "~(~(~AvB)vC)";
 
   /*
   "~((A v B) v (A v B))"

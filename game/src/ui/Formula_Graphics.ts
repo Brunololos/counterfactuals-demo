@@ -16,7 +16,7 @@ export const CF_META_WIDTH = 60;
 export const CF_LOGIC_WIDTH = 90;
 
 export const ICON_WIDTH = 60;
-export const BRACKET_WIDTH = 10;
+export const BRACKET_WIDTH = 15;
 
 const NUM_RECOLORS = 8;
 
@@ -28,6 +28,8 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
     private metaphor_mode: string;
     private curr_formula: Formula;
     private next_formula?: Formula;
+
+    private copies: Formula_Graphics[] = [];
 
     // reference to animation to access & recreate when swapping out sprites for metaphor toggle
     private animation_timeline?: Phaser.Tweens.Timeline;
@@ -87,10 +89,19 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         scene.load.image("fill_connect", "assets/Empty_Icon.png");
         scene.load.image("fill_closed", "assets/BC.png");
 
+        scene.load.image("purple60x60", "assets/TestBG.png");
+        scene.load.image("void60x60", "assets/EmptyBG.png");
     }
 
     static configure_sprites(scene: Phaser.Scene) {
         if(scene.textures.getTextureKeys().includes("fill_open_0")) { return; }
+
+        // Setup testing sprite backgrounds
+        duplicate_texture(scene, "void60x60", "negation_metaphor");
+        duplicate_texture(scene, "purple60x60", "orange60x60");
+        dye_texture(scene, "orange60x60", 0xcc7777);
+        duplicate_texture(scene, "void60x60", "atom_bg");
+
         //let atom_colors = [0xF5C92A, 0x27577F, 0xFF577F, 0x27571B, 0xD3402A]; // TODO: make colors pop more like 0xFF577F,
         let atom_colors = [0xFFCB42, 0x42855B, 0x533483, /* 0xFF577F */0xFF4842, 0xA2B5BB, 0x47B5FF/* , 0x84513D */, 0xFF42CA, 0x2766FA]; // TODO: Fix wrong atom color
         //let atom_colors = [0xFFCB42, 0x42855B, 0x533483, 0xA2B5BB, 0xFF8FB1, 0x47B5FF, 0x84513D];
@@ -99,7 +110,9 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
             duplicate_texture(scene, "fill_connect", "fill_connect_"+(i).toString());
             duplicate_texture(scene, "fill_closed", "fill_closed_"+(i).toString());
 
-            duplicate_texture(scene, "atom_metaphor", "atom_"+(i).toString()+"_metaphor");
+            duplicate_texture(scene, "atom_bg", "atom_"+(i).toString()+"_metaphor");
+            overlay_texture(scene, "atom_"+(i).toString()+"_metaphor", "atom_metaphor");
+            // duplicate_texture(scene, "atom_metaphor", "atom_"+(i).toString()+"_metaphor");
             dye_texture(scene, "atom_"+(i).toString()+"_metaphor", atom_colors[i]);
 
             // TODO: migrate to logic sprites
@@ -110,11 +123,13 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         // Build Negation metaphor texture with dynamic coloring
         duplicate_texture(scene, "negation_metaphor_player", "negation_metaphor_player_colored");
         duplicate_texture(scene, "negation_metaphor_copilot", "negation_metaphor_copilot_colored");
-        duplicate_texture(scene, "negation_metaphor_arrows", "negation_metaphor");
+        duplicate_texture(scene, "negation_metaphor_arrows", "negation_metaphor_tarrows");
         dye_texture(scene, "negation_metaphor_player_colored", PLAYER_COLOR);
         dye_texture(scene, "negation_metaphor_copilot_colored", COPILOT_COLOR);
+        overlay_texture(scene, "negation_metaphor", "negation_metaphor_tarrows");
         overlay_texture(scene, "negation_metaphor", "negation_metaphor_player_colored");
         overlay_texture(scene, "negation_metaphor", "negation_metaphor_copilot_colored");
+
     }
 
 
@@ -156,6 +171,20 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         let temporary = Formula_Graphics_Element.parse((this.scene as Base_Scene), Formula.parse(formula), 0, 0, this.atoms, this.metaphor_mode, this.embedding_depth);
         temporary.add_to_container(this);
         return temporary;
+    }
+
+    copy(): Formula_Graphics {
+        let copy = new Formula_Graphics(this.scene, this.x, this.y, this.curr_formula, this.atoms, this.metaphor_mode, this.embedding_depth);
+        this.copies.push(copy);
+        this.parentContainer.embed(copy);
+        this.scene.children.add(copy);
+        return copy;
+    }
+
+    clear_copies() {
+        for (let copy of this.copies) {
+            copy.destroy();
+        }
     }
 
     set_atoms(atoms: string[]) {
@@ -316,7 +345,7 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
                 let NEG_WIDTH = Formula_Graphics.get_neg_width(metaphor_mode);
                 subject = Formula_Graphics_Element.parse(scene, to_parse.get_child("l"), x + NEG_WIDTH/2, y, atoms, metaphor_mode, embedded);
                 // console.log("neg_subject_width: " + subject.get_width(metaphor_mode));
-                return new Negation_Graphics(scene, x - subject.get_width(metaphor_mode)/2 + ((subject instanceof Conjunction_Graphics || subject instanceof Disjunction_Graphics || subject instanceof Cf_Might_Graphics || subject instanceof Cf_Would_Graphics) ? + BRACKET_WIDTH/2 : 0), y, subject, metaphor_mode);
+                return new Negation_Graphics(scene, x - subject.get_width(metaphor_mode)/2 /*+ ((subject instanceof Conjunction_Graphics || subject instanceof Disjunction_Graphics || subject instanceof Cf_Might_Graphics || subject instanceof Cf_Would_Graphics) ? + BRACKET_WIDTH/2 : 0)*/, y, subject, metaphor_mode);
                 // TODO: Fix random Bracket Offset for binary operators //In ..._Would_Target_Evaluation Animation set correct negation offset // rm offset in Formula creation
             case to_parse instanceof Atom:
                 return new Atom_Graphics(scene, x, y, (to_parse as Atom).value, atoms, metaphor_mode);
@@ -374,10 +403,10 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
 
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 30 - CF_WIDTH/2 - BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 30 - CF_WIDTH/2 - BRACKET_WIDTH/2, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
             // NOTE: this inner computation is not correct anymore after adding + 30 - CF_WIDTH/2
             this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));//.setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 30 + CF_WIDTH/2 + BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 30 + CF_WIDTH/2 + BRACKET_WIDTH/2, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
         }
         this.setDisplaySize(CF_WIDTH, ICON_WIDTH);
     }
@@ -472,10 +501,10 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
 
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 30 - CF_WIDTH/2 - BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 30 - CF_WIDTH/2 - BRACKET_WIDTH/2, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
             // NOTE: this inner computation is not correct anymore after adding + 30 - CF_WIDTH/2
             this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));//.setScale((-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2)/ICON_WIDTH, 1));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 30 + CF_WIDTH/2 + BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 30 + CF_WIDTH/2 + BRACKET_WIDTH/2, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
         }
         this.setDisplaySize(CF_WIDTH, ICON_WIDTH);
     }
@@ -571,10 +600,11 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
             suff = ""; // TODO: quick fix to stop using bracket recolors
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 15 - DISJ_WIDTH/2 + BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x - w1 - BRACKET_WIDTH */
+            // TODO: add scaleX,Y factors
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 15 - DISJ_WIDTH/2 + BRACKET_WIDTH/2, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
             /* TODO: this is not right anymore for DISJ_WIDTH = 60 after introducing + 15 - DISJ_WIDTH. */
             this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 15 + DISJ_WIDTH/2 - BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x + w2 + BRACKET_WIDTH */
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 15 + DISJ_WIDTH/2 - BRACKET_WIDTH/2, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
         }
         this.setDisplaySize(DISJ_WIDTH, ICON_WIDTH);
     }
@@ -669,10 +699,10 @@ export abstract class Formula_Graphics_Element extends Phaser.GameObjects.Sprite
         if(embedded >= 0) {
             let suff = Formula_Graphics_Element.get_embedding_sprite_key(embedded);
             suff = ""; // TODO: quick fix to stop using bracket recolors
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 15 - DISJ_WIDTH/2 + BRACKET_WIDTH, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x - w1 - BRACKET_WIDTH */
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x - w1 + 15 - DISJ_WIDTH/2 + BRACKET_WIDTH/2, this.y, "fill_open"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
             /* TODO: this is not right anymore for DISJ_WIDTH = 60 after introducing + 15 - DISJ_WIDTH. */
             this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + (-w1 + w2)/2, this.y, "fill_connect"+suff).setDisplaySize(-ICON_WIDTH + w1 + w2 + BRACKET_WIDTH*2, ICON_WIDTH));
-            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 15 + DISJ_WIDTH/2 - BRACKET_WIDTH, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH)); /* this.x + w2 + BRACKET_WIDTH */
+            this.brackets.push(new Phaser.GameObjects.Sprite(this.scene, this.x + w2 - 15 + DISJ_WIDTH/2 - BRACKET_WIDTH/2, this.y, "fill_closed"+suff).setDisplaySize(ICON_WIDTH, ICON_WIDTH));
         }
         this.setDisplaySize(DISJ_WIDTH, ICON_WIDTH);
         // this.setTint(0xdd0000); // TODO: just red tint doesnt look great

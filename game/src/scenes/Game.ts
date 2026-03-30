@@ -79,7 +79,7 @@ export default class Game_Scene extends Base_Scene {
           formula = move.apply(state).get_formula();
           break;
         case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Formula:
-          this.graphics_controller.set_world_choice(moves);
+          this.graphics_controller.set_world_choice(state, moves);
           return;
         case type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Possibility_World_Choice:
           move = moves[0];
@@ -125,10 +125,16 @@ export default class Game_Scene extends Base_Scene {
 
       if(!wait && !this.game_over) {
         this.game_controller.execute_move(move, world);
-        if(type != Game_Turn_Type.Defenders_Choice) {
-          this.graphics_controller.animate_move(state, move, world);
+        // TODO: Check that counterfactual transitions work
+        // console.log("Game_Turn_Type: " + type);
+        // console.log("Move: " + Rules[move.get_name()]);
+        // console.log("Is Defenders World Choice: " + (type == Game_Turn_Type.Defenders_World_Choice));
+        // if case to skip animations of operations that only need the transition animation as animation
+        if(type == Game_Turn_Type.Defenders_Choice
+        || (type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Counterfactual_World_Choice)) {
+            this.graphics_controller.set_formula(this.game_controller.get_state(), formula);
         } else {
-          this.graphics_controller.set_formula(this.game_controller.get_state(), formula);
+            this.graphics_controller.animate_move(state, move, world);
         }
       }
 

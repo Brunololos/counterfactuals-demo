@@ -13,7 +13,11 @@ export const OPTION_BOX_OUT = 15/255;//30/255;
 
 export class Choice {
     private scene: Phaser.Scene;
-    private or: Phaser.GameObjects.Text;
+    private or: Phaser.GameObjects.Text; 
+    private if_limit: Phaser.GameObjects.Sprite;
+    private limit_sprite: Phaser.GameObjects.Sprite;
+    private else_limit: Phaser.GameObjects.Sprite;
+    // private options_vert: Phaser.GameObjects.Sprite;
     private option1: Formula_Graphics;
     private option2: Formula_Graphics;
 
@@ -56,6 +60,11 @@ export class Choice {
         }
 
         this.or = new Phaser.GameObjects.Text(scene, x, y, "OR", text_style);
+        this.if_limit = new Phaser.GameObjects.Sprite(scene, x-180, y-25, "if").setDisplaySize(60, 20).setAlpha(0.0);
+        this.limit_sprite = new Phaser.GameObjects.Sprite(scene, x-173, y-25, "target_icon").setDisplaySize(25, 25).setAlpha(0.0);
+        this.else_limit = new Phaser.GameObjects.Sprite(scene, x+105, y-25, "else").setDisplaySize(40, 20).setAlpha(0.0);
+        // this.options_vert = new Phaser.GameObjects.Sprite(scene, 0, 5, "options_vertical").setAlpha(15/255);
+
         this.option1 = new Formula_Graphics(scene as Base_Scene, x, y, formula1, atoms, metaphor_mode, embedding_depth).setDepth(1);
         this.option2 = new Formula_Graphics(scene as Base_Scene, x, y, formula2, atoms, metaphor_mode, embedding_depth).setDepth(1);
         this.option1.setX(this.option1.x - DISJ_WIDTH/2 - this.option1.get_width()/2);
@@ -102,6 +111,11 @@ export class Choice {
         this.scene.children.add(this.or);
         this.or.setOrigin(0.5, 0.5);
 
+        this.scene.children.add(this.if_limit);
+        this.scene.children.add(this.limit_sprite);
+        this.scene.children.add(this.else_limit);
+        // this.scene.children.add(this.options_vert);
+
         this.scene.children.add(this.option1);
         this.scene.children.add(this.option2);
 
@@ -122,6 +136,8 @@ export class Choice {
 
 
         let atoms = state.get_atoms();
+        this.option1.setScale(1.0);
+        this.option2.setScale(1.0);
         this.option1.set_atoms(atoms);
         this.option2.set_atoms(atoms);
         this.option1.set_embedding_depth(embedding_depth + 1);
@@ -137,6 +153,8 @@ export class Choice {
         let op_width = DISJ_WIDTH;
         this.option1.setX(this.x - op_width/2 - w1/2);
         this.option2.setX(this.x + op_width/2 + w2/2);
+        this.option1.setY(this.y);
+        this.option2.setY(this.y);
 
         /* this.option1_box.setX(this.x - OR_WIDTH/2 - w1/2);
         this.option2_box.setX(this.x + OR_WIDTH/2 + w2/2); */
@@ -147,6 +165,9 @@ export class Choice {
         this.or.setScale(0.1, 0.1);
 
         this.or.setAlpha(0);
+        this.if_limit.setAlpha(0);
+        this.limit_sprite.setAlpha(0);
+        this.else_limit.setAlpha(0);
         this.option1.setAlpha(1);
         this.option2.setAlpha(1);
         this.option1_box.setAlpha(0);
@@ -176,7 +197,7 @@ export class Choice {
         this.rule2 = option2;
 
 
-        let atoms = state.get_atoms();
+        let atoms = this.state.get_atoms();
         this.option1.set_atoms(atoms);
         this.option2.set_atoms(atoms);
         this.option1.set_embedding_depth(embedding_depth + 1);
@@ -184,10 +205,43 @@ export class Choice {
         this.option1.set_formula(option1.apply(this.state).get_formula());
         this.option2.set_formula(option2.apply(this.state, delim_world).get_formula());
 
+        // TODO: horizontal
         let w1 = this.option1.get_width();
         let w2 = this.option2.get_width();
-        this.option1.setX(this.x - OR_WIDTH/2 - w1/2); // TODO: start with CF_WIDTH and expand in popup animation
-        this.option2.setX(this.x + OR_WIDTH/2 + w2/2);
+        let op_width = 60;
+
+        // let op_width = Formula_Graphics.get_disj_width(this.option1.get_metaphor_mode());
+        // let max_width = 706 - op_width;
+        // let scaling_factor = 0.8;
+        // let wmax = Math.max(w1, w2);
+        // if (wmax > max_width/2 && max_width/(2*wmax) < 0.8) { scaling_factor = max_width/(2*wmax); }
+        // let scaling_factor = this.calc_cf_formula_scale(w1, w2);
+
+        this.option1.setScale(0.8);
+        this.option2.setScale(0.8);
+        // this.option1.get_formula().scale_recursive(0.8);
+        // this.option2.get_formula().scale_recursive(0.8);
+        // end horizontal
+
+        w1 = this.option1.get_width();
+        w2 = this.option2.get_width();
+        // this.option1.setX(this.x - OR_WIDTH/2 - w1/2); // TODO: start with CF_WIDTH and expand in popup animation
+        // this.option2.setX(this.x + OR_WIDTH/2 + w2/2);
+        // TODO: vert version:
+        // this.option1.setX(this.x); // TODO: start with CF_WIDTH and expand in popup animation
+        // this.option2.setX(this.x);
+        // this.option1.setY(this.y - 23); // TODO: start with CF_WIDTH and expand in popup animation
+        // this.option2.setY(this.y + 23);
+        // this.option1.get_formula().scale_recursive(0.65);
+        // this.option2.get_formula().scale_recursive(0.65);
+        // end vert version
+
+        // TODO: horizontal
+        this.option1.setX(this.x - op_width/2 - 0.8*w1/2);
+        this.option2.setX(this.x + op_width/2 + 0.8*w2/2);
+        this.option1.setY(this.y+10);
+        this.option2.setY(this.y+10);
+        // end horizontal
 
         /* this.option1_box.setX(this.x - OR_WIDTH/2 - w1/2);
         this.option2_box.setX(this.x + OR_WIDTH/2 + w2/2);
@@ -196,7 +250,17 @@ export class Choice {
         this.or.setScale(0.1, 0.1);
 
         this.or.setAlpha(0);
-        this.option1.setAlpha(0);
+        this.if_limit.setAlpha(0.0);
+        this.limit_sprite.setAlpha(0.0);
+        this.else_limit.setAlpha(0.0);
+
+        this.if_limit.setX(this.option1.x);
+        this.limit_sprite.setX(this.option1.x+7);
+        this.else_limit.setX(this.option2.x);
+
+        // this.option1.setAlpha(0);
+        // this.option2.setAlpha(1);
+        this.option1.setAlpha(1);
         this.option2.setAlpha(1);
         this.option1_box.setAlpha(0);
         this.option2_box.setAlpha(0);
@@ -205,11 +269,12 @@ export class Choice {
         Choice_Animations.fill_cf_popup_animation_timeline(timeline, this);
         timeline.play();
 
-        this.option1_box.setInteractive();
-        this.option2_box.setInteractive();
+        // this.option1_box.setInteractive();
+        // this.option2_box.setInteractive();
     }
 
-    animate_transition(transition: [Game_Graphics_Mode, Game_Graphics_Mode]): number {
+    animate_transition(transition: [Game_Graphics_Mode, Game_Graphics_Mode], chose_limit_world: boolean): number {
+        if (this.cf_choice) { this.choice = (chose_limit_world ? 0 : 1); }
         let timeline = this.scene.tweens.createTimeline();
         let anim_time = Choice_Animations.fill_transition_animation_timeline(timeline, transition, this);
         timeline.play();
@@ -248,12 +313,12 @@ export class Choice {
 
         this.option1.set_metaphor_mode(metaphor_mode);
         this.option2.set_metaphor_mode(metaphor_mode);
-        let w = (this.scene as GameScene).get_width();
-        let w1 = this.option1.get_width();
-        let w2 = this.option2.get_width();
+        // let w = (this.scene as GameScene).get_width();
+        // let w1 = this.option1.get_width();
+        // let w2 = this.option2.get_width();
 
-        this.option1.setX(w/2 - OR_WIDTH/2 - w1/2);
-        this.option2.setX(w/2 + OR_WIDTH/2 + w2/2);
+        // this.option1.setX(w/2 - OR_WIDTH/2 - w1/2);
+        // this.option2.setX(w/2 + OR_WIDTH/2 + w2/2);
     }
 
     set_visible(visible: boolean) {
@@ -264,6 +329,11 @@ export class Choice {
         /* this.option1_sprite.setVisible(visible);
         this.option2_sprite.setVisible(visible); */
         this.or.setVisible(visible);
+        if (this.cf_choice) {
+            this.if_limit.setVisible(visible);
+            this.limit_sprite.setVisible(visible);
+            this.else_limit.setVisible(visible);
+        }
     }
 
     destroy() {
@@ -274,6 +344,9 @@ export class Choice {
         this.option1_sprite.destroy(true);
         this.option2_sprite.destroy(true);
         this.or.destroy();
+        this.if_limit.destroy();
+        this.limit_sprite.destroy();
+        this.else_limit.destroy();
     }
 
     get_x(): number {
@@ -286,6 +359,16 @@ export class Choice {
 
     get_or(): Phaser.GameObjects.Text {
         return this.or;
+    }
+
+    get_if_limit(): Phaser.GameObjects.Text {
+        return this.if_limit;
+    }
+    get_limit_sprite(): Phaser.GameObjects.Text {
+        return this.limit_sprite;
+    }
+    get_else_limit(): Phaser.GameObjects.Text {
+        return this.else_limit;
     }
 
     get_option_boxes(): Phaser.GameObjects.Sprite[] {
@@ -323,8 +406,27 @@ export class Choice {
         return this.cf_choice;
     }
 
+    // calc_cf_formula_scale(left_width: number, right_width: number/* , metaphor_mode: string */): number {
+    //     // let op_width = Formula_Graphics.get_disj_width(metaphor_mode);
+    //     let op_width = 60;
+    //     let panel_space = 706 - op_width;
+    //     let scaling_factor = 0.8;
+    //     let larger_width = Math.max(left_width, right_width);
+    //     if (larger_width > panel_space/2 && panel_space/(2*larger_width) < 0.8) {
+    //         scaling_factor = panel_space/(2*larger_width);
+    //     }
+    //     return scaling_factor;
+    // }
+
     static load_sprites(scene: Phaser.Scene) {
         scene.load.image("option_box_left", "assets/Option_Box_Left_chambers.png");
         scene.load.image("option_box_right", "assets/Option_Box_Right_chambers.png");
+
+        // scene.load.image("if", "assets/Jump3E_no_world.png"); // At3E.png"); // If_big.png");
+        scene.load.image("if", "assets/If_wide.png");
+        scene.load.image("else", "assets/Else_big.png");
+        scene.load.image("at_limit", "assets/Jump_to_Limit_wireframe.png"); // thick.png");
+        scene.load.image("target_icon", "assets/Target_Indicator_Icon_ldashes.png"); // thick.png");
+        scene.load.image("options_vertical", "assets/Option_Boxes_vertical.png");
     }
 }

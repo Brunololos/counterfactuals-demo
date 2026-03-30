@@ -37,6 +37,8 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
 
     constructor(scene: Base_Scene, x: number, y: number, content?: Phaser.GameObjects.GameObject[]) {
         super(scene, x, y);
+        // TODO: adding this leads to crashes when loading scenes
+        // this.add(content);
         this.contents = this.contents.concat(content || this.contents);
         let w = (scene as Game_Scene).get_width();
         let h = (this.scene as Base_Scene).get_height();
@@ -169,7 +171,10 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
      */
     embed(object: Phaser.GameObjects.GameObject) {
         // TODO: add object to children + play pop up animation
+        object.setMask(this.submask);
         this.contents.push(object);
+        // TODO: adding this leads to crashes when loading scenes
+        this.add(object);
     }
 
     resize() {

@@ -36,6 +36,7 @@ export class Graphics_Controller {
     private sup_panel;
     private graph_graphics: Graph_Graphics;
     private formula: Formula_Graphics;
+    private split_animation_formula: Formula_Graphics;
     // private space_station: Space_Station_Graphics;
     private choice: Choice;
     private vacuous;
@@ -68,7 +69,7 @@ export class Graphics_Controller {
         this.rules_column = new Rules_Column(scene, w-180, 0, state.get_formula().to_string());
         this.text_box = new Text_Box_Controller(scene, w/2, h-250, 500, 55, levels[level].description, levels[level].icon_keys, this.metaphor_mode);
 
-        this.formula = new Formula_Graphics(scene, w/2, h - 105, state.get_formula(), state.get_atoms(), this.metaphor_mode);
+        this.formula = new Formula_Graphics(scene, /* w/2*/ 0, /*h - 105*/ 5, state.get_formula(), state.get_atoms(), this.metaphor_mode);
         // this.space_station = new Space_Station_Graphics(scene, 0.75*w, h/2, state.get_formula(), state.get_atoms());
         this.choice = new Choice(scene, this.metaphor_mode, state);
         this.sup_panel = new Supposition_Panel(scene, w/2, h - 110, [this.formula, this.choice.get_option_graphic(0), this.choice.get_option_graphic(1), this.choice.get_option_boxes()[0], this.choice.get_option_boxes()[1]]);
@@ -91,7 +92,8 @@ export class Graphics_Controller {
         this.rules_column.add_to_scene();
 
         scene.children.add(this.sup_panel);
-        scene.children.add(this.formula);
+        this.sup_panel.embed(this.formula);
+        // this.sup_panel.add(this.formula);
         // scene.children.add(this.space_station);
         this.choice.add_to_scene();
 
@@ -182,9 +184,20 @@ export class Graphics_Controller {
                         case Game_Graphics_Mode.Possibility_World_Choice:
                         case Game_Graphics_Mode.Necessity_World_Choice:
                         case Game_Graphics_Mode.Sphere_Selection:
+                            this.set_world_choice(this.next_state, (this.next_option2 == undefined) ? [this.next_option1] : [this.next_option1, this.next_option2]);
+                            // TODO: If I somehow want to forward the cf display for sphere selection,
+                            //       I need to allow for the resulting formulas to be obtained one move earlier
+                            // console.log(this.next_option1);
+                            // this.formula.setVisible(false);
+                            // this.choice.set_cf(this.next_state, this.next_option1, this.next_option2, this.formula.get_embedding_depth());
+                            break;
                         case Game_Graphics_Mode.Counterfactual_World_Choice:
                         case Game_Graphics_Mode.Vacuous_World_Choice:
-                            this.set_world_choice((this.next_option2 == undefined) ? [this.next_option1] : [this.next_option1, this.next_option2]);
+                            this.set_world_choice(this.next_state, [this.next_option1, this.next_option2]);
+                            // console.log(this.next_option1);
+                            // console.log(this.next_option2);
+                            this.formula.setVisible(false);
+                            this.choice.set_cf(this.next_state, this.next_option1, this.next_option2, this.formula.get_embedding_depth());
                             break;
                     }
                 }
@@ -193,12 +206,13 @@ export class Graphics_Controller {
         this.sup_panel.update();
     }
 
-    set_world_choice(moves: Rule[]) {
+    set_world_choice(state: Game_State, moves: Rule[]) {
         let mode = world_choice_moves_to_mode(moves);
         if(this.mode != mode) {
             console.log("> transitioning to World_Choice");
             this.next_option1 = moves[0];
             this.next_option2 = moves[1];
+            this.next_state = state;
             this.transition_mode(mode);
             if(this.mode == Game_Graphics_Mode.Transition) { return };
         }
@@ -315,18 +329,9 @@ export class Graphics_Controller {
                 console.log("> animating transition "+Game_Graphics_Mode[old_mode]+" -> Formula");
                 this.graph_graphics.stop_animation();
                 this.graph_graphics.clear_hover_ellipse_alphas();
+                let chose_limit_world = (this.graph_graphics.get_chosen_world() == this.graph_graphics.get_delim_world());
+                this.idle(this.choice.animate_transition([old_mode, this.next_mode], chose_limit_world));
                 this.sup_panel.animate_input(Supposition_Panel_Animation.Exit_World_Choice);
-                /* this.vacuous.disableInteractive();
-                this.scene.add.tween({
-                    targets: this.vacuous,
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0,
-                }); */
-                this.set_mode(this.next_mode);
                 return;
             case old_mode == Game_Graphics_Mode.Possibility_World_Choice && this.next_mode == Game_Graphics_Mode.Formula:
             case old_mode == Game_Graphics_Mode.Necessity_World_Choice && this.next_mode == Game_Graphics_Mode.Formula:
@@ -376,7 +381,8 @@ export class Graphics_Controller {
                 break;
             case Game_Graphics_Mode.Counterfactual_World_Choice:
             case Game_Graphics_Mode.Vacuous_World_Choice:
-                this.formula.setVisible(true);
+                this.formula.setVisible(false);
+                this.formula.clear_copies();
                 this.choice.set_visible(false);
                 this.graph_graphics.set_mode(Graph_Graphics_Mode.Would_World_Choice);
                 break;
@@ -398,8 +404,8 @@ export class Graphics_Controller {
         this.sup_panel.resize();
         this.choice.resize();
         this.graph_graphics.resize();
-        this.formula.setX(this.scene.get_width()/2);
-        this.formula.setY(this.scene.get_height() - 100);
+        this.formula.setX(/*this.scene.get_width()/2*/ 0);
+        this.formula.setY(/*this.scene.get_height() - 100*/ 5);
     }
 
     get_mode(): Game_Graphics_Mode {
