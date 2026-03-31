@@ -155,8 +155,8 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
         this.activity_indr.setAlpha(0.0);
 
         this.formula_section_glow.setAlpha(0.0);
-        this.chamber_glowl.setAlpha(0.75);
-        this.chamber_glowr.setAlpha(0.0);
+        this.chamber_glowl.setAlpha(0.75).setTint(PLAYER_COLOR);
+        this.chamber_glowr.setAlpha(0.0).setTint(COPILOT_COLOR);
     }
 
     /**
@@ -273,6 +273,7 @@ export class Supposition_Panel extends Phaser.GameObjects.Container {
     clear_tint() {
         let children = this.getAll();
         for(let i=0; i<children.length; i++) {
+            if (!(children[i] instanceof Phaser.GameObjects.Sprite)) { continue; }
             (children[i] as Phaser.GameObjects.Sprite).clearTint();
         }
     }

@@ -309,6 +309,14 @@ export class Choice {
         // TODO: Resize issues
     }
 
+    resize_atoms(atoms: string[], size: number, include_copy_atoms: boolean=false) {
+        let atom_graphics = this.option1.get_atoms(atoms, include_copy_atoms);
+        atom_graphics.concat(this.option2.get_atoms(atoms, include_copy_atoms));
+        for (let i=0; i<atom_graphics.length; i++) {
+            atom_graphics[i].setDisplaySize(size, size);
+        }
+    }
+
     set_metaphor_mode(metaphor_mode: string) {
 
         this.option1.set_metaphor_mode(metaphor_mode);
@@ -394,8 +402,8 @@ export class Choice {
         return (this.choice == 0) ? this.option2 : this.option1;
     }
 
-    get_atoms(atoms: string[]): Formula_Graphics_Element[] {
-        return this.option1.get_formula().get_atoms(atoms).concat(this.option2.get_formula().get_atoms(atoms));
+    get_atoms(atoms: string[], include_copy_atoms: boolean=false): Formula_Graphics_Element[] {
+        return this.option1.get_atoms(atoms, include_copy_atoms).concat(this.option2.get_atoms(atoms, include_copy_atoms));
     }
 
     is_choice_made(): boolean {

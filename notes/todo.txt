@@ -112,27 +112,20 @@ Metaphor:
     - Sprünge mit Sprungabbruchkomponente. (Jumping to closer world als Sprungverkürzung/vom geplanten Wegabsteeren.)
     - 2 binäre Entscheidungen in Dreifachverzweigung auflösen.
 
-Concrete:
-- Add cf-like choice visualization for sphere selection. (We need a way to access the resulting formulas without
-  having the rules passed to us. I guess we can just infer which ones would be applicable and hardcode in those cases.)
-- Add set_cf animation for counterfactual might. (different resulting formulas)
-+ Fix game crash on reload scene & switch scene
-+ Fix negation operator offsets in formulas sometimes having & sometimes not having bracket offsets.
-   + I believe this has to do with how the offsets are computed for unary and binary child operators.
-- Update Textbox icons to blue/orange colors
-- Fix help panel overlaying new buttons. (restart & toggle metaphor)
-- reduce logic negation symbol margin on right & increase on left.
-- Reduce logic disj/conj/cfs strokeweights & narrow cfs & scale down necc, poss & cfs.
-- Create Atom visualizaton as Letters: A, B, C, etc
-- Hint boxes are too small now for metaphor symbols for some reason (maybe I don't have to fix them
-        if I remove them anyways.)
-+ Update banner_mask_path so that formula is clipped correctly
-- swap out icons in text box depending on metaphor
-- Make Indicator arrows more legible
-- Add animations for becoming temporarily active during operator resolution.
-- Add go to next level popup on victory & try again on loss.
-- Make sphere spotlight boundary soft
-- Add sphere spotlight enter/exit animations
+Feature:
+ - Add logic formula of each level to the bottom of each corresponding button in level selection.
+ - Add cf-like choice visualization for sphere selection. (We need a way to access the resulting formulas without
+   having the rules passed to us. I guess we can just infer which ones would be applicable and hardcode in those cases.)
+ - Add set_cf animation for counterfactual might. (different resulting formulas)
+ - Create Atom visualizaton as Letters: A, B, C, etc
+ - swap out icons in text box depending on metaphor
+ - Add animations for becoming temporarily active during operator resolution.
+ - Add go to next level popup on victory & try again on loss.
+ + Fix game crash on reload scene & switch scene
+ + Fix negation operator offsets in formulas sometimes having & sometimes not having bracket offsets.
+ + I believe this has to do with how the offsets are computed for unary and binary child operators.
+ + Update banner_mask_path so that formula is clipped correctly
+ + Add sphere spotlight enter/exit animations
  + Implement set_cf choice
  + Implement set_cf animations
  + Create metaphor swap icon & set it.
@@ -155,16 +148,29 @@ Concrete:
  + Make new formula section glow sprite from new cleaned interior boundary
  + Fix tint looking weird on dyed player icons in sup panel victory/defeat animations
     - Fixed it looking weird, but now introduced discontinuous jump bc setting of sprites in the beginning is visible.
+ Tutorialization:
+  - Redo intro texts.
+  - Flip introduction order of Cf Might & Cf Would. (Cf Would first)
  QoL:
+  - Is it possible to implement a hover effect that highlights the atoms at worlds when hovering over a
+    formula atom?
+  + Add highlighting scaling to cf choice formulas when hovering over atoms at worlds.
   + Carry metaphor_mode state across different levels and even if level is restarted or level is switched via
     level selection.
   + Persistent scrollstate in level selection
  Code Quality:
   + Migrate from default looping Sup-panel animations to default non-looping & setting timeline to loop in
     Enter_Player_Input & other animations that might require it.
+  - Reduce texture size of: Banner_activity_overlay_chambers.png, Banner_Chamber_glow_left.png,
+    Banner_Chamber_glow_left_medium.png & reposition them so nothing changes in the game scene.
  BUG:
-  - Error on restart level. sth with clearTint
-  - fix something (glowsprite?) blocking hover input over that atoms in sup-panel for highlighting on worlds.
+  - When switching metaphor modes during counterfactual choice, the formula is replicated a bunch of times
+    & the transition animation is played for each one as well.
+  - Again some scene is undefined error occurs when switching scenes in cf mode at the right moment during
+    the entry transition animation for some reason
+  - Fix player indicator outlines suddenly being colored wrong on victory/loss for some reason.
+  + Reloading the level during counterfactual choice doesnt remove animated formula copies
+  + Error on restart level. sth with clearTint
   + fix level select numbers reordering themselves after scrolling down (was reuse bug)
   + swapping metaphors in win/loss screen shows Atom instead of Top/Bottom symbol.
     (It happens because instead of having defender/attacker victory/loss as part
@@ -175,28 +181,38 @@ Concrete:
   + In Possibility Level formula is not updated by metaphor toggle.
   + Reloading the level tints player icon darker
  Visual: 
+  + Update Textbox icons to blue/orange colors
+  - Improve looks of Pilots_Intro texture for textbox
+  - Fix help panel overlaying new buttons. (restart & toggle metaphor)
+  - Add different icons & animations for formula metaphor toggle depending on state.
+  + reduce logic negation symbol margin on right & increase on left.
+    (Fixed by making bracket offset consistent.)
+  - Reduce logic disj/conj/cfs strokeweights & narrow cfs & scale down necc, poss & cfs.
   - Fix arrowtip offset of 8px making the arrows in Rule_Graphics in the help panel overlap
-  - Add if, limit & else to sup_panel mask
+  + Add if, limit & else sprites to sup_panel mask (decided it is not necessary)
   - Dont use same target sprite for hover highlight?
   - Remove Text Animation in Instruction line? It seems to attention seeking when combined with the
-    formula panel blinking.
+    formula panel blinking. (Maybe reduce strength & speed of panel blinking)
   - Make disjunction/conjunction slighty thinner.
   - On some Rule_Graphics explanations the help panel arrows get too close to
     the formulas which doesn't look good. (esp. the counterfactual rules)
+  - Make Indicator arrows more legible
+  + Hint boxes are too small now for metaphor symbols for some reason
+    (I don't have to fix them because they are removed anyways.)
+  + Make sphere spotlight boundary soft
   + fix animations that don't work exactly with new icon sizes.
   + scale down possibility/necessity & the corresponding regions of the cf symbols
   + Some Rule Graphics become too long for the help panel in logic version.
   + There are still some Textbox visualization icon keys that aren't found.
 
-
  - Implement cf choice in sup panel instead of having overlay hints over the worlds.
-    + Cf_Would Cf Choice
-    - Cf_Might Cf Choice
-    - Cf_Would Sphere Selection
-    - Cf_Might Sphere Selection
+    + Cf_Would Cf Choice ( + Player, - Copilot)
+    - Cf_Might Cf Choice ( - Player, - Copilot)
+    - Cf_Would Sphere Selection ( - Player, - Copilot)
+    - Cf_Might Sphere Selection ( - Player, - Copilot)
  + Implement graphics effect to sell the player that they have to interact with the map instead of
    the panel at the bottom.
-    - TODO: implement fadeout of sphere of accessibility spotlight
+    + implement fadeout of sphere of accessibility spotlight
  + Add numbering to Level Selection menu
 
 

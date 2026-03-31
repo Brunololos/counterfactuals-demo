@@ -90,18 +90,21 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
                 atom.on('pointerover', () => {
                     atom.setDisplaySize(35, 35);
                     glow.setDisplaySize(35, 35);
-                    let atoms = (graphics_controller.get_mode() == Game_Graphics_Mode.Formula || is_world_choice(graphics_controller.get_mode())) ? graphics_controller.get_formula_graphics().get_formula().get_atoms([vertex_atoms[j]]) : graphics_controller.get_choice_controller().get_atoms([vertex_atoms[j]]);
-                    for(let i=0; i<atoms.length; i++) {
-                        atoms[i].setDisplaySize(ICON_WIDTH + 10, ICON_WIDTH + 10);
-                    }
+                    // TODO: use ATOM_WIDTH instead of ICON_WIDTH
+                    (graphics_controller.get_mode() == Game_Graphics_Mode.Formula
+                    || (is_world_choice(graphics_controller.get_mode())
+                        && graphics_controller.get_mode() != Game_Graphics_Mode.Counterfactual_World_Choice))
+                        ? graphics_controller.get_formula_graphics().resize_atoms([vertex_atoms[j]], ICON_WIDTH + 10, true)
+                        : graphics_controller.get_choice_controller().resize_atoms([vertex_atoms[j]], ICON_WIDTH + 10, true);
                 });
                 atom.on('pointerout', () => {
                     atom.setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
                     glow.setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
-                    let atoms = (graphics_controller.get_mode() == Game_Graphics_Mode.Formula || is_world_choice(graphics_controller.get_mode())) ? graphics_controller.get_formula_graphics().get_formula().get_atoms([vertex_atoms[j]]) : graphics_controller.get_choice_controller().get_atoms([vertex_atoms[j]]);
-                    for(let i=0; i<atoms.length; i++) {
-                        atoms[i].setDisplaySize(ICON_WIDTH, ICON_WIDTH);
-                    }
+                    (graphics_controller.get_mode() == Game_Graphics_Mode.Formula
+                    || (is_world_choice(graphics_controller.get_mode())
+                        && graphics_controller.get_mode() != Game_Graphics_Mode.Counterfactual_World_Choice))
+                        ? graphics_controller.get_formula_graphics().resize_atoms([vertex_atoms[j]], ICON_WIDTH, true)
+                        : graphics_controller.get_choice_controller().resize_atoms([vertex_atoms[j]], ICON_WIDTH, true);
                 });
             }
 
@@ -217,7 +220,7 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
     world_clicked(world: integer) {
         switch(this.mode) {
             case Graph_Graphics_Mode.Display:
-                // TODO: Play some cute animation, expand atom-icons to textboxes
+                // TODO: Play some cute animation, e.g. expand atom-icons to textboxes
                 break;
             case Graph_Graphics_Mode.World_Choice:
             case Graph_Graphics_Mode.Might_World_Choice:
@@ -267,9 +270,6 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
     set_delim_world(delim_world: integer) {
         if(delim_world == -1) { this.target.setVisible(false); return; }
         this.delim_world = delim_world;
-        // console.log("Setting target indicator:");
-        // console.log("y: "+this.worlds[delim_world].get_x());
-        // console.log("x: "+this.worlds[delim_world].get_y());
         this.target.setPosition(this.worlds[delim_world].get_x(), this.worlds[delim_world].get_y());
         this.target.setVisible(true);
     }
@@ -302,7 +302,6 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         this.sphere_spotlight.erase("spotlight", this.x + cx - 2*r, this.y + cy - 2*r);
 
         // quick & dirty fade in animation
-        // if (delim_world != -1) { this.sphere_spotlight.setAlpha(0); }
         this.sphere_spotlight.setAlpha(0);
         if (this.spotlight_animation != undefined) {
             this.spotlight_animation.stop();
@@ -311,7 +310,6 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
         this.spotlight_animation = this.scene.tweens.createTimeline({ loop: 0 });
         this.spotlight_animation.add({ /* FADE IN SPOTLIGHT */
             targets: this.sphere_spotlight,
-            // alpha: ((delim_world != -1) ? 1 : 0),
             alpha: 1,
             duration: 1500,
             ease: 'Quart.In',
@@ -385,12 +383,10 @@ export class Graph_Graphics extends Phaser.GameObjects.Container {
                 }
             }
         }
-        // this.sphere_spotlight.setVisible(false);
         if (this.spotlight_animation != undefined) {
             this.spotlight_animation.stop();
             this.spotlight_animation.destroy();
         }
-        this.sphere_spotlight.setAlpha(1);
         this.spotlight_animation = this.scene.tweens.createTimeline({ loop: 0 });
         this.spotlight_animation.add({ /* FADE IN SPOTLIGHT */
             targets: this.sphere_spotlight,
@@ -637,10 +633,11 @@ export class World_Controller {
                 this.atom_sprites[i].setDisplaySize(25, 25);
             }
             let graphics_controller = this.graph_graphics.get_graphics_controller();
-            let atom_sprites = (graphics_controller.get_mode() == Game_Graphics_Mode.Formula || is_world_choice(graphics_controller.get_mode())) ? graphics_controller.get_formula_graphics().get_formula().get_atoms(this.atoms) : graphics_controller.get_choice_controller().get_atoms(this.atoms);
-            for(let i=0; i<atom_sprites.length; i++) {
-                atom_sprites[i].setDisplaySize(ICON_WIDTH + 10, ICON_WIDTH + 10); // TODO: +10 or +5 ?
-            }
+            (graphics_controller.get_mode() == Game_Graphics_Mode.Formula
+            || (is_world_choice(graphics_controller.get_mode())
+                && graphics_controller.get_mode() != Game_Graphics_Mode.Counterfactual_World_Choice))
+                ? graphics_controller.get_formula_graphics().resize_atoms(this.atoms, ICON_WIDTH + 10, true)
+                : graphics_controller.get_choice_controller().resize_atoms(this.atoms, ICON_WIDTH + 10, true);
 
             if(this.graph_graphics.get_mode() == Graph_Graphics_Mode.Might_World_Choice) {
                 this.graph_graphics.set_might_hints(this.index);
@@ -657,10 +654,11 @@ export class World_Controller {
                 this.atom_sprites[i].setDisplaySize(ATOM_WIDTH, ATOM_WIDTH);
             }
             let graphics_controller = this.graph_graphics.get_graphics_controller();
-            let atom_sprites = (graphics_controller.get_mode() == Game_Graphics_Mode.Formula || is_world_choice(graphics_controller.get_mode())) ? graphics_controller.get_formula_graphics().get_formula().get_atoms(this.atoms) : graphics_controller.get_choice_controller().get_atoms(this.atoms);
-            for(let i=0; i<atom_sprites.length; i++) {
-                atom_sprites[i].setDisplaySize(ICON_WIDTH, ICON_WIDTH);
-            }
+            (graphics_controller.get_mode() == Game_Graphics_Mode.Formula
+            || (is_world_choice(graphics_controller.get_mode())
+                && graphics_controller.get_mode() != Game_Graphics_Mode.Counterfactual_World_Choice))
+                ? graphics_controller.get_formula_graphics().resize_atoms(this.atoms, ICON_WIDTH, true)
+                : graphics_controller.get_choice_controller().resize_atoms(this.atoms, ICON_WIDTH, true);
 
             if(this.graph_graphics.get_mode() == Graph_Graphics_Mode.Might_World_Choice) {
                 this.graph_graphics.clear_hints();

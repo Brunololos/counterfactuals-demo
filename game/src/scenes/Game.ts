@@ -44,6 +44,7 @@ export default class Game_Scene extends Base_Scene {
     Graphics_Controller.configure_sprites(this);
     this.load_level(levels[this.level]);
 
+    // this.input.setTopOnly(false);
     this.input.keyboard.addKeys('Q,E');
     this.input.keyboard.on('keydown-' + 'Q', function (event) { if(this.level-1 >= 0) { this.scene.restart({level: this.level-1}); } }, this);
     this.input.keyboard.on('keydown-' + 'E', function (event) { if(this.level+1 < levels.length) { this.scene.restart({level: this.level+1}); } }, this);
@@ -130,10 +131,15 @@ export default class Game_Scene extends Base_Scene {
         // console.log("Move: " + Rules[move.get_name()]);
         // console.log("Is Defenders World Choice: " + (type == Game_Turn_Type.Defenders_World_Choice));
         // if case to skip animations of operations that only need the transition animation as animation
-        if(type == Game_Turn_Type.Defenders_Choice
-        || (type == Game_Turn_Type.Defenders_World_Choice && graphics_mode == Game_Graphics_Mode.Counterfactual_World_Choice)) {
+        if(type == Game_Turn_Type.Defenders_Choice) {
             this.graphics_controller.set_formula(this.game_controller.get_state(), formula);
         } else {
+            // for counterfactual world choice we need to set the result formula prior to animating to
+            // get a smooth transition
+            if(type == Game_Turn_Type.Defenders_World_Choice
+            && graphics_mode == Game_Graphics_Mode.Counterfactual_World_Choice) {
+                this.graphics_controller.set_formula_silently(this.game_controller.get_state(), formula, true);
+            }
             this.graphics_controller.animate_move(state, move, world);
         }
       }

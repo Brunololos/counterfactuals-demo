@@ -139,6 +139,7 @@ export class Graphics_Controller {
         this.rules_column.set_visible(false);
         this.set_mode(Game_Graphics_Mode.Formula);
         this.choice.set_visible(false);
+        this.formula.clear_copies();
     }
 
     update(time: number) {
@@ -242,7 +243,13 @@ export class Graphics_Controller {
         this.ready = false;
     }
 
+    set_formula_silently(state: Game_State, formula: Formula) {
+        console.log("> silently setting formula " + formula.to_string());
+        this.formula.set_formula(formula);
+    }
+
     set_formula(state: Game_State, formula: Formula) {
+        // if (pre_set) { this.formula.set_formula(formula); }
         if(this.mode != Game_Graphics_Mode.Formula) {
             console.log("> transitioning to Formula");
             this.next_formula = formula;
@@ -277,7 +284,13 @@ export class Graphics_Controller {
             this.graph_graphics.clear_delim_world();
             this.graph_graphics.clear_hints();
         }
-        this.graph_graphics.set_sphere(applied.get_current_world().index, (applied.has_radius()) ? applied.get_delim_world().index : undefined, (applied.has_radius()) ? applied.get_radius() : undefined, move.get_name() == Rules.Attacker_Would_Sphere_Selection || move.get_name() == Rules.Defender_Would_Sphere_Selection || move.get_name() == Rules.Attacker_Might_Sphere_Selection || move.get_name() == Rules.Defender_Might_Sphere_Selection);
+        this.graph_graphics.set_sphere(applied.get_current_world().index,
+                                      (applied.has_radius()) ? applied.get_delim_world().index : undefined,
+                                      (applied.has_radius()) ? applied.get_radius() : undefined,
+                                      move.get_name() == Rules.Attacker_Would_Sphere_Selection
+                                      || move.get_name() == Rules.Defender_Would_Sphere_Selection
+                                      || move.get_name() == Rules.Attacker_Might_Sphere_Selection
+                                      || move.get_name() == Rules.Defender_Might_Sphere_Selection);
         if(move.get_name() == Rules.Attacker_Would_Sphere_Selection) { this.graph_graphics.set_would_hints(delim_world!); }
     }
 
@@ -329,6 +342,7 @@ export class Graphics_Controller {
                 console.log("> animating transition "+Game_Graphics_Mode[old_mode]+" -> Formula");
                 this.graph_graphics.stop_animation();
                 this.graph_graphics.clear_hover_ellipse_alphas();
+                // this.graph_graphics.clear_sphere();
                 let chose_limit_world = (this.graph_graphics.get_chosen_world() == this.graph_graphics.get_delim_world());
                 this.idle(this.choice.animate_transition([old_mode, this.next_mode], chose_limit_world));
                 this.sup_panel.animate_input(Supposition_Panel_Animation.Exit_World_Choice);
@@ -756,6 +770,7 @@ export class Graphics_Controller {
         Formula_Graphics.configure_sprites(scene);
         Supposition_Panel.configure_sprites(scene);
         Graph_Graphics.configure_sprites(scene);
+        Text_Box_Controller.configure_sprites(scene);
         Star.configure_sprites(scene);
     }
 }

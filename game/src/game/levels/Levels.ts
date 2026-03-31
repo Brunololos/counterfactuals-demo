@@ -154,7 +154,6 @@ edges = [[0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [5, 5, 0], [0, 1
 text = "";
 text_icon_keys = [];
 
-// TODO: rename
 levellist.push(Level.create("Worst-case Destination", "Res", "(<>(<>A^<>D))", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 worlds = [[], get(atoms, [1, 2]), get(atoms, [0, 2]), get(atoms, [3]), get(atoms, [2, 3, 4])];
@@ -174,6 +173,22 @@ text = "Your copilot found another security vulnerability and is now able to ove
 text_icon_keys = ["necessity"];
 
 levellist.push(Level.create("Jump Override"/* "Necessity" */, "Res", "[_](D v C) v <>B", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+
+worlds = [get(atoms, [4]), get(atoms, [0, 1, 2]), get(atoms, [0]), get(atoms, [4, 5]), get(atoms, [2, 3, 5])];
+world_positions = [[-250, 0], [-100, -100], [100, -100], [0, 115], [250, 0]];
+edges = [ [0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 0], [0, 3, 0], [1, 2, 0], [2, 4, 0], [3, 4, 0]];
+text = "";
+text_icon_keys = [];
+levellist.push(Level.create("Two Paths"/* "Necessity 2" */, "Res", "<>[_]<>D", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+
+worlds = [get(atoms, [4]), get(atoms, [0, 2, 3, 5]), get(atoms, [0, 2]), get(atoms, [1]), get(atoms, [0, 3, 4])];
+world_positions = [[0, -150], [-150, 0], [150, 0], [-150, 200], [150, 200]];
+edges = [ [0, 0, 0], [1, 1, 0], [2, 2, 0], [3, 3, 0], [4, 4, 0], [0, 1, 0], [0, 2, 0], [1, 3, 0], [1, 4, 0], [2, 1, 0], [2, 4, 0], [4, 3, 0]];
+text = "";
+text_icon_keys = [];
+levellist.push(Level.create("Twofold Interference"/* "Necessity 3" */, "Res", "<>[_]<>(<>B^E)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+
+// TODO: Add a level that uses the negated necessity
 
 worlds = [get(atoms, [3]), get(atoms, [2]), get(atoms, [0, 2]), get(atoms, [3]), get(atoms, [2, 3, 4])];
 world_positions = [[0, 0], [125, 0], [-70, 150], [108, -125], [-100, -200]];

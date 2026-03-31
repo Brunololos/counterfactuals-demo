@@ -852,8 +852,8 @@ export class Formula_Animations {
                     offset: 0
                 });
                 return 1500;
-            // NOTE: This animation is not in use currently (instead the Choice transition animation handles it.)
-            // case Rules.Defender_Would_Target_Evaluation:
+            // Animation currently only has length for Sphere spotlight animation to wrap up
+            case Rules.Defender_Would_Target_Evaluation:
             //     left = f.get_child("l");
             //     right = f.get_child("r");
             //     disj = formula.add_temporary_formula("_|_");
@@ -945,9 +945,9 @@ export class Formula_Animations {
             //         repeat: 0,
             //         offset: 0
             //     });
-            //     return 1500;
-            // NOTE: This animation is not in use currently (instead the Choice transition animation handles it.)
-            // case Rules.Defender_Would_Closer_Phi_World: // TODO:
+                return 1500;
+            // Animation currently only has length for Sphere spotlight animation to wrap up
+            case Rules.Defender_Would_Closer_Phi_World: // TODO:
             //     left_child = f.get_child("l");
             //     right_child = f.get_child("r");
             //     timeline.add({ /* FADE CF_WOULD & RIGHT CHILD TREE */
@@ -987,6 +987,7 @@ export class Formula_Animations {
             //         offset: 1500
             //     });
             //     return 3000;
+                return 1500;
             case Rules.Defender_Would_Sphere_Selection:
                 return 1500;
             case Rules.Defender_Vacuous_Would_Sphere_Selection:

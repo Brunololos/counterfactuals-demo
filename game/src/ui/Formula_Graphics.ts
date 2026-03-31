@@ -250,12 +250,32 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         }
     }
 
+    resize_atoms(atoms: string[], size: number, include_copy_atoms: boolean=false) {
+        let atom_graphics = this.get_atoms(atoms, include_copy_atoms); 
+        for (let i=0; i<atom_graphics.length; i++) {
+            atom_graphics[i].setDisplaySize(size, size);
+        }
+    }
+
     /**
      * Get the Formula_Graphics_Element tree root element
      * @returns Formula_Graphics_Element
      */
     get_formula(): Formula_Graphics_Element {
         return this.formula;
+    }
+
+    /**
+     * Get the Atom Formula_Graphics_Element's in tree
+     * @returns Formula_Graphics_Element
+     */
+    get_atoms(atoms: string[], include_copy_atoms: boolean=false): Formula_Graphics_Element {
+        let atom_graphics = this.formula.get_atoms(atoms);
+        if (!include_copy_atoms) { return atom_graphics; }
+        for (let i=0; i<this.copies.length; i++) {
+            atom_graphics.concat(this.copies[i].get_atoms(atoms));
+        }
+        return atom_graphics;
     }
 
     get_embedding_depth(): integer {

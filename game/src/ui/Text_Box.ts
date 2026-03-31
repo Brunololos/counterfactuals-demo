@@ -1,4 +1,4 @@
-import { text_style } from "../util/UI_Utils";
+import { PLAYER_COLOR, COPILOT_COLOR, duplicate_texture, dye_texture, overlay_texture, text_style } from "../util/UI_Utils";
 
 export class Text_Box_Controller {
     private text_box;
@@ -62,9 +62,26 @@ export class Text_Box_Controller {
         if(scene.textures.getTextureKeys().includes("long_chunk")) { return; }
 
         scene.load.image("long_chunk", "assets/Long_Chunk.png");
-        scene.load.image("pilots_icon_metaphor", "assets/Pilots.png");
-        scene.load.image("pilots_icon_logic", "assets/Pilots.png");
+        // scene.load.image("pilots_intro_bg", "assets/Oct_Rect_Pane.png");
+        scene.load.image("pilots_intro_bg", "assets/Pilots_Intro_Empty.png");
+        scene.load.image("pilots_intro_player_base", "assets/Pilots_Intro_You_shadow_bright.png");
+        scene.load.image("pilots_intro_copilot_base", "assets/Pilots_Intro_Copilot_shadow.png");
         scene.load.image("slim_empty_icon", "assets/Empty_Slim_Icon.png");
+    }
+
+    static configure_sprites(scene: Phaser.Scene) {
+        if(scene.textures.getTextureKeys().includes("pilots_icon_metaphor")) { return; }
+
+        // Build pilots intro texture
+        duplicate_texture(scene, "pilots_intro_bg", "pilots_icon_metaphor");
+        duplicate_texture(scene, "pilots_intro_player_base", "pilots_intro_player");
+        duplicate_texture(scene, "pilots_intro_copilot_base", "pilots_intro_copilot");
+        dye_texture(scene, "pilots_intro_player", PLAYER_COLOR);
+        dye_texture(scene, "pilots_intro_copilot", COPILOT_COLOR);
+        overlay_texture(scene, "pilots_icon_metaphor", "pilots_intro_player");
+        overlay_texture(scene, "pilots_icon_metaphor", "pilots_intro_copilot");
+
+        duplicate_texture(scene, "pilots_icon_metaphor", "pilots_icon_logic");
     }
 }
 
