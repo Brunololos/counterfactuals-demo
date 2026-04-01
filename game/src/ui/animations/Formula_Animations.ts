@@ -685,139 +685,140 @@ export class Formula_Animations {
                     offset: 0
                 });
                 return 1500;
-            case Rules.Defender_Might_Target_Evaluation: // TODO:
-                left = f.get_child("l");
-                right = f.get_child("r");
-                conj = formula.add_temporary_formula("_|_");
-                conj.setTexture("conjunction_"+metaphor_mode);
-                conj.setAlpha(0);
-                conj.setX(0);
-                timeline.add({ /* FADE CF_MIGHT */
-                    targets: f,
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE LEFT */
-                    targets: left.get_children([left]),
-                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE LEFT EMBEDDINGS */
-                    targets: left.get_embedding(true),
-                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE RIGHT */
-                    targets: right.get_children([right]),
-                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE RIGHT EMBEDDINGS */
-                    targets: right.get_embedding(true),
-                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE CF_MIGHT LEFT EMBEDDING */
-                    targets: f.get_embedding()[0],
-                    x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE CF_MIGHT RIGHT EMBEDDING */
-                    targets: f.get_embedding()[2],
-                    x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE IN CONJUNCTION */
-                    targets: conj,
-                    alpha: 1,
-                    duration: 1500,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
+            case Rules.Defender_Might_Target_Evaluation:
+                // left = f.get_child("l");
+                // right = f.get_child("r");
+                // conj = formula.add_temporary_formula("_|_");
+                // conj.setTexture("conjunction_"+metaphor_mode);
+                // conj.setAlpha(0);
+                // conj.setX(0);
+                // timeline.add({ /* FADE CF_MIGHT */
+                //     targets: f,
+                //     alpha: 0,
+                //     duration: 1500,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* MOVE LEFT */
+                //     targets: left.get_children([left]),
+                //     x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
+                //     duration: 1500,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* MOVE LEFT EMBEDDINGS */
+                //     targets: left.get_embedding(true),
+                //     x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
+                //     duration: 1500,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* MOVE RIGHT */
+                //     targets: right.get_children([right]),
+                //     x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
+                //     duration: 1500,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* MOVE RIGHT EMBEDDINGS */
+                //     targets: right.get_embedding(true),
+                //     x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2).toString(),
+                //     duration: 1500,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* MOVE CF_MIGHT LEFT EMBEDDING */
+                //     targets: f.get_embedding()[0],
+                //     x: '+=' + ((CF_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
+                //     duration: 1500,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* MOVE CF_MIGHT RIGHT EMBEDDING */
+                //     targets: f.get_embedding()[2],
+                //     x: '-=' + ((CF_WIDTH - DISJ_WIDTH)/2 + BRACKET_WIDTH/2).toString(),
+                //     duration: 1500,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* FADE IN CONJUNCTION */
+                //     targets: conj,
+                //     alpha: 1,
+                //     duration: 1500,
+                //     ease: 'Quart.In',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
                 return 1500;
             case Rules.Defender_Might_Closer_Phi_World:
-                left = f.get_child("l");
-                right = f.get_child("r");
-                neg = formula.add_temporary_formula("_|_");
-                neg.setTexture("negation_"+metaphor_mode);
-                neg.setAlpha(0);
-                neg.setX(-f.get_child("l").get_width(metaphor_mode)/2);
-                timeline.add({ /* FADE CF_MIGHT & RIGHT */
-                    targets: right.get_children([f, right]),
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE CF_MIGHT & RIGHT EMBEDDINGS */
-                    targets: right.get_embedding(true).concat(f.get_embedding()),
-                    alpha: 0,
-                    duration: 1500,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE LEFT */
-                    targets: left.get_children([left]),
-                    x: '+=' + ((right.get_width(metaphor_mode) + CF_WIDTH)/2 + NEG_WIDTH/2).toString(),
-                    duration: 3000,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* MOVE LEFT EMBEDDINGS */
-                    targets: left.get_embedding(true),
-                    x: '+=' + ((right.get_width(metaphor_mode) + CF_WIDTH)/2 + NEG_WIDTH/2).toString(),
-                    duration: 3000,
-                    ease: 'Quart.Out',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                timeline.add({ /* FADE IN NEGATION */
-                    targets: neg,
-                    alpha: 1,
-                    duration: 3000,
-                    ease: 'Quart.In',
-                    yoyo: false,
-                    repeat: 0,
-                    offset: 0
-                });
-                return 3000;
+                // left = f.get_child("l");
+                // right = f.get_child("r");
+                // neg = formula.add_temporary_formula("_|_");
+                // neg.setTexture("negation_"+metaphor_mode);
+                // neg.setAlpha(0);
+                // neg.setX(-f.get_child("l").get_width(metaphor_mode)/2);
+                // timeline.add({ /* FADE CF_MIGHT & RIGHT */
+                //     targets: right.get_children([f, right]),
+                //     alpha: 0,
+                //     duration: 1500,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* FADE CF_MIGHT & RIGHT EMBEDDINGS */
+                //     targets: right.get_embedding(true).concat(f.get_embedding()),
+                //     alpha: 0,
+                //     duration: 1500,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* MOVE LEFT */
+                //     targets: left.get_children([left]),
+                //     x: '+=' + ((right.get_width(metaphor_mode) + CF_WIDTH)/2 + NEG_WIDTH/2).toString(),
+                //     duration: 3000,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* MOVE LEFT EMBEDDINGS */
+                //     targets: left.get_embedding(true),
+                //     x: '+=' + ((right.get_width(metaphor_mode) + CF_WIDTH)/2 + NEG_WIDTH/2).toString(),
+                //     duration: 3000,
+                //     ease: 'Quart.Out',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // timeline.add({ /* FADE IN NEGATION */
+                //     targets: neg,
+                //     alpha: 1,
+                //     duration: 3000,
+                //     ease: 'Quart.In',
+                //     yoyo: false,
+                //     repeat: 0,
+                //     offset: 0
+                // });
+                // return 3000;
+                return 1500;
             case Rules.Attacker_Would_Sphere_Selection:
                 return 1500;
             case Rules.Attacker_Vacuous_Would_Sphere_Selection:
@@ -947,7 +948,7 @@ export class Formula_Animations {
             //     });
                 return 1500;
             // Animation currently only has length for Sphere spotlight animation to wrap up
-            case Rules.Defender_Would_Closer_Phi_World: // TODO:
+            case Rules.Defender_Would_Closer_Phi_World:
             //     left_child = f.get_child("l");
             //     right_child = f.get_child("r");
             //     timeline.add({ /* FADE CF_WOULD & RIGHT CHILD TREE */
@@ -1216,7 +1217,7 @@ export class Formula_Animations {
                 let limit_f = limit_formula.get_formula();
                 let limit_left = limit_f.get_child("l");
                 let limit_right = limit_f.get_child("r");
-                // TODO: get scales & positions of cf choice options
+
                 let limit_left_disjunction = limit_formula.add_temporary_formula("_|_");
                 limit_left_disjunction.setTexture("disjunction_"+metaphor_mode);
                 limit_left_disjunction.setAlpha(0.0);
@@ -1231,8 +1232,6 @@ export class Formula_Animations {
                 );
                 limit_left_negation.setY(f.y);
 
-                // console.log("abort left: " + abort_left.get_width(metaphor_mode));
-                // console.log("abort right: " + abort_right.get_width(metaphor_mode));
                 timeline.add({ /* MOVE FORMULA & SCALE DOWN */
                     targets: limit_formula,
                     x: {
@@ -1382,7 +1381,165 @@ export class Formula_Animations {
             case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Sphere_Selection && (f instanceof Cf_Might_Graphics):
                 return 0;
             case transition[0] == Game_Graphics_Mode.Formula && transition[1] == Game_Graphics_Mode.Counterfactual_World_Choice && (f instanceof Cf_Might_Graphics):
-                return 0;
+                formula.setVisible(false);
+
+                // SPLIT LIMIT FORMULA
+                let might_limit_formula = formula.copy();
+                let might_limit_f = might_limit_formula.get_formula();
+                let might_limit_left = might_limit_f.get_child("l");
+                let might_limit_right = might_limit_f.get_child("r");
+
+                let might_limit_left_conjunction = might_limit_formula.add_temporary_formula("_|_");
+                might_limit_left_conjunction.setTexture("conjunction_"+metaphor_mode);
+                might_limit_left_conjunction.setAlpha(0.0);
+                might_limit_left_conjunction.setX(f.x);
+                might_limit_left_conjunction.setY(f.y);
+
+                timeline.add({ /* MOVE FORMULA & SCALE DOWN */
+                    targets: might_limit_formula,
+                    x: {
+                        value: '+='+(
+                            // CENTER ON CF WOULD
+                            (CF_WIDTH/2 + might_limit_right.get_width(metaphor_mode) + BRACKET_WIDTH - might_limit_f.get_width(metaphor_mode)/2)*0.8
+                            // MOVE TO TARGET POS
+                            - might_limit_right.get_width(metaphor_mode)*0.8 - 2*BRACKET_WIDTH*0.8 - 60/2 
+                            ).toString(),
+                        ease: 'Quart.Out',
+                    },
+                    y: {
+                        value: '+='+(10).toString(),
+                        ease: 'Quart.Out',
+                    },
+                    scaleX: {
+                        value: 0.8,
+                        ease: 'Power0',
+                    },
+                    scaleY: {
+                        value: 0.8,
+                        ease: 'Power0',
+                    },
+                    duration: 1500,
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0,
+                });
+                timeline.add({ /* FADE CF WOULD */
+                    targets: might_limit_f,
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500,
+                });
+                timeline.add({ /* FADE IN CONJUNCTION */
+                    targets: might_limit_left_conjunction,
+                    alpha: 1.0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500,
+                });
+                timeline.add({ /* MOVE LEFT CHILD */
+                    targets: might_limit_left.get_children([might_limit_left]).concat(might_limit_left.get_embedding(true)),
+                    x: '+='+((CF_WIDTH-DISJ_WIDTH)/2.0).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500,
+                });
+                timeline.add({ /* MOVE RIGHT CHILD */
+                    targets: might_limit_right.get_children([might_limit_right]).concat(might_limit_right.get_embedding(true)),
+                    x: '-='+((CF_WIDTH-DISJ_WIDTH)/2.0).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500,
+                });
+                timeline.add({ /* MOVE LEFT BRACKET */
+                    targets: might_limit_f.get_embedding()[0],
+                    x: '+='+((CF_WIDTH-DISJ_WIDTH)/2.0).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500,
+                });
+                timeline.add({ /* MOVE RIGHT BRACKET */
+                    targets: might_limit_f.get_embedding()[2],
+                    x: '-='+((CF_WIDTH-DISJ_WIDTH)/2.0).toString(),
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500,
+                });
+
+                // SPLIT ABORT FORMULA
+                let might_abort_formula = formula.copy();
+                let might_abort_f = might_abort_formula.get_formula();
+                let might_abort_left = might_abort_f.get_child("l");
+                let might_abort_right = might_abort_f.get_child("r");
+
+                let might_abort_negation = might_abort_formula.add_temporary_formula("_|_");
+                might_abort_negation.setTexture("negation_"+metaphor_mode);
+                might_abort_negation.setAlpha(0.0);
+                might_abort_negation.setX(
+                    might_abort_left.x - might_abort_left.get_width(metaphor_mode)/2
+                    /*- Formula_Graphics.get_op_width(might_abort_left, metaphor_mode)/2*/ - NEG_WIDTH/2
+                );
+                might_abort_negation.setY(f.y);
+
+                timeline.add({ /* MOVE FORMULA & SCALE DOWN */
+                    targets: might_abort_formula,
+                    x: {
+                        value: '+='+(
+                            // CENTER ON LEFT SIDE
+                            (might_abort_f.get_width(metaphor_mode)/2 - might_abort_left.get_width(metaphor_mode)/2 - BRACKET_WIDTH)*0.8
+                            // MOVE TO TARGET POS
+                            + might_abort_left.get_width(metaphor_mode)*0.8/2 + NEG_WIDTH*0.8 + 60/2 
+                            ).toString(),
+                        ease: 'Quart.Out',
+                    },
+                    y: {
+                        value: '+='+(10).toString(),
+                        ease: 'Quart.Out',
+                    },
+                    scaleX: {
+                        value: 0.8,
+                        ease: 'Power0',
+                    },
+                    scaleY: {
+                        value: 0.8,
+                        ease: 'Power0',
+                    },
+                    duration: 1500,
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 0,
+                });
+                timeline.add({ /* FADE CF WOULD, RIGHT SIDE & EMBEDDINGS */
+                    targets: might_abort_right.get_children([might_abort_right, might_abort_f]).concat(might_abort_f.get_embedding()).concat(might_abort_right.get_embedding(true)),
+                    alpha: 0,
+                    duration: 1500,
+                    ease: 'Quart.Out',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500,
+                });
+                timeline.add({ /* FADE IN NEGATION */
+                    targets: might_abort_negation,
+                    alpha: 1.0,
+                    duration: 1500,
+                    ease: 'Quart.In',
+                    yoyo: false,
+                    repeat: 0,
+                    offset: 1500,
+                });
+                return 3000;
             case transition[0] == Game_Graphics_Mode.Possibility_World_Choice && transition[1] == Game_Graphics_Mode.Formula:
             case transition[0] == Game_Graphics_Mode.Necessity_World_Choice && transition[1] == Game_Graphics_Mode.Formula:
             case transition[0] == Game_Graphics_Mode.Counterfactual_World_Choice && transition[1] == Game_Graphics_Mode.Formula:

@@ -207,7 +207,7 @@ text = "To minimize the damage that your copilot can cause with the \"jump-overr
      + "Hover over a world to see the resulting instruction sequences for each world that your copilot can jump to.";
 text_icon_keys = ["cf_might"];
 
-levellist.push(Level.create("Jump Scramble"/* "Cf_Might" */, "Res", "A ⩽⩾-> C", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+levellist.push(Level.create("Jump Scramble"/* "Cf_Might" */, "Res", "(A ⩽⩾-> C)", atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 /* worlds = [[], [atoms[1]], get(atoms, [0, 1]), [atoms[0]]];
 world_positions = [[0, 0], [-50, -150], [-100, 100], [200, 50]];
@@ -240,26 +240,9 @@ text = "";
 text_icon_keys = [];
 
 /* "~¯|¯" "~(A |_|-> (A |_|-> B))" *//* "~((~A v (B v ~C)) ^ ~A)" *//* "~(~(A v B v C) ^ (A v B))" *//* "(A v B) v C v (D v E)" */
-levellist.push(Level.create("Test", "Res", "((A v C) |_|-> (B ^ D))" /*"~~~~~(A^B)"*//*"~((~A v C) ^ ~~B)"*/, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
+// levellist.push(Level.create("Test", "Res", "((A v C) |_|-> (B ^ D))" /*"~~~~~(A^B)"*//*"~((~A v C) ^ ~~B)"*/, atoms, "d", 0, -1, worlds, world_positions, edges, text, text_icon_keys));
 
 export let levels = levellist;
-
-export let level1 = levels[0];
-export let level2 = levels[1];
-export let level3 = levels[2];
-export let level4 = levels[3];
-export let level5 = levels[4];
-export let level6 = levels[5];
-export let level7 = levels[6];
-export let level8 = levels[7];
-export let level9 = levels[8];
-export let level10 = levels[9];
-export let level11 = levels[10];
-export let level12 = levels[11];
-export let level13 = levels[12];
-export let level14 = levels[13];
-export let level15 = levels[14];
-export let level16 = levels[15];
 
 /// EXTRA
 atoms = [

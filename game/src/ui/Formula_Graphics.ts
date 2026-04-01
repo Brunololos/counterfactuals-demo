@@ -5,13 +5,14 @@ import { PLAYER_COLOR, COPILOT_COLOR, duplicate_texture, dye_texture, overlay_te
 import { Formula_Animations } from "./animations/Formula_Animations";
 import { cloneDeep } from "lodash";
 
-// export const NEG_WIDTH = 30; // 60; // TODO: if logic symbols: 30;
-// export const DISJ_WIDTH = 30; // TODO: if logic symbols: 60;
-
+export const ATOM_META_WIDTH = 60;
+export const ATOM_LOGIC_WIDTH = 60;
 export const NEG_META_WIDTH = 60;
 export const NEG_LOGIC_WIDTH = 30;
 export const DISJ_META_WIDTH = 30;
-export const DISJ_LOGIC_WIDTH = 30; // 60;
+export const DISJ_LOGIC_WIDTH = 30;
+export const POSS_META_WIDTH = 60;
+export const POSS_LOGIC_WIDTH = 60;
 export const CF_META_WIDTH = 60;
 export const CF_LOGIC_WIDTH = 90;
 
@@ -290,12 +291,37 @@ export class Formula_Graphics extends Phaser.GameObjects.Container {
         return this.metaphor_mode;
     }
 
+    static get_op_width(operator: Formula_Graphics_Element, metaphor_mode: string): number {
+        switch(true) {
+            case operator instanceof Atom_Graphics:
+                return Formula_Graphics.get_atom_width(metaphor_mode);
+            case operator instanceof Disjunction_Graphics:
+            case operator instanceof Conjunction_Graphics:
+                return Formula_Graphics.get_disj_width(metaphor_mode);
+            case operator instanceof Possibility_Graphics:
+            case operator instanceof Necessity_Graphics:
+                return Formula_Graphics.get_poss_width(metaphor_mode);
+            case operator instanceof Cf_Might_Graphics:
+            case operator instanceof Cf_Would_Graphics:
+                return Formula_Graphics.get_cf_width(metaphor_mode);
+        }
+        return 0;
+    }
+
+    static get_atom_width(metaphor_mode: string): number {
+        return ((metaphor_mode == "metaphor") ? ATOM_META_WIDTH : ATOM_LOGIC_WIDTH);
+    }
+
     static get_neg_width(metaphor_mode: string): number {
         return ((metaphor_mode == "metaphor") ? NEG_META_WIDTH : NEG_LOGIC_WIDTH);
     }
 
     static get_disj_width(metaphor_mode: string): number {
         return ((metaphor_mode == "metaphor") ? DISJ_META_WIDTH : DISJ_LOGIC_WIDTH);
+    }
+
+    static get_poss_width(metaphor_mode: string): number {
+        return ((metaphor_mode == "metaphor") ? POSS_META_WIDTH : POSS_LOGIC_WIDTH);
     }
 
     static get_cf_width(metaphor_mode: string): number {

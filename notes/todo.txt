@@ -116,7 +116,7 @@ Feature:
  - Add logic formula of each level to the bottom of each corresponding button in level selection.
  - Add cf-like choice visualization for sphere selection. (We need a way to access the resulting formulas without
    having the rules passed to us. I guess we can just infer which ones would be applicable and hardcode in those cases.)
- - Add set_cf animation for counterfactual might. (different resulting formulas)
+ + Add set_cf animation for counterfactual might. (different resulting formulas)
  - Create Atom visualizaton as Letters: A, B, C, etc
  - swap out icons in text box depending on metaphor
  - Add animations for becoming temporarily active during operator resolution.
@@ -206,8 +206,8 @@ Feature:
   + There are still some Textbox visualization icon keys that aren't found.
 
  - Implement cf choice in sup panel instead of having overlay hints over the worlds.
-    + Cf_Would Cf Choice ( + Player, - Copilot)
-    - Cf_Might Cf Choice ( - Player, - Copilot)
+    - Cf_Would Cf Choice ( + Player, - Copilot)
+    - Cf_Might Cf Choice ( + Player, - Copilot)
     - Cf_Would Sphere Selection ( - Player, - Copilot)
     - Cf_Might Sphere Selection ( - Player, - Copilot)
  + Implement graphics effect to sell the player that they have to interact with the map instead of
